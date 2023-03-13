@@ -1,17 +1,16 @@
 import * as _ from "./Login.style"
-import CloseEye from "../../Assets/SVG/CloseEye.svg"
-import OpenEye from "../../Assets/SVG/OpenEye.svg"
 import { useState } from "react"
-import { Button, Input } from "@team-return/design-system"
+import { Input } from "@team-return/design-system"
+import { Login } from "../../apis/login"
 
-const Login = () => {
+const LoginPage = () => {
     const [inputTypeCheck, setInputTypeCheck] = useState<boolean>(true)
     const [inputs, setInputs] = useState({
-        email: "",
+        account_id: "",
         password: "",
     });
 
-    const { email, password } = inputs;
+    const { account_id, password } = inputs;
 
     const InputValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
@@ -25,6 +24,8 @@ const Login = () => {
         setInputTypeCheck(!inputTypeCheck)
     }
 
+    const LoginAPI = Login(inputs);
+
     return (
         <_.Container>
             <_.Wrapper>
@@ -35,7 +36,7 @@ const Login = () => {
                     </_.TitleWrapper>
                     <_.InputWrapper>
                         <_.ContentText>아이디</_.ContentText>
-                        <Input onChange={InputValueChange} width={317} name="email" error={false} value={email} kind="LineInput" placeHolder="이메일을 입력해주세요." disabled={false} />
+                        <Input onChange={InputValueChange} width={317} name="account_id" error={false} value={account_id} kind="LineInput" placeHolder="이메일을 입력해주세요." disabled={false} />
                     </_.InputWrapper>
                     <_.InputWrapper>
                         <_.ContentText>비밀번호</_.ContentText>
@@ -47,11 +48,11 @@ const Login = () => {
                         <_.CheckBox type="checkbox" />
                         <_.CheckLogin>아이디 저장</_.CheckLogin>
                     </_.CheckEmailWrapper>
-                    <_.LoginBtn>로그인</_.LoginBtn>
+                    <_.LoginBtn onClick={() => LoginAPI.mutate()} disabled={!(account_id && password)}>로그인</_.LoginBtn>
                 </div>
             </_.Wrapper>
         </_.Container>
     )
 }
 
-export default Login
+export default LoginPage
