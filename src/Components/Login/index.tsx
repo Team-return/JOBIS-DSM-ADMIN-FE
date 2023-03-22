@@ -2,7 +2,6 @@ import * as _ from './style';
 import { useState } from 'react';
 import { Input } from '@team-return/design-system';
 import { Login } from '../../apis/login';
-import Header from '../Header';
 
 const LoginPage = () => {
 	const [inputTypeCheck, setInputTypeCheck] = useState<boolean>(true);
