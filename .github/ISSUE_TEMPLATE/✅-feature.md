@@ -2,7 +2,7 @@
 name: "✅ FEATURE"
 about: Feature 작업 내용을 입력해주세요.
 title: ''
-labels: ''
+labels: 기능 구현
 assignees: ''
 
 ---
