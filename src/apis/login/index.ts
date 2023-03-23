@@ -15,7 +15,8 @@ export const Login = (loginData: LoginDataType) => {
                     alert("아이디와 비밀번호를 다시 확인해주세요.")
                 }
                 else {
-                    cookie.set('access_token', res.data.access_token);
+                    cookie.set('refresh_token', res.data.refresh_token);
+                    cookie.set('acsses_token', res.data.acsses_token)
                 }
             }
         },
