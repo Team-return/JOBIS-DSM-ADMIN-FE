@@ -16,7 +16,7 @@ export const Login = (loginData: LoginDataType) => {
                 }
                 else {
                     cookie.set('refresh_token', res.data.refresh_token);
-                    localStorage.setItem('acsses_token', res.data.acsses_token)
+                    cookie.set('acsses_token', res.data.acsses_token)
                 }
             }
         },
