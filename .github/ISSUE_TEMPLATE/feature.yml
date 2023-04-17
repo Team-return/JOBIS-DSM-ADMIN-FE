@@ -15,8 +15,8 @@ body:
       description: |
         [작업내용] 무슨 작업을 하셨나요?
       placeholder: |
-        [ ] 이걸 했어요 
-        [ ] 이거를 끝냈어요
+        - [ ] 이걸 했어요 
+        - [ ] 이거를 끝냈어요
 
   - type: textarea
     attributes:
