@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
 	let location = useLocation();
-	
+
 	return (
 		<_.Container>
 			<Link to="/">
@@ -12,7 +12,7 @@ const Header = () => {
 			</Link>
 			<_.NavBtnWrapper>
 				<Link to="/RecruitmentRequest">
-					<_.NavBtn clicked={location.pathname.includes('RecruitmentRequest')} width={124}>
+					<_.NavBtn clicked={location.pathname.includes('RecruitmentRequest') || location.pathname.includes('')} width={124}>
 						모집의뢰서
 					</_.NavBtn>
 				</Link>

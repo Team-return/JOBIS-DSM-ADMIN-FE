@@ -1,9 +1,9 @@
 {
-  "name": "dmsport-project",
+  "name": "jobis-front-admin",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@team-return/design-system": "^1.0.22",
+    "@team-return/design-system": "^1.0.43",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

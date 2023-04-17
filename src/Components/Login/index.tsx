@@ -2,11 +2,14 @@ import * as _ from './style';
 import { useState } from 'react';
 import { Input } from '@team-return/design-system';
 import { Login } from '../../apis/login';
+import { Cookies } from 'react-cookie';
 
-const LoginPage = () => {
+const LoginCompo = () => {
+	const cookie = new Cookies();
 	const [inputTypeCheck, setInputTypeCheck] = useState<boolean>(true);
+	const [checkBoxValue, setCheckBoxValue] = useState<boolean>(false);
 	const [inputs, setInputs] = useState({
-		account_id: '',
+		account_id: cookie.get('account_id'),
 		password: '',
 	});
 
@@ -24,7 +27,7 @@ const LoginPage = () => {
 		setInputTypeCheck(!inputTypeCheck);
 	};
 
-	const LoginAPI = Login(inputs);
+	const LoginAPI = Login(inputs, checkBoxValue);
 
 	return (
 		<_.Container>
@@ -36,17 +39,17 @@ const LoginPage = () => {
 					</_.TitleWrapper>
 					<_.InputWrapper>
 						<_.ContentText>아이디</_.ContentText>
-						<Input onChange={InputValueChange} width={317} name="account_id" error={false} value={account_id} kind="LineInput" placeHolder="이메일을 입력해주세요." disabled={false} />
+						<Input onChange={InputValueChange} width={100} name="account_id" error={false} value={account_id} kind="LineInput" placeHolder="이메일을 입력해주세요." disabled={false} />
 					</_.InputWrapper>
 					<_.InputWrapper>
 						<_.ContentText>비밀번호</_.ContentText>
-						<_.PasswordWrapper>
+						<div>
 							<Input
 								onChange={InputValueChange}
 								type={inputTypeCheck ? 'password' : 'text'}
 								iconName={inputTypeCheck ? 'EyesClose' : 'EyesOpen'}
 								iconClick={ClickEye}
-								width={317}
+								width={100}
 								name="password"
 								error={false}
 								value={password}
@@ -54,10 +57,10 @@ const LoginPage = () => {
 								placeHolder="비밀번호를 입력해주세요."
 								disabled={false}
 							/>
-						</_.PasswordWrapper>
+						</div>
 					</_.InputWrapper>
 					<_.CheckEmailWrapper>
-						<_.CheckBox type="checkbox" />
+						<_.CheckBox type="checkbox" checked={checkBoxValue} onChange={() => setCheckBoxValue(!checkBoxValue)} />
 						<_.CheckLogin>아이디 저장</_.CheckLogin>
 					</_.CheckEmailWrapper>
 					<_.LoginBtn onClick={() => LoginAPI.mutate()} disabled={!(account_id && password)}>
@@ -69,4 +72,4 @@ const LoginPage = () => {
 	);
 };
 
-export default LoginPage;
+export default LoginCompo;

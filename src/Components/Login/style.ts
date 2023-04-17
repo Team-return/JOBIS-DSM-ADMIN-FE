@@ -60,13 +60,6 @@ export const InputWrapper = styled.div`
     margin-top: 40px;
 `
 
-export const PasswordWrapper = styled.div`
-& > .passwordInput {
-    width: 265px;
-    padding-right: 30px;
-}
-`
-
 export const EyeImg = styled.img`
     position: absolute;
     margin-left: -27px;

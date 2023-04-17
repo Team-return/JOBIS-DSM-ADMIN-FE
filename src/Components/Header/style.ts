@@ -9,6 +9,7 @@ export const Container = styled.header`
 	top: 0;
 	align-items: center;
     z-index: 99;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 `;
 
 export const LogoImg = styled.img`
