@@ -2,7 +2,7 @@ import Router from './router';
 import { StyledProvider } from '@team-return/design-system';
 import { RouterProvider } from 'react-router-dom';
 
-function App() {
+export function App() {
 	return (
 		<>
 			<StyledProvider>
@@ -11,5 +11,3 @@ function App() {
 		</>
 	);
 }
-
-export default App;

@@ -1,6 +1,6 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { RecruitmentFormQueryStringType } from '../../../apis/RecruitmentForm/request';
+import { RecruitmentFormQueryStringType } from '../../../apis/Recruitments/request';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 interface PropsType {
@@ -9,7 +9,7 @@ interface PropsType {
 	refetchRecruitmentForm: () => void;
 }
 
-const RecruitmentFormSearch = ({ searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString, refetchRecruitmentForm }: PropsType) => {
+export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString, refetchRecruitmentForm }: PropsType) {
 	const date = new Date(); // 현재 날짜 및 시간
 	const iYear = date.getFullYear(); // 연도
 
@@ -127,6 +127,4 @@ const RecruitmentFormSearch = ({ searchRecruitmentFormQueryString, setSearchRecr
 			</_.Wrapper>
 		</_.Container>
 	);
-};
-
-export default RecruitmentFormSearch;
+}

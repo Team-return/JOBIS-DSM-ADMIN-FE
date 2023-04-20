@@ -1,11 +1,9 @@
-import LoginCompo from '../../Components/Login';
+import { LoginCompo } from '../../Components/Login';
 
-const LoginPage = () => {
+export function LoginPage() {
 	return (
 		<>
 			<LoginCompo />
 		</>
 	);
-};
-
-export default LoginPage;
+}

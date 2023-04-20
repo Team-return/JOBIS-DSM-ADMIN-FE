@@ -4,7 +4,7 @@ import { Input } from '@team-return/design-system';
 import { Login } from '../../apis/login';
 import { Cookies } from 'react-cookie';
 
-const LoginCompo = () => {
+export function LoginCompo() {
 	const cookie = new Cookies();
 	const [inputTypeCheck, setInputTypeCheck] = useState<boolean>(true);
 	const [checkBoxValue, setCheckBoxValue] = useState<boolean>(false);
@@ -70,6 +70,4 @@ const LoginCompo = () => {
 			</_.Wrapper>
 		</_.Container>
 	);
-};
-
-export default LoginCompo;
+}

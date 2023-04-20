@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
-import LoginPage from './Pages/LoginPage/index';
-import RecruitmentFormPage from './Pages/RecruitmentFormPage';
+import { RecruitmentFormPage } from './Pages/RecruitmentForm/RecruitmentFormPage';
+import { LoginPage } from './Pages/LoginPage';
+import { ApplicationPopup } from './Pages/RecruitmentForm/ApplicationPopup';
+import { RecruitmentRequestPopup } from './Pages/RecruitmentForm/RecruitmentRequestPopup';
 
 const Router = createBrowserRouter([
 	{
@@ -29,6 +31,14 @@ const Router = createBrowserRouter([
 			{
 				path: 'JobApplication',
 				element: <></>,
+			},
+			{
+				path: 'ApplicationPopup',
+				element: <ApplicationPopup />,
+			},
+			{
+				path: 'RecruitmentRequestPopup',
+				element: <RecruitmentRequestPopup />,
 			},
 		],
 	},

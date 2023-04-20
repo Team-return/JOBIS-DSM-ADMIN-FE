@@ -1,8 +1,8 @@
 import { Button, CheckBox, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { useState } from 'react';
-import { useChangeRecruitmentsStatus } from '../../../apis/RecruitmentForm';
-import { RecruitmentFormResponse } from '../../../apis/RecruitmentForm/response';
+import { useChangeRecruitmentsStatus } from '../../../apis/Recruitments';
+import { RecruitmentFormResponse } from '../../../apis/Recruitments/response';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
@@ -10,7 +10,7 @@ interface PropsType {
 	AllSelectFormId: string[];
 }
 
-const RecruitmentFormTable = ({ recruitmentForm, refetchRecruitmentForm, AllSelectFormId }: PropsType) => {
+export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, AllSelectFormId }: PropsType) {
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
@@ -56,9 +56,9 @@ const RecruitmentFormTable = ({ recruitmentForm, refetchRecruitmentForm, AllSele
 
 		const openApplicationCountPage = (requested: boolean) => {
 			if (requested) {
-				window.open('/dd', '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
+				window.open('/RecruitmentRequestPopup', '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
 			} else {
-				window.open('/dd', '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
+				window.open('/ApplicationPopup', '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
 			}
 		};
 
@@ -72,8 +72,8 @@ const RecruitmentFormTable = ({ recruitmentForm, refetchRecruitmentForm, AllSele
 			<_.ContentText onClick={() => res.application_requested_count && openApplicationCountPage(true)} click={res.application_requested_count}>
 				{res.application_requested_count}명
 			</_.ContentText>, // 지원 요청 수
-			<_.ContentText onClick={() => res.application_count && openApplicationCountPage(false)} click={res.application_count}>
-				{res.application_count}명
+			<_.ContentText onClick={() => res.application_approved_count && openApplicationCountPage(false)} click={res.application_approved_count}>
+				{res.application_approved_count}명
 			</_.ContentText>, // 지원자 수
 			<_.ContentText>{res.start}</_.ContentText>, // 모집 시작 날짜
 			<_.ContentText>{res.end}</_.ContentText>, // 모집 종료 날짜
@@ -161,6 +161,4 @@ const RecruitmentFormTable = ({ recruitmentForm, refetchRecruitmentForm, AllSele
 			</_.TableWrapper>
 		</_.Container>
 	);
-};
-
-export default RecruitmentFormTable;
+}

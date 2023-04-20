@@ -10,7 +10,7 @@ export interface RecruitmentFormType {
 	recruitment_job: [];
 	recruitment_count: number;
 	application_requested_count: number;
-	application_count: number;
+	application_approved_count: number;
 	start: string;
 	end: string;
 	military_support: boolean;

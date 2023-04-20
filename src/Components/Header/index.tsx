@@ -2,7 +2,7 @@ import * as _ from './style';
 import logo from '../../Assets/PNG/logo.png';
 import { Link, useLocation } from 'react-router-dom';
 
-const Header = () => {
+export function Header() {
 	let location = useLocation();
 
 	return (
@@ -34,6 +34,4 @@ const Header = () => {
 			</_.NavBtnWrapper>
 		</_.Container>
 	);
-};
-
-export default Header;
+}

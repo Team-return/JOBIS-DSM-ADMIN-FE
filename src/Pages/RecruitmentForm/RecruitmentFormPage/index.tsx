@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import Header from '../../Components/Header';
-import RecruitmentFormSearch from '../../Components/RecruitmentFormCheck/Search';
-import RecruitmentFormTable from '../../Components/RecruitmentFormCheck/Table';
-import { useRecruitmentForm } from '../../Hooks/useRecruitments';
+import { useState } from 'react';
+import { useRecruitmentForm } from '../../../Hooks/useRecruitments';
 import * as _ from './style';
-import { RecruitmentFormQueryStringType } from '../../apis/RecruitmentForm/request';
+import { RecruitmentFormQueryStringType } from '../../../apis/Recruitments/request';
+import { Header } from '../../../Components/Header';
+import { RecruitmentFormSearch } from '../../../Components/RecruitmentForm/Search';
+import { RecruitmentFormTable } from '../../../Components/RecruitmentForm/Table';
 
-const RecruitmentFormPage = () => {
+export function RecruitmentFormPage() {
 	const date = new Date(); // 현재 날짜 및 시간
 	const iYear = date.getFullYear(); // 연도
 
@@ -20,9 +20,11 @@ const RecruitmentFormPage = () => {
 	});
 	const { data: recruitmentForm, refetch: refetchRecruitmentForm } = useRecruitmentForm(searchRecruitmentFormQueryString);
 
-	const AllSelectFormId: string[] = recruitmentForm! && recruitmentForm.recruitments.map((res) => {
-		return res.id;
-	})
+	const AllSelectFormId: string[] =
+		recruitmentForm! &&
+		recruitmentForm.recruitments.map((res) => {
+			return res.id;
+		});
 
 	return (
 		<>
@@ -37,6 +39,4 @@ const RecruitmentFormPage = () => {
 			</_.Wrapper>
 		</>
 	);
-};
-
-export default RecruitmentFormPage;
+}
