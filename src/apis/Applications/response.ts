@@ -1,13 +1,18 @@
 export interface ApplicationResponse {
-    id: string;
-	recruitment_status: string;
+	applications: ApplicationType[];
+}
+
+export interface ApplicationType {
+	application_id: number;
+	student_name: string;
+	student_gcn: string;
 	company_name: string;
-	company_type: string;
-	recruitment_job: [];
-	recruitment_count: number;
-	application_requested_count: number;
-	application_approved_count: number;
-	start: string;
-	end: string;
-	military_support: boolean;
-};
+	application_attachment_url: ApplicationAttachmentUrlType[];
+	created_at: string;
+	application_status: string;
+}
+
+export interface ApplicationAttachmentUrlType {
+	file_name: string;
+	file_url: string;
+}

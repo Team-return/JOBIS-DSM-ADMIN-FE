@@ -1,31 +1,30 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-	width: 97vw;
-	background-color: #ffffff;
-	border: 1px solid #e5e5e5;
-	padding: 50px 50px 25px 50px;
+	width: 100vw;
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
+	margin-top: 18px;
 `;
 
-export const BtnWrapper = styled.div`
+export const TableWrapper = styled.div<{isRequest: boolean}>`
+	width: 93.5vw;
+	height: ${({isRequest}) => isRequest ? '320px' : '365px'};
 	display: flex;
 	justify-content: flex-end;
-	width: 93.85vw;
-	gap: 15px;
-	margin-bottom: 10px;
-`;
-
-export const TableWrapper = styled.div`
-	width: 93.85vw;
 	overflow: scroll;
 `;
 
+export const BtnWrapper = styled.div`
+	width: 93.5vw;
+	display: flex;
+	justify-content: flex-end;
+`;
+
 export const TitleText = styled.div`
-	font-weight: 700;
+	font-weight: 600;
 	font-size: 20px;
 	display: flex;
 	justify-content: center;
@@ -38,7 +37,7 @@ export const ContentText = styled.div<{ status?: string; click?: number }>`
 	justify-content: center;
 	color: ${({ status }) => (status === 'REQUESTED' ? '#FF0000' : '#000000')};
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
-	text-underline-offset : 2px;
+	text-underline-offset: 2px;
 	text-decoration-thickness: 2px;
 	cursor: ${({ click }) => (click ? 'pointer' : 'default')};
 `;

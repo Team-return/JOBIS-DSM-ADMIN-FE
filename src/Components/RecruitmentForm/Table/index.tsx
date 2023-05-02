@@ -1,16 +1,20 @@
 import { Button, CheckBox, Table } from '@team-return/design-system';
 import * as _ from './style';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useChangeRecruitmentsStatus } from '../../../apis/Recruitments';
 import { RecruitmentFormResponse } from '../../../apis/Recruitments/response';
+import { Pagination } from '../../../Utils/Pagination';
+import { RecruitmentFormQueryStringType } from '../../../apis/Recruitments/request';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
 	refetchRecruitmentForm: () => void;
 	AllSelectFormId: string[];
+	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
+	setSearchRecruitmentFormQueryString: Dispatch<SetStateAction<RecruitmentFormQueryStringType>>;
 }
 
-export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, AllSelectFormId }: PropsType) {
+export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, AllSelectFormId, searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString }: PropsType) {
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
@@ -56,9 +60,9 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 
 		const openApplicationCountPage = (requested: boolean) => {
 			if (requested) {
-				window.open('/RecruitmentRequestPopup', '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
+				window.open(`/RecruitmentRequestPopup?id=${res.id}`, '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
 			} else {
-				window.open('/ApplicationPopup', '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
+				window.open(`ApplicationPopup?id=${res.id}`, '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
 			}
 		};
 
@@ -159,6 +163,7 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 					width={[3, 7, 18, 30, 6, 6, 6, 6, 10, 10]}
 				/>
 			</_.TableWrapper>
+			<Pagination total={100} limit={10} page={searchRecruitmentFormQueryString} setPage={setSearchRecruitmentFormQueryString} />
 		</_.Container>
 	);
 }

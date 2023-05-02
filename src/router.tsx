@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { RecruitmentFormPage } from './Pages/RecruitmentForm/RecruitmentFormPage';
+import { RecruitmentFormPage } from './Pages/RecruitmentFormPage';
 import { LoginPage } from './Pages/LoginPage';
-import { ApplicationPopup } from './Pages/RecruitmentForm/ApplicationPopup';
-import { RecruitmentRequestPopup } from './Pages/RecruitmentForm/RecruitmentRequestPopup';
+import { ApplicationPopup } from './Pages/ApplicationPopup';
+import { RecruitmentRequestPopup } from './Pages/RecruitmentRequestPopup';
 
 const Router = createBrowserRouter([
 	{

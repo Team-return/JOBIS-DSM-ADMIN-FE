@@ -4,14 +4,35 @@ export const Container = styled.div`
 	width: 100vw;
 	display: flex;
 	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 18px;
 `;
 
-export const Wrapper = styled.div`
-width: 93.5vw;
+export const TableWrapper = styled.div`
+	width: 93.5vw;
+	display: flex;
+	justify-content: flex-end;
+	overflow: scroll;
+`;
+
+export const TitleWrapper = styled.div`
+	margin-bottom: 7px;
+	margin-left: 5px;
+	width: 93.5vw;
+	display: flex;
+`;
+
+export const TextWrapper = styled.div`
+	width: 100%;
+	padding: 0 5px 0 15px;
+	display: flex;
+    align-items: center;
+	justify-content: space-between;
 `;
 
 export const TitleText = styled.div`
-	font-weight: 700;
+	font-weight: 600;
 	font-size: 20px;
 	display: flex;
 	justify-content: center;
@@ -19,9 +40,12 @@ export const TitleText = styled.div`
 
 export const ContentText = styled.div<{ status?: string; click?: number }>`
 	font-weight: 400;
+    height: 35px;
+	overflow: scroll;
 	font-size: 18px;
 	display: flex;
 	justify-content: center;
+    align-items: center;
 	color: ${({ status }) => (status === 'REQUESTED' ? '#FF0000' : '#000000')};
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
 	text-underline-offset: 2px;
