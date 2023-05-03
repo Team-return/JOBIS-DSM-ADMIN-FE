@@ -1,25 +1,15 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { RecruitmentFormQueryStringType } from '../../../apis/Recruitments/request';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-interface PropsType {
-	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
-	setSearchRecruitmentFormQueryString: Dispatch<SetStateAction<RecruitmentFormQueryStringType>>;
-	refetchRecruitmentForm: () => void;
-}
+interface PropsType {}
 
-export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString, refetchRecruitmentForm }: PropsType) {
-	const date = new Date(); // 현재 날짜 및 시간
-	const iYear = date.getFullYear(); // 연도
-
-	const [data, setData] = useState<RecruitmentFormQueryStringType>({
-		year: searchRecruitmentFormQueryString.year,
+export function RecruitmentFormSearch({}: PropsType) {
+	const [data, setData] = useState({
 		company_name: '',
 		start: '',
 		end: '',
 		status: '',
-		page: searchRecruitmentFormQueryString.page,
 	});
 
 	const onInputValeChange = (e: any) => {
@@ -32,12 +22,10 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 
 	const defaultData = () => {
 		setData({
-			year: searchRecruitmentFormQueryString.year,
 			company_name: '',
 			start: '',
 			end: '',
 			status: '',
-			page: searchRecruitmentFormQueryString.page,
 		});
 	};
 
@@ -76,45 +64,33 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		}
 	};
 
-	let yearData = [];
+	// let yearData = [];
 
 	for (let i = 0; i <= 10; i++) {
-		yearData.push(String(iYear - i));
+		// yearData.push(String(iYear - i));
 	}
 
 	const searching = () => {
-		setSearchRecruitmentFormQueryString({
-			...searchRecruitmentFormQueryString,
-			year: data.year,
-			company_name: data.company_name.replace(/^\s*/, ''),
-			start: data.start,
-			end: data.end,
-			status: data.status,
-		});
-		setTimeout(refetchRecruitmentForm);
+		// setSearchRecruitmentFormQueryString({
+		// 	year: data.year
+		// 	company_name: '',
+		// 	start: data.start,
+		// 	end: data.end,
+		// 	status: data.status,
+		// });
+		setTimeout(() => {});
 	};
 
 	return (
 		<_.Container>
 			<_.Wrapper>
-				<_.TitleText>모집년도</_.TitleText>
+				<_.TitleText>기업구분</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown
-						onChange={(e) => {
-							setData({
-								...data,
-								year: e,
-							});
-						}}
-						width={23}
-						option={yearData}
-					/>
+					<DropDown onChange={(e) => {}} width={23} option={[]} />
 				</_.ContentWrapper>
-				<_.TitleText>의뢰일자</_.TitleText>
+				<_.TitleText>지역</_.TitleText>
 				<_.ContentWrapper width={17} style={{ paddingRight: '15px' }}>
-					<_.DateInput max={data.end} name="start" value={data.start} onChange={onInputValeChange} type="date" />
-					<div> ~ </div>
-					<_.DateInput min={data.start} name="end" value={data.end} onChange={onInputValeChange} type="date" />
+					<DropDown onChange={(e) => {}} width={23} option={[]} />
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.Wrapper>
@@ -122,7 +98,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 				<_.ContentWrapper>
 					<Input width={96} name="company_name" value={data.company_name} onChange={onInputValeChange} placeHolder="검색어 입력" iconName="Search" />
 				</_.ContentWrapper>
-				<_.TitleText>모집상태</_.TitleText>
+				<_.TitleText>사업분야</_.TitleText>
 				<_.ContentWrapper width={17}>
 					<DropDown
 						onChange={(e) => {
@@ -134,7 +110,9 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 				</_.ContentWrapper>
 				<_.Btn>
 					<Button onClick={searching}>조회</Button>
-					<Button kind='Gray' onClick={defaultData}>초기화</Button>
+					<Button kind="Gray" onClick={defaultData}>
+						초기화
+					</Button>
 				</_.Btn>
 			</_.Wrapper>
 		</_.Container>

@@ -1,6 +1,6 @@
 import { Button, RadioButton, Table } from '@team-return/design-system';
 import * as _ from './style';
-import { ApplicationAttachmentUrlType, ApplicationResponse } from '../../../apis/Applications/response';
+import { ApplicationResponse } from '../../../apis/Applications/response';
 import { useState } from 'react';
 import { useChangeRequestStatus } from '../../../apis/Applications';
 
@@ -8,14 +8,14 @@ interface PropsType {
 	application: ApplicationResponse;
 	refetchApplication: () => void;
 	isRequest?: boolean;
-	setApplicationAttachmentUrl: React.Dispatch<React.SetStateAction<ApplicationAttachmentUrlType[]>>;
+	setApplicationAttachmentUrl: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export function StudentTable({ application, refetchApplication, setApplicationAttachmentUrl, isRequest }: PropsType) {
 	const [clickId, setClickId] = useState<number[]>([]);
 	const tableLength = isRequest ? 5 : 6;
 
-	const ClickRadioBtn = (id: number, applicationAttachmentUrl: ApplicationAttachmentUrlType[]) => {
+	const ClickRadioBtn = (id: number, applicationAttachmentUrl: string[]) => {
 		setClickId([id]);
 		setApplicationAttachmentUrl(applicationAttachmentUrl);
 	};
