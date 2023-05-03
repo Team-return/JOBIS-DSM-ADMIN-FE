@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
 	width: 100vw;
+	min-width: 400px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -10,7 +11,7 @@ export const Container = styled.div`
 `;
 
 export const TableWrapper = styled.div`
-	width: 93.5vw;
+	width: 93.5%;
 	display: flex;
 	justify-content: flex-end;
 	overflow: scroll;
@@ -19,7 +20,7 @@ export const TableWrapper = styled.div`
 export const TitleWrapper = styled.div`
 	margin-bottom: 7px;
 	margin-left: 5px;
-	width: 93.5vw;
+	width: 93.5%;
 	display: flex;
 `;
 
@@ -27,7 +28,7 @@ export const TextWrapper = styled.div`
 	width: 100%;
 	padding: 0 5px 0 15px;
 	display: flex;
-    align-items: center;
+	align-items: center;
 	justify-content: space-between;
 `;
 
@@ -40,12 +41,12 @@ export const TitleText = styled.div`
 
 export const ContentText = styled.div<{ status?: string; click?: number }>`
 	font-weight: 400;
-    height: 35px;
+	height: 35px;
 	overflow: scroll;
 	font-size: 18px;
 	display: flex;
 	justify-content: center;
-    align-items: center;
+	align-items: center;
 	color: ${({ status }) => (status === 'REQUESTED' ? '#FF0000' : '#000000')};
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
 	text-underline-offset: 2px;

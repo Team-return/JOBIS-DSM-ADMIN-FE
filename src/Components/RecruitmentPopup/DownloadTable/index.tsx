@@ -4,10 +4,9 @@ import * as _ from './style';
 import { useDownloadData } from '../../../apis/FileDownload';
 import { useState } from 'react';
 import { DownloadDataPropsType } from '../../../apis/FileDownload/request';
-import { ApplicationAttachmentUrlType } from '../../../apis/Applications/response';
 
 interface PropsType {
-	applicationAttachmentUrl: ApplicationAttachmentUrlType[];
+	applicationAttachmentUrl: string[];
 }
 
 export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
@@ -26,11 +25,12 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 	};
 
 	let tableAllDatas: JSX.Element[][] | undefined = applicationAttachmentUrl?.map((res, i) => {
+		const nameArray = decodeURI(res).split('/');
 		return [
 			<_.ContentText>{i + 1}</_.ContentText>, // 상태
 			<_.TextWrapper>
-				<_.ContentText style={{ marginTop: 3 }}>{res.file_name}</_.ContentText>
-				<Button size="S" onClick={() => fileDownloadAPI(res.file_url, '파일이름')}>
+				<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>{nameArray[nameArray.length - 1]}</_.ContentText>
+				<Button size="S" onClick={() => fileDownloadAPI(res, nameArray[nameArray.length - 1])}>
 					<img width={16} src={FileDown} alt="파일 다운로드" />
 					다운
 				</Button>

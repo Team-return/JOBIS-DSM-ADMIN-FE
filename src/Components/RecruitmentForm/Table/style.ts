@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-	width: 97vw;
+	width: 97%;
 	background-color: #ffffff;
 	border: 1px solid #e5e5e5;
-	padding: 50px 50px 25px 50px;
+	padding: 50px 30px 25px 30px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -14,13 +14,13 @@ export const Container = styled.div`
 export const BtnWrapper = styled.div`
 	display: flex;
 	justify-content: flex-end;
-	width: 93.85vw;
+	width: 100%;
 	gap: 15px;
 	margin-bottom: 10px;
 `;
 
 export const TableWrapper = styled.div`
-	width: 93.85vw;
+	width: 100%;
 	overflow: scroll;
 `;
 

@@ -5,7 +5,6 @@ import { StudentTable } from '../../Components/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../Components/RecruitmentPopup/DownloadTable';
 import { Button } from '@team-return/design-system';
 import * as _ from './style';
-import { ApplicationAttachmentUrlType } from '../../apis/Applications/response';
 
 export function ApplicationPopup() {
 	const id = new URLSearchParams(window.location.search).get('id');
@@ -17,7 +16,7 @@ export function ApplicationPopup() {
 
 	const { data: application, refetch: refetchApplication } = useGetApplicantInfo(applicationQueryString);
 
-	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<ApplicationAttachmentUrlType[]>([]);
+	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<string[]>([]);
 	return (
 		<>
 			<StudentTable application={application!} isRequest={false} refetchApplication={refetchApplication} setApplicationAttachmentUrl={setApplicationAttachmentUrl} />

@@ -163,7 +163,7 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 					width={[3, 7, 18, 30, 6, 6, 6, 6, 10, 10]}
 				/>
 			</_.TableWrapper>
-			<Pagination total={100} limit={10} page={searchRecruitmentFormQueryString} setPage={setSearchRecruitmentFormQueryString} />
+			<Pagination total={100} limit={10} data={searchRecruitmentFormQueryString} setData={setSearchRecruitmentFormQueryString} refetchRecruitmentForm={refetchRecruitmentForm} />
 		</_.Container>
 	);
 }

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-	width: 97vw;
+	width: 97%;
 	height: 200px;
 	background-color: #ffffff;
 	border: 1px solid #e5e5e5;
@@ -30,7 +30,7 @@ export const TitleText = styled.div`
 `;
 
 export const ContentWrapper = styled.div<{ width?: number }>`
-	width: ${({ width }) => (width ? width + 'vw' : '28vw')};
+	width: ${({ width }) => (width ? width + '%' : '28%')};
 	height: 65px;
 	background: #ffffff;
 	border: 1px solid #e5e5e5;

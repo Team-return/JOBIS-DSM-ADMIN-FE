@@ -7,9 +7,10 @@ interface PropsType {
 	limit: number;
 	data: RecruitmentFormQueryStringType;
 	setData: Dispatch<SetStateAction<RecruitmentFormQueryStringType>>;
+	refetchRecruitmentForm: () => void;
 }
 
-export function Pagination({ total, limit, data, setData }: PropsType) {
+export function Pagination({ total, limit, data, setData, refetchRecruitmentForm }: PropsType) {
 	const numPages = Math.ceil(total / limit);
 
 	const changePageNumber = (num: number) => {
@@ -17,6 +18,7 @@ export function Pagination({ total, limit, data, setData }: PropsType) {
 			...data,
 			page: num,
 		});
+		setTimeout(refetchRecruitmentForm);
 	};
 
 	return (
@@ -39,7 +41,7 @@ export function Pagination({ total, limit, data, setData }: PropsType) {
 								onClick={() => {
 									changePageNumber(i + 1);
 								}}
-								aria-disabled={true}
+								focus={data?.page === i + 1}
 							>
 								{i + 1}
 							</Text>
@@ -58,16 +60,14 @@ export function Pagination({ total, limit, data, setData }: PropsType) {
 	);
 }
 
-const Text = styled.div`
+const Text = styled.div<{ focus: boolean }>`
 	font-size: 20px;
-	color: #7f7f7f;
+	color: ${({ focus }) => (focus ? '#111111' : '#7f7f7f')};
 	font-weight: 400;
 	cursor: pointer;
 	&:hover {
-		text-decoration: underline;
-	}
-	&:disabled {
-		color: black;
+		cursor: ${({ focus }) => (focus ? 'not-allowed' : 'pointer')};
+		text-decoration: ${({ focus }) => (focus ? 'none' : 'underline')};
 	}
 `;
 
