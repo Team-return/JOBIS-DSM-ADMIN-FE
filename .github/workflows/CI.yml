@@ -35,4 +35,4 @@ jobs:
         run: npm install
 
       - name: Build Packages
-        run: npm build
+        run: npm run build
