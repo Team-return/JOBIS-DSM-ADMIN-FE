@@ -20,7 +20,7 @@ export function ApplicationPopup() {
 	return (
 		<>
 			<StudentTable application={application!} isRequest={false} refetchApplication={refetchApplication} setApplicationAttachmentUrl={setApplicationAttachmentUrl} />
-			<DownloadTable applicationAttachmentUrl={applicationAttachmentUrl!} />
+			<DownloadTable applicationAttachmentUrl={applicationAttachmentUrl!} setApplicationAttachmentUrl={setApplicationAttachmentUrl}/>
 			<_.BtnWrapper>
 				<Button onClick={() => window.close()}>닫기</Button>
 			</_.BtnWrapper>
