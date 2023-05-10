@@ -28,7 +28,7 @@ export function LoginCompo() {
 		setInputTypeCheck((prev) => !prev);
 	}, []);
 
-	const {mutate: handleLogin} = Login(loginForm, checkBoxValue);
+	const { mutate: handleLogin } = Login(loginForm, checkBoxValue);
 
 	return (
 		<_.Container>

@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { useCookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 import { reIssueToken } from './Auth';
 
 export const instance = axios.create({
@@ -7,10 +7,11 @@ export const instance = axios.create({
 	timeout: 10000,
 });
 
+const cookies = new Cookies();
+
 instance.interceptors.request.use(
 	(config) => {
-		const [cookie] = useCookies();
-		const accessToken = cookie.access_token;
+		const accessToken = cookies.get('access_token');
 		const returnConfig = {
 			...config,
 		};
@@ -27,27 +28,26 @@ instance.interceptors.response.use(
 	(error: AxiosError<AxiosError>) => {
 		if (axios.isAxiosError(error) && error.response) {
 			const { config } = error;
-			const [cookie, setCookie, removeCookie] = useCookies();
-			const refreshToken = cookie.refresh_token;
+			const refreshToken = cookies.get('refresh_token');
 			if (error.response.data.message === 'Invalid Token' || error.response.data.message === 'Token Expired') {
 				if (refreshToken) {
-					removeCookie('access_token');
+					cookies.remove('access_token');
 					reIssueToken(refreshToken)
 						.then((res) => {
 							const accessExpired = new Date(res.access_token_expired_at);
 							const refreshExpired = new Date(res.refresh_token_expired_at);
-							setCookie('access_token', res.access_token, {
+							cookies.set('access_token', res.access_token, {
 								expires: accessExpired,
 							});
-							setCookie('refresh_token', res.refresh_token, {
+							cookies.set('refresh_token', res.refresh_token, {
 								expires: refreshExpired,
 							});
 							if (config!.headers) config!.headers['Authorization'] = `Bearer ${res.access_token}`;
 							return axios(config!);
 						})
 						.catch(() => {
-							removeCookie('access_token');
-							removeCookie('refresh_token');
+							cookies.remove('access_token');
+							cookies.remove('refresh_token');
 							window.location.href = '/login';
 						});
 				} else {

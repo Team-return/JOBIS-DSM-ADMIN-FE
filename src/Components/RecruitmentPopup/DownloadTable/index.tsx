@@ -7,9 +7,10 @@ import { DownloadDataPropsType } from '../../../apis/FileDownload/request';
 
 interface PropsType {
 	applicationAttachmentUrl: string[];
+	setApplicationAttachmentUrl: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
+export function DownloadTable({ applicationAttachmentUrl, setApplicationAttachmentUrl }: PropsType) {
 	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
 		fileUrl: '',
 		fileName: '',
