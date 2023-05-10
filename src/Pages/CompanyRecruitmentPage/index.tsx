@@ -3,7 +3,7 @@ import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/Re
 import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/RecruitmentForm/Table';
 import { Header } from '../../Components/Header';
 import { useState } from 'react';
-import { dataType } from '../../Apiss/Companies/request';
+import { dataType } from '../../Apis/Companies/request';
 import { useGetCompanyRecruitments } from '../../Hooks/useGetCompanyRecruitments';
 
 export function CompanyRecruitmentPage() {
