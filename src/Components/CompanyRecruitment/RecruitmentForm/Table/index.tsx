@@ -2,91 +2,22 @@ import { Button, CheckBox, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../../Utils/Pagination';
-import { RecruitmentFormResponse } from '../../../../apis/Recruitments/response';
-import { RecruitmentFormQueryStringType } from '../../../../apis/Recruitments/request';
-import { useChangeRecruitmentsStatus } from '../../../../apis/Recruitments';
+import { useChangeCompanyStatus } from '../../../../apis/Companies';
+import { dataType } from '../../../../apis/Companies/request';
+import { CompanyRecruitmentResponse } from '../../../../apis/Companies/response';
 
 interface PropsType {
-	recruitmentForm: RecruitmentFormResponse;
-	refetchRecruitmentForm: () => void;
-	AllSelectFormId: string[];
-	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
-	setSearchRecruitmentFormQueryString: Dispatch<SetStateAction<RecruitmentFormQueryStringType>>;
+	companyRecruitment: CompanyRecruitmentResponse;
+	refetchCompanyRecruitment: () => void;
+	AllSelectFormId: number[];
+	searchQueryString: dataType;
+	setSearchQueryString: Dispatch<SetStateAction<dataType>>;
 }
 
-export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, AllSelectFormId, searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString }: PropsType) {
-	const dataLength = recruitmentForm?.recruitments.length;
-	const [clickedData, setClickedData] = useState<string[]>([]);
+export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecruitment, AllSelectFormId, searchQueryString, setSearchQueryString }: PropsType) {
+	const dataLength = companyRecruitment?.companies.length;
+	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
-
-	let tableAllDatas: JSX.Element[][] | undefined = recruitmentForm?.recruitments.map((res, i) => {
-		const job = res.recruitment_job.join(' / ');
-		const type = () => {
-			switch (res.company_type) {
-				case 'LEAD':
-					return '선도';
-				case 'PARTICIPATING':
-					return '참여';
-				case 'CONTRACTING':
-					return '협약';
-				case 'DEFAULT':
-					return '기본';
-				default:
-					return '기본';
-			}
-		};
-		const status = () => {
-			switch (res.recruitment_status) {
-				case 'REQUESTED':
-					return '접수요청';
-				case 'READY':
-					return '모집전';
-				case 'RECRUITING':
-					return '모집중';
-				case 'DONE':
-					return '모집종료';
-				default:
-					return '모집종료';
-			}
-		};
-
-		const ClickCheckBox = () => {
-			if (clickedData.includes(res.id)) {
-				setClickedData(clickedData.filter((e) => e !== res.id));
-			} else {
-				setClickedData([...clickedData, res.id]);
-			}
-		};
-
-		const openApplicationCountPage = (requested: boolean) => {
-			if (requested) {
-				window.open(`/RecruitmentRequestPopup?id=${res.id}`, '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
-			} else {
-				window.open(`ApplicationPopup?id=${res.id}`, '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
-			}
-		};
-
-		return [
-			<CheckBox checked={clickedData.includes(res.id)} onClick={ClickCheckBox} onChange={() => {}} />,
-			<_.ContentText status={res.recruitment_status}>{status()}</_.ContentText>, // 상태
-			<_.ContentText>{res.company_name}</_.ContentText>, // 회사 이름
-			<_.ContentText>{job}</_.ContentText>, // 채용 직군
-			<_.ContentText>{type()}</_.ContentText>, // 구분
-			<_.ContentText>{res.recruitment_count}명</_.ContentText>, // 모집 인원 수
-			<_.ContentText onClick={() => res.application_requested_count && openApplicationCountPage(true)} click={res.application_requested_count}>
-				{res.application_requested_count}명
-			</_.ContentText>, // 지원 요청 수
-			<_.ContentText onClick={() => res.application_approved_count && openApplicationCountPage(false)} click={res.application_approved_count}>
-				{res.application_approved_count}명
-			</_.ContentText>, // 지원자 수
-			<_.ContentText>{res.start}</_.ContentText>, // 모집 시작 날짜
-			<_.ContentText>{res.end}</_.ContentText>, // 모집 종료 날짜
-		];
-	});
-
-	for (let i = 0; i < 11 - (dataLength! % 11); i++) {
-		tableAllDatas?.push([<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
-	}
 
 	const CheckAllBox = () => {
 		if (clickedData.length === dataLength) {
@@ -95,10 +26,10 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 			setClickedData(AllSelectFormId);
 		}
 	};
-
-	const ChangeStatusAPI = useChangeRecruitmentsStatus(changeStatus, clickedData, {
+  
+	const ChangeStatusAPI = useChangeCompanyStatus(changeStatus, clickedData, {
 		onSuccess: () => {
-			refetchRecruitmentForm();
+			refetchCompanyRecruitment();
 			setClickedData([]);
 			alert('썽공');
 		},
@@ -111,22 +42,104 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 		setTimeout(() => ChangeStatusAPI.mutate());
 	};
 
+	const typeChangeValue = (e: string) => {
+		const companyTypeMap: { [key: string]: string } = {
+			LEAD: '선도기업',
+			PARTICIPATING: '참여기업',
+			CONTRACTING: '협약기업',
+			DEFAULT: '기본',
+		};
+		return companyTypeMap[e] || '';
+	};
+
+	const emptyTableDataArray = Array.from({ length: 11 - (dataLength % 11) }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
+	const tableAllDatas: JSX.Element[][] = companyRecruitment?.companies
+		.map((companie) => {
+			const ClickCheckBox = () => {
+				if (clickedData.includes(companie.company_id)) {
+					setClickedData(clickedData.filter((e) => e !== companie.company_id));
+				} else {
+					setClickedData([...clickedData, companie.company_id]);
+				}
+			};
+
+			// const openPopupPage = (requested: boolean) => {
+			// 	window.open(`/RecruitmentRequestPopup?id=${companie.company_id}`, '_blank', 'companiesizable=no,width=570,height=830,left=50,top=50');
+			// };
+
+			return [
+				<CheckBox checked={clickedData.includes(companie.company_id)} onChange={ClickCheckBox} />,
+				<_.ContentText>{companie.company_name}</_.ContentText>, // 기업명
+				<_.ContentText>{companie.region}</_.ContentText>, // 지역
+				<_.ContentText>{companie.business_area}</_.ContentText>, // 사업분야
+				<_.ContentText>{companie.workers_count}</_.ContentText>, // 근로자수
+				<_.ContentText>{companie.sales}</_.ContentText>, // 매출액
+				<_.ContentText>{typeChangeValue(companie.company_type)}</_.ContentText>, // 기업구분
+				<_.ContentText>{companie.is_mou && 'Y'}</_.ContentText>, // 협약여부
+				<_.ContentText>{companie.personal_contact && 'Y'}</_.ContentText>, // 개인컨택
+				<_.ContentText>{companie.recent_recruit_year}년</_.ContentText>, //최근의뢰년도
+				<_.ContentText>{companie.total_acceptance_count}명</_.ContentText>, // 총 취업 학생수
+				<_.ContentText>{companie.review_count ? companie.review_count + `건` : ''}</_.ContentText>, // 후기등록
+			];
+		})
+		.concat(emptyTableDataArray);
+
+	const tableTitle: JSX.Element[] = [
+		<CheckBox disabled={!(dataLength !== 0)} checked={clickedData.length !== 0 && clickedData.length === dataLength} onChange={CheckAllBox} />,
+		<_.TitleText>기업명</_.TitleText>,
+		<_.TitleText>지역</_.TitleText>,
+		<_.TitleText>사업분야</_.TitleText>,
+		<_.TitleText>근로자수</_.TitleText>,
+		<_.TitleText>
+			매출액
+			<br />
+			(억)
+		</_.TitleText>,
+		<_.TitleText>기업구분</_.TitleText>,
+		<_.TitleText>협약여부</_.TitleText>,
+		<_.TitleText>개인컨택</_.TitleText>,
+		<_.TitleText>
+			최근
+			<br />
+			의뢰년도
+		</_.TitleText>,
+		<_.TitleText>
+			총 취업
+			<br />
+			학생수
+		</_.TitleText>,
+		<_.TitleText>
+			후기
+			<br />
+			등록
+		</_.TitleText>,
+	];
+	const tableWidth: number[] = [4, 15, 6, 9, 6, 8, 9, 9, 9, 9, 8, 8];
+
+	const buttonDisabled = isLoading || clickedData.length === 0;
+    
 	return (
 		<_.Container>
 			<_.BtnWrapper>
 				<Button
 					kind="Ghost"
 					size="S"
-					disabled={isLoading || clickedData.length === 0}
+					disabled={buttonDisabled}
 					onClick={() => {
-						ChangeStatusBtnClick('READY');
+						ChangeStatusBtnClick('PARTICIPATING');
 					}}
 				>
-					접수
+					참여기업 등록
 				</Button>
 				<Button
 					kind="Ghost"
 					size="S"
+					disabled={buttonDisabled}
+					onClick={() => {
+						ChangeStatusBtnClick('LEAD');
+					}}
+				>
+					선도기업 등록
 					disabled={isLoading || clickedData.length === 0}
 					onClick={() => {
 						ChangeStatusBtnClick('RECRUITING');
@@ -137,33 +150,18 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 				<Button
 					kind="Ghost"
 					size="S"
-					disabled={isLoading || clickedData.length === 0}
+					disabled={buttonDisabled}
 					onClick={() => {
-						ChangeStatusBtnClick('DONE');
+						ChangeStatusBtnClick('CONTRACTING');
 					}}
 				>
-					모집종료
+					협약등록
 				</Button>
 			</_.BtnWrapper>
 			<_.TableWrapper>
-				<Table
-					tableData={tableAllDatas}
-					title={[
-						<CheckBox disabled={!(recruitmentForm?.recruitments.length !== 0)} checked={clickedData.length !== 0 && clickedData.length === dataLength} onChange={CheckAllBox} />,
-						<_.TitleText>상태</_.TitleText>,
-						<_.TitleText>기업명</_.TitleText>,
-						<_.TitleText>채용직군</_.TitleText>,
-						<_.TitleText>구분</_.TitleText>,
-						<_.TitleText>모집인원</_.TitleText>,
-						<_.TitleText>지원요청</_.TitleText>,
-						<_.TitleText>지원자</_.TitleText>,
-						<_.TitleText>모집시작일</_.TitleText>,
-						<_.TitleText>모집종료일</_.TitleText>,
-					]}
-					width={[3, 7, 18, 30, 6, 6, 6, 6, 10, 10]}
-				/>
+				<Table tableData={tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
-			<Pagination total={100} limit={10} data={searchRecruitmentFormQueryString} setData={setSearchRecruitmentFormQueryString} refetchRecruitmentForm={refetchRecruitmentForm} />
+			<Pagination total={100} limit={10} data={searchQueryString} setData={setSearchQueryString} refetch={refetchCompanyRecruitment} />
 		</_.Container>
 	);
 }

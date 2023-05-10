@@ -1,84 +1,85 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { dataType } from '../../../../apis/Companies/request';
+import { useGetBusinessCode } from '../../../../Hooks/useGetBusinessCode';
 
-interface PropsType {}
+interface PropsType {
+	searchQueryString: dataType;
+	setSearchQueryString: Dispatch<SetStateAction<dataType>>;
+	refetchCompanyRecruitment: () => void;
+}
 
-export function RecruitmentFormSearch({}: PropsType) {
-	const [data, setData] = useState({
+export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryString, refetchCompanyRecruitment }: PropsType) {
+	const { data: businessCode, refetch: refetchBusinessCode } = useGetBusinessCode();
+	const keywords = businessCode?.codes.map((item) => item.keyword);
+	const whole = ['전체']
+	const allKeywords = keywords ? [...whole, ...keywords] : whole;
+
+	const [data, setData] = useState<dataType>({
+		page: 1,
+		company_type: '',
+		region: '',
 		company_name: '',
-		start: '',
-		end: '',
-		status: '',
+		industry: '',
 	});
-
-	const onInputValeChange = (e: any) => {
-		const { value, name } = e.target;
-		setData({
-			...data,
-			[name]: value,
-		});
-	};
 
 	const defaultData = () => {
 		setData({
+			page: 1,
+			company_type: '',
+			region: '',
 			company_name: '',
-			start: '',
-			end: '',
-			status: '',
+			industry: '',
 		});
 	};
 
-	const statusChangeValue = (e: string) => {
-		switch (e) {
-			case '전체':
-				return setData({
-					...data,
-					status: '',
-				});
-			case '모집전':
-				return setData({
-					...data,
-					status: 'READY',
-				});
-			case '모집중':
-				return setData({
-					...data,
-					status: 'RECRUITING',
-				});
-			case '종료':
-				return setData({
-					...data,
-					status: 'DONE',
-				});
-			case '접수요청':
-				return setData({
-					...data,
-					status: 'REQUESTED',
-				});
-			default:
-				return setData({
-					...data,
-					status: '',
-				});
-		}
+	const changeCompanyType = (e: string) => {
+		const companyTypeMap: { [key: string]: string } = {
+			선도기업: 'LEAD',
+			참여기업: 'PARTICIPATING',
+			협약기업: 'CONTRACTING',
+		};
+		return companyTypeMap[e] || '';
 	};
 
-	// let yearData = [];
-
-	for (let i = 0; i <= 10; i++) {
-		// yearData.push(String(iYear - i));
-	}
-
 	const searching = () => {
-		// setSearchRecruitmentFormQueryString({
-		// 	year: data.year
-		// 	company_name: '',
-		// 	start: data.start,
-		// 	end: data.end,
-		// 	status: data.status,
-		// });
-		setTimeout(() => {});
+		const searchingIndustry = data.industry === '전체' ? '' : data.industry;
+		setSearchQueryString({ ...data, company_type: changeCompanyType(data.company_type), industry: searchingIndustry });
+		setTimeout(refetchCompanyRecruitment);
+	};
+
+	const onCompanyTypeChange = (e: string) => {
+		setData({
+			...data,
+			company_type: e,
+		});
+	};
+
+	const onRegionChange = (e: string) => {
+		setData({
+			...data,
+			region: e,
+		});
+	};
+
+	const onCompanyNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setData({
+			...data,
+			company_name: e.target.value,
+		});
+	};
+
+	const onIndustryChange = (e: string) => {
+		setData({
+			...data,
+			industry: e,
+		});
+	};
+
+	const onResetButtonClick = () => {
+		defaultData();
+		refetchBusinessCode();
 	};
 
 	return (
@@ -86,31 +87,25 @@ export function RecruitmentFormSearch({}: PropsType) {
 			<_.Wrapper>
 				<_.TitleText>기업구분</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown onChange={(e) => {}} width={23} option={[]} />
+					<DropDown onChange={(e) => onCompanyTypeChange(e)} width={30} option={['전체', '선도기업', '참여기업', '협약기업']} value={data.company_type} />
 				</_.ContentWrapper>
 				<_.TitleText>지역</_.TitleText>
-				<_.ContentWrapper width={17} style={{ paddingRight: '15px' }}>
-					<DropDown onChange={(e) => {}} width={23} option={[]} />
+				<_.ContentWrapper width={10}>
+					<DropDown onChange={(e) => onRegionChange(e)} width={90} option={['전체', '서울', '경기', '인천', '충청', '대전', '전라', '경상', '제주/강원']} value={data.region} />
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.Wrapper>
 				<_.TitleText>기업명</_.TitleText>
 				<_.ContentWrapper>
-					<Input width={96} name="company_name" value={data.company_name} onChange={onInputValeChange} placeHolder="검색어 입력" iconName="Search" />
+					<Input width={96} name="company_name" value={data.company_name} onChange={onCompanyNameChange} placeHolder="검색어 입력" iconName="Search" />
 				</_.ContentWrapper>
 				<_.TitleText>사업분야</_.TitleText>
-				<_.ContentWrapper width={17}>
-					<DropDown
-						onChange={(e) => {
-							statusChangeValue(e);
-						}}
-						width={40}
-						option={['전체', '모집전', '모집중', '종료', '접수요청']}
-					/>
+				<_.ContentWrapper width={10}>
+					<DropDown onChange={(e) => onIndustryChange(e)} width={90} option={allKeywords} value={data.industry} />
 				</_.ContentWrapper>
 				<_.Btn>
 					<Button onClick={searching}>조회</Button>
-					<Button kind="Gray" onClick={defaultData}>
+					<Button kind="Gray" onClick={onResetButtonClick}>
 						초기화
 					</Button>
 				</_.Btn>

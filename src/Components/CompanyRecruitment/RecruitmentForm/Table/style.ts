@@ -28,17 +28,18 @@ export const TitleText = styled.div`
 	font-weight: 700;
 	font-size: 20px;
 	display: flex;
+	text-align: center;
 	justify-content: center;
 `;
 
-export const ContentText = styled.div<{ status?: string; click?: number }>`
+export const ContentText = styled.div<{ status?: boolean; click?: number }>`
 	font-weight: 400;
 	font-size: 18px;
 	display: flex;
 	justify-content: center;
-	color: ${({ status }) => (status === 'REQUESTED' ? '#FF0000' : '#000000')};
+	color: ${({ status }) => (status ? '#FF0000' : '#000000')};
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
-	text-underline-offset : 2px;
+	text-underline-offset: 2px;
 	text-decoration-thickness: 2px;
 	cursor: ${({ click }) => (click ? 'pointer' : 'default')};
 `;
