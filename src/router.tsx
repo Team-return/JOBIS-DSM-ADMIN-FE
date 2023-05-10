@@ -1,21 +1,48 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Header from './Components/Header';
-import LoginPage from './Components/Login';
+import { createBrowserRouter } from 'react-router-dom';
+import { RecruitmentFormPage } from './Pages/RecruitmentFormPage';
+import { LoginPage } from './Pages/LoginPage';
+import { ApplicationPopup } from './Pages/ApplicationPopup';
+import { RecruitmentRequestPopup } from './Pages/RecruitmentRequestPopup';
+import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage';
 
-function MainRouter() {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<LoginPage />}></Route>
-				<Route path="/RecruitmentRequest" element={<Header />}></Route>
-				<Route path="/RequestForm" element={<Header />}></Route>
-				<Route path="/Student" element={<Header />}></Route>
-				<Route path="/JobApplication" element={<Header />}></Route>
-				{/*404page*/}
-				<Route path="*" element="" />
-			</Routes>
-		</BrowserRouter>
-	);
-}
+const Router = createBrowserRouter([
+	{
+		path: '',
+		children: [
+			{
+				path: '/',
+				element: <RecruitmentFormPage />,
+			},
+			{
+				path: 'login',
+				element: <LoginPage />,
+			},
+			{
+				path: 'RecruitmentRequest',
+				element: <RecruitmentFormPage />,
+			},
+			{
+				path: 'RequestForm',
+				element: <CompanyRecruitmentPage/>,
+			},
+			{
+				path: 'Student',
+				element: <></>,
+			},
+			{
+				path: 'JobApplication',
+				element: <></>,
+			},
+			{
+				path: 'ApplicationPopup',
+				element: <ApplicationPopup />,
+			},
+			{
+				path: 'RecruitmentRequestPopup',
+				element: <RecruitmentRequestPopup />,
+			},
+		],
+	},
+]);
 
-export default MainRouter;
+export default Router;
