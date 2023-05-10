@@ -2,9 +2,9 @@ import { Button, CheckBox, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../../Utils/Pagination';
-import { useChangeCompanyStatus } from '../../../../apis/Companies';
-import { dataType } from '../../../../apis/Companies/request';
-import { CompanyRecruitmentResponse } from '../../../../apis/Companies/response';
+import { useChangeCompanyStatus } from '../../../../Apis/Companies';
+import { dataType } from '../../../../Apis/Companies/request';
+import { CompanyRecruitmentResponse } from '../../../../Apis/Companies/response';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;

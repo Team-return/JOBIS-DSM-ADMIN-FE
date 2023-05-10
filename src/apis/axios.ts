@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Cookies } from 'react-cookie';
-import { reIssueToken } from './Auth';
+import { reIssueToken } from './Auths';
 
 export const instance = axios.create({
 	baseURL: process.env.REACT_APP_BASE_URL,

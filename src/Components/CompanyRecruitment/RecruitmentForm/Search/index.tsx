@@ -1,7 +1,7 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
-import { dataType } from '../../../../apis/Companies/request';
+import { dataType } from '../../../../Apis/Companies/request';
 import { useGetBusinessCode } from '../../../../Hooks/useGetBusinessCode';
 
 interface PropsType {
@@ -13,7 +13,7 @@ interface PropsType {
 export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryString, refetchCompanyRecruitment }: PropsType) {
 	const { data: businessCode, refetch: refetchBusinessCode } = useGetBusinessCode();
 	const keywords = businessCode?.codes.map((item) => item.keyword);
-	const whole = ['전체']
+	const whole = ['전체'];
 	const allKeywords = keywords ? [...whole, ...keywords] : whole;
 
 	const [data, setData] = useState<dataType>({

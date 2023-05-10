@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as _ from './style';
-import { ApplicantInfoQueryStringType } from '../../apis/Applications/request';
+import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
 import { useGetApplicantInfo } from '../../Hooks/useGetApplicantInfo';
 import { StudentTable } from '../../Components/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../Components/RecruitmentPopup/DownloadTable';

@@ -2,7 +2,7 @@ import { useState, useCallback, ChangeEvent } from 'react';
 import { Cookies } from 'react-cookie';
 import { Input } from '@team-return/design-system';
 import * as _ from './style';
-import { Login } from '../../apis/Login';
+import { Login } from '../../Apis/Logins';
 
 export function LoginCompo() {
 	const cookie = new Cookies();
@@ -12,7 +12,7 @@ export function LoginCompo() {
 		account_id: cookie.get('account_id') || '',
 		password: '',
 	});
-	
+
 	const { account_id, password } = loginForm;
 
 	const { mutate: handleLogin } = Login(loginForm, checkBoxValue);
