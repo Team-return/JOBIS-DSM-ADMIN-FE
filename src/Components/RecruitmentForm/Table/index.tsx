@@ -1,10 +1,10 @@
 import { Button, CheckBox, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { RecruitmentFormResponse } from '../../../apis/Recruitments/response';
+import { RecruitmentFormResponse } from '../../../Apis/Recruitments/response';
 import { Pagination } from '../../../Utils/Pagination';
-import { RecruitmentFormQueryStringType } from '../../../apis/Recruitments/request';
-import { useChangeRecruitmentsStatus } from '../../../apis/Recruitments/index';
+import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
+import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;

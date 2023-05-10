@@ -1,9 +1,8 @@
 import { useState, useCallback, ChangeEvent } from 'react';
 import { Cookies } from 'react-cookie';
 import { Input } from '@team-return/design-system';
-import { Login } from '../../apis/Login';
 import * as _ from './style';
-// import { Container, Wrapper, TitleWrapper, TitleText, TitleLine, InputWrapper, ContentText, CheckEmailWrapper, CheckBox, CheckLogin, LoginBtn } from './LoginCompo.styles';
+import { Login } from '../../Apis/Login';
 
 export function LoginCompo() {
 	const cookie = new Cookies();
@@ -16,6 +15,8 @@ export function LoginCompo() {
 
 	const { account_id, password } = loginForm;
 
+	const { mutate: handleLogin } = Login(loginForm, checkBoxValue);
+
 	const handleInputValueChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
 		const { value, name } = e.target;
 		setLoginForm((prev) => ({
@@ -27,8 +28,6 @@ export function LoginCompo() {
 	const handleClickEye = useCallback(() => {
 		setInputTypeCheck((prev) => !prev);
 	}, []);
-
-	const {mutate: handleLogin} = Login(loginForm, checkBoxValue);
 
 	return (
 		<_.Container>

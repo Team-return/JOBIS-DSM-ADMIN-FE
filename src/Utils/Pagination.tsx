@@ -13,49 +13,24 @@ export function Pagination({ total, limit, data, setData, refetch }: PropsType) 
 	const numPages = Math.ceil(total / limit);
 
 	const changePageNumber = (num: number) => {
-		setData({
-			...data,
-			page: num,
-		});
+		setData((prevData: any) => ({ ...prevData, page: num }));
 		setTimeout(refetch);
 	};
 
 	return (
-		<>
-			<Nav>
-				<Button
-					onClick={() => {
-						changePageNumber(data?.page - 1);
-					}}
-					disabled={data?.page === 1}
-				>
-					&lt;
-				</Button>
-				{Array(numPages)
-					.fill(numPages)
-					.map((_, i) => {
-						return (
-							<Text
-								key={i + 1}
-								onClick={() => {
-									changePageNumber(i + 1);
-								}}
-								focus={data?.page === i + 1}
-							>
-								{i + 1}
-							</Text>
-						);
-					})}
-				<Button
-					onClick={() => {
-						changePageNumber(data?.page + 1);
-					}}
-					disabled={data?.page === numPages}
-				>
-					&gt;
-				</Button>
-			</Nav>
-		</>
+		<Nav>
+			<Button onClick={() => changePageNumber(data.page - 1)} disabled={data.page === 1}>
+				&lt;
+			</Button>
+			{Array.from({ length: numPages }, (_, i) => (
+				<Text key={i + 1} onClick={() => changePageNumber(i + 1)} focus={data.page === i + 1}>
+					{i + 1}
+				</Text>
+			))}
+			<Button onClick={() => changePageNumber(data.page + 1)} disabled={data.page === numPages}>
+				&gt;
+			</Button>
+		</Nav>
 	);
 }
 

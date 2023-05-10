@@ -1,15 +1,16 @@
 import { Button, Table } from '@team-return/design-system';
 import FileDown from '../../../Assets/SVG/FileDown.svg';
 import * as _ from './style';
-import { useDownloadData } from '../../../apis/FileDownload';
+import { useDownloadData } from '../../../Apis/FileDownload';
 import { useState } from 'react';
-import { DownloadDataPropsType } from '../../../apis/FileDownload/request';
+import { DownloadDataPropsType } from '../../../Apis/FileDownload/request';
 
 interface PropsType {
 	applicationAttachmentUrl: string[];
+	setApplicationAttachmentUrl: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
+export function DownloadTable({ applicationAttachmentUrl, setApplicationAttachmentUrl }: PropsType) {
 	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
 		fileUrl: '',
 		fileName: '',

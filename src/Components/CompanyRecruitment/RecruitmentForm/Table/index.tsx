@@ -2,9 +2,9 @@ import { Button, CheckBox, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../../Utils/Pagination';
-import { useChangeCompanyStatus } from '../../../../apis/Companies';
-import { dataType } from '../../../../apis/Companies/request';
-import { CompanyRecruitmentResponse } from '../../../../apis/Companies/response';
+import { useChangeCompanyStatus } from '../../../../Apis/Companies';
+import { dataType } from '../../../../Apis/Companies/request';
+import { CompanyRecruitmentResponse } from '../../../../Apis/Companies/response';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
@@ -26,7 +26,7 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 			setClickedData(AllSelectFormId);
 		}
 	};
-  
+
 	const ChangeStatusAPI = useChangeCompanyStatus(changeStatus, clickedData, {
 		onSuccess: () => {
 			refetchCompanyRecruitment();
@@ -117,7 +117,7 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 	const tableWidth: number[] = [4, 15, 6, 9, 6, 8, 9, 9, 9, 9, 8, 8];
 
 	const buttonDisabled = isLoading || clickedData.length === 0;
-    
+
 	return (
 		<_.Container>
 			<_.BtnWrapper>
@@ -140,19 +140,13 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 					}}
 				>
 					선도기업 등록
-					disabled={isLoading || clickedData.length === 0}
-					onClick={() => {
-						ChangeStatusBtnClick('RECRUITING');
-					}}
-				>
-					모집중
 				</Button>
 				<Button
 					kind="Ghost"
 					size="S"
 					disabled={buttonDisabled}
 					onClick={() => {
-						ChangeStatusBtnClick('CONTRACTING');
+						ChangeStatusBtnClick('RECRUITING');
 					}}
 				>
 					협약등록

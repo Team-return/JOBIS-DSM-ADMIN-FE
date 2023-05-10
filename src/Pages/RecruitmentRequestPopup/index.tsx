@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as _ from './style';
-import { ApplicantInfoQueryStringType } from '../../apis/Applications/request';
+import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
 import { useGetApplicantInfo } from '../../Hooks/useGetApplicantInfo';
 import { StudentTable } from '../../Components/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../Components/RecruitmentPopup/DownloadTable';
@@ -20,7 +20,7 @@ export function RecruitmentRequestPopup() {
 	return (
 		<>
 			<StudentTable application={application!} isRequest={true} refetchApplication={refetchApplication} setApplicationAttachmentUrl={setApplicationAttachmentUrl} />
-			<DownloadTable applicationAttachmentUrl={applicationAttachmentUrl!} />
+			<DownloadTable applicationAttachmentUrl={applicationAttachmentUrl!} setApplicationAttachmentUrl={setApplicationAttachmentUrl} />
 			<_.BtnWrapper>
 				<Button onClick={() => window.close()}>닫기</Button>
 			</_.BtnWrapper>
