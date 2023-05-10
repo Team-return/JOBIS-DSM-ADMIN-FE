@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
-import { getAllRecruitmentForm } from '../Apis/Recruitments';
-import { RecruitmentFormQueryStringType } from '../Apis/Recruitments/request';
+import { getAllRecruitmentForm } from '../Apiss/Recruitments';
+import { RecruitmentFormQueryStringType } from '../Apiss/Recruitments/request';
 
 export const useRecruitmentForm = (searchRecruitmentFormQueryString: RecruitmentFormQueryStringType) =>
 	useQuery(['getAllRecruitmentForm'], () => getAllRecruitmentForm(searchRecruitmentFormQueryString), {

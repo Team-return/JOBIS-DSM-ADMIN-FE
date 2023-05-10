@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRecruitmentForm } from '../../Hooks/useRecruitments';
 import * as _ from './style';
-import { RecruitmentFormQueryStringType } from '../../Apis/Recruitments/request';
+import { RecruitmentFormQueryStringType } from '../../Apiss/Recruitments/request';
 import { Header } from '../../Components/Header';
 import { RecruitmentFormSearch } from '../../Components/RecruitmentForm/Search';
 import { RecruitmentFormTable } from '../../Components/RecruitmentForm/Table';

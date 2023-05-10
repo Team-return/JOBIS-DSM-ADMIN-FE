@@ -1,9 +1,9 @@
 import { Button, Table } from '@team-return/design-system';
 import FileDown from '../../../Assets/SVG/FileDown.svg';
 import * as _ from './style';
-import { useDownloadData } from '../../../Apis/FileDownload';
+import { useDownloadData } from '../../../Apiss/FileDownload';
 import { useState } from 'react';
-import { DownloadDataPropsType } from '../../../Apis/FileDownload/request';
+import { DownloadDataPropsType } from '../../../Apiss/FileDownload/request';
 
 interface PropsType {
 	applicationAttachmentUrl: string[];

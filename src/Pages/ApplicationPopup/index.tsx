@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGetApplicantInfo } from '../../Hooks/useGetApplicantInfo';
-import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
+import { ApplicantInfoQueryStringType } from '../../Apiss/Applications/request';
 import { StudentTable } from '../../Components/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../Components/RecruitmentPopup/DownloadTable';
 import { Button } from '@team-return/design-system';
