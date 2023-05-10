@@ -1,8 +1,8 @@
 import { Button, RadioButton, Table } from '@team-return/design-system';
 import * as _ from './style';
-import { ApplicationResponse } from '../../../Apiss/Applications/response';
+import { ApplicationResponse } from '../../../Apis/Applications/response';
 import { useState } from 'react';
-import { useChangeRequestStatus } from '../../../Apiss/Applications';
+import { useChangeRequestStatus } from '../../../Apis/Applications';
 
 interface PropsType {
 	application: ApplicationResponse;

@@ -1,7 +1,7 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
-import { dataType } from '../../../../Apiss/Companies/request';
+import { dataType } from '../../../../Apis/Companies/request';
 import { useGetBusinessCode } from '../../../../Hooks/useGetBusinessCode';
 
 interface PropsType {

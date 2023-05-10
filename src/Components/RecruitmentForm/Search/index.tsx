@@ -1,6 +1,6 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { RecruitmentFormQueryStringType, StatusType } from '../../../Apiss/Recruitments/request';
+import { RecruitmentFormQueryStringType, StatusType } from '../../../Apis/Recruitments/request';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 interface PropsType {
