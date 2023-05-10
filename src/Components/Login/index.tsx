@@ -2,7 +2,7 @@ import { useState, useCallback, ChangeEvent } from 'react';
 import { Cookies } from 'react-cookie';
 import { Input } from '@team-return/design-system';
 import * as _ from './style';
-import { Login } from '../../Apis/Logins';
+import { Login } from '../../Apis/Login';
 
 export function LoginCompo() {
 	const cookie = new Cookies();
