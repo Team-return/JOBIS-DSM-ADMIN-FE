@@ -1,8 +1,8 @@
 import { useMutation } from 'react-query';
 import { instance } from '../axios';
-import { LoginDataType } from './request';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { LoginDataType } from './request';
 
 const router = '/users';
 

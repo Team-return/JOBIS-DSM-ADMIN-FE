@@ -5,11 +5,9 @@ import { GlobalStyle } from './Styles/Global/gloablStyle.style';
 
 export function App() {
 	return (
-		<>
-			<StyledProvider>
-				<RouterProvider router={Router} />
-				<GlobalStyle />
-			</StyledProvider>
-		</>
+		<StyledProvider>
+			<RouterProvider router={Router} />
+			<GlobalStyle />
+		</StyledProvider>
 	);
 }

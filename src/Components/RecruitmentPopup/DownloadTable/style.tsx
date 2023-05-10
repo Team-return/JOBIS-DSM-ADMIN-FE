@@ -13,6 +13,7 @@ export const Container = styled.div`
 export const TableWrapper = styled.div`
 	width: 93.5%;
 	display: flex;
+	flex-direction: column;
 	justify-content: flex-end;
 	overflow: scroll;
 `;

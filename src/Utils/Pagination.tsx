@@ -1,16 +1,15 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { RecruitmentFormQueryStringType } from '../apis/Recruitments/request';
 
 interface PropsType {
 	total: number;
 	limit: number;
-	data: RecruitmentFormQueryStringType;
-	setData: Dispatch<SetStateAction<RecruitmentFormQueryStringType>>;
-	refetchRecruitmentForm: () => void;
+	data: any;
+	setData: Dispatch<SetStateAction<any>>;
+	refetch: () => void;
 }
 
-export function Pagination({ total, limit, data, setData, refetchRecruitmentForm }: PropsType) {
+export function Pagination({ total, limit, data, setData, refetch }: PropsType) {
 	const numPages = Math.ceil(total / limit);
 
 	const changePageNumber = (num: number) => {
@@ -18,7 +17,7 @@ export function Pagination({ total, limit, data, setData, refetchRecruitmentForm
 			...data,
 			page: num,
 		});
-		setTimeout(refetchRecruitmentForm);
+		setTimeout(refetch);
 	};
 
 	return (

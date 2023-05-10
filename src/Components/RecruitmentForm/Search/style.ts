@@ -50,7 +50,7 @@ export const DateInput = styled.input`
 	}
 `;
 
-export const Btn = styled.div`
+export const ButtonWrapper = styled.div`
 	display: flex;
 	gap: 20px;
 	margin-top: 20px;

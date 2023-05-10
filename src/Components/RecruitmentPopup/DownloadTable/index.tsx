@@ -14,6 +14,7 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 		fileUrl: '',
 		fileName: '',
 	});
+
 	const { mutate: downloadStudentForm } = useDownloadData(downloadUrl);
 
 	const fileDownloadAPI = (url: string, name: string) => {
@@ -24,23 +25,25 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 		setTimeout(downloadStudentForm);
 	};
 
-	let tableAllDatas: JSX.Element[][] | undefined = applicationAttachmentUrl?.map((res, i) => {
-		const nameArray = decodeURI(res).split('/');
-		return [
-			<_.ContentText>{i + 1}</_.ContentText>, // 상태
-			<_.TextWrapper>
-				<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>{nameArray[nameArray.length - 1]}</_.ContentText>
-				<Button size="S" onClick={() => fileDownloadAPI(res, nameArray[nameArray.length - 1])}>
-					<img width={16} src={FileDown} alt="파일 다운로드" />
-					다운
-				</Button>
-			</_.TextWrapper>, // 채용 직군
-		];
-	});
+	const emptyTableDataArray = Array.from({ length: 5 - (applicationAttachmentUrl?.length || 0) }, () => [<></>, <></>]);
+	const tableAllDatas: JSX.Element[][] = applicationAttachmentUrl
+		?.map((url, i) => {
+			const nameArray = decodeURI(url).split('/');
+			return [
+				<_.ContentText>{i + 1}</_.ContentText>, // 상태
+				<_.TextWrapper>
+					<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>{nameArray[nameArray.length - 1]}</_.ContentText>
+					<Button size="S" onClick={() => fileDownloadAPI(url, nameArray[nameArray.length - 1])}>
+						<img width={16} src={FileDown} alt="파일 다운로드" />
+						다운
+					</Button>
+				</_.TextWrapper>, // 채용 직군
+			];
+		})
+		.concat(emptyTableDataArray);
 
-	for (let i = 0; i < 5 - applicationAttachmentUrl?.length; i++) {
-		tableAllDatas?.push([<></>, <></>]);
-	}
+	const tableTitle: JSX.Element[] = [<_.TitleText>순번</_.TitleText>, <_.TitleText>첨부파일</_.TitleText>];
+	const tableWidth: number[] = [10, 90];
 
 	return (
 		<_.Container>
@@ -48,7 +51,7 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 				<_.TitleText>첨부파일</_.TitleText>
 			</_.TitleWrapper>
 			<_.TableWrapper>
-				<Table tableData={tableAllDatas} title={[<_.TitleText>순번</_.TitleText>, <_.TitleText>첨부파일</_.TitleText>]} width={[10, 90]} />
+				<Table tableData={tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
 		</_.Container>
 	);

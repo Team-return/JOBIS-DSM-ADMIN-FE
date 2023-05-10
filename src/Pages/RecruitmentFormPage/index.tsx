@@ -22,8 +22,8 @@ export function RecruitmentFormPage() {
 
 	const AllSelectFormId: string[] =
 		recruitmentForm! &&
-		recruitmentForm.recruitments.map((res) => {
-			return res.id;
+		recruitmentForm.recruitments.map((recruitment) => {
+			return recruitment.id;
 		});
 
 	return (

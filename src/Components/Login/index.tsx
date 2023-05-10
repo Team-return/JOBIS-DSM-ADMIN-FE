@@ -1,33 +1,34 @@
-import * as _ from './style';
-import { useState } from 'react';
-import { Input } from '@team-return/design-system';
-import { Login } from '../../apis/login';
+import { useState, useCallback, ChangeEvent } from 'react';
 import { Cookies } from 'react-cookie';
+import { Input } from '@team-return/design-system';
+import { Login } from '../../apis/Login';
+import * as _ from './style';
+// import { Container, Wrapper, TitleWrapper, TitleText, TitleLine, InputWrapper, ContentText, CheckEmailWrapper, CheckBox, CheckLogin, LoginBtn } from './LoginCompo.styles';
 
 export function LoginCompo() {
 	const cookie = new Cookies();
-	const [inputTypeCheck, setInputTypeCheck] = useState<boolean>(true);
-	const [checkBoxValue, setCheckBoxValue] = useState<boolean>(false);
-	const [inputs, setInputs] = useState({
-		account_id: cookie.get('account_id'),
+	const [inputTypeCheck, setInputTypeCheck] = useState(true);
+	const [checkBoxValue, setCheckBoxValue] = useState(false);
+	const [loginForm, setLoginForm] = useState({
+		account_id: cookie.get('account_id') || '',
 		password: '',
 	});
 
-	const { account_id, password } = inputs;
+	const { account_id, password } = loginForm;
 
-	const InputValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputValueChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
 		const { value, name } = e.target;
-		setInputs({
-			...inputs,
+		setLoginForm((prev) => ({
+			...prev,
 			[name]: value,
-		});
-	};
+		}));
+	}, []);
 
-	const ClickEye = () => {
-		setInputTypeCheck(!inputTypeCheck);
-	};
+	const handleClickEye = useCallback(() => {
+		setInputTypeCheck((prev) => !prev);
+	}, []);
 
-	const LoginAPI = Login(inputs, checkBoxValue);
+	const {mutate: handleLogin} = Login(loginForm, checkBoxValue);
 
 	return (
 		<_.Container>
@@ -39,16 +40,25 @@ export function LoginCompo() {
 					</_.TitleWrapper>
 					<_.InputWrapper>
 						<_.ContentText>아이디</_.ContentText>
-						<Input onChange={InputValueChange} width={100} name="account_id" error={false} value={account_id} kind="LineInput" placeHolder="이메일을 입력해주세요." disabled={false} />
+						<Input
+							onChange={handleInputValueChange}
+							width={100}
+							name="account_id"
+							error={false}
+							value={account_id}
+							kind="LineInput"
+							placeHolder="이메일을 입력해주세요."
+							disabled={false}
+						/>
 					</_.InputWrapper>
 					<_.InputWrapper>
 						<_.ContentText>비밀번호</_.ContentText>
 						<div>
 							<Input
-								onChange={InputValueChange}
+								onChange={handleInputValueChange}
 								type={inputTypeCheck ? 'password' : 'text'}
 								iconName={inputTypeCheck ? 'EyesClose' : 'EyesOpen'}
-								iconClick={ClickEye}
+								iconClick={handleClickEye}
 								width={100}
 								name="password"
 								error={false}
@@ -60,10 +70,10 @@ export function LoginCompo() {
 						</div>
 					</_.InputWrapper>
 					<_.CheckEmailWrapper>
-						<_.CheckBox type="checkbox" checked={checkBoxValue} onChange={() => setCheckBoxValue(!checkBoxValue)} />
+						<_.CheckBox type="checkbox" checked={checkBoxValue} onChange={() => setCheckBoxValue((prev) => !prev)} />
 						<_.CheckLogin>아이디 저장</_.CheckLogin>
 					</_.CheckEmailWrapper>
-					<_.LoginBtn onClick={() => LoginAPI.mutate()} disabled={!(account_id && password)}>
+					<_.LoginBtn onClick={() => handleLogin()} disabled={!(account_id && password)}>
 						로그인
 					</_.LoginBtn>
 				</div>

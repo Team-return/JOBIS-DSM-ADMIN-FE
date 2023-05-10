@@ -1,6 +1,6 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { RecruitmentFormQueryStringType } from '../../../apis/Recruitments/request';
+import { RecruitmentFormQueryStringType, StatusType } from '../../../apis/Recruitments/request';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 interface PropsType {
@@ -13,7 +13,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 	const date = new Date(); // 현재 날짜 및 시간
 	const iYear = date.getFullYear(); // 연도
 
-	const [data, setData] = useState<RecruitmentFormQueryStringType>({
+	const [formData, setFormData] = useState({
 		year: searchRecruitmentFormQueryString.year,
 		company_name: '',
 		start: '',
@@ -22,16 +22,16 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		page: searchRecruitmentFormQueryString.page,
 	});
 
-	const onInputValeChange = (e: any) => {
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value, name } = e.target;
-		setData({
-			...data,
-			[name]: value,
+		setFormData({
+			...formData,
+			[name]: value.trimLeft(),
 		});
 	};
 
-	const defaultData = () => {
-		setData({
+	const handleDefaultData = () => {
+		setFormData({
 			year: searchRecruitmentFormQueryString.year,
 			company_name: '',
 			start: '',
@@ -42,100 +42,56 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 	};
 
 	const statusChangeValue = (e: string) => {
-		switch (e) {
-			case '전체':
-				return setData({
-					...data,
-					status: '',
-				});
-			case '모집전':
-				return setData({
-					...data,
-					status: 'READY',
-				});
-			case '모집중':
-				return setData({
-					...data,
-					status: 'RECRUITING',
-				});
-			case '종료':
-				return setData({
-					...data,
-					status: 'DONE',
-				});
-			case '접수요청':
-				return setData({
-					...data,
-					status: 'REQUESTED',
-				});
-			default:
-				return setData({
-					...data,
-					status: '',
-				});
-		}
+		const companyTypeMap: { [key: string]: StatusType } = {
+			전체: '',
+			모집전: 'READY',
+			모집중: 'RECRUITING',
+			종료: 'DONE',
+			접수요청: 'REQUESTED',
+		};
+		return companyTypeMap[e] || '';
 	};
 
-	let yearData = [];
-
-	for (let i = 0; i <= 10; i++) {
-		yearData.push(String(iYear - i));
-	}
-
-	const searching = () => {
+	const handleSearch = () => {
 		setSearchRecruitmentFormQueryString({
 			...searchRecruitmentFormQueryString,
-			year: data.year,
-			company_name: data.company_name.replace(/^\s*/, ''),
-			start: data.start,
-			end: data.end,
-			status: data.status,
+			...formData,
+			status: statusChangeValue(formData.status),
 		});
 		setTimeout(refetchRecruitmentForm);
 	};
+
+	const yearData = Array.from({ length: 11 }, (_, i) => (iYear - i).toString());
 
 	return (
 		<_.Container>
 			<_.Wrapper>
 				<_.TitleText>모집년도</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown
-						onChange={(e) => {
-							setData({
-								...data,
-								year: e,
-							});
-						}}
-						width={23}
-						option={yearData}
-					/>
+					<DropDown width={23} option={yearData} value={formData.year} onChange={(e) => setFormData({ ...formData, year: e })} />
 				</_.ContentWrapper>
 				<_.TitleText>의뢰일자</_.TitleText>
 				<_.ContentWrapper width={17} style={{ paddingRight: '15px' }}>
-					<_.DateInput max={data.end} name="start" value={data.start} onChange={onInputValeChange} type="date" />
+					<_.DateInput name="start" type="date" value={formData.start} onChange={handleInputChange} max={formData.end} />
 					<div> ~ </div>
-					<_.DateInput min={data.start} name="end" value={data.end} onChange={onInputValeChange} type="date" />
+					<_.DateInput name="end" type="date" value={formData.end} onChange={handleInputChange} min={formData.start} />
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.Wrapper>
 				<_.TitleText>기업명</_.TitleText>
 				<_.ContentWrapper>
-					<Input width={96} name="company_name" value={data.company_name} onChange={onInputValeChange} placeHolder="검색어 입력" iconName="Search" />
+					<Input width={96} name="company_name" value={formData.company_name} onChange={handleInputChange} placeHolder="기업명 입력" />
 				</_.ContentWrapper>
 				<_.TitleText>모집상태</_.TitleText>
 				<_.ContentWrapper width={17}>
-					<DropDown
-						onChange={(e) => {
-							statusChangeValue(e);
-						}}
-						width={40}
-						option={['전체', '모집전', '모집중', '종료', '접수요청']}
-					/>
+					<DropDown width={42} option={['전체', '모집전', '모집중', '종료', '접수요청']} value={formData.status || '전체'} onChange={(e) => setFormData({ ...formData, status: e })} />
 				</_.ContentWrapper>
-				<_.Btn>
-					<Button onClick={searching}>조회</Button>
-					<Button kind='Gray' onClick={defaultData}>초기화</Button>
-				</_.Btn>
+				<_.ButtonWrapper>
+					<Button onClick={handleSearch}>조회</Button>
+					<Button kind="Gray" onClick={handleDefaultData} margin={[0, 10, 0, 0]}>
+						초기화
+					</Button>
+				</_.ButtonWrapper>
 			</_.Wrapper>
 		</_.Container>
 	);

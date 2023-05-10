@@ -14,6 +14,7 @@ export const TableWrapper = styled.div<{isRequest: boolean}>`
 	width: 93.5%;
 	height: ${({isRequest}) => isRequest ? '320px' : '365px'};
 	display: flex;
+	flex-direction: column;
 	justify-content: flex-end;
 	overflow: scroll;
 `;

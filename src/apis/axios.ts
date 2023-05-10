@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Cookies } from 'react-cookie';
-import { reIssueToken } from './auth';
+import { reIssueToken } from './Auth';
 
 const cookie = new Cookies();
 
