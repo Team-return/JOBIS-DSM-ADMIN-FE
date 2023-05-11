@@ -12,9 +12,17 @@ interface PropsType {
 	AllSelectFormId: string[];
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
 	setSearchRecruitmentFormQueryString: Dispatch<SetStateAction<RecruitmentFormQueryStringType>>;
+	recruitmentFormIsLoading: boolean;
 }
 
-export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, AllSelectFormId, searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString }: PropsType) {
+export function RecruitmentFormTable({
+	recruitmentForm,
+	refetchRecruitmentForm,
+	AllSelectFormId,
+	searchRecruitmentFormQueryString,
+	setSearchRecruitmentFormQueryString,
+	recruitmentFormIsLoading,
+}: PropsType) {
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
@@ -28,24 +36,24 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 	});
 	const { isLoading } = changeStatusAPI;
 
-	const statusChangeValue = (e: string) => {
+	const statusChangeValue = (status: string) => {
 		const companyStatusMap: { [key: string]: string } = {
 			READY: '모집전',
 			RECRUITING: '모집중',
 			DONE: '종료',
 			REQUESTED: '접수요청',
 		};
-		return companyStatusMap[e] || '';
+		return companyStatusMap[status] || '';
 	};
 
-	const typeChangeValue = (e: string) => {
+	const typeChangeValue = (type: string) => {
 		const companyTypeMap: { [key: string]: string } = {
 			LEAD: '선도',
 			PARTICIPATING: '참여',
 			CONTRACTING: '협약',
 			DEFAULT: '기본',
 		};
-		return companyTypeMap[e] || '';
+		return companyTypeMap[type] || '';
 	};
 
 	const checkAllBox = () => {
@@ -61,6 +69,7 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 		setTimeout(() => changeStatusAPI.mutate());
 	};
 
+	const skeletonTableDataArray = Array.from({ length: 11 }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
 	const emptyTableDataArray = Array.from({ length: 11 - (dataLength % 11) }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
 	const tableAllDatas: JSX.Element[][] = recruitmentForm?.recruitments
 		.map((recruitment) => {
@@ -150,7 +159,7 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 				</Button>
 			</_.BtnWrapper>
 			<_.TableWrapper>
-				<Table tableData={tableAllDatas} title={tableTitle} width={tableWidth} />
+				<Table tableData={recruitmentFormIsLoading ? skeletonTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
 			<Pagination total={100} limit={10} data={searchRecruitmentFormQueryString} setData={setSearchRecruitmentFormQueryString} refetch={refetchRecruitmentForm} />
 		</_.Container>

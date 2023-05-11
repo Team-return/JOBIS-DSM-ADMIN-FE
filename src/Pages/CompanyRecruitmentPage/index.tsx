@@ -14,7 +14,7 @@ export function CompanyRecruitmentPage() {
 		company_name: '',
 		industry: '',
 	});
-	const { data: companyRecruitment, refetch: refetchCompanyRecruitment } = useGetCompanyRecruitments(searchQueryString);
+	const { data: companyRecruitment, refetch: refetchCompanyRecruitment, isLoading } = useGetCompanyRecruitments(searchQueryString);
 
 	const AllSelectFormId: number[] =
 		companyRecruitment! &&
@@ -28,6 +28,7 @@ export function CompanyRecruitmentPage() {
 			<_.Wrapper>
 				<CompanyRecruitmentSearch searchQueryString={searchQueryString} setSearchQueryString={setSearchQueryString} refetchCompanyRecruitment={refetchCompanyRecruitment} />
 				<CompanyRecruitmentTable
+					companyRecruitmentIsLoading={isLoading}
 					companyRecruitment={companyRecruitment!}
 					refetchCompanyRecruitment={refetchCompanyRecruitment}
 					AllSelectFormId={AllSelectFormId}

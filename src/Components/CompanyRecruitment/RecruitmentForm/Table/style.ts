@@ -32,7 +32,7 @@ export const TitleText = styled.div`
 	justify-content: center;
 `;
 
-export const ContentText = styled.div<{ status?: boolean; click?: number }>`
+export const ContentText = styled.div<{ status?: boolean; click?: boolean }>`
 	font-weight: 400;
 	font-size: 18px;
 	display: flex;

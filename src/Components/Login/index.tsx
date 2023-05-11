@@ -1,4 +1,4 @@
-import { useState, useCallback, ChangeEvent } from 'react';
+import { useState, useCallback } from 'react';
 import { Cookies } from 'react-cookie';
 import { Input } from '@team-return/design-system';
 import * as _ from './style';
@@ -17,7 +17,7 @@ export function LoginCompo() {
 
 	const { mutate: handleLogin } = Login(loginForm, checkBoxValue);
 
-	const handleInputValueChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+	const handleInputValueChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value, name } = e.target;
 		setLoginForm((prev) => ({
 			...prev,

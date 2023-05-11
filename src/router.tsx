@@ -3,7 +3,7 @@ import { RecruitmentFormPage } from './Pages/RecruitmentFormPage';
 import { LoginPage } from './Pages/LoginPage';
 import { ApplicationPopup } from './Pages/ApplicationPopup';
 import { RecruitmentRequestPopup } from './Pages/RecruitmentRequestPopup';
-import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage';
+import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage'; 
 
 const Router = createBrowserRouter([
 	{

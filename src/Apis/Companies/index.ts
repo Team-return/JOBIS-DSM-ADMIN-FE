@@ -22,3 +22,9 @@ export const useChangeCompanyStatus = (status: string, company_ids: number[], op
 		...options,
 	});
 };
+
+export const useChangeContractCompany = (company_ids: number[], options: MutationOptions) => {
+	return useMutation(async () => instance.patch(`${router}/mou`, { company_ids }), {
+		...options,
+	});
+};

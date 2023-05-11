@@ -1,6 +1,6 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { dataType } from '../../../../Apis/Companies/request';
 import { useGetBusinessCode } from '../../../../Hooks/useGetBusinessCode';
 
@@ -34,13 +34,13 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 		});
 	};
 
-	const changeCompanyType = (e: string) => {
+	const changeCompanyType = (type: string) => {
 		const companyTypeMap: { [key: string]: string } = {
 			선도기업: 'LEAD',
 			참여기업: 'PARTICIPATING',
 			협약기업: 'CONTRACTING',
 		};
-		return companyTypeMap[e] || '';
+		return companyTypeMap[type] || '';
 	};
 
 	const searching = () => {
@@ -49,31 +49,31 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 		setTimeout(refetchCompanyRecruitment);
 	};
 
-	const onCompanyTypeChange = (e: string) => {
+	const onCompanyTypeChange = (typeData: string) => {
 		setData({
 			...data,
-			company_type: e,
+			company_type: typeData,
 		});
 	};
 
-	const onRegionChange = (e: string) => {
+	const onRegionChange = (regionData: string) => {
 		setData({
 			...data,
-			region: e,
+			region: regionData,
 		});
 	};
 
-	const onCompanyNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onCompanyNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setData({
 			...data,
 			company_name: e.target.value,
 		});
 	};
 
-	const onIndustryChange = (e: string) => {
+	const onIndustryChange = (industryData: string) => {
 		setData({
 			...data,
-			industry: e,
+			industry: industryData,
 		});
 	};
 

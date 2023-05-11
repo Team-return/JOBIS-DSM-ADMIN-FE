@@ -2,7 +2,7 @@ import { Button, CheckBox, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../../Utils/Pagination';
-import { useChangeCompanyStatus } from '../../../../Apis/Companies';
+import { useChangeCompanyStatus, useChangeContractCompany } from '../../../../Apis/Companies';
 import { dataType } from '../../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../../Apis/Companies/response';
 
@@ -12,14 +12,15 @@ interface PropsType {
 	AllSelectFormId: number[];
 	searchQueryString: dataType;
 	setSearchQueryString: Dispatch<SetStateAction<dataType>>;
+	companyRecruitmentIsLoading: boolean;
 }
 
-export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecruitment, AllSelectFormId, searchQueryString, setSearchQueryString }: PropsType) {
+export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecruitment, AllSelectFormId, searchQueryString, setSearchQueryString, companyRecruitmentIsLoading }: PropsType) {
 	const dataLength = companyRecruitment?.companies.length;
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 
-	const CheckAllBox = () => {
+	const checkAllBox = () => {
 		if (clickedData.length === dataLength) {
 			setClickedData([]);
 		} else {
@@ -27,7 +28,16 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 		}
 	};
 
-	const ChangeStatusAPI = useChangeCompanyStatus(changeStatus, clickedData, {
+	const changeStatusAPI = useChangeCompanyStatus(changeStatus, clickedData, {
+		onSuccess: () => {
+			refetchCompanyRecruitment();
+			setClickedData([]);
+			alert('썽공');
+		},
+	});
+	const { isLoading } = changeStatusAPI;
+
+	const changeContractAPI = useChangeContractCompany(clickedData, {
 		onSuccess: () => {
 			refetchCompanyRecruitment();
 			setClickedData([]);
@@ -35,23 +45,22 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 		},
 	});
 
-	const { isLoading } = ChangeStatusAPI;
-
-	const ChangeStatusBtnClick = (statusName: string) => {
+	const changeStatusBtnClick = (statusName: string) => {
 		setChangeStatus(statusName);
-		setTimeout(() => ChangeStatusAPI.mutate());
+		setTimeout(() => changeStatusAPI.mutate());
 	};
 
-	const typeChangeValue = (e: string) => {
+	const typeChangeValue = (type: string) => {
 		const companyTypeMap: { [key: string]: string } = {
 			LEAD: '선도기업',
 			PARTICIPATING: '참여기업',
 			CONTRACTING: '협약기업',
 			DEFAULT: '기본',
 		};
-		return companyTypeMap[e] || '';
+		return companyTypeMap[type] || '';
 	};
 
+	const skeletonTableDataArray = Array.from({ length: 11 }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
 	const emptyTableDataArray = Array.from({ length: 11 - (dataLength % 11) }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
 	const tableAllDatas: JSX.Element[][] = companyRecruitment?.companies
 		.map((companie) => {
@@ -74,18 +83,20 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 				<_.ContentText>{companie.business_area}</_.ContentText>, // 사업분야
 				<_.ContentText>{companie.workers_count}</_.ContentText>, // 근로자수
 				<_.ContentText>{companie.sales}</_.ContentText>, // 매출액
-				<_.ContentText>{typeChangeValue(companie.company_type)}</_.ContentText>, // 기업구분
-				<_.ContentText>{companie.is_mou && 'Y'}</_.ContentText>, // 협약여부
+				<_.ContentText status={companie.company_type === '참여기업'}>{typeChangeValue(companie.company_type)}</_.ContentText>, // 기업구분
+				<_.ContentText>{companie.convention && 'Y'}</_.ContentText>, // 협약여부
 				<_.ContentText>{companie.personal_contact && 'Y'}</_.ContentText>, // 개인컨택
 				<_.ContentText>{companie.recent_recruit_year}년</_.ContentText>, //최근의뢰년도
 				<_.ContentText>{companie.total_acceptance_count}명</_.ContentText>, // 총 취업 학생수
-				<_.ContentText>{companie.review_count ? companie.review_count + `건` : ''}</_.ContentText>, // 후기등록
+				<_.ContentText status={true} click={true}>
+					{companie.review_count ? companie.review_count + `건` : ''}
+				</_.ContentText>, // 후기등록
 			];
 		})
 		.concat(emptyTableDataArray);
 
 	const tableTitle: JSX.Element[] = [
-		<CheckBox disabled={!(dataLength !== 0)} checked={clickedData.length !== 0 && clickedData.length === dataLength} onChange={CheckAllBox} />,
+		<CheckBox disabled={!(dataLength !== 0)} checked={clickedData.length !== 0 && clickedData.length === dataLength} onChange={checkAllBox} />,
 		<_.TitleText>기업명</_.TitleText>,
 		<_.TitleText>지역</_.TitleText>,
 		<_.TitleText>사업분야</_.TitleText>,
@@ -126,7 +137,7 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 					size="S"
 					disabled={buttonDisabled}
 					onClick={() => {
-						ChangeStatusBtnClick('PARTICIPATING');
+						changeStatusBtnClick('PARTICIPATING');
 					}}
 				>
 					참여기업 등록
@@ -136,24 +147,17 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 					size="S"
 					disabled={buttonDisabled}
 					onClick={() => {
-						ChangeStatusBtnClick('LEAD');
+						changeStatusBtnClick('LEAD');
 					}}
 				>
 					선도기업 등록
 				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						ChangeStatusBtnClick('RECRUITING');
-					}}
-				>
+				<Button kind="Ghost" size="S" disabled={buttonDisabled} onClick={changeContractAPI.mutate}>
 					협약등록
 				</Button>
 			</_.BtnWrapper>
 			<_.TableWrapper>
-				<Table tableData={tableAllDatas} title={tableTitle} width={tableWidth} />
+				<Table tableData={companyRecruitmentIsLoading ? skeletonTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
 			<Pagination total={100} limit={10} data={searchQueryString} setData={setSearchQueryString} refetch={refetchCompanyRecruitment} />
 		</_.Container>

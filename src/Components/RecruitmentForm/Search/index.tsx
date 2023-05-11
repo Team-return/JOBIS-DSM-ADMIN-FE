@@ -26,7 +26,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		const { value, name } = e.target;
 		setFormData({
 			...formData,
-			[name]: value.trimLeft(),
+			[name]: value
 		});
 	};
 
@@ -41,7 +41,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		});
 	};
 
-	const statusChangeValue = (e: string) => {
+	const statusChangeValue = (status: string) => {
 		const companyTypeMap: { [key: string]: StatusType } = {
 			전체: '',
 			모집전: 'READY',
@@ -49,7 +49,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 			종료: 'DONE',
 			접수요청: 'REQUESTED',
 		};
-		return companyTypeMap[e] || '';
+		return companyTypeMap[status] || '';
 	};
 
 	const handleSearch = () => {

@@ -18,7 +18,7 @@ export function RecruitmentFormPage() {
 		status: '',
 		page: 1,
 	});
-	const { data: recruitmentForm, refetch: refetchRecruitmentForm } = useRecruitmentForm(searchRecruitmentFormQueryString);
+	const { data: recruitmentForm, refetch: refetchRecruitmentForm, isLoading } = useRecruitmentForm(searchRecruitmentFormQueryString);
 
 	const AllSelectFormId: string[] =
 		recruitmentForm! &&
@@ -41,6 +41,7 @@ export function RecruitmentFormPage() {
 					refetchRecruitmentForm={refetchRecruitmentForm}
 					searchRecruitmentFormQueryString={searchRecruitmentFormQueryString}
 					setSearchRecruitmentFormQueryString={setSearchRecruitmentFormQueryString}
+					recruitmentFormIsLoading={isLoading}
 				/>
 			</_.Wrapper>
 		</>
