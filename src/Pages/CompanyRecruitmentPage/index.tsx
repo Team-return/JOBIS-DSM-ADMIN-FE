@@ -1,6 +1,6 @@
 import * as _ from './style';
-import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/RecruitmentForm/Search';
-import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/RecruitmentForm/Table';
+import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/Search';
+import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/Table';
 import { Header } from '../../Components/Header';
 import { useState } from 'react';
 import { dataType } from '../../Apis/Companies/request';

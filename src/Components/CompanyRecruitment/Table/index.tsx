@@ -1,10 +1,10 @@
 import { Button, CheckBox, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Pagination } from '../../../../Utils/Pagination';
-import { useChangeCompanyStatus, useChangeContractCompany } from '../../../../Apis/Companies';
-import { dataType } from '../../../../Apis/Companies/request';
-import { CompanyRecruitmentResponse } from '../../../../Apis/Companies/response';
+import { Pagination } from '../../../Utils/Pagination';
+import { useChangeCompanyStatus, useChangeContractCompany } from '../../../Apis/Companies';
+import { dataType } from '../../../Apis/Companies/request';
+import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
@@ -66,7 +66,7 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 		.map((companie) => {
 			const ClickCheckBox = () => {
 				if (clickedData.includes(companie.company_id)) {
-					setClickedData(clickedData.filter((e) => e !== companie.company_id));
+					setClickedData(clickedData.filter((clickedDataId) => clickedDataId !== companie.company_id));
 				} else {
 					setClickedData([...clickedData, companie.company_id]);
 				}

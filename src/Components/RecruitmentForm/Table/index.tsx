@@ -76,7 +76,7 @@ export function RecruitmentFormTable({
 			const job = recruitment.recruitment_job.join(' / ').split(',').join(' / ');
 			const clickCheckBox = () => {
 				if (clickedData.includes(recruitment.id)) {
-					setClickedData(clickedData.filter((e) => e !== recruitment.id));
+					setClickedData(clickedData.filter((clickedDataId) => clickedDataId !== recruitment.id));
 				} else {
 					setClickedData([...clickedData, recruitment.id]);
 				}

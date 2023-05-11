@@ -1,8 +1,8 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { dataType } from '../../../../Apis/Companies/request';
-import { useGetBusinessCode } from '../../../../Hooks/useGetBusinessCode';
+import { dataType } from '../../../Apis/Companies/request';
+import { useGetBusinessCode } from '../../../Hooks/useGetBusinessCode';
 
 interface PropsType {
 	searchQueryString: dataType;
@@ -87,11 +87,11 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 			<_.Wrapper>
 				<_.TitleText>기업구분</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown onChange={(e) => onCompanyTypeChange(e)} width={30} option={['전체', '선도기업', '참여기업', '협약기업']} value={data.company_type} />
+					<DropDown onChange={(type) => onCompanyTypeChange(type)} width={30} option={['전체', '선도기업', '참여기업', '협약기업']} value={data.company_type} />
 				</_.ContentWrapper>
 				<_.TitleText>지역</_.TitleText>
 				<_.ContentWrapper width={10}>
-					<DropDown onChange={(e) => onRegionChange(e)} width={90} option={['전체', '서울', '경기', '인천', '충청', '대전', '전라', '경상', '제주/강원']} value={data.region} />
+					<DropDown onChange={(region) => onRegionChange(region)} width={90} option={['전체', '서울', '경기', '인천', '충청', '대전', '전라', '경상', '제주/강원']} value={data.region} />
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.Wrapper>
@@ -101,7 +101,7 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 				</_.ContentWrapper>
 				<_.TitleText>사업분야</_.TitleText>
 				<_.ContentWrapper width={10}>
-					<DropDown onChange={(e) => onIndustryChange(e)} width={90} option={allKeywords} value={data.industry} />
+					<DropDown onChange={(industry) => onIndustryChange(industry)} width={90} option={allKeywords} value={data.industry} />
 				</_.ContentWrapper>
 				<_.Btn>
 					<Button onClick={searching}>조회</Button>

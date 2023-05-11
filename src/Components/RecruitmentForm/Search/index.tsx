@@ -26,7 +26,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		const { value, name } = e.target;
 		setFormData({
 			...formData,
-			[name]: value
+			[name]: value,
 		});
 	};
 
@@ -68,7 +68,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 			<_.Wrapper>
 				<_.TitleText>모집년도</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown width={23} option={yearData} value={formData.year} onChange={(e) => setFormData({ ...formData, year: e })} />
+					<DropDown width={23} option={yearData} value={formData.year} onChange={(yearData) => setFormData({ ...formData, year: yearData })} />
 				</_.ContentWrapper>
 				<_.TitleText>의뢰일자</_.TitleText>
 				<_.ContentWrapper width={17} style={{ paddingRight: '15px' }}>
@@ -84,7 +84,12 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 				</_.ContentWrapper>
 				<_.TitleText>모집상태</_.TitleText>
 				<_.ContentWrapper width={17}>
-					<DropDown width={42} option={['전체', '모집전', '모집중', '종료', '접수요청']} value={formData.status || '전체'} onChange={(e) => setFormData({ ...formData, status: e })} />
+					<DropDown
+						width={42}
+						option={['전체', '모집전', '모집중', '종료', '접수요청']}
+						value={formData.status || '전체'}
+						onChange={(statusData) => setFormData({ ...formData, status: statusData })}
+					/>
 				</_.ContentWrapper>
 				<_.ButtonWrapper>
 					<Button onClick={handleSearch}>조회</Button>
