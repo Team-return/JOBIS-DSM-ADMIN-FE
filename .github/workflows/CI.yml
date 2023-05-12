@@ -37,4 +37,6 @@ jobs:
           npm cache clean --force
 
       - name: Build Packages
-        run: npm run build
+        run: |
+          npm run build --if-present
+          echo "Build completed successfully."
