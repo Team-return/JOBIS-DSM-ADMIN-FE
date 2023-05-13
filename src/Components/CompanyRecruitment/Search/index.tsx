@@ -87,10 +87,10 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 			<_.Wrapper>
 				<_.TitleText>기업구분</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown onChange={(type) => onCompanyTypeChange(type)} width={30} option={['전체', '선도기업', '참여기업', '협약기업']} value={data.company_type} />
+					<DropDown onChange={(type) => onCompanyTypeChange(type)} width={23} option={['전체', '선도기업', '참여기업', '협약기업']} value={data.company_type} />
 				</_.ContentWrapper>
 				<_.TitleText>지역</_.TitleText>
-				<_.ContentWrapper width={10}>
+				<_.ContentWrapper width={8.5}>
 					<DropDown onChange={(region) => onRegionChange(region)} width={90} option={['전체', '서울', '경기', '인천', '충청', '대전', '전라', '경상', '제주/강원']} value={data.region} />
 				</_.ContentWrapper>
 			</_.Wrapper>
@@ -100,7 +100,7 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 					<Input width={96} name="company_name" value={data.company_name} onChange={onCompanyNameChange} placeHolder="검색어 입력" iconName="Search" />
 				</_.ContentWrapper>
 				<_.TitleText>사업분야</_.TitleText>
-				<_.ContentWrapper width={10}>
+				<_.ContentWrapper width={8.5}>
 					<DropDown onChange={(industry) => onIndustryChange(industry)} width={90} option={allKeywords} value={data.industry} />
 				</_.ContentWrapper>
 				<_.Btn>
