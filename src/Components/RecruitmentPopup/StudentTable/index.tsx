@@ -15,7 +15,7 @@ interface PropsType {
 export function StudentTable({ application, refetchApplication, setApplicationAttachmentUrl, isRequest, applicationIsLoading }: PropsType) {
 	const [clickId, setClickId] = useState<number[]>([]);
 	const tableLength = isRequest ? 5 : 6;
-	const skeletonTableDataArray = Array.from({ length: tableLength }, () => [<></>, <></>, <></>, <></>]);
+	const loadingTableDataArray = Array.from({ length: tableLength }, () => [<></>, <></>, <></>, <></>]);
 	const emptyTableData = Array.from({ length: tableLength - application?.applications.length }, () => [<></>, <></>, <></>, <></>]);
 	const tableAllDatas: JSX.Element[][] = application?.applications
 		.map((student) => [
@@ -46,7 +46,7 @@ export function StudentTable({ application, refetchApplication, setApplicationAt
 	return (
 		<_.Container>
 			<_.TableWrapper isRequest={isRequest!}>
-				<Table tableData={applicationIsLoading ? skeletonTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
+				<Table tableData={applicationIsLoading ? loadingTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
 			<_.BtnWrapper>
 				{isRequest && (

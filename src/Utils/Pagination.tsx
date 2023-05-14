@@ -9,6 +9,7 @@ interface PropsType {
 	refetch: () => void;
 }
 
+/** 페이지네이션을 구현한 함수입니다. */
 export function Pagination({ total, limit, data, setData, refetch }: PropsType) {
 	const numPages = Math.ceil(total / limit);
 

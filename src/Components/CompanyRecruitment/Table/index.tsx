@@ -5,6 +5,7 @@ import { Pagination } from '../../../Utils/Pagination';
 import { useChangeCompanyStatus, useChangeContractCompany } from '../../../Apis/Companies';
 import { dataType } from '../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
+import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
@@ -19,6 +20,12 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 	const dataLength = companyRecruitment?.companies.length;
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
+	const companyType = {
+		LEAD: '선도기업',
+		PARTICIPATING: '참여기업',
+		CONTRACTING: '협약기업',
+		DEFAULT: '기본',
+	};
 
 	const checkAllBox = () => {
 		if (clickedData.length === dataLength) {
@@ -50,17 +57,7 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 		setTimeout(() => changeStatusAPI.mutate());
 	};
 
-	const typeChangeValue = (type: string) => {
-		const companyTypeMap: { [key: string]: string } = {
-			LEAD: '선도기업',
-			PARTICIPATING: '참여기업',
-			CONTRACTING: '협약기업',
-			DEFAULT: '기본',
-		};
-		return companyTypeMap[type] || '';
-	};
-
-	const skeletonTableDataArray = Array.from({ length: 11 }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
+	const loadingTableDataArray = Array.from({ length: 11 }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
 	const emptyTableDataArray = Array.from({ length: 11 - (dataLength % 11) }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
 	const tableAllDatas: JSX.Element[][] = companyRecruitment?.companies
 		.map((companie) => {
@@ -83,7 +80,7 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 				<_.ContentText>{companie.business_area}</_.ContentText>, // 사업분야
 				<_.ContentText>{companie.workers_count}</_.ContentText>, // 근로자수
 				<_.ContentText>{companie.sales}</_.ContentText>, // 매출액
-				<_.ContentText status={companie.company_type === '참여기업'}>{typeChangeValue(companie.company_type)}</_.ContentText>, // 기업구분
+				<_.ContentText status={companie.company_type === 'PARTICIPATING'}>{getPropertyValue(companyType, companie.company_type)}</_.ContentText>, // 기업구분
 				<_.ContentText>{companie.convention && 'Y'}</_.ContentText>, // 협약여부
 				<_.ContentText>{companie.personal_contact && 'Y'}</_.ContentText>, // 개인컨택
 				<_.ContentText>{companie.recent_recruit_year}년</_.ContentText>, //최근의뢰년도
@@ -157,7 +154,7 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 				</Button>
 			</_.BtnWrapper>
 			<_.TableWrapper>
-				<Table tableData={companyRecruitmentIsLoading ? skeletonTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
+				<Table tableData={companyRecruitmentIsLoading ? loadingTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
 			<Pagination total={100} limit={10} data={searchQueryString} setData={setSearchQueryString} refetch={refetchCompanyRecruitment} />
 		</_.Container>

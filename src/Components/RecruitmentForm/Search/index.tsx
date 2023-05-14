@@ -1,7 +1,9 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { RecruitmentFormQueryStringType, StatusType } from '../../../Apis/Recruitments/request';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
+import { Dispatch, SetStateAction } from 'react';
+import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
+import { useForm } from '../../../Hooks/useForm';
 
 interface PropsType {
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
@@ -12,8 +14,15 @@ interface PropsType {
 export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString, refetchRecruitmentForm }: PropsType) {
 	const date = new Date(); // 현재 날짜 및 시간
 	const iYear = date.getFullYear(); // 연도
+	const companyStatus = {
+		전체: '',
+		모집전: 'READY',
+		모집중: 'RECRUITING',
+		종료: 'DONE',
+		접수요청: 'REQUESTED',
+	};
 
-	const [formData, setFormData] = useState({
+	const { form: formData, setForm: setFormData, handleChange } = useForm({
 		year: searchRecruitmentFormQueryString.year,
 		company_name: '',
 		start: '',
@@ -21,14 +30,6 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		status: '',
 		page: searchRecruitmentFormQueryString.page,
 	});
-
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { value, name } = e.target;
-		setFormData({
-			...formData,
-			[name]: value,
-		});
-	};
 
 	const handleDefaultData = () => {
 		setFormData({
@@ -41,22 +42,11 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		});
 	};
 
-	const statusChangeValue = (status: string) => {
-		const companyTypeMap: { [key: string]: StatusType } = {
-			전체: '',
-			모집전: 'READY',
-			모집중: 'RECRUITING',
-			종료: 'DONE',
-			접수요청: 'REQUESTED',
-		};
-		return companyTypeMap[status] || '';
-	};
-
 	const handleSearch = () => {
 		setSearchRecruitmentFormQueryString({
 			...searchRecruitmentFormQueryString,
 			...formData,
-			status: statusChangeValue(formData.status),
+			status: getPropertyValue(companyStatus, formData.status),
 		});
 		setTimeout(refetchRecruitmentForm);
 	};
@@ -72,15 +62,15 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 				</_.ContentWrapper>
 				<_.TitleText>의뢰일자</_.TitleText>
 				<_.ContentWrapper width={17} style={{ paddingRight: '15px' }}>
-					<_.DateInput name="start" type="date" value={formData.start} onChange={handleInputChange} max={formData.end} />
+					<_.DateInput name="start" type="date" value={formData.start} onChange={handleChange} max={formData.end} />
 					<div> ~ </div>
-					<_.DateInput name="end" type="date" value={formData.end} onChange={handleInputChange} min={formData.start} />
+					<_.DateInput name="end" type="date" value={formData.end} onChange={handleChange} min={formData.start} />
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.Wrapper>
 				<_.TitleText>기업명</_.TitleText>
 				<_.ContentWrapper>
-					<Input width={96} name="company_name" value={formData.company_name} onChange={handleInputChange} placeHolder="기업명 입력" />
+					<Input width={96} name="company_name" value={formData.company_name} onChange={handleChange} placeHolder="기업명 입력" />
 				</_.ContentWrapper>
 				<_.TitleText>모집상태</_.TitleText>
 				<_.ContentWrapper width={17}>

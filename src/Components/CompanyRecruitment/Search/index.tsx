@@ -1,8 +1,10 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { dataType } from '../../../Apis/Companies/request';
 import { useGetBusinessCode } from '../../../Hooks/useGetBusinessCode';
+import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
+import { useForm } from '../../../Hooks/useForm';
 
 interface PropsType {
 	searchQueryString: dataType;
@@ -15,8 +17,17 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 	const keywords = businessCode?.codes.map((item) => item.keyword);
 	const whole = ['전체'];
 	const allKeywords = keywords ? [...whole, ...keywords] : whole;
+	const companyType = {
+		선도기업: 'LEAD',
+		참여기업: 'PARTICIPATING',
+		협약기업: 'CONTRACTING',
+	};
 
-	const [data, setData] = useState<dataType>({
+	const {
+		form: data,
+		setForm: setData,
+		handleChange,
+	} = useForm<dataType>({
 		page: 1,
 		company_type: '',
 		region: '',
@@ -34,18 +45,9 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 		});
 	};
 
-	const changeCompanyType = (type: string) => {
-		const companyTypeMap: { [key: string]: string } = {
-			선도기업: 'LEAD',
-			참여기업: 'PARTICIPATING',
-			협약기업: 'CONTRACTING',
-		};
-		return companyTypeMap[type] || '';
-	};
-
 	const searching = () => {
 		const searchingIndustry = data.industry === '전체' ? '' : data.industry;
-		setSearchQueryString({ ...data, company_type: changeCompanyType(data.company_type), industry: searchingIndustry });
+		setSearchQueryString({ ...data, company_type: getPropertyValue(companyType, data.company_type), industry: searchingIndustry });
 		setTimeout(refetchCompanyRecruitment);
 	};
 
@@ -60,13 +62,6 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 		setData({
 			...data,
 			region: regionData,
-		});
-	};
-
-	const onCompanyNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setData({
-			...data,
-			company_name: e.target.value,
 		});
 	};
 
@@ -97,7 +92,7 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 			<_.Wrapper>
 				<_.TitleText>기업명</_.TitleText>
 				<_.ContentWrapper>
-					<Input width={96} name="company_name" value={data.company_name} onChange={onCompanyNameChange} placeHolder="검색어 입력" iconName="Search" />
+					<Input width={96} name="company_name" value={data.company_name} onChange={handleChange} placeHolder="검색어 입력" iconName="Search" />
 				</_.ContentWrapper>
 				<_.TitleText>사업분야</_.TitleText>
 				<_.ContentWrapper width={8.5}>
