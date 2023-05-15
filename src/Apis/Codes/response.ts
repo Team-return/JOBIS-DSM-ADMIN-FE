@@ -5,4 +5,5 @@ export interface CodeResponse {
 export interface CodeType {
 	code: number;
 	keyword: string;
+	job_type?: string;
 }
