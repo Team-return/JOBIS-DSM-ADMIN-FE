@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as _ from './style';
 import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
-import { useGetApplicantInfo } from '../../Hooks/useGetApplicantInfo';
+import { useGetApplicantInfo } from '../../Hooks/ApiHooks/useGetApplicantInfo';
 import { StudentTable } from '../../Components/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../Components/RecruitmentPopup/DownloadTable';
 import { Button } from '@team-return/design-system';

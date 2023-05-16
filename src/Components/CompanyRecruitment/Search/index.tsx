@@ -2,7 +2,7 @@ import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction } from 'react';
 import { dataType } from '../../../Apis/Companies/request';
-import { useGetBusinessCode } from '../../../Hooks/useGetBusinessCode';
+import { useGetBusinessCode } from '../../../Hooks/ApiHooks/useGetBusinessCode';
 import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
 import { useForm } from '../../../Hooks/useForm';
 
@@ -20,7 +20,6 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 	const companyType = {
 		선도기업: 'LEAD',
 		참여기업: 'PARTICIPATING',
-		협약기업: 'CONTRACTING',
 	};
 
 	const {
@@ -82,7 +81,7 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 			<_.Wrapper>
 				<_.TitleText>기업구분</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown onChange={(type) => onCompanyTypeChange(type)} width={23} option={['전체', '선도기업', '참여기업', '협약기업']} value={data.company_type} />
+					<DropDown onChange={(type) => onCompanyTypeChange(type)} width={23} option={['전체', '선도기업', '참여기업']} value={data.company_type} />
 				</_.ContentWrapper>
 				<_.TitleText>지역</_.TitleText>
 				<_.ContentWrapper width={8.5}>

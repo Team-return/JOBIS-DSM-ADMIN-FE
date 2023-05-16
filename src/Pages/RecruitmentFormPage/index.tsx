@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRecruitmentForm } from '../../Hooks/useRecruitments';
+import { useRecruitmentForm } from '../../Hooks/ApiHooks/useRecruitments';
 import * as _ from './style';
 import { RecruitmentFormQueryStringType } from '../../Apis/Recruitments/request';
 import { Header } from '../../Components/Header';

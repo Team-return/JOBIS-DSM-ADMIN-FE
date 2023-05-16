@@ -22,7 +22,11 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		접수요청: 'REQUESTED',
 	};
 
-	const { form: formData, setForm: setFormData, handleChange } = useForm({
+	const {
+		form: formData,
+		setForm: setFormData,
+		handleChange,
+	} = useForm({
 		year: searchRecruitmentFormQueryString.year,
 		company_name: '',
 		start: '',
