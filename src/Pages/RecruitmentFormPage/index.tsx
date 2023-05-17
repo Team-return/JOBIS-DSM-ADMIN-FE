@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRecruitmentForm } from '../../Hooks/ApiHooks/useRecruitments';
+import { useGetRecruitmentForm } from '../../Hooks/ApiHooks/useGetRecruitments';
 import * as _ from './style';
 import { RecruitmentFormQueryStringType } from '../../Apis/Recruitments/request';
 import { Header } from '../../Components/Header';
@@ -18,7 +18,7 @@ export function RecruitmentFormPage() {
 		status: '',
 		page: 1,
 	});
-	const { data: recruitmentForm, refetch: refetchRecruitmentForm, isLoading } = useRecruitmentForm(searchRecruitmentFormQueryString);
+	const { data: recruitmentForm, refetch: refetchRecruitmentForm, isLoading } = useGetRecruitmentForm(searchRecruitmentFormQueryString);
 
 	const AllSelectFormId: string[] =
 		recruitmentForm! &&
