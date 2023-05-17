@@ -5,6 +5,7 @@ import { ApplicationPopup } from './Pages/ApplicationPopup';
 import { RecruitmentRequestPopup } from './Pages/RecruitmentRequestPopup';
 import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage';
 import { Cookies } from 'react-cookie';
+import { ReviewSubmissionPopup } from './Pages/ReviewSubmissionPopup';
 
 const cookies = new Cookies();
 
@@ -43,6 +44,10 @@ const Router = createBrowserRouter([
 			{
 				path: 'RecruitmentRequestPopup',
 				element: <RecruitmentRequestPopup />,
+			},
+			{
+				path: 'ReviewSubmissionPopup',
+				element: <ReviewSubmissionPopup />,
 			},
 		],
 	},

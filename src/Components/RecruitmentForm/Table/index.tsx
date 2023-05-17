@@ -6,6 +6,7 @@ import { Pagination } from '../../../Utils/Pagination';
 import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
 import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
 import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
+import { companyTypeEngToKor } from '../../../Utils/Translation';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
@@ -27,12 +28,6 @@ export function RecruitmentFormTable({
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
-	const companyType = {
-		LEAD: '선도',
-		PARTICIPATING: '참여',
-		CONTRACTING: '협약',
-		DEFAULT: '기본',
-	};
 	const companyStatus = {
 		READY: '모집전',
 		RECRUITING: '모집중',
@@ -87,7 +82,7 @@ export function RecruitmentFormTable({
 				<_.ContentText status={recruitment.recruitment_status}>{getPropertyValue(companyStatus, recruitment.recruitment_status)}</_.ContentText>, // 상태
 				<_.ContentText>{recruitment.company_name}</_.ContentText>, // 회사 이름
 				<_.ContentText>{job}</_.ContentText>, // 채용 직군
-				<_.ContentText>{getPropertyValue(companyType, recruitment.company_type)}</_.ContentText>, // 구분
+				<_.ContentText>{getPropertyValue(companyTypeEngToKor, recruitment.company_type)}</_.ContentText>, // 구분
 				<_.ContentText>{recruitment.recruitment_count}명</_.ContentText>, // 모집 인원 수
 				<_.ContentText onClick={() => recruitment.application_requested_count && openApplicationCountPage(true)} click={recruitment.application_requested_count}>
 					{recruitment.application_requested_count}명

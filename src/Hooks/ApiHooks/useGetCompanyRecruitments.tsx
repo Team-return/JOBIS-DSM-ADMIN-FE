@@ -4,7 +4,7 @@ import { getAllCompanyRecruitment } from '../../Apis/Companies';
 
 /** 회사 리스트를 조회하는 api입니다. */
 export function useGetCompanyRecruitments(searchQueryString: dataType) {
-	return useQuery(['getCompanyRecruitments'], () => getAllCompanyRecruitment(searchQueryString), {
+	return useQuery(['getCompanyRecruitments', searchQueryString], () => getAllCompanyRecruitment(searchQueryString), {
 		refetchOnWindowFocus: true,
 	});
 }

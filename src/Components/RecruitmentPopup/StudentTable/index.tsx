@@ -20,6 +20,7 @@ export function StudentTable({ application, refetchApplication, setApplicationAt
 	const tableAllDatas: JSX.Element[][] = application?.applications
 		.map((student) => [
 			<RadioButton
+				name="student"
 				onClick={() => {
 					setClickId([student.application_id]);
 					setApplicationAttachmentUrl(student.application_attachment_url);

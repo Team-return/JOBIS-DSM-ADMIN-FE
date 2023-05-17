@@ -6,6 +6,7 @@ import { useChangeCompanyStatus, useChangeContractCompany } from '../../../Apis/
 import { dataType } from '../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
+import { companyTypeEngToKor } from '../../../Utils/Translation';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
@@ -20,12 +21,6 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 	const dataLength = companyRecruitment?.companies.length;
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
-	const companyType = {
-		LEAD: '선도기업',
-		PARTICIPATING: '참여기업',
-		CONTRACTING: '협약기업',
-		DEFAULT: '기본',
-	};
 
 	const checkAllBox = () => {
 		if (clickedData.length === dataLength) {
@@ -69,9 +64,9 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 				}
 			};
 
-			// const openPopupPage = (requested: boolean) => {
-			// 	window.open(`/RecruitmentRequestPopup?id=${companie.company_id}`, '_blank', 'companiesizable=no,width=570,height=830,left=50,top=50');
-			// };
+			const openPopupPage = () => {
+				window.open(`/ReviewSubmissionPopup?company_id=${companie.company_id}`, '_blank', 'companiesizable=no,width=670,height=830,left=50,top=50');
+			};
 
 			return [
 				<CheckBox checked={clickedData.includes(companie.company_id)} onChange={ClickCheckBox} />,
@@ -80,12 +75,12 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 				<_.ContentText>{companie.business_area}</_.ContentText>, // 사업분야
 				<_.ContentText>{companie.workers_count}</_.ContentText>, // 근로자수
 				<_.ContentText>{companie.sales}</_.ContentText>, // 매출액
-				<_.ContentText status={companie.company_type === 'PARTICIPATING'}>{getPropertyValue(companyType, companie.company_type)}</_.ContentText>, // 기업구분
+				<_.ContentText status={companie.company_type === 'PARTICIPATING'}>{getPropertyValue(companyTypeEngToKor, companie.company_type)}기업</_.ContentText>, // 기업구분
 				<_.ContentText>{companie.convention && 'Y'}</_.ContentText>, // 협약여부
 				<_.ContentText>{companie.personal_contact && 'Y'}</_.ContentText>, // 개인컨택
 				<_.ContentText>{companie.recent_recruit_year}년</_.ContentText>, //최근의뢰년도
 				<_.ContentText>{companie.total_acceptance_count}명</_.ContentText>, // 총 취업 학생수
-				<_.ContentText status={true} click={true}>
+				<_.ContentText status={true} click={true} onClick={openPopupPage}>
 					{companie.review_count ? companie.review_count + `건` : ''}
 				</_.ContentText>, // 후기등록
 			];

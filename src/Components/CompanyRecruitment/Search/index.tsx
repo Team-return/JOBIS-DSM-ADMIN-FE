@@ -5,6 +5,7 @@ import { dataType } from '../../../Apis/Companies/request';
 import { useGetBusinessCode } from '../../../Hooks/ApiHooks/useGetBusinessCode';
 import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
 import { useForm } from '../../../Hooks/useForm';
+import { companyTypeKorToEng } from '../../../Utils/Translation';
 
 interface PropsType {
 	searchQueryString: dataType;
@@ -17,10 +18,6 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 	const keywords = businessCode?.codes.map((item) => item.keyword);
 	const whole = ['전체'];
 	const allKeywords = keywords ? [...whole, ...keywords] : whole;
-	const companyType = {
-		선도기업: 'LEAD',
-		참여기업: 'PARTICIPATING',
-	};
 
 	const {
 		form: data,
@@ -46,29 +43,15 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 
 	const searching = () => {
 		const searchingIndustry = data.industry === '전체' ? '' : data.industry;
-		setSearchQueryString({ ...data, company_type: getPropertyValue(companyType, data.company_type), industry: searchingIndustry });
+		setSearchQueryString({ ...data, company_type: getPropertyValue(companyTypeKorToEng, data.company_type), industry: searchingIndustry });
 		setTimeout(refetchCompanyRecruitment);
 	};
 
-	const onCompanyTypeChange = (typeData: string) => {
-		setData({
-			...data,
-			company_type: typeData,
-		});
-	};
-
-	const onRegionChange = (regionData: string) => {
-		setData({
-			...data,
-			region: regionData,
-		});
-	};
-
-	const onIndustryChange = (industryData: string) => {
-		setData({
-			...data,
-			industry: industryData,
-		});
+	const onDropDownChange = (name: string, value: string) => {
+		setData((datas) => ({
+			...datas,
+			[name]: value,
+		}));
 	};
 
 	const onResetButtonClick = () => {
@@ -81,11 +64,16 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 			<_.Wrapper>
 				<_.TitleText>기업구분</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown onChange={(type) => onCompanyTypeChange(type)} width={23} option={['전체', '선도기업', '참여기업']} value={data.company_type} />
+					<DropDown onChange={(type) => onDropDownChange('company_type', type)} width={23} option={['전체', '선도기업', '참여기업']} value={data.company_type} />
 				</_.ContentWrapper>
 				<_.TitleText>지역</_.TitleText>
 				<_.ContentWrapper width={8.5}>
-					<DropDown onChange={(region) => onRegionChange(region)} width={90} option={['전체', '서울', '경기', '인천', '충청', '대전', '전라', '경상', '제주/강원']} value={data.region} />
+					<DropDown
+						onChange={(region) => onDropDownChange('region', region)}
+						width={90}
+						option={['전체', '서울', '경기', '인천', '충청', '대전', '전라', '경상', '제주/강원']}
+						value={data.region}
+					/>
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.Wrapper>
@@ -95,7 +83,7 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 				</_.ContentWrapper>
 				<_.TitleText>사업분야</_.TitleText>
 				<_.ContentWrapper width={8.5}>
-					<DropDown onChange={(industry) => onIndustryChange(industry)} width={90} option={allKeywords} value={data.industry} />
+					<DropDown onChange={(industry) => onDropDownChange('industry', industry)} width={90} option={allKeywords} value={data.industry} />
 				</_.ContentWrapper>
 				<_.Btn>
 					<Button onClick={searching}>조회</Button>
