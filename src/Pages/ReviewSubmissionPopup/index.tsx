@@ -1,8 +1,7 @@
 import * as _ from './style';
 import { Button } from '@team-return/design-system';
-import { useGetReviewSubmission } from '../../Hooks/ApiHooks/useGetReviewSubmission';
+import { useGetReviewSubmission, useGetReviewSubmissionDetail } from '../../Hooks/ApiHooks/useGetReviewSubmission';
 import { ReviewSubmissionTable } from '../../Components/ReviewSubmissionPopup/Table';
-import { useGetReviewSubmissionDetail } from '../../Hooks/ApiHooks/useGetReviewSubmissionDetail';
 import { useState } from 'react';
 import { ReviewSubmissionContents } from '../../Components/ReviewSubmissionPopup/Contents';
 
