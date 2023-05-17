@@ -1,8 +1,10 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
-import { dataType } from '../../../../Apis/Companies/request';
-import { useGetBusinessCode } from '../../../../Hooks/useGetBusinessCode';
+import { Dispatch, SetStateAction } from 'react';
+import { dataType } from '../../../Apis/Companies/request';
+import { useGetBusinessCode } from '../../../Hooks/ApiHooks/useGetBusinessCode';
+import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
+import { useForm } from '../../../Hooks/useForm';
 
 interface PropsType {
 	searchQueryString: dataType;
@@ -15,8 +17,16 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 	const keywords = businessCode?.codes.map((item) => item.keyword);
 	const whole = ['전체'];
 	const allKeywords = keywords ? [...whole, ...keywords] : whole;
+	const companyType = {
+		선도기업: 'LEAD',
+		참여기업: 'PARTICIPATING',
+	};
 
-	const [data, setData] = useState<dataType>({
+	const {
+		form: data,
+		setForm: setData,
+		handleChange,
+	} = useForm<dataType>({
 		page: 1,
 		company_type: '',
 		region: '',
@@ -34,46 +44,30 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 		});
 	};
 
-	const changeCompanyType = (e: string) => {
-		const companyTypeMap: { [key: string]: string } = {
-			선도기업: 'LEAD',
-			참여기업: 'PARTICIPATING',
-			협약기업: 'CONTRACTING',
-		};
-		return companyTypeMap[e] || '';
-	};
-
 	const searching = () => {
 		const searchingIndustry = data.industry === '전체' ? '' : data.industry;
-		setSearchQueryString({ ...data, company_type: changeCompanyType(data.company_type), industry: searchingIndustry });
+		setSearchQueryString({ ...data, company_type: getPropertyValue(companyType, data.company_type), industry: searchingIndustry });
 		setTimeout(refetchCompanyRecruitment);
 	};
 
-	const onCompanyTypeChange = (e: string) => {
+	const onCompanyTypeChange = (typeData: string) => {
 		setData({
 			...data,
-			company_type: e,
+			company_type: typeData,
 		});
 	};
 
-	const onRegionChange = (e: string) => {
+	const onRegionChange = (regionData: string) => {
 		setData({
 			...data,
-			region: e,
+			region: regionData,
 		});
 	};
 
-	const onCompanyNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onIndustryChange = (industryData: string) => {
 		setData({
 			...data,
-			company_name: e.target.value,
-		});
-	};
-
-	const onIndustryChange = (e: string) => {
-		setData({
-			...data,
-			industry: e,
+			industry: industryData,
 		});
 	};
 
@@ -87,21 +81,21 @@ export function CompanyRecruitmentSearch({ searchQueryString, setSearchQueryStri
 			<_.Wrapper>
 				<_.TitleText>기업구분</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown onChange={(e) => onCompanyTypeChange(e)} width={30} option={['전체', '선도기업', '참여기업', '협약기업']} value={data.company_type} />
+					<DropDown onChange={(type) => onCompanyTypeChange(type)} width={23} option={['전체', '선도기업', '참여기업']} value={data.company_type} />
 				</_.ContentWrapper>
 				<_.TitleText>지역</_.TitleText>
-				<_.ContentWrapper width={10}>
-					<DropDown onChange={(e) => onRegionChange(e)} width={90} option={['전체', '서울', '경기', '인천', '충청', '대전', '전라', '경상', '제주/강원']} value={data.region} />
+				<_.ContentWrapper width={8.5}>
+					<DropDown onChange={(region) => onRegionChange(region)} width={90} option={['전체', '서울', '경기', '인천', '충청', '대전', '전라', '경상', '제주/강원']} value={data.region} />
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.Wrapper>
 				<_.TitleText>기업명</_.TitleText>
 				<_.ContentWrapper>
-					<Input width={96} name="company_name" value={data.company_name} onChange={onCompanyNameChange} placeHolder="검색어 입력" iconName="Search" />
+					<Input width={96} name="company_name" value={data.company_name} onChange={handleChange} placeHolder="검색어 입력" iconName="Search" />
 				</_.ContentWrapper>
 				<_.TitleText>사업분야</_.TitleText>
-				<_.ContentWrapper width={10}>
-					<DropDown onChange={(e) => onIndustryChange(e)} width={90} option={allKeywords} value={data.industry} />
+				<_.ContentWrapper width={8.5}>
+					<DropDown onChange={(industry) => onIndustryChange(industry)} width={90} option={allKeywords} value={data.industry} />
 				</_.ContentWrapper>
 				<_.Btn>
 					<Button onClick={searching}>조회</Button>

@@ -5,8 +5,8 @@ import { Link, useLocation } from 'react-router-dom';
 export function Header() {
 	let location = useLocation();
 
-	const clickedStatus = (e: string) => {
-		return location.pathname.includes(e);
+	const clickedStatus = (path: string) => {
+		return location.pathname.includes(path);
 	};
 
 	return (

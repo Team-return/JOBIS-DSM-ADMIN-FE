@@ -9,7 +9,7 @@ export interface CompanyRecruitmentType {
 	business_area: string;
 	workers_count: number;
 	sales: number;
-	is_mou: boolean;
+	convention: boolean;
 	personal_contact: boolean;
 	company_type: string;
 	recent_recruit_year: number;

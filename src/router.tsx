@@ -4,6 +4,9 @@ import { LoginPage } from './Pages/LoginPage';
 import { ApplicationPopup } from './Pages/ApplicationPopup';
 import { RecruitmentRequestPopup } from './Pages/RecruitmentRequestPopup';
 import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage';
+import { Cookies } from 'react-cookie';
+
+const cookies = new Cookies();
 
 const Router = createBrowserRouter([
 	{
@@ -11,7 +14,7 @@ const Router = createBrowserRouter([
 		children: [
 			{
 				path: '/',
-				element: <RecruitmentFormPage />,
+				element: cookies.get('access_token') ? <RecruitmentFormPage /> : <LoginPage />,
 			},
 			{
 				path: 'login',
@@ -23,7 +26,7 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: 'RequestForm',
-				element: <CompanyRecruitmentPage/>,
+				element: <CompanyRecruitmentPage />,
 			},
 			{
 				path: 'Student',

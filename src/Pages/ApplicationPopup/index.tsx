@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGetApplicantInfo } from '../../Hooks/useGetApplicantInfo';
+import { useGetApplicantInfo } from '../../Hooks/ApiHooks/useGetApplicantInfo';
 import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
 import { StudentTable } from '../../Components/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../Components/RecruitmentPopup/DownloadTable';
@@ -14,13 +14,19 @@ export function ApplicationPopup() {
 		company_id: id ? id : '',
 	});
 
-	const { data: application, refetch: refetchApplication } = useGetApplicantInfo(applicationQueryString);
+	const { data: application, refetch: refetchApplication, isLoading } = useGetApplicantInfo(applicationQueryString);
 
 	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<string[]>([]);
 	return (
 		<>
-			<StudentTable application={application!} isRequest={false} refetchApplication={refetchApplication} setApplicationAttachmentUrl={setApplicationAttachmentUrl} />
-			<DownloadTable applicationAttachmentUrl={applicationAttachmentUrl!} setApplicationAttachmentUrl={setApplicationAttachmentUrl} />
+			<StudentTable
+				application={application!}
+				isRequest={false}
+				refetchApplication={refetchApplication}
+				setApplicationAttachmentUrl={setApplicationAttachmentUrl}
+				applicationIsLoading={isLoading}
+			/>
+			<DownloadTable applicationAttachmentUrl={applicationAttachmentUrl!} />
 			<_.BtnWrapper>
 				<Button onClick={() => window.close()}>닫기</Button>
 			</_.BtnWrapper>

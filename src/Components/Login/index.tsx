@@ -1,14 +1,15 @@
-import { useState, useCallback, ChangeEvent } from 'react';
+import { useState, useCallback } from 'react';
 import { Cookies } from 'react-cookie';
 import { Input } from '@team-return/design-system';
 import * as _ from './style';
 import { Login } from '../../Apis/Login';
+import { useForm } from '../../Hooks/useForm';
 
 export function LoginCompo() {
 	const cookie = new Cookies();
 	const [inputTypeCheck, setInputTypeCheck] = useState(true);
 	const [checkBoxValue, setCheckBoxValue] = useState(false);
-	const [loginForm, setLoginForm] = useState({
+	const { form: loginForm, handleChange } = useForm({
 		account_id: cookie.get('account_id') || '',
 		password: '',
 	});
@@ -16,14 +17,6 @@ export function LoginCompo() {
 	const { account_id, password } = loginForm;
 
 	const { mutate: handleLogin } = Login(loginForm, checkBoxValue);
-
-	const handleInputValueChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-		const { value, name } = e.target;
-		setLoginForm((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	}, []);
 
 	const handleClickEye = useCallback(() => {
 		setInputTypeCheck((prev) => !prev);
@@ -39,22 +32,13 @@ export function LoginCompo() {
 					</_.TitleWrapper>
 					<_.InputWrapper>
 						<_.ContentText>아이디</_.ContentText>
-						<Input
-							onChange={handleInputValueChange}
-							width={100}
-							name="account_id"
-							error={false}
-							value={account_id}
-							kind="LineInput"
-							placeHolder="이메일을 입력해주세요."
-							disabled={false}
-						/>
+						<Input onChange={handleChange} width={100} name="account_id" error={false} value={account_id} kind="LineInput" placeHolder="이메일을 입력해주세요." disabled={false} />
 					</_.InputWrapper>
 					<_.InputWrapper>
 						<_.ContentText>비밀번호</_.ContentText>
 						<div>
 							<Input
-								onChange={handleInputValueChange}
+								onChange={handleChange}
 								type={inputTypeCheck ? 'password' : 'text'}
 								iconName={inputTypeCheck ? 'EyesClose' : 'EyesOpen'}
 								iconClick={handleClickEye}
