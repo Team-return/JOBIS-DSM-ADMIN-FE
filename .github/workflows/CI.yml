@@ -23,20 +23,24 @@ jobs:
         node-version: [16]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install Dependencies
-        run: |
-          npm ci --prefer-offline --no-audit --progress=false
-          npm cache clean --force
+        # 이전의 cache가 없다면 의존성을 설치합니다.
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
 
       - name: Build Packages
         run: npm run build
