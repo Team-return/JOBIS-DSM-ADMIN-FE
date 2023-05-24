@@ -6,6 +6,7 @@ import { RecruitmentRequestPopup } from './Pages/RecruitmentRequestPopup';
 import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage';
 import { Cookies } from 'react-cookie';
 import { ReviewSubmissionPopup } from './Pages/ReviewSubmissionPopup';
+import { ApplicationViewPage } from './Pages/ApplicationViewPage';
 
 const cookies = new Cookies();
 
@@ -35,7 +36,7 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: 'JobApplication',
-				element: <></>,
+				element: <ApplicationViewPage />,
 			},
 			{
 				path: 'ApplicationPopup',

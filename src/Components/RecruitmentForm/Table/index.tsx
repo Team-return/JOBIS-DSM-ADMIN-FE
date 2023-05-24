@@ -58,7 +58,7 @@ export function RecruitmentFormTable({
 	};
 
 	const loadingTableDataArray = Array.from({ length: 11 }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
-	const emptyTableDataArray = Array.from({ length: 11 - (dataLength % 11) }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
+	const emptyTableDataArray = Array.from({ length: 11 - dataLength }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
 	const tableAllDatas: JSX.Element[][] = recruitmentForm?.recruitments
 		.map((recruitment) => {
 			const job = recruitment.recruitment_job.join(' / ').split(',').join(' / ');
@@ -149,7 +149,7 @@ export function RecruitmentFormTable({
 			<_.TableWrapper>
 				<Table tableData={recruitmentFormIsLoading ? loadingTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
-			<Pagination total={100} limit={10} data={searchRecruitmentFormQueryString} setData={setSearchRecruitmentFormQueryString} refetch={refetchRecruitmentForm} />
+			<Pagination page={recruitmentForm?.total_page_count} data={searchRecruitmentFormQueryString} setData={setSearchRecruitmentFormQueryString} refetch={refetchRecruitmentForm} />
 		</_.Container>
 	);
 }

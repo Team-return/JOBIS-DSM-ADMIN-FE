@@ -40,6 +40,9 @@ export const ContentsBox = styled.div`
 	width: 100%;
 	height: 240px;
 	overflow: scroll;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 `;
 
 export const TitleWrapper = styled.div`

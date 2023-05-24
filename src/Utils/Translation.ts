@@ -9,3 +9,11 @@ export const companyTypeKorToEng = {
 	선도기업: 'LEAD',
 	참여기업: 'PARTICIPATING',
 };
+
+export const applicationStatus = {
+	REQUESTED: '승인요청',
+	APPROVED: '승인',
+	FAILED: '불합격',
+	PASS: '합격',
+	REJECTED: '반려',
+};

@@ -1,5 +1,6 @@
 export interface RecruitmentFormResponse {
 	recruitments: RecruitmentFormType[];
+	total_page_count: 1;
 }
 
 export interface RecruitmentFormType {
