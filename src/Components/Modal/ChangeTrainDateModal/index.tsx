@@ -1,22 +1,17 @@
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import * as _ from '../style';
 import { TrainDate } from '../../../Apis/Applications/request';
+import { ChangeEvent } from 'react';
 
 interface PropsType {
 	clickedData: number[];
 	clickStudentName: string[];
-	setTrainDate: Dispatch<SetStateAction<TrainDate>>;
+	trainDateChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	trainDate: TrainDate;
 }
 
-export function ChangeTrainDateModal({ clickedData, clickStudentName, setTrainDate, trainDate }: PropsType) {
+export function ChangeTrainDateModal({ clickedData, clickStudentName, trainDateChange, trainDate }: PropsType) {
 	const date = new Date();
 	const allDate = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
-
-	const onChangeDateValue = (e: ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setTrainDate((dates) => ({ ...dates, [name]: value }));
-	};
 
 	return (
 		<>
@@ -29,11 +24,11 @@ export function ChangeTrainDateModal({ clickedData, clickStudentName, setTrainDa
 			<_.DateInputContainer>
 				<_.DateInputWrapper>
 					<_.DateText>파견일자</_.DateText>
-					<_.DateInput type="date" name="start_date" min={allDate} onChange={onChangeDateValue} />
+					<_.DateInput type="date" name="start_date" min={allDate} onChange={trainDateChange} />
 				</_.DateInputWrapper>
 				<_.DateInputWrapper>
 					<_.DateText>종료일자</_.DateText>
-					<_.DateInput type="date" name="end_date" min={String(trainDate.start_date) ? String(trainDate.start_date) : allDate} onChange={onChangeDateValue} />
+					<_.DateInput type="date" name="end_date" min={String(trainDate.start_date) ? String(trainDate.start_date) : allDate} onChange={trainDateChange} />
 				</_.DateInputWrapper>
 			</_.DateInputContainer>
 		</>

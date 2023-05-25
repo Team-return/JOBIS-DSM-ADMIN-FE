@@ -36,7 +36,7 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 	const [changeStatus, setChangeStatus] = useState<string>('');
 	const [downloadBoxView, setDownloadBoxView] = useState<number>();
 	const [rejectReason, setRejectReason] = useState('');
-	const { form: trainDate, setForm: setTrainDate } = useForm({
+	const { form: trainDate, handleChange: trainDateChange } = useForm({
 		start_date: new Date(),
 		end_date: new Date(),
 	});
@@ -120,7 +120,7 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 
 	const openChangeTrainDateModal = () => {
 		openModal({
-			children: <ChangeTrainDateModal clickedData={clickedData} clickStudentName={clickStudentName} setTrainDate={setTrainDate} trainDate={trainDate} />,
+			children: <ChangeTrainDateModal clickedData={clickedData} clickStudentName={clickStudentName} trainDateChange={trainDateChange} trainDate={trainDate} />,
 			onSubmit: () => {
 				setTimeout(changeTrainDateAPI.mutate);
 			},
