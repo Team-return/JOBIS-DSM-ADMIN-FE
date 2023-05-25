@@ -6,5 +6,6 @@ export const useDidMountEffect = (func: () => void, deps: Array<any>) => {
 	useEffect(() => {
 		if (didMount) func();
 		else setDidMount(true);
-	}, [deps]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, deps);
 };
