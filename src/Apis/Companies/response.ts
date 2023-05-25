@@ -8,7 +8,7 @@ export interface CompanyRecruitmentType {
 	region: string;
 	business_area: string;
 	workers_count: number;
-	sales: number;
+	take: number;
 	convention: boolean;
 	personal_contact: boolean;
 	company_type: string;
