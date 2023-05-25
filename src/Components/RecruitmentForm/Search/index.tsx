@@ -4,6 +4,7 @@ import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/reque
 import { Dispatch, SetStateAction } from 'react';
 import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
 import { useForm } from '../../../Hooks/useForm';
+import { companyStatusEngToKor } from '../../../Utils/Translation';
 
 interface PropsType {
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
@@ -14,13 +15,6 @@ interface PropsType {
 export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString, refetchRecruitmentForm }: PropsType) {
 	const date = new Date(); // 현재 날짜 및 시간
 	const iYear = date.getFullYear(); // 연도
-	const companyStatus = {
-		전체: '',
-		모집전: 'READY',
-		모집중: 'RECRUITING',
-		종료: 'DONE',
-		접수요청: 'REQUESTED',
-	};
 
 	const {
 		form: formData,
@@ -50,7 +44,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		setSearchRecruitmentFormQueryString({
 			...searchRecruitmentFormQueryString,
 			...formData,
-			status: getPropertyValue(companyStatus, formData.status),
+			status: getPropertyValue(companyStatusEngToKor, formData.status),
 		});
 		setTimeout(refetchRecruitmentForm);
 	};

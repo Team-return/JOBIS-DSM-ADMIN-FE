@@ -6,7 +6,7 @@ import { Pagination } from '../../../Utils/Pagination';
 import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
 import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
 import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
-import { companyTypeEngToKor } from '../../../Utils/Translation';
+import { companyStatusEngToKor, companyTypeEngToKor } from '../../../Utils/Translation';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
@@ -28,12 +28,6 @@ export function RecruitmentFormTable({
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
-	const companyStatus = {
-		READY: '모집전',
-		RECRUITING: '모집중',
-		DONE: '종료',
-		REQUESTED: '접수요청',
-	};
 
 	const changeStatusAPI = useChangeRecruitmentsStatus(changeStatus, clickedData, {
 		onSuccess: () => {
@@ -79,7 +73,7 @@ export function RecruitmentFormTable({
 			};
 			return [
 				<CheckBox checked={clickedData.includes(recruitment.id)} onClick={clickCheckBox} onChange={() => {}} />,
-				<_.ContentText status={recruitment.recruitment_status}>{getPropertyValue(companyStatus, recruitment.recruitment_status)}</_.ContentText>, // 상태
+				<_.ContentText status={recruitment.recruitment_status}>{getPropertyValue(companyStatusEngToKor, recruitment.recruitment_status)}</_.ContentText>, // 상태
 				<_.ContentText>{recruitment.company_name}</_.ContentText>, // 회사 이름
 				<_.ContentText>{job}</_.ContentText>, // 채용 직군
 				<_.ContentText>{getPropertyValue(companyTypeEngToKor, recruitment.company_type)}</_.ContentText>, // 구분

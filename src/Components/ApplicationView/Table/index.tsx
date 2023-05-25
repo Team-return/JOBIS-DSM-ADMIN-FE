@@ -12,7 +12,7 @@ import FileDown from '../../../Assets/SVG/FileDown.svg';
 import { useModalContext } from '../../../Utils/Modal';
 import { useChangeRequestStatus, useChangeTrainDate, useRejectApplication } from '../../../Apis/Applications';
 import { useForm } from '../../../Hooks/useForm';
-import { applicationStatusEngToKor } from '../../../Utils/Translation';
+import { applicationStatusEngToKor, applicationStatusTextColor } from '../../../Utils/Translation';
 import { ChangeStatusModal } from '../../Modal/ChangeStatusModal';
 import { RejectApplicationModal } from '../../Modal/RejectApplicationModal';
 import { ChangeTrainDateModal } from '../../Modal/ChangeTrainDateModal';
@@ -44,13 +44,6 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 		fileUrl: '',
 		fileName: '',
 	});
-	const applicationStatusTextColor = {
-		REQUESTED: '#F1C40F',
-		APPROVED: '#2ECC71',
-		FAILED: '#E74C3C',
-		PASS: '#004079',
-		REJECTED: '#F17B0F',
-	};
 
 	const checkAllBox = () => {
 		if (clickedData.length === dataLength) {

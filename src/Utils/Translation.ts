@@ -26,3 +26,26 @@ export const applicationStatusKorToEng = {
 	반려: 'REJECTED',
 	'': '',
 };
+
+export const companyStatusKorToEng = {
+	전체: '',
+	모집전: 'READY',
+	모집중: 'RECRUITING',
+	종료: 'DONE',
+	접수요청: 'REQUESTED',
+};
+
+export const companyStatusEngToKor = {
+	READY: '모집전',
+	RECRUITING: '모집중',
+	DONE: '종료',
+	REQUESTED: '접수요청',
+};
+
+export const applicationStatusTextColor = {
+	REQUESTED: '#F1C40F',
+	APPROVED: '#2ECC71',
+	FAILED: '#E74C3C',
+	PASS: '#004079',
+	REJECTED: '#F17B0F',
+};
