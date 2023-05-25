@@ -159,10 +159,10 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 				<CheckBox checked={clickedData.includes(application.application_id)} onChange={clickCheckBox} />,
 				<_.ContentText color={getPropertyValue(applicationStatusTextColor, application.application_status)}>
 					{getPropertyValue(applicationStatusEngToKor, application.application_status)}
-				</_.ContentText>, // 기업명
-				<_.ContentText>{application.student_gcn}</_.ContentText>, // 지역
-				<_.ContentText>{application.student_name}</_.ContentText>, // 사업분야
-				<_.ContentText>{application.company_name}</_.ContentText>, // 근로자수
+				</_.ContentText>, // 상태
+				<_.ContentText>{application.student_gcn}</_.ContentText>, // 학법
+				<_.ContentText>{application.student_name}</_.ContentText>, // 이름
+				<_.ContentText>{application.company_name}</_.ContentText>, // 기업
 				<_.OpenBoxWrapper>
 					{application.application_attachment_url.length !== 0 ? (
 						<_.UnfoldImgWrapper onClick={application.application_attachment_url && downloadBoxViewId}>
@@ -192,7 +192,7 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 						</_.DownLoadWrapper>
 					)}
 				</_.OpenBoxWrapper>,
-				<_.ContentText>{application.created_at}</_.ContentText>, // 기업구분
+				<_.ContentText>{application.created_at}</_.ContentText>,
 			];
 		})
 		.concat(emptyTableDataArray);
