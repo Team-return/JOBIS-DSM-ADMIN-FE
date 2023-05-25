@@ -55,7 +55,7 @@ export function RecruitmentFormTable({
 	const emptyTableDataArray = Array.from({ length: 11 - dataLength }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
 	const tableAllDatas: JSX.Element[][] = recruitmentForm?.recruitments
 		.map((recruitment) => {
-			const job = recruitment.recruitment_job.join(' / ').split(',').join(' / ');
+			const job = recruitment.recruitment_job.split(',').join(' / ');
 			const clickCheckBox = () => {
 				if (clickedData.includes(recruitment.id)) {
 					setClickedData(clickedData.filter((clickedDataId) => clickedDataId !== recruitment.id));
