@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { useForm } from '../../../Hooks/useForm';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
 import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
+import { applicationStatusKorToEng } from '../../../Utils/Translation';
 
 interface PropsType {
 	setSearchQueryString: Dispatch<SetStateAction<ApplicantInfoQueryStringType>>;
@@ -11,14 +12,6 @@ interface PropsType {
 }
 
 export function ApplicationViewSearch({ setSearchQueryString, refetchCompanyRecruitment }: PropsType) {
-	const applicationStatus = {
-		승인요청: 'REQUESTED',
-		승인됨: 'APPROVED',
-		불합격: 'FAILED',
-		합격: 'PASS',
-		반려: 'REJECTED',
-		'': '',
-	};
 	const {
 		form: data,
 		setForm: setData,
@@ -38,7 +31,7 @@ export function ApplicationViewSearch({ setSearchQueryString, refetchCompanyRecr
 	};
 
 	const searching = () => {
-		setSearchQueryString({ ...data, application_status: getPropertyValue(applicationStatus, data.application_status) });
+		setSearchQueryString({ ...data, application_status: getPropertyValue(applicationStatusKorToEng, data.application_status) });
 		setTimeout(refetchCompanyRecruitment);
 	};
 

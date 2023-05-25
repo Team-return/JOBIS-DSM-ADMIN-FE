@@ -12,7 +12,7 @@ import FileDown from '../../../Assets/SVG/FileDown.svg';
 import { useModalContext } from '../../../Utils/Modal';
 import { useChangeRequestStatus, useChangeTrainDate, useRejectApplication } from '../../../Apis/Applications';
 import { useForm } from '../../../Hooks/useForm';
-import { applicationStatus } from '../../../Utils/Translation';
+import { applicationStatusEngToKor } from '../../../Utils/Translation';
 import { ChangeStatusModal } from '../../Modal/ChangeStatusModal';
 import { RejectApplicationModal } from '../../Modal/RejectApplicationModal';
 import { ChangeTrainDateModal } from '../../Modal/ChangeTrainDateModal';
@@ -165,7 +165,7 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 			return [
 				<CheckBox checked={clickedData.includes(application.application_id)} onChange={clickCheckBox} />,
 				<_.ContentText color={getPropertyValue(applicationStatusTextColor, application.application_status)}>
-					{getPropertyValue(applicationStatus, application.application_status)}
+					{getPropertyValue(applicationStatusEngToKor, application.application_status)}
 				</_.ContentText>, // 기업명
 				<_.ContentText>{application.student_gcn}</_.ContentText>, // 지역
 				<_.ContentText>{application.student_name}</_.ContentText>, // 사업분야

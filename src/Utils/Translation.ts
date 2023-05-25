@@ -10,10 +10,19 @@ export const companyTypeKorToEng = {
 	참여기업: 'PARTICIPATING',
 };
 
-export const applicationStatus = {
+export const applicationStatusEngToKor = {
 	REQUESTED: '승인요청',
 	APPROVED: '승인',
 	FAILED: '불합격',
 	PASS: '합격',
 	REJECTED: '반려',
+};
+
+export const applicationStatusKorToEng = {
+	승인요청: 'REQUESTED',
+	승인됨: 'APPROVED',
+	불합격: 'FAILED',
+	합격: 'PASS',
+	반려: 'REJECTED',
+	'': '',
 };
