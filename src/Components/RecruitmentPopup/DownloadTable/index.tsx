@@ -30,14 +30,14 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 		?.map((url, i) => {
 			const nameArray = decodeURI(url).split('/');
 			return [
-				<_.ContentText>{i + 1}</_.ContentText>, // 상태
+				<_.ContentText>{i + 1}</_.ContentText>,
 				<_.TextWrapper>
 					<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>{nameArray[nameArray.length - 1]}</_.ContentText>
 					<Button size="S" onClick={() => fileDownloadAPI(url, nameArray[nameArray.length - 1])}>
 						<img width={16} src={FileDown} alt="파일 다운로드" />
 						다운
 					</Button>
-				</_.TextWrapper>, // 채용 직군
+				</_.TextWrapper>,
 			];
 		})
 		.concat(emptyTableDataArray);

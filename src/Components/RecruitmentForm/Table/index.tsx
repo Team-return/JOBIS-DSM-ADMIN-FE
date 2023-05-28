@@ -5,8 +5,8 @@ import { RecruitmentFormResponse } from '../../../Apis/Recruitments/response';
 import { Pagination } from '../../../Utils/Pagination';
 import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
 import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
-import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
-import { companyTypeEngToKor } from '../../../Utils/Translation';
+import { companyStatus, companyType } from '../../../Utils/Translation';
+import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
@@ -28,12 +28,6 @@ export function RecruitmentFormTable({
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
-	const companyStatus = {
-		READY: '모집전',
-		RECRUITING: '모집중',
-		DONE: '종료',
-		REQUESTED: '접수요청',
-	};
 
 	const changeStatusAPI = useChangeRecruitmentsStatus(changeStatus, clickedData, {
 		onSuccess: () => {
@@ -58,10 +52,10 @@ export function RecruitmentFormTable({
 	};
 
 	const loadingTableDataArray = Array.from({ length: 11 }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
-	const emptyTableDataArray = Array.from({ length: 11 - (dataLength % 11) }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
+	const emptyTableDataArray = Array.from({ length: 11 - dataLength }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
 	const tableAllDatas: JSX.Element[][] = recruitmentForm?.recruitments
 		.map((recruitment) => {
-			const job = recruitment.recruitment_job.join(' / ').split(',').join(' / ');
+			const job = recruitment.recruitment_job.split(',').join(' / ');
 			const clickCheckBox = () => {
 				if (clickedData.includes(recruitment.id)) {
 					setClickedData(clickedData.filter((clickedDataId) => clickedDataId !== recruitment.id));
@@ -79,10 +73,10 @@ export function RecruitmentFormTable({
 			};
 			return [
 				<CheckBox checked={clickedData.includes(recruitment.id)} onClick={clickCheckBox} onChange={() => {}} />,
-				<_.ContentText status={recruitment.recruitment_status}>{getPropertyValue(companyStatus, recruitment.recruitment_status)}</_.ContentText>, // 상태
+				<_.ContentText status={recruitment.recruitment_status}>{getValueByKey(companyStatus, recruitment.recruitment_status)}</_.ContentText>, // 상태
 				<_.ContentText>{recruitment.company_name}</_.ContentText>, // 회사 이름
 				<_.ContentText>{job}</_.ContentText>, // 채용 직군
-				<_.ContentText>{getPropertyValue(companyTypeEngToKor, recruitment.company_type)}</_.ContentText>, // 구분
+				<_.ContentText>{companyType[recruitment.company_type]}</_.ContentText>, // 구분
 				<_.ContentText>{recruitment.recruitment_count}명</_.ContentText>, // 모집 인원 수
 				<_.ContentText onClick={() => recruitment.application_requested_count && openApplicationCountPage(true)} click={recruitment.application_requested_count}>
 					{recruitment.application_requested_count}명
@@ -149,7 +143,7 @@ export function RecruitmentFormTable({
 			<_.TableWrapper>
 				<Table tableData={recruitmentFormIsLoading ? loadingTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
-			<Pagination total={100} limit={10} data={searchRecruitmentFormQueryString} setData={setSearchRecruitmentFormQueryString} refetch={refetchRecruitmentForm} />
+			<Pagination page={recruitmentForm?.total_page_count} data={searchRecruitmentFormQueryString} setData={setSearchRecruitmentFormQueryString} refetch={refetchRecruitmentForm} />
 		</_.Container>
 	);
 }

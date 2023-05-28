@@ -1,5 +1,6 @@
 export interface ApplicationResponse {
 	applications: ApplicationType[];
+	total_page_count: number;
 }
 
 export interface ApplicationType {

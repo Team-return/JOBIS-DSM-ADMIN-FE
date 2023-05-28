@@ -5,8 +5,7 @@ import { Pagination } from '../../../Utils/Pagination';
 import { useChangeCompanyStatus, useChangeContractCompany } from '../../../Apis/Companies';
 import { dataType } from '../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
-import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
-import { companyTypeEngToKor } from '../../../Utils/Translation';
+import { companyType } from '../../../Utils/Translation';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
@@ -74,11 +73,11 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 				<_.ContentText>{companie.region}</_.ContentText>, // 지역
 				<_.ContentText>{companie.business_area}</_.ContentText>, // 사업분야
 				<_.ContentText>{companie.workers_count}</_.ContentText>, // 근로자수
-				<_.ContentText>{companie.sales}</_.ContentText>, // 매출액
-				<_.ContentText status={companie.company_type === 'PARTICIPATING'}>{getPropertyValue(companyTypeEngToKor, companie.company_type)}기업</_.ContentText>, // 기업구분
+				<_.ContentText>{companie.take}</_.ContentText>, // 매출액
+				<_.ContentText status={companie.company_type === 'PARTICIPATING'}>{companyType[companie.company_type]}기업</_.ContentText>, // 기업구분
 				<_.ContentText>{companie.convention && 'Y'}</_.ContentText>, // 협약여부
 				<_.ContentText>{companie.personal_contact && 'Y'}</_.ContentText>, // 개인컨택
-				<_.ContentText>{companie.recent_recruit_year}년</_.ContentText>, //최근의뢰년도
+				<_.ContentText>{companie.recent_recruit_year ? `${companie.recent_recruit_year}년` : '없음'}</_.ContentText>, //최근의뢰년도
 				<_.ContentText>{companie.total_acceptance_count}명</_.ContentText>, // 총 취업 학생수
 				<_.ContentText status={true} click={true} onClick={openPopupPage}>
 					{companie.review_count ? companie.review_count + `건` : ''}
@@ -151,7 +150,7 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 			<_.TableWrapper>
 				<Table tableData={companyRecruitmentIsLoading ? loadingTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
-			<Pagination total={100} limit={10} data={searchQueryString} setData={setSearchQueryString} refetch={refetchCompanyRecruitment} />
+			<Pagination page={10} data={searchQueryString} setData={setSearchQueryString} refetch={refetchCompanyRecruitment} />
 		</_.Container>
 	);
 }

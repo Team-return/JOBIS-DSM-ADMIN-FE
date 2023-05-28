@@ -26,7 +26,7 @@ export function CompanyRecruitmentPage() {
 		<>
 			<Header />
 			<_.Wrapper>
-				<CompanyRecruitmentSearch searchQueryString={searchQueryString} setSearchQueryString={setSearchQueryString} refetchCompanyRecruitment={refetchCompanyRecruitment} />
+				<CompanyRecruitmentSearch setSearchQueryString={setSearchQueryString} refetchCompanyRecruitment={refetchCompanyRecruitment} />
 				<CompanyRecruitmentTable
 					companyRecruitmentIsLoading={isLoading}
 					companyRecruitment={companyRecruitment!}

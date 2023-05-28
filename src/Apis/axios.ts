@@ -29,7 +29,7 @@ instance.interceptors.response.use(
 		if (axios.isAxiosError(error) && error.response) {
 			const { config } = error;
 			const refreshToken = cookies.get('refresh_token');
-			if (error.response.data.message === 'Invalid Token' || error.response.data.message === 'Token Expired') {
+			if (error.response.data.message === 'Invalid Token' || error.response.data.message === 'Token Expired' || error.message === 'Request failed with status code 403') {
 				if (refreshToken) {
 					cookies.remove('access_token');
 					reIssueToken(refreshToken)
