@@ -1,8 +1,8 @@
-import { Button, CheckBox, Table } from '@team-return/design-system';
+import { Button, CheckBox, Stack, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
-import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
+import { getValueByKey } from '../../../Hooks/useGetPropertyValueAndKey';
 import { ApplicationResponse } from '../../../Apis/Applications/response';
 import ChevronDown from '../../../Assets/SVG/ChevronDown.svg';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
@@ -12,7 +12,7 @@ import FileDown from '../../../Assets/SVG/FileDown.svg';
 import { useModalContext } from '../../../Utils/Modal';
 import { useChangeRequestStatus, useChangeTrainDate, useRejectApplication } from '../../../Apis/Applications';
 import { useForm } from '../../../Hooks/useForm';
-import { applicationStatusEngToKor, applicationStatusTextColor } from '../../../Utils/Translation';
+import { applicationStatus, applicationStatusTextColor } from '../../../Utils/Translation';
 import { ChangeStatusModal } from '../../Modal/ChangeStatusModal';
 import { RejectApplicationModal } from '../../Modal/RejectApplicationModal';
 import { ChangeTrainDateModal } from '../../Modal/ChangeTrainDateModal';
@@ -157,8 +157,8 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 
 			return [
 				<CheckBox checked={clickedData.includes(application.application_id)} onChange={clickCheckBox} />,
-				<_.ContentText color={getPropertyValue(applicationStatusTextColor, application.application_status)}>
-					{getPropertyValue(applicationStatusEngToKor, application.application_status)}
+				<_.ContentText color={getValueByKey(applicationStatusTextColor, application.application_status)}>
+					{getValueByKey(applicationStatus, application.application_status)}
 				</_.ContentText>, // 상태
 				<_.ContentText>{application.student_gcn}</_.ContentText>, // 학법
 				<_.ContentText>{application.student_name}</_.ContentText>, // 이름
@@ -178,10 +178,10 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 								const nameArray = decodeURI(url).split('/');
 								return (
 									<_.FileDownloadWrapper key={i}>
-										<div style={{ display: 'flex' }}>
+										<Stack>
 											<_.CountNum>{i + 1}</_.CountNum>
 											<div>{nameArray[nameArray.length - 1]}</div>
-										</div>
+										</Stack>
 										<Button size="S" onClick={() => fileDownloadAPI(url, nameArray[nameArray.length - 1])}>
 											<img width={16} src={FileDown} alt="파일 다운로드" />
 											다운

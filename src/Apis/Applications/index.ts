@@ -10,7 +10,7 @@ export const getApplicantInfo = async (applicationQueryString: ApplicantInfoQuer
 	const pageNum = page ? `&page=${page}` : '';
 	const studentName = student_name ? `&student_name=${student_name}` : '';
 	const companyId = company_id ? `&company_id=${company_id}` : '';
-	const queryString = application_status || student_name || company_id || page ? `?application_status=${application_status}${companyId}${studentName}${pageNum}` : '';
+	const queryString = application_status || student_name || company_id || page ? `?application_status=${application_status ? application_status : ''}${companyId}${studentName}${pageNum}` : '';
 	const { data } = await instance.get<Promise<ApplicationResponse>>(`${router}${queryString}`);
 	return data;
 };
@@ -26,11 +26,11 @@ export const useChangeRequestStatus = (id: number[], status: string, options: Mu
 	});
 };
 
-export const useChangeTrainDate = (id: number[], start_date: Date, end_date: Date, options: MutationOptions) => {
+export const useChangeTrainDate = (student_ids: number[], start_date: Date, end_date: Date, options: MutationOptions) => {
 	const data = {
-		student_ids: id,
-		start_date: start_date,
-		end_date: end_date,
+		student_ids,
+		start_date,
+		end_date,
 	};
 
 	return useMutation(async () => instance.patch(`${router}/train-date`, data), {

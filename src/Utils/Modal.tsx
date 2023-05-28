@@ -5,14 +5,14 @@ import { useEffect } from 'react';
 
 type ModalData = {
 	children?: ReactNode;
-	onCancel?: () => unknown;
-	onSubmit?: () => unknown;
+	onCancel?: () => void;
+	onSubmit?: () => void;
 };
 
 const ModalContext = createContext<{
 	isOpen: boolean;
-	openModal: (modalData: ModalData) => unknown;
-	closeModal: () => unknown;
+	openModal: (modalData: ModalData) => void;
+	closeModal: () => void;
 	modalData: ModalData;
 }>({} as any);
 

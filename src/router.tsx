@@ -7,6 +7,7 @@ import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage';
 import { Cookies } from 'react-cookie';
 import { ReviewSubmissionPopup } from './Pages/ReviewSubmissionPopup';
 import { ApplicationViewPage } from './Pages/ApplicationViewPage';
+import { StudentManagementPage } from './Pages/StudentManagementPage.';
 
 const cookies = new Cookies();
 
@@ -32,7 +33,7 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: 'Student',
-				element: <></>,
+				element: <StudentManagementPage />,
 			},
 			{
 				path: 'JobApplication',

@@ -1,5 +1,5 @@
-import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
-import { applicationStatusEngToKor } from '../../../Utils/Translation';
+import { getValueByKey } from '../../../Hooks/useGetPropertyValueAndKey';
+import { applicationStatus } from '../../../Utils/Translation';
 import * as _ from '../style';
 
 interface PropsType {
@@ -13,8 +13,8 @@ export function ChangeStatusModal({ clickedData, clickStudentName, statusName }:
 		<>
 			<_.ModalTitleText>
 				{clickedData.length - 3 > 0
-					? `${clickStudentName.join(', ')} 외 ${clickedData.length - 3}명의 지원서를 ${getPropertyValue(applicationStatusEngToKor, statusName)}(으)로 바꾸시겠습니까?`
-					: `${clickStudentName.join(', ')}의 지원서를 ${getPropertyValue(applicationStatusEngToKor, statusName)}(으)로 바꾸시겠습니까?`}
+					? `${clickStudentName.join(', ')} 외 ${clickedData.length - 3}명의 지원서를 ${getValueByKey(applicationStatus, statusName)}(으)로 바꾸시겠습니까?`
+					: `${clickStudentName.join(', ')}의 지원서를 ${getValueByKey(applicationStatus, statusName)}(으)로 바꾸시겠습니까?`}
 			</_.ModalTitleText>
 			<_.ModalContentText>삭제하면 되돌릴 수 없습니다.</_.ModalContentText>
 		</>

@@ -2,9 +2,10 @@ import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
 import { Dispatch, SetStateAction } from 'react';
-import { getPropertyValue } from '../../../Hooks/useGetPropertyValue';
 import { useForm } from '../../../Hooks/useForm';
-import { companyStatusEngToKor } from '../../../Utils/Translation';
+import { companyStatus } from '../../../Utils/Translation';
+import { getValueByKey } from '../../../Hooks/useGetPropertyValueAndKey';
+import { useDropDown } from '../../../Hooks/useDropDown';
 
 interface PropsType {
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
@@ -21,22 +22,27 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		setForm: setFormData,
 		handleChange,
 	} = useForm({
-		year: searchRecruitmentFormQueryString.year,
 		company_name: '',
 		start: '',
 		end: '',
-		status: '',
 		page: searchRecruitmentFormQueryString.page,
+	});
+
+	const { selectedItem, setSelectedItem, handleSelectedItem } = useDropDown({
+		year: searchRecruitmentFormQueryString.year,
+		status: '',
 	});
 
 	const handleDefaultData = () => {
 		setFormData({
-			year: searchRecruitmentFormQueryString.year,
 			company_name: '',
 			start: '',
 			end: '',
-			status: '',
 			page: searchRecruitmentFormQueryString.page,
+		});
+		setSelectedItem({
+			year: searchRecruitmentFormQueryString.year,
+			status: '',
 		});
 	};
 
@@ -44,7 +50,8 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		setSearchRecruitmentFormQueryString({
 			...searchRecruitmentFormQueryString,
 			...formData,
-			status: getPropertyValue(companyStatusEngToKor, formData.status),
+			year: selectedItem.year,
+			status: getValueByKey(companyStatus, selectedItem.status),
 		});
 		setTimeout(refetchRecruitmentForm);
 	};
@@ -56,7 +63,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 			<_.Wrapper>
 				<_.TitleText>모집년도</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown width={23} option={yearData} value={formData.year} onChange={(yearData) => setFormData({ ...formData, year: yearData })} />
+					<DropDown width={23} option={yearData} value={selectedItem.year} onChange={(yearData) => handleSelectedItem('year', yearData)} />
 				</_.ContentWrapper>
 				<_.TitleText>의뢰일자</_.TitleText>
 				<_.ContentWrapper width={17} style={{ paddingRight: '15px' }}>
@@ -75,8 +82,8 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 					<DropDown
 						width={42}
 						option={['전체', '모집전', '모집중', '종료', '접수요청']}
-						value={formData.status || '전체'}
-						onChange={(statusData) => setFormData({ ...formData, status: statusData })}
+						value={selectedItem.status || '전체'}
+						onChange={(statusData) => handleSelectedItem('status', statusData)}
 					/>
 				</_.ContentWrapper>
 				<_.ButtonWrapper>
