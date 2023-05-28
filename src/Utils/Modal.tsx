@@ -14,7 +14,12 @@ const ModalContext = createContext<{
 	openModal: (modalData: ModalData) => void;
 	closeModal: () => void;
 	modalData: ModalData;
-}>({} as any);
+}>({
+	isOpen: false,
+	openModal: () => {},
+	closeModal: () => {},
+	modalData: {} as ModalData,
+});
 
 /** 모달 Provider입니다. */
 export const ModalContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
