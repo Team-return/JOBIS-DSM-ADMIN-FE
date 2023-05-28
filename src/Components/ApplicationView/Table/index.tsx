@@ -2,7 +2,6 @@ import { Button, CheckBox, Stack, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
-import { getValueByKey } from '../../../Hooks/useGetPropertyValueAndKey';
 import { ApplicationResponse } from '../../../Apis/Applications/response';
 import ChevronDown from '../../../Assets/SVG/ChevronDown.svg';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
@@ -157,8 +156,8 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 
 			return [
 				<CheckBox checked={clickedData.includes(application.application_id)} onChange={clickCheckBox} />,
-				<_.ContentText color={getValueByKey(applicationStatusTextColor, application.application_status)}>
-					{getValueByKey(applicationStatus, application.application_status)}
+				<_.ContentText color={applicationStatusTextColor[application.application_status]}>
+					{applicationStatus[application.application_status]}
 				</_.ContentText>, // 상태
 				<_.ContentText>{application.student_gcn}</_.ContentText>, // 학법
 				<_.ContentText>{application.student_name}</_.ContentText>, // 이름

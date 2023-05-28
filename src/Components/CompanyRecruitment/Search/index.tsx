@@ -3,7 +3,7 @@ import * as _ from './style';
 import { Dispatch, SetStateAction } from 'react';
 import { dataType } from '../../../Apis/Companies/request';
 import { useGetBusinessCode } from '../../../Hooks/ApiHooks/useGetBusinessCode';
-import { getKeyByValue } from '../../../Hooks/useGetPropertyValueAndKey';
+import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
 import { useForm } from '../../../Hooks/useForm';
 import { companyType } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
@@ -48,7 +48,7 @@ export function CompanyRecruitmentSearch({ setSearchQueryString, refetchCompanyR
 
 	const searching = () => {
 		const searchingIndustry = selectedItem.industry === '전체' ? '' : selectedItem.industry;
-		setSearchQueryString({ ...data, company_type: getKeyByValue(companyType, selectedItem.company_type.replace('기업', '')), industry: searchingIndustry, region: selectedItem.region });
+		setSearchQueryString({ ...data, company_type: getValueByKey(companyType, selectedItem.company_type.replace('기업', '')), industry: searchingIndustry, region: selectedItem.region });
 		setTimeout(refetchCompanyRecruitment);
 	};
 

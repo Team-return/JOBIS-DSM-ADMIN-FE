@@ -6,7 +6,7 @@ import { Pagination } from '../../../Utils/Pagination';
 import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
 import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
 import { companyStatus, companyType } from '../../../Utils/Translation';
-import { getKeyByValue, getValueByKey } from '../../../Hooks/useGetPropertyValueAndKey';
+import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
@@ -73,10 +73,10 @@ export function RecruitmentFormTable({
 			};
 			return [
 				<CheckBox checked={clickedData.includes(recruitment.id)} onClick={clickCheckBox} onChange={() => {}} />,
-				<_.ContentText status={recruitment.recruitment_status}>{getKeyByValue(companyStatus, recruitment.recruitment_status)}</_.ContentText>, // 상태
+				<_.ContentText status={recruitment.recruitment_status}>{getValueByKey(companyStatus, recruitment.recruitment_status)}</_.ContentText>, // 상태
 				<_.ContentText>{recruitment.company_name}</_.ContentText>, // 회사 이름
 				<_.ContentText>{job}</_.ContentText>, // 채용 직군
-				<_.ContentText>{getValueByKey(companyType, recruitment.company_type)}</_.ContentText>, // 구분
+				<_.ContentText>{companyType[recruitment.company_type]}</_.ContentText>, // 구분
 				<_.ContentText>{recruitment.recruitment_count}명</_.ContentText>, // 모집 인원 수
 				<_.ContentText onClick={() => recruitment.application_requested_count && openApplicationCountPage(true)} click={recruitment.application_requested_count}>
 					{recruitment.application_requested_count}명

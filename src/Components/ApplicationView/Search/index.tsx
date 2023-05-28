@@ -3,7 +3,7 @@ import * as _ from './style';
 import { Dispatch, SetStateAction } from 'react';
 import { useForm } from '../../../Hooks/useForm';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
-import { getKeyByValue } from '../../../Hooks/useGetPropertyValueAndKey';
+import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
 import { applicationStatus } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
 
@@ -35,7 +35,7 @@ export function ApplicationViewSearch({ setSearchQueryString, refetchCompanyRecr
 	};
 
 	const searching = () => {
-		setSearchQueryString({ ...data, application_status: getKeyByValue(applicationStatus, selectedItem.application_status) });
+		setSearchQueryString({ ...data, application_status: getValueByKey(applicationStatus, selectedItem.application_status) });
 		setTimeout(refetchCompanyRecruitment);
 	};
 
@@ -47,7 +47,7 @@ export function ApplicationViewSearch({ setSearchQueryString, refetchCompanyRecr
 					<DropDown
 						onChange={(type) => handleSelectedItem('application_status', type)}
 						width={90}
-						option={['전체', '승인요청', '승인됨', '합격', '불합격', '반려']}
+						option={['전체', '승인요청', '승인', '합격', '불합격', '반려']}
 						value={selectedItem.application_status}
 					/>
 				</_.ContentWrapper>

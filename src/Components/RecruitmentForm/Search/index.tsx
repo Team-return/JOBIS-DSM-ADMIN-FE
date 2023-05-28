@@ -4,7 +4,6 @@ import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/reque
 import { Dispatch, SetStateAction } from 'react';
 import { useForm } from '../../../Hooks/useForm';
 import { companyStatus } from '../../../Utils/Translation';
-import { getValueByKey } from '../../../Hooks/useGetPropertyValueAndKey';
 import { useDropDown } from '../../../Hooks/useDropDown';
 
 interface PropsType {
@@ -51,7 +50,7 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 			...searchRecruitmentFormQueryString,
 			...formData,
 			year: selectedItem.year,
-			status: getValueByKey(companyStatus, selectedItem.status),
+			status: companyStatus[selectedItem.status],
 		});
 		setTimeout(refetchRecruitmentForm);
 	};
