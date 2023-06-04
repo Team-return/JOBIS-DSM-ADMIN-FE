@@ -1,5 +1,5 @@
-import { ReviewSubmissioDetailnResponse } from '../../../Apis/Reviews/response';
-import * as _ from './style'
+import { ReviewSubmissioDetailnResponse } from '../../../../Apis/Reviews/response';
+import * as _ from './style';
 
 interface PropsType {
 	reviewSubmissionDetail: ReviewSubmissioDetailnResponse;

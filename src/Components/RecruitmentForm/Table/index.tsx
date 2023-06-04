@@ -72,7 +72,7 @@ export function RecruitmentFormTable({
 				}
 			};
 			return [
-				<CheckBox checked={clickedData.includes(recruitment.id)} onClick={clickCheckBox} onChange={() => {}} />,
+				<CheckBox checked={clickedData.includes(recruitment.id)} onChange={clickCheckBox} />,
 				<_.ContentText status={recruitment.recruitment_status}>{getValueByKey(companyStatus, recruitment.recruitment_status)}</_.ContentText>, // 상태
 				<_.ContentText>{recruitment.company_name}</_.ContentText>, // 회사 이름
 				<_.ContentText>{job}</_.ContentText>, // 채용 직군

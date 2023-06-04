@@ -1,13 +1,13 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { RecruitmentFormPage } from './Pages/RecruitmentFormPage';
 import { LoginPage } from './Pages/LoginPage';
-import { ApplicationPopup } from './Pages/ApplicationPopup';
-import { RecruitmentRequestPopup } from './Pages/RecruitmentRequestPopup';
+import { ApplicationPopup } from './Pages/PopUp/ApplicationPopup';
+import { RecruitmentRequestPopup } from './Pages/PopUp/RecruitmentRequestPopup';
 import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage';
 import { Cookies } from 'react-cookie';
-import { ReviewSubmissionPopup } from './Pages/ReviewSubmissionPopup';
+import { ReviewSubmissionPopup } from './Pages/PopUp/ReviewSubmissionPopup';
 import { ApplicationViewPage } from './Pages/ApplicationViewPage';
-import { StudentManagementPage } from './Pages/StudentManagementPage.';
+import StudentManagementPage from './Pages/StudentManagementPage.';
 
 const cookies = new Cookies();
 

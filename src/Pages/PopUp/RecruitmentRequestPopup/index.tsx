@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { useGetApplicantInfo } from '../../Hooks/ApiHooks/useGetApplicantInfo';
-import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
-import { StudentTable } from '../../Components/RecruitmentPopup/StudentTable';
-import { DownloadTable } from '../../Components/RecruitmentPopup/DownloadTable';
-import { Button } from '@team-return/design-system';
 import * as _ from './style';
+import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
+import { useGetApplicantInfo } from '../../../Hooks/ApiHooks/useGetApplicantInfo';
+import { StudentTable } from '../../../Components/PopUp/RecruitmentPopup/StudentTable';
+import { DownloadTable } from '../../../Components/PopUp/RecruitmentPopup/DownloadTable';
+import { Button } from '@team-return/design-system';
 
-export function ApplicationPopup() {
+export function RecruitmentRequestPopup() {
 	const id = new URLSearchParams(window.location.search).get('id');
 	const [applicationQueryString] = useState<ApplicantInfoQueryStringType>({
-		application_status: 'APPROVED',
+		application_status: 'REQUESTED',
 		student_name: '',
 		company_id: id ? id : '',
 	});
@@ -21,7 +21,7 @@ export function ApplicationPopup() {
 		<>
 			<StudentTable
 				application={application!}
-				isRequest={false}
+				isRequest={true}
 				refetchApplication={refetchApplication}
 				setApplicationAttachmentUrl={setApplicationAttachmentUrl}
 				applicationIsLoading={isLoading}

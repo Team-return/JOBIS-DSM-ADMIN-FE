@@ -1,8 +1,8 @@
 import { Button, Input, RadioButton, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { ReviewSubmissionResponse } from '../../../Apis/Reviews/response';
-import { useForm } from '../../../Hooks/useForm';
+import { ReviewSubmissionResponse } from '../../../../Apis/Reviews/response';
+import { useForm } from '../../../../Hooks/useForm';
 
 interface PropsType {
 	reviewSubmission: ReviewSubmissionResponse;
@@ -49,8 +49,8 @@ export function ReviewSubmissionTable({ reviewSubmission, reviewSubmissionIsLoad
 		<_.Container>
 			<_.SearchWrapper>
 				<_.InputWrapper>
-					<_.CompanyText>회사명</_.CompanyText>
-					<Input margin={[0, 0, 0, 20]} iconName="Search" width={65} placeHolder="회사명" name="searchInputValue" value={searchInput.searchInputValue} onChange={handleChange} />
+					<_.CompanyText>작성자명</_.CompanyText>
+					<Input margin={[0, 0, 0, 20]} iconName="Search" width={65} placeHolder="작성자명" name="searchInputValue" value={searchInput.searchInputValue} onChange={handleChange} />
 				</_.InputWrapper>
 				<Button onClick={searchBtnClick}>조회</Button>
 			</_.SearchWrapper>

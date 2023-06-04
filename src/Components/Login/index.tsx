@@ -8,7 +8,7 @@ import { useForm } from '../../Hooks/useForm';
 export function LoginCompo() {
 	const cookie = new Cookies();
 	const [inputTypeCheck, setInputTypeCheck] = useState(true);
-	const [checkBoxValue, setCheckBoxValue] = useState(false);
+	const [checkBoxValue, setCheckBoxValue] = useState(cookie.get('account_id') ? true : false);
 	const { form: loginForm, handleChange } = useForm({
 		account_id: cookie.get('account_id') || '',
 		password: '',

@@ -8,7 +8,7 @@ const router = '/users';
 
 export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 	const navigator = useNavigate();
-	const [, setCookies] = useCookies();
+	const [, setCookies, removeCookies] = useCookies();
 
 	return useMutation(async () => instance.post(`${router}/login`, loginData), {
 		onSuccess: (res) => {
@@ -17,6 +17,8 @@ export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 			} else {
 				if (checkBoxValue) {
 					setCookies('account_id', loginData.account_id);
+				} else {
+					removeCookies('account_id');
 				}
 				const accessExpired = new Date(res.data.access_expires_at);
 				const refreshExpired = new Date(res.data.refresh_expires_at);

@@ -109,7 +109,6 @@ const ModalContents = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
-	width: 30%;
 	min-width: 370px;
 	padding: 30px 30px 25px 30px;
 	overflow-y: scroll;

@@ -150,7 +150,7 @@ export function CompanyRecruitmentTable({ companyRecruitment, refetchCompanyRecr
 			<_.TableWrapper>
 				<Table tableData={companyRecruitmentIsLoading ? loadingTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
 			</_.TableWrapper>
-			<Pagination page={10} data={searchQueryString} setData={setSearchQueryString} refetch={refetchCompanyRecruitment} />
+			<Pagination page={companyRecruitment?.total_page_count} data={searchQueryString} setData={setSearchQueryString} refetch={refetchCompanyRecruitment} />
 		</_.Container>
 	);
 }

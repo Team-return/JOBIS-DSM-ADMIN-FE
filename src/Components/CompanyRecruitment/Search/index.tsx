@@ -2,11 +2,11 @@ import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction } from 'react';
 import { dataType } from '../../../Apis/Companies/request';
-import { useGetBusinessCode } from '../../../Hooks/ApiHooks/useGetBusinessCode';
 import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
 import { useForm } from '../../../Hooks/useForm';
 import { companyType } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
+import { useGetCode } from '../../../Hooks/ApiHooks/useGetCode';
 
 interface PropsType {
 	setSearchQueryString: Dispatch<SetStateAction<dataType>>;
@@ -14,7 +14,7 @@ interface PropsType {
 }
 
 export function CompanyRecruitmentSearch({ setSearchQueryString, refetchCompanyRecruitment }: PropsType) {
-	const { data: businessCode, refetch: refetchBusinessCode } = useGetBusinessCode();
+	const { data: businessCode, refetch: refetchBusinessCode } = useGetCode('BUSINESS_AREA');
 	const keywords = businessCode?.codes.map((item) => item.keyword);
 	const whole = ['전체'];
 	const allKeywords = keywords ? [...whole, ...keywords] : whole;

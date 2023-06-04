@@ -1,7 +1,7 @@
 import { useMutation, MutationOptions } from 'react-query';
 import { instance } from '../axios';
 import { ApplicantInfoQueryStringType } from './request';
-import { ApplicationResponse } from './response';
+import { ApplicationResponse, InternshipStudentResponse } from './response';
 
 const router = '/applications';
 
@@ -12,6 +12,11 @@ export const getApplicantInfo = async (applicationQueryString: ApplicantInfoQuer
 	const companyId = company_id ? `&company_id=${company_id}` : '';
 	const queryString = application_status || student_name || company_id || page ? `?application_status=${application_status ? application_status : ''}${companyId}${studentName}${pageNum}` : '';
 	const { data } = await instance.get<Promise<ApplicationResponse>>(`${router}${queryString}`);
+	return data;
+};
+
+export const getInternshipStudent = async (company_id: number) => {
+	const { data } = await instance.get<Promise<InternshipStudentResponse>>(`${router}/pass/${company_id}`);
 	return data;
 };
 
@@ -26,7 +31,7 @@ export const useChangeRequestStatus = (id: number[], status: string, options: Mu
 	});
 };
 
-export const useChangeTrainDate = (student_ids: number[], start_date: Date, end_date: Date, options: MutationOptions) => {
+export const useChangeTrainDate = (student_ids: number[], start_date: Date | string, end_date: Date | string, options: MutationOptions) => {
 	const data = {
 		student_ids,
 		start_date,
