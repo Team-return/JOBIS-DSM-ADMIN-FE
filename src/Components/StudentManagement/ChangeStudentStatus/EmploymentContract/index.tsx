@@ -24,7 +24,7 @@ export function ChangeEmploymentContractStudentStatus({ selectStudent, setSelect
 			setForm({
 				contract_date: '',
 			});
-			alert('성공')
+			alert('성공');
 		},
 	});
 
