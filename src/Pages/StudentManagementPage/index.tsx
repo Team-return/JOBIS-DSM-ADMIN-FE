@@ -59,12 +59,10 @@ export function StudentManagementPage() {
 							setSelectStudent={setSelectInternshipStudent}
 							selectStudent={selectInternshipStudent}
 						/>
-						<div>
-							<Button size="S" margin={[3.3]} kind="Ghost" disabled={selectInternshipStudent.length === 0} onClick={openAddInternshipStudentModal}>
-								<img src={ChevronDown} alt="화살표 사진" />
-								근로계약 전환
-							</Button>
-						</div>
+						<Button size="S" margin={[3.3]} kind="Ghost" disabled={selectInternshipStudent.length === 0} onClick={openAddInternshipStudentModal}>
+							<img src={ChevronDown} alt="화살표 사진" />
+							근로계약 전환
+						</Button>
 						<EmploymentContractStudentTable
 							combinedStudentList={combinedStudentList!}
 							isLoading={combinedStudentListIsLoading}
