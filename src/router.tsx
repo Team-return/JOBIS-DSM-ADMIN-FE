@@ -7,7 +7,7 @@ import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage';
 import { Cookies } from 'react-cookie';
 import { ReviewSubmissionPopup } from './Pages/PopUp/ReviewSubmissionPopup';
 import { ApplicationViewPage } from './Pages/ApplicationViewPage';
-import StudentManagementPage from './Pages/StudentManagementPage.';
+import { StudentManagementPage } from './Pages/StudentManagementPage';
 
 const cookies = new Cookies();
 

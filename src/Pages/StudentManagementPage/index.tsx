@@ -15,7 +15,7 @@ import { ChangeInternshipStudentStatus } from '../../Components/StudentManagemen
 import { useModalContext } from '../../Utils/Modal';
 import { ChangeEmploymentModal } from '../../Components/Modal/ChangeEmploymentModal';
 
-const StudentManagementPage = () => {
+export function StudentManagementPage() {
 	const date = new Date();
 	const { openModal } = useModalContext();
 
@@ -34,9 +34,7 @@ const StudentManagementPage = () => {
 
 	const openAddInternshipStudentModal = () => {
 		openModal({
-			children: (
-				<ChangeEmploymentModal setSelectStudent={setSelectInternshipStudent} refetch={refetchCombinedStudentList} selectStudent={selectInternshipStudent} />
-			),
+			children: <ChangeEmploymentModal setSelectStudent={setSelectInternshipStudent} refetch={refetchCombinedStudentList} selectStudent={selectInternshipStudent} />,
 		});
 	};
 
@@ -91,6 +89,4 @@ const StudentManagementPage = () => {
 			</_.TableContainer>
 		</>
 	);
-};
-
-export default StudentManagementPage;
+}
