@@ -5,3 +5,9 @@ export interface dataType {
 	company_name: string;
 	industry: string;
 }
+
+export interface EmployableCompaniesPropsType {
+	company_name: string;
+	company_type: string;
+	year: string;
+}

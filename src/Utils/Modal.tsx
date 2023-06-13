@@ -22,7 +22,9 @@ const ModalContext = createContext<{
 });
 
 /** 모달 Provider입니다. */
-export const ModalContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const ModalContextProvider: FC<{ children: ReactNode }> = ({
+	children,
+}) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [modalData, setModalData] = useState<ModalData>({});
 
@@ -40,7 +42,13 @@ export const ModalContextProvider: FC<{ children: ReactNode }> = ({ children }) 
 		setModalData({});
 	};
 
-	return <ModalContext.Provider value={{ isOpen, openModal, closeModal, modalData }}>{children}</ModalContext.Provider>;
+	return (
+		<ModalContext.Provider
+			value={{ isOpen, openModal, closeModal, modalData }}
+		>
+			{children}
+		</ModalContext.Provider>
+	);
 };
 
 /** 모달을 관리하기 위한 state입니다. */
@@ -109,7 +117,6 @@ const ModalContents = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
-	width: 30%;
 	min-width: 370px;
 	padding: 30px 30px 25px 30px;
 	overflow-y: scroll;

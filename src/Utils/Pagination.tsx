@@ -17,15 +17,25 @@ export function Pagination({ page, data, setData, refetch }: PropsType) {
 
 	return (
 		<Nav>
-			<Button onClick={() => changePageNumber(data.page - 1)} disabled={data.page === 1}>
+			<Button
+				onClick={() => changePageNumber(data.page - 1)}
+				disabled={data.page === 1}
+			>
 				&lt;
 			</Button>
 			{Array.from({ length: page }, (_, i) => (
-				<Text key={i + 1} onClick={() => changePageNumber(i + 1)} focus={data.page === i + 1}>
+				<Text
+					key={i + 1}
+					onClick={() => changePageNumber(i + 1)}
+					focus={data.page === i + 1}
+				>
 					{i + 1}
 				</Text>
 			))}
-			<Button onClick={() => changePageNumber(data.page + 1)} disabled={data.page === page}>
+			<Button
+				onClick={() => changePageNumber(data.page + 1)}
+				disabled={data.page === page}
+			>
 				&gt;
 			</Button>
 		</Nav>

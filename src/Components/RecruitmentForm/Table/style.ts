@@ -38,7 +38,7 @@ export const ContentText = styled.div<{ status?: string; click?: number }>`
 	justify-content: center;
 	color: ${({ status }) => (status === 'REQUESTED' ? '#FF0000' : '#000000')};
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
-	text-underline-offset : 2px;
+	text-underline-offset: 2px;
 	text-decoration-thickness: 2px;
 	cursor: ${({ click }) => (click ? 'pointer' : 'default')};
 `;

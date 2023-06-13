@@ -4,7 +4,7 @@ import { CodeResponse } from './response';
 
 const router = '/codes';
 
-export const getAllBusinessCode = async (type: CodeType) => {
+export const getAllCode = async (type: CodeType) => {
 	const { data } = await instance.get<Promise<CodeResponse>>(`${router}?type=${type}`);
 	return data;
 };
