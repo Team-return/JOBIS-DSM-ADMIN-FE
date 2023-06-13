@@ -3,8 +3,6 @@ import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
 import { ApplicationResponse } from '../../../Apis/Applications/response';
-import ChevronDown from '../../../Assets/SVG/ChevronDown.svg';
-import ChevronUp from '../../../Assets/SVG/ChevronUp.svg';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
 import { DownloadDataPropsType } from '../../../Apis/FileDownload/request';
 import { useDownloadData } from '../../../Apis/FileDownload';
@@ -28,15 +26,7 @@ interface PropsType {
 	allSelectStudent: string[];
 }
 
-export function ApplicationViewTable({
-	application,
-	refetchApplication,
-	allSelectFormId,
-	searchQueryString,
-	setSearchQueryString,
-	applicationIsLoading,
-	allSelectStudent,
-}: PropsType) {
+export function ApplicationViewTable({ application, refetchApplication, allSelectFormId, searchQueryString, setSearchQueryString, applicationIsLoading, allSelectStudent }: PropsType) {
 	const dataLength = application?.applications.length;
 	const { openModal, closeModal } = useModalContext();
 	const [clickedData, setClickedData] = useState<number[]>([]);
@@ -121,9 +111,7 @@ export function ApplicationViewTable({
 
 	const openChangeTrainDateModal = () => {
 		openModal({
-			children: (
-				<ChangeTrainDateModal clickedData={clickedData} clickStudentName={clickStudentName} trainDateChange={trainDateChange} trainDate={trainDate} />
-			),
+			children: <ChangeTrainDateModal clickedData={clickedData} clickStudentName={clickStudentName} trainDateChange={trainDateChange} trainDate={trainDate} />,
 			onSubmit: () => {
 				setTimeout(changeTrainDateAPI.mutate);
 			},
@@ -173,25 +161,15 @@ export function ApplicationViewTable({
 
 			return [
 				<CheckBox checked={clickedData.includes(application.application_id)} onChange={clickCheckBox} />,
-				<_.ContentText color={applicationStatusTextColor[application.application_status]}>
-					{applicationStatus[application.application_status]}
-				</_.ContentText>, // 상태
+				<_.ContentText color={applicationStatusTextColor[application.application_status]}>{applicationStatus[application.application_status]}</_.ContentText>, // 상태
 				<_.ContentText>{application.student_gcn}</_.ContentText>, // 학법
 				<_.ContentText>{application.student_name}</_.ContentText>, // 이름
 				<_.ContentText>{application.company_name}</_.ContentText>, // 기업
 				<_.OpenBoxWrapper>
 					{application.application_attachment_url.length !== 0 ? (
-						<_.UnfoldImgWrapper
-							onClick={
-								downloadBoxView !== application.application_id
-									? changeDownloadBoxView
-									: () => {
-											return;
-									  }
-							}
-						>
+						<_.UnfoldImgWrapper onClick={downloadBoxView !== application.application_id ? changeDownloadBoxView : () => {}}>
 							<div>{downloadBoxView === application.application_id ? '닫기' : '펼쳐보기'}</div>
-							<img src={downloadBoxView === application.application_id ? ChevronUp : ChevronDown} alt="" />
+							<Icon icon="Chevron" color='gray60' direction={downloadBoxView === application.application_id ? 'top' : 'bottom'}></Icon>
 						</_.UnfoldImgWrapper>
 					) : (
 						<_.NotingFileText>첨부파일 없음</_.NotingFileText>

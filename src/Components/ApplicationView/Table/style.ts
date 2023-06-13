@@ -50,8 +50,9 @@ export const OpenBoxWrapper = styled.div`
 
 export const UnfoldImgWrapper = styled.div`
 	display: flex;
-	gap: 10px;
-	width: 92px;
+	align-items: center;
+	gap: 4px;
+	width: 100px;
 	cursor: pointer;
 `;
 

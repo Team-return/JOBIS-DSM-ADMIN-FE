@@ -7,8 +7,7 @@ import { useForm } from '../../Hooks/useForm';
 import * as _ from './style';
 import { InternshipStudentTable } from '../../Components/StudentManagement/Table/InternshipStudentTable';
 import { EmploymentContractStudentTable } from '../../Components/StudentManagement/Table/EmploymentContractStudentTable';
-import { Button } from '@team-return/design-system';
-import ChevronDown from '../../Assets/SVG/ChevronDown.svg';
+import { Button, Icon } from '@team-return/design-system';
 import { ChangeEmploymentContractStudentStatus } from '../../Components/StudentManagement/ChangeStudentStatus/EmploymentContract';
 import { ChangeInternshipStudentStatus } from '../../Components/StudentManagement/ChangeStudentStatus/Internship';
 import { useModalContext } from '../../Utils/Modal';
@@ -60,7 +59,7 @@ export function StudentManagementPage() {
 							selectStudent={selectInternshipStudent}
 						/>
 						<Button size="S" margin={[3.3]} kind="Ghost" disabled={selectInternshipStudent.length === 0} onClick={openAddInternshipStudentModal}>
-							<img src={ChevronDown} alt="화살표 사진" />
+							<Icon icon="Chevron" direction="bottom" color={selectInternshipStudent.length === 0 ? 'gray50' : 'blue'}></Icon>
 							근로계약 전환
 						</Button>
 						<EmploymentContractStudentTable
