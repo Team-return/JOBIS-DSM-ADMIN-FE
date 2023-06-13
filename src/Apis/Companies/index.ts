@@ -1,7 +1,7 @@
 import { MutationOptions, useMutation } from 'react-query';
 import { instance } from '../axios';
-import { dataType } from './request';
-import { CompanyRecruitmentResponse } from './response';
+import { EmployableCompaniesPropsType, dataType } from './request';
+import { CompanyRecruitmentResponse, EmployableCompaniesResponse } from './response';
 
 const router = '/companies';
 
@@ -12,6 +12,14 @@ export const getAllCompanyRecruitment = async (searchQueryString: dataType) => {
 	return data;
 };
 
+export const getEmployableCompanies = async (searchQueryString: EmployableCompaniesPropsType) => {
+	const { company_name, company_type, year } = searchQueryString;
+	const companyType = company_type ? `&company_type=${company_type}` : '';
+	const companyName = company_name ? `&company_name=${company_name}` : '';
+	const { data } = await instance.get<Promise<EmployableCompaniesResponse>>(`${router}/employment?year=${year}${companyName}${companyType}`);
+	return data;
+};
+
 export const useChangeCompanyStatus = (status: string, company_ids: number[], options: MutationOptions) => {
 	const data = {
 		company_ids,
@@ -19,6 +27,12 @@ export const useChangeCompanyStatus = (status: string, company_ids: number[], op
 	};
 
 	return useMutation(async () => instance.patch(`${router}/type`, data), {
+		...options,
+	});
+};
+
+export const useChangeContractCompany = (company_ids: number[], options: MutationOptions) => {
+	return useMutation(async () => instance.patch(`${router}/mou`, { company_ids }), {
 		...options,
 	});
 };

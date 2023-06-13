@@ -5,8 +5,8 @@ import { Link, useLocation } from 'react-router-dom';
 export function Header() {
 	let location = useLocation();
 
-	const clickedStatus = (e: string) => {
-		return location.pathname.includes(e);
+	const clickedStatus = (path: string) => {
+		return location.pathname.includes(path);
 	};
 
 	return (
@@ -16,7 +16,13 @@ export function Header() {
 			</Link>
 			<_.NavBtnWrapper>
 				<Link to="/RecruitmentRequest">
-					<_.NavBtn clicked={clickedStatus('RecruitmentRequest') || location.pathname === '/'} width={124}>
+					<_.NavBtn
+						clicked={
+							clickedStatus('RecruitmentRequest') ||
+							location.pathname === '/'
+						}
+						width={124}
+					>
 						모집의뢰서
 					</_.NavBtn>
 				</Link>
@@ -31,7 +37,10 @@ export function Header() {
 					</_.NavBtn>
 				</Link>
 				<Link to="/JobApplication">
-					<_.NavBtn clicked={clickedStatus('JobApplication')} width={86}>
+					<_.NavBtn
+						clicked={clickedStatus('JobApplication')}
+						width={86}
+					>
 						지원서
 					</_.NavBtn>
 				</Link>

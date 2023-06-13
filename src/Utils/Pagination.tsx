@@ -2,16 +2,14 @@ import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 interface PropsType {
-	total: number;
-	limit: number;
+	page: number;
 	data: any;
 	setData: Dispatch<SetStateAction<any>>;
 	refetch: () => void;
 }
 
-export function Pagination({ total, limit, data, setData, refetch }: PropsType) {
-	const numPages = Math.ceil(total / limit);
-
+/** 페이지네이션을 구현한 함수입니다. */
+export function Pagination({ page, data, setData, refetch }: PropsType) {
 	const changePageNumber = (num: number) => {
 		setData((prevData: any) => ({ ...prevData, page: num }));
 		setTimeout(refetch);
@@ -19,15 +17,25 @@ export function Pagination({ total, limit, data, setData, refetch }: PropsType) 
 
 	return (
 		<Nav>
-			<Button onClick={() => changePageNumber(data.page - 1)} disabled={data.page === 1}>
+			<Button
+				onClick={() => changePageNumber(data.page - 1)}
+				disabled={data.page === 1}
+			>
 				&lt;
 			</Button>
-			{Array.from({ length: numPages }, (_, i) => (
-				<Text key={i + 1} onClick={() => changePageNumber(i + 1)} focus={data.page === i + 1}>
+			{Array.from({ length: page }, (_, i) => (
+				<Text
+					key={i + 1}
+					onClick={() => changePageNumber(i + 1)}
+					focus={data.page === i + 1}
+				>
 					{i + 1}
 				</Text>
 			))}
-			<Button onClick={() => changePageNumber(data.page + 1)} disabled={data.page === numPages}>
+			<Button
+				onClick={() => changePageNumber(data.page + 1)}
+				disabled={data.page === page}
+			>
 				&gt;
 			</Button>
 		</Nav>

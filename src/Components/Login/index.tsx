@@ -1,14 +1,17 @@
-import { useState, useCallback, ChangeEvent } from 'react';
+import { useState, useCallback } from 'react';
 import { Cookies } from 'react-cookie';
 import { Input } from '@team-return/design-system';
 import * as _ from './style';
 import { Login } from '../../Apis/Login';
+import { useForm } from '../../Hooks/useForm';
 
 export function LoginCompo() {
 	const cookie = new Cookies();
 	const [inputTypeCheck, setInputTypeCheck] = useState(true);
-	const [checkBoxValue, setCheckBoxValue] = useState(false);
-	const [loginForm, setLoginForm] = useState({
+	const [checkBoxValue, setCheckBoxValue] = useState(
+		cookie.get('account_id') ? true : false
+	);
+	const { form: loginForm, handleChange } = useForm({
 		account_id: cookie.get('account_id') || '',
 		password: '',
 	});
@@ -16,14 +19,6 @@ export function LoginCompo() {
 	const { account_id, password } = loginForm;
 
 	const { mutate: handleLogin } = Login(loginForm, checkBoxValue);
-
-	const handleInputValueChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-		const { value, name } = e.target;
-		setLoginForm((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	}, []);
 
 	const handleClickEye = useCallback(() => {
 		setInputTypeCheck((prev) => !prev);
@@ -40,7 +35,7 @@ export function LoginCompo() {
 					<_.InputWrapper>
 						<_.ContentText>아이디</_.ContentText>
 						<Input
-							onChange={handleInputValueChange}
+							onChange={handleChange}
 							width={100}
 							name="account_id"
 							error={false}
@@ -54,9 +49,11 @@ export function LoginCompo() {
 						<_.ContentText>비밀번호</_.ContentText>
 						<div>
 							<Input
-								onChange={handleInputValueChange}
+								onChange={handleChange}
 								type={inputTypeCheck ? 'password' : 'text'}
-								iconName={inputTypeCheck ? 'EyesClose' : 'EyesOpen'}
+								iconName={
+									inputTypeCheck ? 'EyesClose' : 'EyesOpen'
+								}
 								iconClick={handleClickEye}
 								width={100}
 								name="password"
@@ -69,10 +66,17 @@ export function LoginCompo() {
 						</div>
 					</_.InputWrapper>
 					<_.CheckEmailWrapper>
-						<_.CheckBox type="checkbox" checked={checkBoxValue} onChange={() => setCheckBoxValue((prev) => !prev)} />
+						<_.CheckBox
+							type="checkbox"
+							checked={checkBoxValue}
+							onChange={() => setCheckBoxValue((prev) => !prev)}
+						/>
 						<_.CheckLogin>아이디 저장</_.CheckLogin>
 					</_.CheckEmailWrapper>
-					<_.LoginBtn onClick={() => handleLogin()} disabled={!(account_id && password)}>
+					<_.LoginBtn
+						onClick={() => handleLogin()}
+						disabled={!(account_id && password)}
+					>
 						로그인
 					</_.LoginBtn>
 				</div>

@@ -1,10 +1,10 @@
 import * as _ from './style';
-import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/RecruitmentForm/Search';
-import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/RecruitmentForm/Table';
+import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/Search';
+import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/Table';
 import { Header } from '../../Components/Header';
 import { useState } from 'react';
 import { dataType } from '../../Apis/Companies/request';
-import { useGetCompanyRecruitments } from '../../Hooks/useGetCompanyRecruitments';
+import { useGetCompanyRecruitments } from '../../Hooks/ApiHooks/Companies';
 
 export function CompanyRecruitmentPage() {
 	const [searchQueryString, setSearchQueryString] = useState<dataType>({
@@ -14,7 +14,11 @@ export function CompanyRecruitmentPage() {
 		company_name: '',
 		industry: '',
 	});
-	const { data: companyRecruitment, refetch: refetchCompanyRecruitment } = useGetCompanyRecruitments(searchQueryString);
+	const {
+		data: companyRecruitment,
+		refetch: refetchCompanyRecruitment,
+		isLoading,
+	} = useGetCompanyRecruitments(searchQueryString);
 
 	const AllSelectFormId: number[] =
 		companyRecruitment! &&
@@ -26,8 +30,12 @@ export function CompanyRecruitmentPage() {
 		<>
 			<Header />
 			<_.Wrapper>
-				<CompanyRecruitmentSearch searchQueryString={searchQueryString} setSearchQueryString={setSearchQueryString} refetchCompanyRecruitment={refetchCompanyRecruitment} />
+				<CompanyRecruitmentSearch
+					setSearchQueryString={setSearchQueryString}
+					refetchCompanyRecruitment={refetchCompanyRecruitment}
+				/>
 				<CompanyRecruitmentTable
+					companyRecruitmentIsLoading={isLoading}
 					companyRecruitment={companyRecruitment!}
 					refetchCompanyRecruitment={refetchCompanyRecruitment}
 					AllSelectFormId={AllSelectFormId}

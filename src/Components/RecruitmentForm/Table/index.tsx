@@ -5,48 +5,44 @@ import { RecruitmentFormResponse } from '../../../Apis/Recruitments/response';
 import { Pagination } from '../../../Utils/Pagination';
 import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
 import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
+import { companyStatus, companyType } from '../../../Utils/Translation';
+import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
 	refetchRecruitmentForm: () => void;
 	AllSelectFormId: string[];
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
-	setSearchRecruitmentFormQueryString: Dispatch<SetStateAction<RecruitmentFormQueryStringType>>;
+	setSearchRecruitmentFormQueryString: Dispatch<
+		SetStateAction<RecruitmentFormQueryStringType>
+	>;
+	recruitmentFormIsLoading: boolean;
 }
 
-export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, AllSelectFormId, searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString }: PropsType) {
+export function RecruitmentFormTable({
+	recruitmentForm,
+	refetchRecruitmentForm,
+	AllSelectFormId,
+	searchRecruitmentFormQueryString,
+	setSearchRecruitmentFormQueryString,
+	recruitmentFormIsLoading,
+}: PropsType) {
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 
-	const changeStatusAPI = useChangeRecruitmentsStatus(changeStatus, clickedData, {
-		onSuccess: () => {
-			refetchRecruitmentForm();
-			setClickedData([]);
-			alert('썽공');
-		},
-	});
+	const changeStatusAPI = useChangeRecruitmentsStatus(
+		changeStatus,
+		clickedData,
+		{
+			onSuccess: () => {
+				refetchRecruitmentForm();
+				setClickedData([]);
+				alert('썽공');
+			},
+		}
+	);
 	const { isLoading } = changeStatusAPI;
-
-	const statusChangeValue = (e: string) => {
-		const companyStatusMap: { [key: string]: string } = {
-			READY: '모집전',
-			RECRUITING: '모집중',
-			DONE: '종료',
-			REQUESTED: '접수요청',
-		};
-		return companyStatusMap[e] || '';
-	};
-
-	const typeChangeValue = (e: string) => {
-		const companyTypeMap: { [key: string]: string } = {
-			LEAD: '선도',
-			PARTICIPATING: '참여',
-			CONTRACTING: '협약',
-			DEFAULT: '기본',
-		};
-		return companyTypeMap[e] || '';
-	};
 
 	const checkAllBox = () => {
 		if (clickedData.length === dataLength) {
@@ -61,13 +57,40 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 		setTimeout(() => changeStatusAPI.mutate());
 	};
 
-	const emptyTableDataArray = Array.from({ length: 11 - (dataLength % 11) }, () => [<></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>, <></>]);
+	const loadingTableDataArray = Array.from({ length: 11 }, () => [
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+	]);
+	const emptyTableDataArray = Array.from({ length: 11 - dataLength }, () => [
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+	]);
 	const tableAllDatas: JSX.Element[][] = recruitmentForm?.recruitments
 		.map((recruitment) => {
-			const job = recruitment.recruitment_job.join(' / ').split(',').join(' / ');
+			const job = recruitment.recruitment_job.split(',').join(' / ');
 			const clickCheckBox = () => {
 				if (clickedData.includes(recruitment.id)) {
-					setClickedData(clickedData.filter((e) => e !== recruitment.id));
+					setClickedData(
+						clickedData.filter(
+							(clickedDataId) => clickedDataId !== recruitment.id
+						)
+					);
 				} else {
 					setClickedData([...clickedData, recruitment.id]);
 				}
@@ -75,22 +98,54 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 
 			const openApplicationCountPage = (requested: boolean) => {
 				if (requested) {
-					window.open(`/RecruitmentRequestPopup?id=${recruitment.id}`, '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
+					window.open(
+						`/RecruitmentRequestPopup?id=${recruitment.id}`,
+						'_blank',
+						'resizable=no,width=570,height=830,left=50,top=50'
+					);
 				} else {
-					window.open(`ApplicationPopup?id=${recruitment.id}`, '_blank', 'resizable=no,width=570,height=830,left=50,top=50');
+					window.open(
+						`ApplicationPopup?id=${recruitment.id}`,
+						'_blank',
+						'resizable=no,width=570,height=830,left=50,top=50'
+					);
 				}
 			};
 			return [
-				<CheckBox checked={clickedData.includes(recruitment.id)} onClick={clickCheckBox} onChange={() => {}} />,
-				<_.ContentText status={recruitment.recruitment_status}>{statusChangeValue(recruitment.recruitment_status)}</_.ContentText>, // 상태
+				<CheckBox
+					checked={clickedData.includes(recruitment.id)}
+					onChange={clickCheckBox}
+				/>,
+				<_.ContentText status={recruitment.recruitment_status}>
+					{getValueByKey(
+						companyStatus,
+						recruitment.recruitment_status
+					)}
+				</_.ContentText>, // 상태
 				<_.ContentText>{recruitment.company_name}</_.ContentText>, // 회사 이름
 				<_.ContentText>{job}</_.ContentText>, // 채용 직군
-				<_.ContentText>{typeChangeValue(recruitment.company_type)}</_.ContentText>, // 구분
-				<_.ContentText>{recruitment.recruitment_count}명</_.ContentText>, // 모집 인원 수
-				<_.ContentText onClick={() => recruitment.application_requested_count && openApplicationCountPage(true)} click={recruitment.application_requested_count}>
+				<_.ContentText>
+					{companyType[recruitment.company_type]}
+				</_.ContentText>, // 구분
+				<_.ContentText>
+					{recruitment.recruitment_count}명
+				</_.ContentText>, // 모집 인원 수
+				<_.ContentText
+					onClick={() =>
+						recruitment.application_requested_count &&
+						openApplicationCountPage(true)
+					}
+					click={recruitment.application_requested_count}
+				>
 					{recruitment.application_requested_count}명
 				</_.ContentText>, // 지원 요청 수
-				<_.ContentText onClick={() => recruitment.application_approved_count && openApplicationCountPage(false)} click={recruitment.application_approved_count}>
+				<_.ContentText
+					onClick={() =>
+						recruitment.application_approved_count &&
+						openApplicationCountPage(false)
+					}
+					click={recruitment.application_approved_count}
+				>
 					{recruitment.application_approved_count}명
 				</_.ContentText>, // 지원자 수
 				<_.ContentText>{recruitment.start}</_.ContentText>, // 모집 시작 날짜
@@ -100,7 +155,13 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 		.concat(emptyTableDataArray);
 
 	const tableTitle: JSX.Element[] = [
-		<CheckBox disabled={!(recruitmentForm?.recruitments.length !== 0)} checked={clickedData.length !== 0 && clickedData.length === dataLength} onChange={checkAllBox} />,
+		<CheckBox
+			disabled={!(recruitmentForm?.recruitments.length !== 0)}
+			checked={
+				clickedData.length !== 0 && clickedData.length === dataLength
+			}
+			onChange={checkAllBox}
+		/>,
 		<_.TitleText>상태</_.TitleText>,
 		<_.TitleText>기업명</_.TitleText>,
 		<_.TitleText>채용직군</_.TitleText>,
@@ -150,9 +211,22 @@ export function RecruitmentFormTable({ recruitmentForm, refetchRecruitmentForm, 
 				</Button>
 			</_.BtnWrapper>
 			<_.TableWrapper>
-				<Table tableData={tableAllDatas} title={tableTitle} width={tableWidth} />
+				<Table
+					tableData={
+						recruitmentFormIsLoading
+							? loadingTableDataArray
+							: tableAllDatas
+					}
+					title={tableTitle}
+					width={tableWidth}
+				/>
 			</_.TableWrapper>
-			<Pagination total={100} limit={10} data={searchRecruitmentFormQueryString} setData={setSearchRecruitmentFormQueryString} refetch={refetchRecruitmentForm} />
+			<Pagination
+				page={recruitmentForm?.total_page_count}
+				data={searchRecruitmentFormQueryString}
+				setData={setSearchRecruitmentFormQueryString}
+				refetch={refetchRecruitmentForm}
+			/>
 		</_.Container>
 	);
 }
