@@ -1,7 +1,5 @@
-import { Button, Stack } from '@team-return/design-system';
+import { Button, Icon, Stack } from '@team-return/design-system';
 import * as _ from '../style';
-import PlusBtn from '../../../../Assets/SVG/PlusBtn.svg';
-import DisabledPlusBtn from '../../../../Assets/SVG/DisabledPlusBtn.svg';
 import TrashBtn from '../../../../Assets/SVG/TrashBtn.svg';
 import DisabledTrashBtn from '../../../../Assets/SVG/DisabledTrashBtn.svg';
 import { useChangeTrainDate } from '../../../../Apis/Applications';
@@ -74,12 +72,9 @@ export function ChangeInternshipStudentStatus({ selectStudent, selectCompany, se
 		<_.Container>
 			<Stack justify="space-between" align="center">
 				<_.TitleText>현장 실습 학생 추가하기</_.TitleText>
-				<_.Img
-					curser={form.end_date !== '' || form.start_date !== ''}
-					src={selectCompany !== 0 && form.end_date !== '' && form.start_date !== '' ? PlusBtn : DisabledPlusBtn}
-					alt=""
-					onClick={addInternshipStudentCheck}
-				/>
+				<_.PlusIcon click={form.end_date !== '' && form.start_date !== ''} onClick={addInternshipStudentCheck}>
+					<Icon icon="Plus" color="gray10" />
+				</_.PlusIcon>
 			</Stack>
 			<_.Line />
 			<_.TitleText>파견/종료일자 변경하기</_.TitleText>
@@ -90,7 +85,13 @@ export function ChangeInternshipStudentStatus({ selectStudent, selectCompany, se
 			<Stack justify="space-between" align="end">
 				<Stack align="center">
 					<_.ContentText>종료일자</_.ContentText>
-					<_.DateInput type="date" name="end_date" value={form.end_date} min={String(form.start_date) ? String(form.start_date) : allDate} onChange={handleChange} />
+					<_.DateInput
+						type="date"
+						name="end_date"
+						value={form.end_date}
+						min={String(form.start_date) ? String(form.start_date) : allDate}
+						onChange={handleChange}
+					/>
 				</Stack>
 				<Button disabled={selectStudent.length === 0 || form.end_date === '' || form.start_date === ''} size="XXS" onClick={changeTrainDateAPI.mutate}>
 					일자 변경

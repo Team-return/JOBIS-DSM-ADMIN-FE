@@ -39,6 +39,17 @@ export const DateInput = styled.input`
 	margin-left: 8px;
 `;
 
+export const PlusIcon = styled.div<{ click: boolean }>`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background-color: ${({ click }) => (click ? '#135C9D' : '#7F7F7F')};
+	cursor: ${({ click }) => (click ? 'pointer' : 'not-allowed')};
+`;
+
 export const Img = styled.img<{ curser: boolean }>`
 	cursor: ${({ curser }) => (curser ? 'pointer' : 'not-allowed')};
 `;

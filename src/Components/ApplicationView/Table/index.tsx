@@ -1,4 +1,4 @@
-import { Button, CheckBox, Stack, Table } from '@team-return/design-system';
+import { Button, CheckBox, Icon, Stack, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
@@ -8,7 +8,6 @@ import ChevronUp from '../../../Assets/SVG/ChevronUp.svg';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
 import { DownloadDataPropsType } from '../../../Apis/FileDownload/request';
 import { useDownloadData } from '../../../Apis/FileDownload';
-import FileDown from '../../../Assets/SVG/FileDown.svg';
 import { useModalContext } from '../../../Utils/Modal';
 import { useChangeRequestStatus, useChangeTrainDate, useRejectApplication } from '../../../Apis/Applications';
 import { useForm } from '../../../Hooks/useForm';
@@ -29,7 +28,15 @@ interface PropsType {
 	allSelectStudent: string[];
 }
 
-export function ApplicationViewTable({ application, refetchApplication, allSelectFormId, searchQueryString, setSearchQueryString, applicationIsLoading, allSelectStudent }: PropsType) {
+export function ApplicationViewTable({
+	application,
+	refetchApplication,
+	allSelectFormId,
+	searchQueryString,
+	setSearchQueryString,
+	applicationIsLoading,
+	allSelectStudent,
+}: PropsType) {
 	const dataLength = application?.applications.length;
 	const { openModal, closeModal } = useModalContext();
 	const [clickedData, setClickedData] = useState<number[]>([]);
@@ -114,7 +121,9 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 
 	const openChangeTrainDateModal = () => {
 		openModal({
-			children: <ChangeTrainDateModal clickedData={clickedData} clickStudentName={clickStudentName} trainDateChange={trainDateChange} trainDate={trainDate} />,
+			children: (
+				<ChangeTrainDateModal clickedData={clickedData} clickStudentName={clickStudentName} trainDateChange={trainDateChange} trainDate={trainDate} />
+			),
 			onSubmit: () => {
 				setTimeout(changeTrainDateAPI.mutate);
 			},
@@ -164,13 +173,23 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 
 			return [
 				<CheckBox checked={clickedData.includes(application.application_id)} onChange={clickCheckBox} />,
-				<_.ContentText color={applicationStatusTextColor[application.application_status]}>{applicationStatus[application.application_status]}</_.ContentText>, // 상태
+				<_.ContentText color={applicationStatusTextColor[application.application_status]}>
+					{applicationStatus[application.application_status]}
+				</_.ContentText>, // 상태
 				<_.ContentText>{application.student_gcn}</_.ContentText>, // 학법
 				<_.ContentText>{application.student_name}</_.ContentText>, // 이름
 				<_.ContentText>{application.company_name}</_.ContentText>, // 기업
 				<_.OpenBoxWrapper>
 					{application.application_attachment_url.length !== 0 ? (
-						<_.UnfoldImgWrapper onClick={downloadBoxView !== application.application_id ? changeDownloadBoxView : () => {}}>
+						<_.UnfoldImgWrapper
+							onClick={
+								downloadBoxView !== application.application_id
+									? changeDownloadBoxView
+									: () => {
+											return;
+									  }
+							}
+						>
 							<div>{downloadBoxView === application.application_id ? '닫기' : '펼쳐보기'}</div>
 							<img src={downloadBoxView === application.application_id ? ChevronUp : ChevronDown} alt="" />
 						</_.UnfoldImgWrapper>
@@ -193,7 +212,7 @@ export function ApplicationViewTable({ application, refetchApplication, allSelec
 												<div>{nameArray[nameArray.length - 1]}</div>
 											</Stack>
 											<Button size="S" onClick={() => fileDownloadAPI(url, nameArray[nameArray.length - 1])}>
-												<img width={16} src={FileDown} alt="파일 다운로드" />
+												<Icon icon="FileEarmarkArrowDown" size={16} color="gray10" />
 												다운
 											</Button>
 										</_.FileDownloadWrapper>

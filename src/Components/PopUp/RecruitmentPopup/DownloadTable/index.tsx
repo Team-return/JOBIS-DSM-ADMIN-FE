@@ -1,5 +1,4 @@
-import { Button, Table } from '@team-return/design-system';
-import FileDown from '../../../../Assets/SVG/FileDown.svg';
+import { Button, Icon, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { useDownloadData } from '../../../../Apis/FileDownload';
 import { useState } from 'react';
@@ -34,7 +33,7 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 				<_.TextWrapper>
 					<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>{nameArray[nameArray.length - 1]}</_.ContentText>
 					<Button size="S" onClick={() => fileDownloadAPI(url, nameArray[nameArray.length - 1])}>
-						<img width={16} src={FileDown} alt="파일 다운로드" />
+						<Icon icon="FileEarmarkArrowDown" size={16} color="gray10" />
 						다운
 					</Button>
 				</_.TextWrapper>,
