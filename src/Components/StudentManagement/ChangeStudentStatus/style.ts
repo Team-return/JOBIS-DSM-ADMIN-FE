@@ -50,6 +50,14 @@ export const PlusIcon = styled.div<{ click: boolean }>`
 	cursor: ${({ click }) => (click ? 'pointer' : 'not-allowed')};
 `;
 
-export const Img = styled.img<{ curser: boolean }>`
-	cursor: ${({ curser }) => (curser ? 'pointer' : 'not-allowed')};
+export const IconWrapper = styled.div<{ click: boolean }>`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: 1px solid ${({ click }) => (click ? '#E74C3C' : '#7F7F7F')};
+	background-color: white;
+	cursor: ${({ click }) => (click ? 'pointer' : 'not-allowed')};
 `;
