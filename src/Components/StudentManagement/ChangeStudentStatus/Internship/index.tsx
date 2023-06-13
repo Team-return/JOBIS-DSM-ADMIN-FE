@@ -1,7 +1,5 @@
 import { Button, Icon, Stack } from '@team-return/design-system';
 import * as _ from '../style';
-import TrashBtn from '../../../../Assets/SVG/TrashBtn.svg';
-import DisabledTrashBtn from '../../../../Assets/SVG/DisabledTrashBtn.svg';
 import { useChangeTrainDate } from '../../../../Apis/Applications';
 import { useForm } from '../../../../Hooks/useForm';
 import { Dispatch, SetStateAction } from 'react';
@@ -146,14 +144,12 @@ export function ChangeInternshipStudentStatus({
 			<_.Line />
 			<Stack justify="space-between" align="center">
 				<_.TitleText>현장 실습 학생 삭제하기</_.TitleText>
-				<_.Img
-					curser={selectStudent.length !== 0}
-					src={
-						selectStudent.length !== 0 ? TrashBtn : DisabledTrashBtn
-					}
-					alt=""
-					onClick={deleteStudentCheck}
-				/>
+				<_.IconWrapper click={selectStudent.length !== 0}>
+					<Icon
+						icon="Trash"
+						color={selectStudent.length !== 0 ? 'error' : 'gray60'}
+					></Icon>
+				</_.IconWrapper>
 			</Stack>
 		</_.Container>
 	);
