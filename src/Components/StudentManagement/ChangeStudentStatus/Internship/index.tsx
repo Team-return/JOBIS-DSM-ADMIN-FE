@@ -144,7 +144,7 @@ export function ChangeInternshipStudentStatus({
 			<_.Line />
 			<Stack justify="space-between" align="center">
 				<_.TitleText>현장 실습 학생 삭제하기</_.TitleText>
-				<_.IconWrapper click={selectStudent.length !== 0}>
+				<_.IconWrapper click={selectStudent.length !== 0} onClick={deleteStudentCheck}>
 					<Icon
 						icon="Trash"
 						color={selectStudent.length !== 0 ? 'error' : 'gray60'}
