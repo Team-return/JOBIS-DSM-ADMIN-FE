@@ -27,13 +27,13 @@ export const StudentTableWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-`
+`;
 
 export const CompanyTableWrapper = styled.div`
 	width: 32%;
 	display: flex;
 	flex-direction: column;
-`
+`;
 
 export const StudentManagementBoxWrapper = styled.div`
 	width: 28%;
@@ -41,4 +41,4 @@ export const StudentManagementBoxWrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	gap: 71px;
-`
+`;

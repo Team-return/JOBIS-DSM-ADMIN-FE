@@ -8,11 +8,16 @@ import { EmployableCompaniesPropsType } from '../../../Apis/Companies/request';
 import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
 
 interface PropsType {
-	setSearchQueryString: Dispatch<SetStateAction<EmployableCompaniesPropsType>>;
+	setSearchQueryString: Dispatch<
+		SetStateAction<EmployableCompaniesPropsType>
+	>;
 	refetchEmployableCompanies: () => void;
 }
 
-export function StudentManagementSearch({ setSearchQueryString, refetchEmployableCompanies }: PropsType) {
+export function StudentManagementSearch({
+	setSearchQueryString,
+	refetchEmployableCompanies,
+}: PropsType) {
 	const date = new Date(); // 현재 날짜 및 시간
 	const iYear = date.getFullYear(); // 연도
 
@@ -43,32 +48,62 @@ export function StudentManagementSearch({ setSearchQueryString, refetchEmployabl
 		setSearchQueryString({
 			...formData,
 			year: selectedItem.year,
-			company_type: getValueByKey(companyType, selectedItem.company_type.replace('기업', '')),
+			company_type: getValueByKey(
+				companyType,
+				selectedItem.company_type.replace('기업', '')
+			),
 		});
 		setTimeout(refetchEmployableCompanies);
 	};
 
-	const yearData = Array.from({ length: 11 }, (_, i) => (iYear - i).toString());
+	const yearData = Array.from({ length: 11 }, (_, i) =>
+		(iYear - i).toString()
+	);
 
 	return (
 		<_.Container>
 			<_.Wrapper>
 				<_.TitleText>학년도</_.TitleText>
 				<_.ContentWrapper width={13}>
-					<DropDown width={90} option={yearData} value={selectedItem.year} onChange={(yearData) => handleSelectedItem('year', yearData)} />
+					<DropDown
+						width={90}
+						option={yearData}
+						value={selectedItem.year}
+						onChange={(yearData) =>
+							handleSelectedItem('year', yearData)
+						}
+					/>
 				</_.ContentWrapper>
 				<_.TitleText>구분</_.TitleText>
 				<_.ContentWrapper width={20}>
-					<DropDown width={94} option={['전체', '선도기업', '참여기업']} value={selectedItem.company_type} onChange={(type) => handleSelectedItem('company_type', type)} />
+					<DropDown
+						width={94}
+						option={['전체', '선도기업', '참여기업']}
+						value={selectedItem.company_type}
+						onChange={(type) =>
+							handleSelectedItem('company_type', type)
+						}
+					/>
 				</_.ContentWrapper>
 				<_.TitleText>기업명</_.TitleText>
 				<_.ContentWrapper width={34.5}>
-					<Input width={96} name="company_name" iconName="Search" value={formData.company_name} onChange={handleChange} placeHolder="기업명 입력" />
+					<Input
+						width={96}
+						name="company_name"
+						iconName="Search"
+						value={formData.company_name}
+						onChange={handleChange}
+						placeHolder="기업명 입력"
+					/>
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.ButtonWrapper>
 				<Button onClick={handleSearch}>조회</Button>
-				<Button kind="Gray" onClick={handleDefaultData} margin={[0, 10, 0, 0]}>
+				<Button
+					kind="Gray"
+					onClick={handleDefaultData}
+					margin={[0, 10, 0, 0]}
+				>
 					초기화
 				</Button>
 			</_.ButtonWrapper>

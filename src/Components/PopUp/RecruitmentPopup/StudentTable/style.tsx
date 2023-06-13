@@ -10,9 +10,9 @@ export const Container = styled.div`
 	margin-top: 18px;
 `;
 
-export const TableWrapper = styled.div<{isRequest: boolean}>`
+export const TableWrapper = styled.div<{ isRequest: boolean }>`
 	width: 93.5%;
-	height: ${({isRequest}) => isRequest ? '320px' : '365px'};
+	height: ${({ isRequest }) => (isRequest ? '320px' : '365px')};
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;

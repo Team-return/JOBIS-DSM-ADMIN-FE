@@ -8,11 +8,17 @@ import { useDropDown } from '../../../Hooks/useDropDown';
 
 interface PropsType {
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
-	setSearchRecruitmentFormQueryString: Dispatch<SetStateAction<RecruitmentFormQueryStringType>>;
+	setSearchRecruitmentFormQueryString: Dispatch<
+		SetStateAction<RecruitmentFormQueryStringType>
+	>;
 	refetchRecruitmentForm: () => void;
 }
 
-export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSearchRecruitmentFormQueryString, refetchRecruitmentForm }: PropsType) {
+export function RecruitmentFormSearch({
+	searchRecruitmentFormQueryString,
+	setSearchRecruitmentFormQueryString,
+	refetchRecruitmentForm,
+}: PropsType) {
 	const date = new Date(); // 현재 날짜 및 시간
 	const iYear = date.getFullYear(); // 연도
 
@@ -55,39 +61,78 @@ export function RecruitmentFormSearch({ searchRecruitmentFormQueryString, setSea
 		setTimeout(refetchRecruitmentForm);
 	};
 
-	const yearData = Array.from({ length: 11 }, (_, i) => (iYear - i).toString());
+	const yearData = Array.from({ length: 11 }, (_, i) =>
+		(iYear - i).toString()
+	);
 
 	return (
 		<_.Container>
 			<_.Wrapper>
 				<_.TitleText>모집년도</_.TitleText>
 				<_.ContentWrapper>
-					<DropDown width={23} option={yearData} value={selectedItem.year} onChange={(yearData) => handleSelectedItem('year', yearData)} />
+					<DropDown
+						width={23}
+						option={yearData}
+						value={selectedItem.year}
+						onChange={(yearData) =>
+							handleSelectedItem('year', yearData)
+						}
+					/>
 				</_.ContentWrapper>
 				<_.TitleText>의뢰일자</_.TitleText>
 				<_.ContentWrapper width={17} style={{ paddingRight: '15px' }}>
-					<_.DateInput name="start" type="date" value={formData.start} onChange={handleChange} max={formData.end} />
+					<_.DateInput
+						name="start"
+						type="date"
+						value={formData.start}
+						onChange={handleChange}
+						max={formData.end}
+					/>
 					<div> ~ </div>
-					<_.DateInput name="end" type="date" value={formData.end} onChange={handleChange} min={formData.start} />
+					<_.DateInput
+						name="end"
+						type="date"
+						value={formData.end}
+						onChange={handleChange}
+						min={formData.start}
+					/>
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.Wrapper>
 				<_.TitleText>기업명</_.TitleText>
 				<_.ContentWrapper>
-					<Input width={96} name="company_name" value={formData.company_name} onChange={handleChange} placeHolder="기업명 입력" />
+					<Input
+						width={96}
+						name="company_name"
+						value={formData.company_name}
+						onChange={handleChange}
+						placeHolder="기업명 입력"
+					/>
 				</_.ContentWrapper>
 				<_.TitleText>모집상태</_.TitleText>
 				<_.ContentWrapper width={17}>
 					<DropDown
 						width={42}
-						option={['전체', '모집전', '모집중', '종료', '접수요청']}
+						option={[
+							'전체',
+							'모집전',
+							'모집중',
+							'종료',
+							'접수요청',
+						]}
 						value={selectedItem.status || '전체'}
-						onChange={(statusData) => handleSelectedItem('status', statusData)}
+						onChange={(statusData) =>
+							handleSelectedItem('status', statusData)
+						}
 					/>
 				</_.ContentWrapper>
 				<_.ButtonWrapper>
 					<Button onClick={handleSearch}>조회</Button>
-					<Button kind="Gray" onClick={handleDefaultData} margin={[0, 10, 0, 0]}>
+					<Button
+						kind="Gray"
+						onClick={handleDefaultData}
+						margin={[0, 10, 0, 0]}
+					>
 						초기화
 					</Button>
 				</_.ButtonWrapper>

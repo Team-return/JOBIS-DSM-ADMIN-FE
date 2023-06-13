@@ -11,10 +11,25 @@ interface PropType {
 	refetchCombinedStudentList: () => void;
 }
 
-export function CompanyTable({ setSelectCompany, employableCompanies, isLoading, refetchCombinedStudentList }: PropType) {
+export function CompanyTable({
+	setSelectCompany,
+	employableCompanies,
+	isLoading,
+	refetchCombinedStudentList,
+}: PropType) {
 	const dataLength = employableCompanies?.companies.length;
-	const loadingTableDataArray = Array.from({ length: 14 }, () => [<></>, <></>, <></>, <></>]);
-	const emptyTableDataArray = Array.from({ length: 14 - dataLength }, () => [<></>, <></>, <></>, <></>]);
+	const loadingTableDataArray = Array.from({ length: 14 }, () => [
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+	]);
+	const emptyTableDataArray = Array.from({ length: 14 - dataLength }, () => [
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+	]);
 	const tableAllDatas: JSX.Element[][] = employableCompanies?.companies
 		.map((company) => {
 			return [
@@ -26,8 +41,14 @@ export function CompanyTable({ setSelectCompany, employableCompanies, isLoading,
 					name="company"
 				/>,
 				<_.ContentText>{company.company_name}</_.ContentText>, // 기업명
-				<_.ContentText>{company.field_trainee_count ? company.field_trainee_count : '-'}</_.ContentText>, // 현장 실습
-				<_.ContentText>{company.contract_count ? company.contract_count : '-'}</_.ContentText>, // 근로 계약
+				<_.ContentText>
+					{company.field_trainee_count
+						? company.field_trainee_count
+						: '-'}
+				</_.ContentText>, // 현장 실습
+				<_.ContentText>
+					{company.contract_count ? company.contract_count : '-'}
+				</_.ContentText>, // 근로 계약
 			];
 		})
 		.concat(emptyTableDataArray);
@@ -52,7 +73,13 @@ export function CompanyTable({ setSelectCompany, employableCompanies, isLoading,
 		<_.Container>
 			<_.TitleText>기업목록</_.TitleText>
 			<_.TableWrapper>
-				<Table tableData={isLoading ? loadingTableDataArray : tableAllDatas} title={tableTitle} width={tableWidth} />
+				<Table
+					tableData={
+						isLoading ? loadingTableDataArray : tableAllDatas
+					}
+					title={tableTitle}
+					width={tableWidth}
+				/>
 			</_.TableWrapper>
 		</_.Container>
 	);

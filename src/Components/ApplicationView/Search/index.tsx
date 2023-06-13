@@ -8,11 +8,16 @@ import { applicationStatus } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
 
 interface PropsType {
-	setSearchQueryString: Dispatch<SetStateAction<ApplicantInfoQueryStringType>>;
+	setSearchQueryString: Dispatch<
+		SetStateAction<ApplicantInfoQueryStringType>
+	>;
 	refetchCompanyRecruitment: () => void;
 }
 
-export function ApplicationViewSearch({ setSearchQueryString, refetchCompanyRecruitment }: PropsType) {
+export function ApplicationViewSearch({
+	setSearchQueryString,
+	refetchCompanyRecruitment,
+}: PropsType) {
 	const {
 		form: data,
 		setForm: setData,
@@ -35,7 +40,13 @@ export function ApplicationViewSearch({ setSearchQueryString, refetchCompanyRecr
 	};
 
 	const searching = () => {
-		setSearchQueryString({ ...data, application_status: getValueByKey(applicationStatus, selectedItem.application_status) });
+		setSearchQueryString({
+			...data,
+			application_status: getValueByKey(
+				applicationStatus,
+				selectedItem.application_status
+			),
+		});
 		setTimeout(refetchCompanyRecruitment);
 	};
 
@@ -45,15 +56,31 @@ export function ApplicationViewSearch({ setSearchQueryString, refetchCompanyRecr
 				<_.TitleText>상태</_.TitleText>
 				<_.ContentWrapper width={8.5}>
 					<DropDown
-						onChange={(type) => handleSelectedItem('application_status', type)}
+						onChange={(type) =>
+							handleSelectedItem('application_status', type)
+						}
 						width={90}
-						option={['전체', '승인요청', '승인', '합격', '불합격', '반려']}
+						option={[
+							'전체',
+							'승인요청',
+							'승인',
+							'합격',
+							'불합격',
+							'반려',
+						]}
 						value={selectedItem.application_status}
 					/>
 				</_.ContentWrapper>
 				<_.TitleText>이름</_.TitleText>
 				<_.ContentWrapper>
-					<Input width={96} name="student_name" value={data.student_name} onChange={handleChange} placeHolder="검색어 입력" iconName="Search" />
+					<Input
+						width={96}
+						name="student_name"
+						value={data.student_name}
+						onChange={handleChange}
+						placeHolder="검색어 입력"
+						iconName="Search"
+					/>
 				</_.ContentWrapper>
 				<_.Btn>
 					<Button onClick={searching}>조회</Button>

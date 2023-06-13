@@ -14,9 +14,15 @@ export function RecruitmentRequestPopup() {
 		company_id: id ? id : '',
 	});
 
-	const { data: application, refetch: refetchApplication, isLoading } = useGetApplicantInfo(applicationQueryString);
+	const {
+		data: application,
+		refetch: refetchApplication,
+		isLoading,
+	} = useGetApplicantInfo(applicationQueryString);
 
-	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<string[]>([]);
+	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<
+		string[]
+	>([]);
 	return (
 		<>
 			<StudentTable
@@ -26,7 +32,9 @@ export function RecruitmentRequestPopup() {
 				setApplicationAttachmentUrl={setApplicationAttachmentUrl}
 				applicationIsLoading={isLoading}
 			/>
-			<DownloadTable applicationAttachmentUrl={applicationAttachmentUrl!} />
+			<DownloadTable
+				applicationAttachmentUrl={applicationAttachmentUrl!}
+			/>
 			<_.BtnWrapper>
 				<Button onClick={() => window.close()}>닫기</Button>
 			</_.BtnWrapper>

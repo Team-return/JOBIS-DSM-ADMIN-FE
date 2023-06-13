@@ -17,7 +17,11 @@ const Router = createBrowserRouter([
 		children: [
 			{
 				path: '/',
-				element: cookies.get('access_token') ? <RecruitmentFormPage /> : <LoginPage />,
+				element: cookies.get('access_token') ? (
+					<RecruitmentFormPage />
+				) : (
+					<LoginPage />
+				),
 			},
 			{
 				path: 'login',

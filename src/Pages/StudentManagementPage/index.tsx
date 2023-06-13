@@ -25,15 +25,34 @@ export function StudentManagementPage() {
 	});
 
 	const [selectCompany, setSelectCompany] = useState(0);
-	const [selectInternshipStudent, setSelectInternshipStudent] = useState<number[]>([]);
-	const [selectEmploymentContractStudent, setSelectEmploymentContractStudent] = useState<number[]>([]);
+	const [selectInternshipStudent, setSelectInternshipStudent] = useState<
+		number[]
+	>([]);
+	const [
+		selectEmploymentContractStudent,
+		setSelectEmploymentContractStudent,
+	] = useState<number[]>([]);
 
-	const { data: employableCompanies, refetch: refetchEmployableCompanies, isLoading: employableCompaniesIsLoading } = useGetEmployableCompanies(searchQueryString);
-	const { data: combinedStudentList, refetch: refetchCombinedStudentList, isLoading: combinedStudentListIsLoading } = useGetCombinedStudentList(selectCompany);
+	const {
+		data: employableCompanies,
+		refetch: refetchEmployableCompanies,
+		isLoading: employableCompaniesIsLoading,
+	} = useGetEmployableCompanies(searchQueryString);
+	const {
+		data: combinedStudentList,
+		refetch: refetchCombinedStudentList,
+		isLoading: combinedStudentListIsLoading,
+	} = useGetCombinedStudentList(selectCompany);
 
 	const openAddInternshipStudentModal = () => {
 		openModal({
-			children: <ChangeEmploymentModal setSelectStudent={setSelectInternshipStudent} refetch={refetchCombinedStudentList} selectStudent={selectInternshipStudent} />,
+			children: (
+				<ChangeEmploymentModal
+					setSelectStudent={setSelectInternshipStudent}
+					refetch={refetchCombinedStudentList}
+					selectStudent={selectInternshipStudent}
+				/>
+			),
 		});
 	};
 
@@ -41,14 +60,19 @@ export function StudentManagementPage() {
 		<>
 			<Header />
 			<_.TableContainer>
-				<StudentManagementSearch setSearchQueryString={setSearchQueryString} refetchEmployableCompanies={refetchEmployableCompanies} />
+				<StudentManagementSearch
+					setSearchQueryString={setSearchQueryString}
+					refetchEmployableCompanies={refetchEmployableCompanies}
+				/>
 				<_.TableWrapper>
 					<_.CompanyTableWrapper>
 						<CompanyTable
 							employableCompanies={employableCompanies!}
 							isLoading={employableCompaniesIsLoading}
 							setSelectCompany={setSelectCompany}
-							refetchCombinedStudentList={refetchCombinedStudentList}
+							refetchCombinedStudentList={
+								refetchCombinedStudentList
+							}
 						/>
 					</_.CompanyTableWrapper>
 					<_.StudentTableWrapper>
@@ -58,14 +82,30 @@ export function StudentManagementPage() {
 							setSelectStudent={setSelectInternshipStudent}
 							selectStudent={selectInternshipStudent}
 						/>
-						<Button size="S" margin={[3.3]} kind="Ghost" disabled={selectInternshipStudent.length === 0} onClick={openAddInternshipStudentModal}>
-							<Icon icon="Chevron" direction="bottom" color={selectInternshipStudent.length === 0 ? 'gray50' : 'blue'}></Icon>
+						<Button
+							size="S"
+							margin={[3.3]}
+							kind="Ghost"
+							disabled={selectInternshipStudent.length === 0}
+							onClick={openAddInternshipStudentModal}
+						>
+							<Icon
+								icon="Chevron"
+								direction="bottom"
+								color={
+									selectInternshipStudent.length === 0
+										? 'gray50'
+										: 'blue'
+								}
+							></Icon>
 							근로계약 전환
 						</Button>
 						<EmploymentContractStudentTable
 							combinedStudentList={combinedStudentList!}
 							isLoading={combinedStudentListIsLoading}
-							setSelectStudent={setSelectEmploymentContractStudent}
+							setSelectStudent={
+								setSelectEmploymentContractStudent
+							}
 							selectStudent={selectEmploymentContractStudent}
 						/>
 					</_.StudentTableWrapper>
@@ -78,7 +118,9 @@ export function StudentManagementPage() {
 						/>
 						<ChangeEmploymentContractStudentStatus
 							selectStudent={selectEmploymentContractStudent}
-							setSelectStudent={setSelectEmploymentContractStudent}
+							setSelectStudent={
+								setSelectEmploymentContractStudent
+							}
 							refetch={refetchCombinedStudentList}
 						/>
 					</_.StudentManagementBoxWrapper>
