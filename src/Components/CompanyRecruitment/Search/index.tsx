@@ -6,7 +6,7 @@ import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
 import { useForm } from '../../../Hooks/useForm';
 import { companyType } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
-import { useGetCode } from '../../../Hooks/ApiHooks/useGetCode';
+import { useGetCode } from '../../../Hooks/ApiHooks/Codes';
 
 interface PropsType {
 	setSearchQueryString: Dispatch<SetStateAction<dataType>>;

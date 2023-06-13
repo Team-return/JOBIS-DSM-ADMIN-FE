@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGetApplicantInfo } from '../../../Hooks/ApiHooks/useGetApplicantInfo';
+import { useGetApplicantInfo } from '../../../Hooks/ApiHooks/Applications';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
 import { StudentTable } from '../../../Components/PopUp/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../../Components/PopUp/RecruitmentPopup/DownloadTable';

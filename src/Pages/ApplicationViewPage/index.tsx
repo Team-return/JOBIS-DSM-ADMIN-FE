@@ -3,7 +3,7 @@ import { Header } from '../../Components/Header';
 import { useState } from 'react';
 import { ApplicationViewSearch } from '../../Components/ApplicationView/Search';
 import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
-import { useGetApplicantInfo } from '../../Hooks/ApiHooks/useGetApplicantInfo';
+import { useGetApplicantInfo } from '../../Hooks/ApiHooks/Applications';
 import { ApplicationViewTable } from '../../Components/ApplicationView/Table';
 
 export function ApplicationViewPage() {

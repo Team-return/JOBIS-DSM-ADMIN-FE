@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { Header } from '../../Components/Header';
 import { CompanyTable } from '../../Components/StudentManagement/Table/CompanyTable';
 import { StudentManagementSearch } from '../../Components/StudentManagement/Search';
-import { useGetCombinedStudentList } from '../../Hooks/ApiHooks/useGetCombinedStudentList';
-import { useGetEmployableCompanies } from '../../Hooks/ApiHooks/useGetEmployableCompanies';
+import { useGetCombinedStudentList } from '../../Hooks/ApiHooks/Acceptances';
 import { useForm } from '../../Hooks/useForm';
 import * as _ from './style';
 import { InternshipStudentTable } from '../../Components/StudentManagement/Table/InternshipStudentTable';
@@ -14,6 +13,7 @@ import { ChangeEmploymentContractStudentStatus } from '../../Components/StudentM
 import { ChangeInternshipStudentStatus } from '../../Components/StudentManagement/ChangeStudentStatus/Internship';
 import { useModalContext } from '../../Utils/Modal';
 import { ChangeEmploymentModal } from '../../Components/Modal/ChangeEmploymentModal';
+import { useGetEmployableCompanies } from '../../Hooks/ApiHooks/Companies';
 
 export function StudentManagementPage() {
 	const date = new Date();

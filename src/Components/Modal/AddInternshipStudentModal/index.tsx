@@ -3,9 +3,9 @@ import * as _ from '../style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useForm } from '../../../Hooks/useForm';
 import { Pagination } from '../../../Utils/Pagination';
-import { useGetInternshipStudent } from '../../../Hooks/ApiHooks/useGetInternshipStudent';
 import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
 import { DateProps } from '../../../Apis/Acceptances/request';
+import { useGetInternshipStudent } from '../../../Hooks/ApiHooks/Applications';
 
 interface PropType {
 	selectCompany: number;
