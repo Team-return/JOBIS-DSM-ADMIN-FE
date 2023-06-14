@@ -48,13 +48,13 @@ export const useChangeRequestStatus = (
 };
 
 export const useChangeTrainDate = (
-	student_ids: number[],
+	application_ids: number[],
 	start_date: Date | string,
 	end_date: Date | string,
 	options: MutationOptions
 ) => {
 	const data = {
-		student_ids,
+		application_ids,
 		start_date,
 		end_date,
 	};
