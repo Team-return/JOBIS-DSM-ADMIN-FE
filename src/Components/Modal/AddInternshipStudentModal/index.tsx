@@ -26,6 +26,11 @@ export function AddInternshipStudentModal({
 		searchInputValue: '',
 	});
 	const [studentId, setStudentId] = useState<number[]>([]);
+	const {
+		data: studentList,
+		isLoading,
+		refetch: refetchStudentList,
+	} = useGetInternshipStudent(selectCompany);
 
 	const changeStudentFieldTrainAPI = useChangeStudentFieldTrain(
 		studentId,
@@ -33,16 +38,16 @@ export function AddInternshipStudentModal({
 		{
 			onSuccess: () => {
 				refetch();
+				refetchStudentList();
 				setStudentId([]);
 				setDate({ start_date: '', end_date: '' });
+				alert('성공적으로 추가되었습니다.');
+			},
+			onError: () => {
+				alert('추가에 실패했습니다.');
 			},
 		}
 	);
-	const {
-		data: studentList,
-		isLoading,
-		refetch: refetchStudentList,
-	} = useGetInternshipStudent(selectCompany);
 	const filteredStudents = studentList?.students.filter((student) =>
 		student.student_name.includes(searchInput.searchInputValue)
 	);

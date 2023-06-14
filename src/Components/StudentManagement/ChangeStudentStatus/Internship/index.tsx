@@ -59,6 +59,10 @@ export function ChangeInternshipStudentStatus({
 					start_date: '',
 					end_date: '',
 				});
+				alert('성공적으로 변경되었습니다.');
+			},
+			onError: () => {
+				alert("변경에 실패했습니다.")
 			},
 		}
 	);
@@ -69,6 +73,10 @@ export function ChangeInternshipStudentStatus({
 			onSuccess: () => {
 				refetch();
 				setSelectStudent([]);
+				alert('성공적으로 삭제되었습니다.');
+			},
+			onError: () => {
+				alert("삭제에 실패했습니다.")
 			},
 		}
 	);

@@ -5,6 +5,8 @@ import { CodeResponse } from './response';
 const router = '/codes';
 
 export const getAllCode = async (type: CodeType) => {
-	const { data } = await instance.get<Promise<CodeResponse>>(`${router}?type=${type}`);
+	const { data } = await instance.get<Promise<CodeResponse>>(
+		`${router}?type=${type}`
+	);
 	return data;
 };

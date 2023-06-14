@@ -1,26 +1,40 @@
 import { MutationOptions, useMutation } from 'react-query';
 import { instance } from '../axios';
 import { EmployableCompaniesPropsType, dataType } from './request';
-import { CompanyRecruitmentResponse, EmployableCompaniesResponse } from './response';
+import {
+	CompanyRecruitmentResponse,
+	EmployableCompaniesResponse,
+} from './response';
 
 const router = '/companies';
 
 export const getAllCompanyRecruitment = async (searchQueryString: dataType) => {
-	const { page, company_type, region, company_name, industry } = searchQueryString;
+	const { page, company_type, region, company_name, industry } =
+		searchQueryString;
 	const business_area = industry ? `&business_area=${industry}` : '';
-	const { data } = await instance.get<Promise<CompanyRecruitmentResponse>>(`${router}/teacher?page=${page}&type=${company_type}&name=${company_name}&region=${region}${business_area}`);
+	const { data } = await instance.get<Promise<CompanyRecruitmentResponse>>(
+		`${router}/teacher?page=${page}&type=${company_type}&name=${company_name}&region=${region}${business_area}`
+	);
 	return data;
 };
 
-export const getEmployableCompanies = async (searchQueryString: EmployableCompaniesPropsType) => {
+export const getEmployableCompanies = async (
+	searchQueryString: EmployableCompaniesPropsType
+) => {
 	const { company_name, company_type, year } = searchQueryString;
 	const companyType = company_type ? `&company_type=${company_type}` : '';
 	const companyName = company_name ? `&company_name=${company_name}` : '';
-	const { data } = await instance.get<Promise<EmployableCompaniesResponse>>(`${router}/employment?year=${year}${companyName}${companyType}`);
+	const { data } = await instance.get<Promise<EmployableCompaniesResponse>>(
+		`${router}/employment?year=${year}${companyName}${companyType}`
+	);
 	return data;
 };
 
-export const useChangeCompanyStatus = (status: string, company_ids: number[], options: MutationOptions) => {
+export const useChangeCompanyStatus = (
+	status: string,
+	company_ids: number[],
+	options: MutationOptions
+) => {
 	const data = {
 		company_ids,
 		company_type: status,
@@ -31,8 +45,14 @@ export const useChangeCompanyStatus = (status: string, company_ids: number[], op
 	});
 };
 
-export const useChangeContractCompany = (company_ids: number[], options: MutationOptions) => {
-	return useMutation(async () => instance.patch(`${router}/mou`, { company_ids }), {
-		...options,
-	});
+export const useChangeContractCompany = (
+	company_ids: number[],
+	options: MutationOptions
+) => {
+	return useMutation(
+		async () => instance.patch(`${router}/mou`, { company_ids }),
+		{
+			...options,
+		}
+	);
 };

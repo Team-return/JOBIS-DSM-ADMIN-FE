@@ -81,6 +81,7 @@ export function ApplicationViewTable({
 			refetchApplication();
 			setClickedData([]);
 			closeModal();
+			alert('성공적으로 변경되었습니다.');
 		},
 	});
 	const { isLoading: requestStatusIsLoading } = changeStatusAPI;
@@ -112,10 +113,10 @@ export function ApplicationViewTable({
 				refetchApplication();
 				setClickedData([]);
 				closeModal();
-				alert('썽공');
+				alert('반려에 성공했습니다.');
 			},
 			onError: () => {
-				alert('이미 승인임 ㅋ');
+				alert('반려에 실패했습니다.');
 			},
 		}
 	);
@@ -148,6 +149,10 @@ export function ApplicationViewTable({
 				refetchApplication();
 				setClickedData([]);
 				closeModal();
+				alert('성공적으로 변경되었습니다.');
+			},
+			onError: () => {
+				alert("변경에 실패했습니다.")
 			},
 		}
 	);
