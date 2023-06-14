@@ -29,20 +29,31 @@ instance.interceptors.response.use(
 		if (axios.isAxiosError(error) && error.response) {
 			const { config } = error;
 			const refreshToken = cookies.get('refresh_token');
-			if (error.response.data.message === 'Invalid Token' || error.response.data.message === 'Token Expired' || error.message === 'Request failed with status code 403') {
+			if (
+				error.response.data.message === 'Invalid Token' ||
+				error.response.data.message === 'Token Expired' ||
+				error.message === 'Request failed with status code 403'
+			) {
 				if (refreshToken) {
 					cookies.remove('access_token');
 					reIssueToken(refreshToken)
 						.then((res) => {
-							const accessExpired = new Date(res.access_token_expired_at);
-							const refreshExpired = new Date(res.refresh_token_expired_at);
+							const accessExpired = new Date(
+								res.access_token_expired_at
+							);
+							const refreshExpired = new Date(
+								res.refresh_token_expired_at
+							);
 							cookies.set('access_token', res.access_token, {
 								expires: accessExpired,
 							});
 							cookies.set('refresh_token', res.refresh_token, {
 								expires: refreshExpired,
 							});
-							if (config!.headers) config!.headers['Authorization'] = `Bearer ${res.access_token}`;
+							if (config!.headers)
+								config!.headers[
+									'Authorization'
+								] = `Bearer ${res.access_token}`;
 							return axios(config!);
 						})
 						.catch(() => {
