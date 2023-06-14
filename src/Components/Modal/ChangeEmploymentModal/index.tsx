@@ -41,6 +41,10 @@ export function ChangeEmploymentModal({
 				refetch();
 				setSelectStudent([]);
 				setSelectCodeKeywords([]);
+				alert('성공적으로 변경되었습니다.');
+			},
+			onError: () => {
+				alert("변경에 실패했습니다.")
 			},
 		}
 	);

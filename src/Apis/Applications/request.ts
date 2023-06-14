@@ -1,4 +1,10 @@
-export type StatusType = 'REQUESTED' | 'APPROVED' | 'FAILED' | 'PASS' | 'REJECTED' | '';
+export type StatusType =
+	| 'REQUESTED'
+	| 'APPROVED'
+	| 'FAILED'
+	| 'PASS'
+	| 'REJECTED'
+	| '';
 
 export interface ApplicantInfoQueryStringType {
 	page?: number;
