@@ -15,7 +15,6 @@ import { useDownloadData } from '../../../Apis/FileDownload';
 import { useModalContext } from '../../../Utils/Modal';
 import {
 	useChangeRequestStatus,
-	useChangeTrainDate,
 	useRejectApplication,
 } from '../../../Apis/Applications';
 import { useForm } from '../../../Hooks/useForm';
@@ -28,6 +27,7 @@ import { RejectApplicationModal } from '../../Modal/RejectApplicationModal';
 import { ChangeTrainDateModal } from '../../Modal/ChangeTrainDateModal';
 import { useDidMountEffect } from '../../../Hooks/useDidMountEffect';
 import OutsideClickHandler from 'react-outside-click-handler';
+import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
 
 interface PropsType {
 	application: ApplicationResponse;
@@ -58,8 +58,8 @@ export function ApplicationViewTable({
 	const [downloadBoxView, setDownloadBoxView] = useState<number>(0);
 	const [rejectReason, setRejectReason] = useState('');
 	const { form: trainDate, handleChange: trainDateChange } = useForm({
-		start_date: new Date(),
-		end_date: new Date(),
+		start_date: '',
+		end_date: '',
 	});
 	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
 		fileUrl: '',
@@ -140,7 +140,7 @@ export function ApplicationViewTable({
 		});
 	};
 
-	const changeTrainDateAPI = useChangeTrainDate(
+	const changeTrainDateAPI = useChangeStudentFieldTrain(
 		clickedData,
 		trainDate.start_date,
 		trainDate.end_date,

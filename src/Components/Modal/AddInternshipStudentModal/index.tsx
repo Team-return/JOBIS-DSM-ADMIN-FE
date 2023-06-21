@@ -34,7 +34,8 @@ export function AddInternshipStudentModal({
 
 	const changeStudentFieldTrainAPI = useChangeStudentFieldTrain(
 		studentId,
-		date,
+		date.start_date,
+		date.end_date,
 		{
 			onSuccess: () => {
 				refetch();

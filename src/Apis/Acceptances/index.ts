@@ -1,7 +1,6 @@
 import { MutationOptions, useMutation } from 'react-query';
 import { instance } from '../axios';
 import { CombinedStudentListResponse } from './response';
-import { DateProps } from './request';
 
 const router = '/acceptances';
 
@@ -60,13 +59,14 @@ export const useChangeEmployment = (
 
 export const useChangeStudentFieldTrain = (
 	application_ids: number[],
-	date: DateProps,
+	start_date: string,
+	end_date: string,
 	options: MutationOptions
 ) => {
 	const data = {
 		application_ids,
-		start_date: date.start_date,
-		end_date: date.end_date,
+		start_date,
+		end_date,
 	};
 	return useMutation(
 		async () => instance.patch(`${router}/field-train`, data),
