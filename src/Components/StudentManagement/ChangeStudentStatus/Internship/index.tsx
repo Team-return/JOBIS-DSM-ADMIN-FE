@@ -85,15 +85,15 @@ export function ChangeInternshipStudentStatus({
 		if (selectStudent.length !== 0) {
 			deleteInternshipStudentAPI.mutate();
 		} else {
-			alert('학생 선택 먼저 하셈');
+			alert('학생을 먼저 선택해주세요.');
 		}
 	};
 
 	const addInternshipStudentCheck = () => {
 		if (selectCompany === 0) {
-			alert('회사 선택 먼저 하셈');
+			alert('회사를 먼저 선택해주세요.');
 		} else if (form.end_date === '' && form.start_date === '') {
-			alert('파견일자, 종료일자 선택부터 ㄱ');
+			alert('파견일자, 종료일자를 먼저 선택해주세요.');
 		} else {
 			openAddInternshipStudentModal();
 		}

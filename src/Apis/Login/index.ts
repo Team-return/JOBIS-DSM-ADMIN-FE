@@ -37,7 +37,6 @@ export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 				}
 			},
 			onError: (err: AxiosError<AxiosError>) => {
-				console.log(err);
 				if (err.response) {
 					switch (err.response.status) {
 						case 401:

@@ -9,11 +9,12 @@ import {
 import { dataType } from '../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
+import { searchInArray } from '../../../Hooks/useSearchForArray';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
 	refetchCompanyRecruitment: () => void;
-	AllSelectFormId: number[];
+	allSelectFormId: number[];
 	searchQueryString: dataType;
 	setSearchQueryString: Dispatch<SetStateAction<dataType>>;
 	companyRecruitmentIsLoading: boolean;
@@ -22,7 +23,7 @@ interface PropsType {
 export function CompanyRecruitmentTable({
 	companyRecruitment,
 	refetchCompanyRecruitment,
-	AllSelectFormId,
+	allSelectFormId,
 	searchQueryString,
 	setSearchQueryString,
 	companyRecruitmentIsLoading,
@@ -32,10 +33,15 @@ export function CompanyRecruitmentTable({
 	const [changeStatus, setChangeStatus] = useState<string>('');
 
 	const checkAllBox = () => {
-		if (clickedData.length === dataLength) {
-			setClickedData([]);
+		if (searchInArray(allSelectFormId, clickedData).length === dataLength) {
+			setClickedData(
+				clickedData.filter((data) => !allSelectFormId.includes(data))
+			);
 		} else {
-			setClickedData(AllSelectFormId);
+			setClickedData((datas) => [
+				...datas,
+				...allSelectFormId.filter((data) => !datas.includes(data)),
+			]);
 		}
 	};
 
@@ -46,7 +52,7 @@ export function CompanyRecruitmentTable({
 			alert('성공적으로 변경되었습니다.');
 		},
 		onError: () => {
-			alert("변경에 실패했습니다.")
+			alert('변경에 실패했습니다.');
 		},
 	});
 	const { isLoading } = changeStatusAPI;
@@ -58,7 +64,7 @@ export function CompanyRecruitmentTable({
 			alert('성공적으로 변경되었습니다.');
 		},
 		onError: () => {
-			alert("변경에 실패했습니다.")
+			alert('변경에 실패했습니다.');
 		},
 	});
 
@@ -100,7 +106,7 @@ export function CompanyRecruitmentTable({
 	);
 	const tableAllDatas: JSX.Element[][] = companyRecruitment?.companies
 		.map((companie) => {
-			const ClickCheckBox = () => {
+			const clickCheckBox = () => {
 				if (clickedData.includes(companie.company_id)) {
 					setClickedData(
 						clickedData.filter(
@@ -124,7 +130,7 @@ export function CompanyRecruitmentTable({
 			return [
 				<CheckBox
 					checked={clickedData.includes(companie.company_id)}
-					onChange={ClickCheckBox}
+					onChange={clickCheckBox}
 				/>,
 				<_.ContentText>{companie.company_name}</_.ContentText>, // 기업명
 				<_.ContentText>{companie.region}</_.ContentText>, // 지역
@@ -163,7 +169,9 @@ export function CompanyRecruitmentTable({
 		<CheckBox
 			disabled={!(dataLength !== 0)}
 			checked={
-				clickedData.length !== 0 && clickedData.length === dataLength
+				clickedData.length !== 0 &&
+				searchInArray(allSelectFormId, clickedData).length ===
+					dataLength
 			}
 			onChange={checkAllBox}
 		/>,

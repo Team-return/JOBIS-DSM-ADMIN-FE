@@ -2,6 +2,7 @@ import { CheckBox, Table } from '@team-return/design-system';
 import * as _ from '../style';
 import { CombinedStudentListResponse } from '../../../../Apis/Acceptances/response';
 import { Dispatch, SetStateAction } from 'react';
+import { searchInArray } from '../../../../Hooks/useSearchForArray';
 
 interface PropType {
 	setSelectStudent: Dispatch<SetStateAction<number[]>>;
@@ -29,7 +30,7 @@ export function EmploymentContractStudentTable({
 		<></>,
 		<></>,
 	]);
-	const AllSelectFormId: number[] =
+	const allSelectFormId: number[] =
 		combinedStudentList?.acceptances_response! &&
 		combinedStudentList?.acceptances_response.map((studentList) => {
 			return studentList.acceptance_id;
@@ -37,17 +38,27 @@ export function EmploymentContractStudentTable({
 	const tableAllDatas: JSX.Element[][] =
 		combinedStudentList?.acceptances_response
 			.map((studentList) => {
+				const clickCheckBox = () => {
+					if (selectStudent.includes(studentList.acceptance_id)) {
+						setSelectStudent(
+							selectStudent.filter(
+								(selectStudents) =>
+									selectStudents !== studentList.acceptance_id
+							)
+						);
+					} else {
+						setSelectStudent((studentId) => [
+							...studentId,
+							studentList.acceptance_id,
+						]);
+					}
+				};
 				return [
 					<CheckBox
 						checked={selectStudent.includes(
 							studentList.acceptance_id
 						)}
-						onChange={() => {
-							setSelectStudent((studentId) => [
-								...studentId,
-								studentList.acceptance_id,
-							]);
-						}}
+						onChange={clickCheckBox}
 					/>,
 					<_.ContentText>{studentList.student_gcn}</_.ContentText>, // 학번
 					<_.ContentText>{studentList.student_name}</_.ContentText>, // 이름
@@ -57,18 +68,26 @@ export function EmploymentContractStudentTable({
 			.concat(emptyTableDataArray);
 
 	const selectAllCheckBox = () => {
-		if (selectStudent?.length === AllSelectFormId?.length) {
-			setSelectStudent([]);
+		if (
+			searchInArray(allSelectFormId, selectStudent).length === dataLength
+		) {
+			setSelectStudent(
+				selectStudent.filter((data) => !allSelectFormId.includes(data))
+			);
 		} else {
-			setSelectStudent(AllSelectFormId);
+			setSelectStudent((students) => [
+				...students,
+				...allSelectFormId.filter((data) => !students.includes(data)),
+			]);
 		}
 	};
 
 	const tableTitle: JSX.Element[] = [
 		<CheckBox
 			checked={
-				selectStudent?.length === AllSelectFormId?.length &&
-				AllSelectFormId?.length !== 0
+				allSelectFormId?.length !== 0 &&
+				searchInArray(allSelectFormId, selectStudent).length ===
+					allSelectFormId?.length
 			}
 			disabled={
 				combinedStudentList?.acceptances_response === undefined ||

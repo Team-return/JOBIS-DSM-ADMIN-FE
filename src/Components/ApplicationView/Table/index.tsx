@@ -28,6 +28,7 @@ import { ChangeTrainDateModal } from '../../Modal/ChangeTrainDateModal';
 import { useDidMountEffect } from '../../../Hooks/useDidMountEffect';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
+import { searchInArray } from '../../../Hooks/useSearchForArray';
 
 interface PropsType {
 	application: ApplicationResponse;
@@ -67,12 +68,24 @@ export function ApplicationViewTable({
 	});
 
 	const checkAllBox = () => {
-		if (clickedData.length === dataLength) {
-			setClickedData([]);
-			setClickStudentName([]);
+		if (searchInArray(allSelectFormId, clickedData).length === dataLength) {
+			setClickedData(
+				clickedData.filter((data) => !allSelectFormId.includes(data))
+			);
+			setClickStudentName(
+				clickStudentName.filter(
+					(name) => !allSelectStudent.includes(name)
+				)
+			);
 		} else {
-			setClickedData(allSelectFormId);
-			setClickStudentName(allSelectStudent);
+			setClickedData((datas) => [
+				...datas,
+				...allSelectFormId.filter((data) => !datas.includes(data)),
+			]);
+			setClickStudentName((names) => [
+				...names,
+				...allSelectStudent.filter((data) => !names.includes(data)),
+			]);
 		}
 	};
 
@@ -115,7 +128,7 @@ export function ApplicationViewTable({
 				closeModal();
 				alert('반려에 성공했습니다.');
 			},
-			onError: () => {
+			onError: (err) => {
 				alert('반려에 실패했습니다.');
 			},
 		}
@@ -152,7 +165,7 @@ export function ApplicationViewTable({
 				alert('성공적으로 변경되었습니다.');
 			},
 			onError: () => {
-				alert("변경에 실패했습니다.")
+				alert('변경에 실패했습니다.');
 			},
 		}
 	);
@@ -353,7 +366,9 @@ export function ApplicationViewTable({
 		<CheckBox
 			disabled={!(dataLength !== 0)}
 			checked={
-				clickedData.length !== 0 && clickedData.length === dataLength
+				clickedData.length !== 0 &&
+				searchInArray(allSelectFormId, clickedData).length ===
+					dataLength
 			}
 			onChange={checkAllBox}
 		/>,

@@ -59,7 +59,7 @@ export function ApplicationViewSearch({
 						onChange={(type) =>
 							handleSelectedItem('application_status', type)
 						}
-						width={90}
+						width={95}
 						option={[
 							'전체',
 							'승인요청',

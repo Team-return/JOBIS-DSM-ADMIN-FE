@@ -11,7 +11,7 @@ export const getAllRecruitmentForm = async (
 	const { year, page, company_name, start, end, status } =
 		searchRecruitmentFormQueryString;
 	const { data } = await instance.get<Promise<RecruitmentFormResponse>>(
-		`${router}/teacher?year=${year}&page=${page}&company-name=${company_name}&start=${start}&end=${end}&status=${
+		`${router}/teacher?year=${year}&page=${page}&company_name=${company_name}&start=${start}&end=${end}&status=${
 			status === '전체' || status === undefined ? '' : status
 		}`
 	);

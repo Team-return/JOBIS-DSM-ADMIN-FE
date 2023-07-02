@@ -79,7 +79,7 @@ export function CompanyRecruitmentSearch({
 						onChange={(type) =>
 							handleSelectedItem('company_type', type)
 						}
-						width={23}
+						width={28}
 						option={['전체', '선도기업', '참여기업']}
 						value={selectedItem.company_type}
 					/>

@@ -7,11 +7,12 @@ import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/reque
 import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
 import { companyStatus, companyType } from '../../../Utils/Translation';
 import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
+import { searchInArray } from '../../../Hooks/useSearchForArray';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
 	refetchRecruitmentForm: () => void;
-	AllSelectFormId: string[];
+	allSelectFormId: string[];
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
 	setSearchRecruitmentFormQueryString: Dispatch<
 		SetStateAction<RecruitmentFormQueryStringType>
@@ -22,7 +23,7 @@ interface PropsType {
 export function RecruitmentFormTable({
 	recruitmentForm,
 	refetchRecruitmentForm,
-	AllSelectFormId,
+	allSelectFormId,
 	searchRecruitmentFormQueryString,
 	setSearchRecruitmentFormQueryString,
 	recruitmentFormIsLoading,
@@ -41,17 +42,22 @@ export function RecruitmentFormTable({
 				alert('성공적으로 변경되었습니다.');
 			},
 			onError: () => {
-				alert("변경에 실패했습니다.")
+				alert('변경에 실패했습니다.');
 			},
 		}
 	);
 	const { isLoading } = changeStatusAPI;
 
 	const checkAllBox = () => {
-		if (clickedData.length === dataLength) {
-			setClickedData([]);
+		if (searchInArray(allSelectFormId, clickedData).length === dataLength) {
+			setClickedData(
+				clickedData.filter((data) => !allSelectFormId.includes(data))
+			);
 		} else {
-			setClickedData(AllSelectFormId);
+			setClickedData((datas) => [
+				...datas,
+				...allSelectFormId.filter((data) => !datas.includes(data)),
+			]);
 		}
 	};
 
@@ -161,7 +167,9 @@ export function RecruitmentFormTable({
 		<CheckBox
 			disabled={!(recruitmentForm?.recruitments.length !== 0)}
 			checked={
-				clickedData.length !== 0 && clickedData.length === dataLength
+				clickedData.length !== 0 &&
+				searchInArray(allSelectFormId, clickedData).length ===
+					dataLength
 			}
 			onChange={checkAllBox}
 		/>,
