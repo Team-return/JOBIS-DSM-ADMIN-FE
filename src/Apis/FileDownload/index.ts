@@ -12,4 +12,7 @@ export const useDownloadData = (propsData: DownloadDataPropsType) =>
 			fileSaver.saveAs(data, propsData.fileName);
 			alert('성공적으로 다운로드 되었습니다.');
 		},
+		onError: () => {
+			alert('다운로드에 실패했습니다.');
+		},
 	});
