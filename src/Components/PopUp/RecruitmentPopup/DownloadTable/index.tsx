@@ -35,7 +35,7 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 				<_.ContentText>{i + 1}</_.ContentText>,
 				<_.TextWrapper>
 					<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>
-						{nameArray[nameArray.length - 1]}
+						{nameArray[nameArray.length - 1].substring(37)}
 					</_.ContentText>
 					<Button
 						size="S"

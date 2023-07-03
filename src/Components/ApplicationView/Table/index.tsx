@@ -325,12 +325,9 @@ export function ApplicationViewTable({
 														{i + 1}
 													</_.CountNum>
 													<div>
-														{
-															nameArray[
-																nameArray.length -
-																	1
-															]
-														}
+														{nameArray[
+															nameArray.length - 1
+														].substring(37)}
 													</div>
 												</Stack>
 												<Button
