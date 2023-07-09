@@ -9,7 +9,7 @@ import {
 import { dataType } from '../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
-import { searchInArray } from '../../../Hooks/useSearchForArray';
+import { searchInArray } from '../../../Utils/useSearchForArray';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;

@@ -6,8 +6,8 @@ import { Pagination } from '../../../Utils/Pagination';
 import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
 import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
 import { companyStatus, companyType } from '../../../Utils/Translation';
-import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
-import { searchInArray } from '../../../Hooks/useSearchForArray';
+import { getValueByKey } from '../../../Utils/useGetPropertyKey';
+import { searchInArray } from '../../../Utils/useSearchForArray';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;

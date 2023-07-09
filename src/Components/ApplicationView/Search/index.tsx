@@ -3,7 +3,7 @@ import * as _ from './style';
 import { Dispatch, SetStateAction } from 'react';
 import { useForm } from '../../../Hooks/useForm';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
-import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
+import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { applicationStatus } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
 

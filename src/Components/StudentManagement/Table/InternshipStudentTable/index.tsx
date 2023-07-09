@@ -2,7 +2,7 @@ import { CheckBox, Table } from '@team-return/design-system';
 import * as _ from '../style';
 import { CombinedStudentListResponse } from '../../../../Apis/Acceptances/response';
 import { Dispatch, SetStateAction } from 'react';
-import { searchInArray } from '../../../../Hooks/useSearchForArray';
+import { searchInArray } from '../../../../Utils/useSearchForArray';
 
 interface PropType {
 	setSelectStudent: Dispatch<SetStateAction<number[]>>;

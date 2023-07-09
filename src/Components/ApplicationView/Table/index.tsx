@@ -28,7 +28,7 @@ import { ChangeTrainDateModal } from '../../Modal/ChangeTrainDateModal';
 import { useDidMountEffect } from '../../../Hooks/useDidMountEffect';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
-import { searchInArray } from '../../../Hooks/useSearchForArray';
+import { searchInArray } from '../../../Utils/useSearchForArray';
 
 interface PropsType {
 	application: ApplicationResponse;

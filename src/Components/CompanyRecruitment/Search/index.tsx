@@ -2,7 +2,7 @@ import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction } from 'react';
 import { dataType } from '../../../Apis/Companies/request';
-import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
+import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { useForm } from '../../../Hooks/useForm';
 import { companyType } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';

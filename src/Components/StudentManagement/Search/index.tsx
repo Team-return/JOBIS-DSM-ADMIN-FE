@@ -5,7 +5,7 @@ import { useForm } from '../../../Hooks/useForm';
 import { companyType } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
 import { EmployableCompaniesPropsType } from '../../../Apis/Companies/request';
-import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
+import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 
 interface PropsType {
 	setSearchQueryString: Dispatch<
