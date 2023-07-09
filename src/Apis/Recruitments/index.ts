@@ -5,6 +5,7 @@ import { useMutation, MutationOptions } from 'react-query';
 
 const router = '/recruitments';
 
+/** 선생님 모집의뢰 리스트 조회 */
 export const getAllRecruitmentForm = async (
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType
 ) => {
@@ -18,6 +19,7 @@ export const getAllRecruitmentForm = async (
 	return data;
 };
 
+/** 선생님 모집의뢰 상태 변경 */
 export const useChangeRecruitmentsStatus = (
 	status: string,
 	recruitment_ids: string[],

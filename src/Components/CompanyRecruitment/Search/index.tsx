@@ -19,9 +19,10 @@ export function CompanyRecruitmentSearch({
 }: PropsType) {
 	const { data: businessCode, refetch: refetchBusinessCode } =
 		useGetCode('BUSINESS_AREA');
+
+	/** 키워드를 받아와서 변수에 담는 코드입니다. */
 	const keywords = businessCode?.codes.map((item) => item.keyword);
-	const whole = ['전체'];
-	const allKeywords = keywords ? [...whole, ...keywords] : whole;
+	const allKeywords = keywords ? [...['전체'], ...keywords] : ['전체'];
 
 	const {
 		form: data,
@@ -38,6 +39,7 @@ export function CompanyRecruitmentSearch({
 		industry: '',
 	});
 
+	/** 검색값들을 초기화하는 함수입니다. */
 	const defaultData = () => {
 		setData({
 			page: 1,
@@ -50,6 +52,7 @@ export function CompanyRecruitmentSearch({
 		});
 	};
 
+	/** 검색하는 함수입니다. */
 	const searching = () => {
 		const searchingIndustry =
 			selectedItem.industry === '전체' ? '' : selectedItem.industry;
@@ -65,6 +68,7 @@ export function CompanyRecruitmentSearch({
 		setTimeout(refetchCompanyRecruitment);
 	};
 
+	/** 초기화 버튼을 눌렀을 때 실행할 함수입니다. */
 	const onResetButtonClick = () => {
 		defaultData();
 		refetchBusinessCode();

@@ -8,6 +8,7 @@ import {
 
 const router = '/companies';
 
+/** 선생님 회사 리스트 조회 */
 export const getAllCompanyRecruitment = async (searchQueryString: dataType) => {
 	const { page, company_type, region, company_name, industry } =
 		searchQueryString;
@@ -18,6 +19,7 @@ export const getAllCompanyRecruitment = async (searchQueryString: dataType) => {
 	return data;
 };
 
+/** 취업 관리 페이지 회사 조회 */
 export const getEmployableCompanies = async (
 	searchQueryString: EmployableCompaniesPropsType
 ) => {
@@ -30,6 +32,7 @@ export const getEmployableCompanies = async (
 	return data;
 };
 
+/** 기업 구분 변경 */
 export const useChangeCompanyStatus = (
 	status: string,
 	company_ids: number[],
@@ -45,6 +48,7 @@ export const useChangeCompanyStatus = (
 	});
 };
 
+/** 협약 여부 변경 */
 export const useChangeContractCompany = (
 	company_ids: number[],
 	options: MutationOptions

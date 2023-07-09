@@ -31,6 +31,7 @@ export function ApplicationViewSearch({
 		application_status: '',
 	});
 
+	/** 검색창을 초기화하는 함수입니다. */
 	const defaultData = () => {
 		setData({
 			student_name: '',
@@ -39,6 +40,7 @@ export function ApplicationViewSearch({
 		setSelectedItem({ application_status: '' });
 	};
 
+	/** 검색하는 함수입니다. */
 	const searching = () => {
 		setSearchQueryString({
 			...data,

@@ -17,24 +17,33 @@ export function EmploymentContractStudentTable({
 	setSelectStudent,
 	selectStudent,
 }: PropType) {
+	/** 학생 데이터의 length를 계산한 값입니다. */
 	const dataLength = combinedStudentList?.acceptances_response.length;
+
+	/** 로딩할 때 보여줄 빈 테이블입니다. */
 	const loadingTableDataArray = Array.from({ length: 5 }, () => [
 		<></>,
 		<></>,
 		<></>,
 		<></>,
 	]);
+
+	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from({ length: 5 - dataLength }, () => [
 		<></>,
 		<></>,
 		<></>,
 		<></>,
 	]);
+
+	/** 전체 선택을 위해 모든 id를 모아둡니다. */
 	const allSelectFormId: number[] =
 		combinedStudentList?.acceptances_response! &&
 		combinedStudentList?.acceptances_response.map((studentList) => {
 			return studentList.acceptance_id;
 		});
+
+	/** 데이터 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] =
 		combinedStudentList?.acceptances_response
 			.map((studentList) => {
@@ -67,6 +76,7 @@ export function EmploymentContractStudentTable({
 			})
 			.concat(emptyTableDataArray);
 
+	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const selectAllCheckBox = () => {
 		if (
 			searchInArray(allSelectFormId, selectStudent).length === dataLength
@@ -82,6 +92,7 @@ export function EmploymentContractStudentTable({
 		}
 	};
 
+	/** 테이블의 title입니다. */
 	const tableTitle: JSX.Element[] = [
 		<CheckBox
 			checked={
@@ -99,6 +110,8 @@ export function EmploymentContractStudentTable({
 		<_.TitleText>이름</_.TitleText>,
 		<_.TitleText>근로계약 일자</_.TitleText>,
 	];
+
+	/** 테이블의 width입니다. */
 	const tableWidth: number[] = [10, 20, 40, 40];
 
 	return (

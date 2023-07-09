@@ -28,10 +28,12 @@ export function RecruitmentFormTable({
 	setSearchRecruitmentFormQueryString,
 	recruitmentFormIsLoading,
 }: PropsType) {
+	/** 지원서 length입니다. */
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 
+	/** 지원서 상태를 변경하는 api를 호출합니다. */
 	const changeStatusAPI = useChangeRecruitmentsStatus(
 		changeStatus,
 		clickedData,
@@ -48,6 +50,7 @@ export function RecruitmentFormTable({
 	);
 	const { isLoading } = changeStatusAPI;
 
+	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
 		if (searchInArray(allSelectFormId, clickedData).length === dataLength) {
 			setClickedData(
@@ -61,11 +64,13 @@ export function RecruitmentFormTable({
 		}
 	};
 
+	/** 상태 변경 버튼을 눌렀을 때 실행할 함수입니다. */
 	const changeStatusBtnClick = (statusName: string) => {
 		setChangeStatus(statusName);
 		setTimeout(() => changeStatusAPI.mutate());
 	};
 
+	/** 로딩할 때 보여줄 빈 테이블입니다. */
 	const loadingTableDataArray = Array.from({ length: 11 }, () => [
 		<></>,
 		<></>,
@@ -78,6 +83,8 @@ export function RecruitmentFormTable({
 		<></>,
 		<></>,
 	]);
+
+	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from({ length: 11 - dataLength }, () => [
 		<></>,
 		<></>,
@@ -90,6 +97,8 @@ export function RecruitmentFormTable({
 		<></>,
 		<></>,
 	]);
+
+	/** 데이터 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] = recruitmentForm?.recruitments
 		.map((recruitment) => {
 			const job = recruitment.recruitment_job.split(',').join(' / ');
@@ -105,6 +114,7 @@ export function RecruitmentFormTable({
 				}
 			};
 
+			/** 팝업창을 띄워줄 함수입니다.. */
 			const openApplicationCountPage = (requested: boolean) => {
 				if (requested) {
 					window.open(
@@ -163,6 +173,7 @@ export function RecruitmentFormTable({
 		})
 		.concat(emptyTableDataArray);
 
+	/** 테이블의 title입니다. */
 	const tableTitle: JSX.Element[] = [
 		<CheckBox
 			disabled={!(recruitmentForm?.recruitments.length !== 0)}
@@ -183,6 +194,8 @@ export function RecruitmentFormTable({
 		<_.TitleText>모집시작일</_.TitleText>,
 		<_.TitleText>모집종료일</_.TitleText>,
 	];
+
+	/** 테이블의 width입니다. */
 	const tableWidth: number[] = [3, 7, 18, 30, 6, 6, 6, 6, 10, 10];
 
 	const buttonDisabled = isLoading || clickedData.length === 0;

@@ -8,9 +8,14 @@ export interface ApplicationType {
 	student_name: string;
 	student_gcn: string;
 	company_name: string;
-	application_attachment_url: string[];
+	attachments: AttachmentUrlType[];
 	created_at: string;
 	application_status: string;
+}
+
+export interface AttachmentUrlType {
+	url: string;
+	type: string;
 }
 
 export interface InternshipStudentResponse {

@@ -18,6 +18,8 @@ export function ChangeTrainDateModal({
 	trainDate,
 }: PropsType) {
 	const date = new Date();
+
+	/** 현재 날짜를 0000-00-00 형식으로 바꿉니다. */
 	const allDate =
 		date.getFullYear() +
 		'-' +

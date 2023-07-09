@@ -5,6 +5,7 @@ import { useGetApplicantInfo } from '../../../Hooks/ApiHooks/Applications';
 import { StudentTable } from '../../../Components/PopUp/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../../Components/PopUp/RecruitmentPopup/DownloadTable';
 import { Button } from '@team-return/design-system';
+import { AttachmentUrlType } from '../../../Apis/Applications/response';
 
 export function RecruitmentRequestPopup() {
 	const id = new URLSearchParams(window.location.search).get('id');
@@ -21,7 +22,7 @@ export function RecruitmentRequestPopup() {
 	} = useGetApplicantInfo(applicationQueryString);
 
 	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<
-		string[]
+		AttachmentUrlType[]
 	>([]);
 	return (
 		<>

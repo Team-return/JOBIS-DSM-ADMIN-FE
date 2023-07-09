@@ -7,6 +7,7 @@ import { AxiosError } from 'axios';
 
 const router = '/users';
 
+/** 로그인 */
 export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 	const navigator = useNavigate();
 	const [, setCookies, removeCookies] = useCookies();

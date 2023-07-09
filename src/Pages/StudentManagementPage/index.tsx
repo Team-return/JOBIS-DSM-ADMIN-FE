@@ -44,6 +44,7 @@ export function StudentManagementPage() {
 		isLoading: combinedStudentListIsLoading,
 	} = useGetCombinedStudentList(selectCompany);
 
+	/* 현장실습 모달을 여는 함수입니다. **/
 	const openAddInternshipStudentModal = () => {
 		openModal({
 			children: (

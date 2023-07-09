@@ -21,6 +21,8 @@ export function ChangeInternshipStudentStatus({
 	refetch,
 }: PropType) {
 	const date = new Date();
+
+	/** 현재 날짜를 0000-00-00 형식으로 바꿉니다. */
 	const allDate =
 		date.getFullYear() +
 		'-' +
@@ -34,6 +36,7 @@ export function ChangeInternshipStudentStatus({
 		end_date: '',
 	});
 
+	/** 현장 실습 학생 추가 모달을 띄우는 함수입니다. */
 	const openAddInternshipStudentModal = () => {
 		openModal({
 			children: (
@@ -47,6 +50,7 @@ export function ChangeInternshipStudentStatus({
 		});
 	};
 
+	/** 현장 실습 날짜를 변경하는 api를 호출합니다. */
 	const changeTrainDateAPI = useChangeTrainDate(
 		selectStudent,
 		form.start_date,
@@ -62,11 +66,12 @@ export function ChangeInternshipStudentStatus({
 				alert('성공적으로 변경되었습니다.');
 			},
 			onError: () => {
-				alert("변경에 실패했습니다.")
+				alert('변경에 실패했습니다.');
 			},
 		}
 	);
 
+	/** 현장 실습 학생을 삭제하는 api를 호출합니다. */
 	const deleteInternshipStudentAPI = useDeleteInternshipStudent(
 		selectStudent,
 		{
@@ -76,11 +81,12 @@ export function ChangeInternshipStudentStatus({
 				alert('성공적으로 삭제되었습니다.');
 			},
 			onError: () => {
-				alert("삭제에 실패했습니다.")
+				alert('삭제에 실패했습니다.');
 			},
 		}
 	);
 
+	/** 학생 삭제버튼을 눌렀을 때 실행할 함수입니다. */
 	const deleteStudentCheck = () => {
 		if (selectStudent.length !== 0) {
 			deleteInternshipStudentAPI.mutate();
@@ -89,6 +95,7 @@ export function ChangeInternshipStudentStatus({
 		}
 	};
 
+	/** 현장 실습 학생 추가 버튼을 눌렀을 때 실행할 함수입니다. */
 	const addInternshipStudentCheck = () => {
 		if (selectCompany === 0) {
 			alert('회사를 먼저 선택해주세요.');
@@ -152,7 +159,10 @@ export function ChangeInternshipStudentStatus({
 			<_.Line />
 			<Stack justify="space-between" align="center">
 				<_.TitleText>현장 실습 학생 삭제하기</_.TitleText>
-				<_.IconWrapper click={selectStudent.length !== 0} onClick={deleteStudentCheck}>
+				<_.IconWrapper
+					click={selectStudent.length !== 0}
+					onClick={deleteStudentCheck}
+				>
 					<Icon
 						icon="Trash"
 						color={selectStudent.length !== 0 ? 'error' : 'gray60'}

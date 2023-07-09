@@ -32,6 +32,7 @@ export function CompanyRecruitmentTable({
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 
+	/** 전체 선택 & 전체 선택 해제하는 함수입니다. */
 	const checkAllBox = () => {
 		if (searchInArray(allSelectFormId, clickedData).length === dataLength) {
 			setClickedData(
@@ -45,6 +46,7 @@ export function CompanyRecruitmentTable({
 		}
 	};
 
+	/** 회사 상태를 변경하는 api를 호출합입니다. */
 	const changeStatusAPI = useChangeCompanyStatus(changeStatus, clickedData, {
 		onSuccess: () => {
 			refetchCompanyRecruitment();
@@ -57,6 +59,7 @@ export function CompanyRecruitmentTable({
 	});
 	const { isLoading } = changeStatusAPI;
 
+	/** 회사 상태를 mou로 변경하는 api를 호출합니다. */
 	const changeContractAPI = useChangeContractCompany(clickedData, {
 		onSuccess: () => {
 			refetchCompanyRecruitment();
@@ -68,11 +71,13 @@ export function CompanyRecruitmentTable({
 		},
 	});
 
+	/** 변경 버튼을 클릭했을 때 실행할 함수입니다. */
 	const changeStatusBtnClick = (statusName: string) => {
 		setChangeStatus(statusName);
 		setTimeout(() => changeStatusAPI.mutate());
 	};
 
+	/** 로딩 중일 때 보여줄 빈 테이블입니다. */
 	const loadingTableDataArray = Array.from({ length: 11 }, () => [
 		<></>,
 		<></>,
@@ -87,25 +92,27 @@ export function CompanyRecruitmentTable({
 		<></>,
 		<></>,
 	]);
-	const emptyTableDataArray = Array.from(
-		{ length: 11 - (dataLength % 11) },
-		() => [
-			<></>,
-			<></>,
-			<></>,
-			<></>,
-			<></>,
-			<></>,
-			<></>,
-			<></>,
-			<></>,
-			<></>,
-			<></>,
-			<></>,
-		]
-	);
+
+	/** 데이터 테이블 아래 빈 값을 보여줄 때 필요한 빈 테이블입니다. */
+	const emptyTableDataArray = Array.from({ length: 11 - dataLength }, () => [
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+	]);
+
+	/** 데이터 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] = companyRecruitment?.companies
 		.map((companie) => {
+			/* 체크박스를 눌렀을 때 id를 저장하고 삭제하는 함수입니다. **/
 			const clickCheckBox = () => {
 				if (clickedData.includes(companie.company_id)) {
 					setClickedData(
@@ -119,6 +126,7 @@ export function CompanyRecruitmentTable({
 				}
 			};
 
+			/** 팝업창을 보여줄 때 실행하는 함수입니다. */
 			const openPopupPage = () => {
 				window.open(
 					`/ReviewSubmissionPopup?company_id=${companie.company_id}`,
@@ -165,6 +173,7 @@ export function CompanyRecruitmentTable({
 		})
 		.concat(emptyTableDataArray);
 
+	/** 테이블 title입니다. */
 	const tableTitle: JSX.Element[] = [
 		<CheckBox
 			disabled={!(dataLength !== 0)}
@@ -203,6 +212,8 @@ export function CompanyRecruitmentTable({
 			등록
 		</_.TitleText>,
 	];
+
+	/** 회사 상태를 mou로 변경하는 api를 호출합니다. */
 	const tableWidth: number[] = [4, 15, 6, 9, 6, 8, 9, 9, 9, 9, 8, 8];
 
 	const buttonDisabled = isLoading || clickedData.length === 0;
