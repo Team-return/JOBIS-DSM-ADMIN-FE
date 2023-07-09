@@ -1,10 +1,10 @@
 import { MutationOptions, useMutation } from 'react-query';
 import { instance } from '../axios';
 import { CombinedStudentListResponse } from './response';
-import { DateProps } from './request';
 
 const router = '/acceptances';
 
+/** 현장실습생, 근로계약생 조회 */
 export const getCombinedStudentList = async (company_id: number) => {
 	const { data } = await instance.get<Promise<CombinedStudentListResponse>>(
 		`${router}/${company_id}`
@@ -12,6 +12,7 @@ export const getCombinedStudentList = async (company_id: number) => {
 	return data;
 };
 
+/** 현장실습생 삭제 */
 export const useDeleteInternshipStudent = (
 	application_ids: number[],
 	options: MutationOptions
@@ -24,6 +25,7 @@ export const useDeleteInternshipStudent = (
 	);
 };
 
+/** 근로계약일자 변경 */
 export const useChangeStudentContractDate = (
 	acceptance_ids: number[],
 	contract_date: string,
@@ -41,6 +43,7 @@ export const useChangeStudentContractDate = (
 	);
 };
 
+/** 근로계약 전환 */
 export const useChangeEmployment = (
 	code_keywords: string[],
 	application_ids: number[],
@@ -58,15 +61,17 @@ export const useChangeEmployment = (
 	);
 };
 
+/** 현장실습생 전환 */
 export const useChangeStudentFieldTrain = (
 	application_ids: number[],
-	date: DateProps,
+	start_date: string,
+	end_date: string,
 	options: MutationOptions
 ) => {
 	const data = {
 		application_ids,
-		start_date: date.start_date,
-		end_date: date.end_date,
+		start_date,
+		end_date,
 	};
 	return useMutation(
 		async () => instance.patch(`${router}/field-train`, data),

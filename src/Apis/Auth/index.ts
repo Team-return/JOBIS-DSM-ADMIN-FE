@@ -3,6 +3,7 @@ import { AuthorizationRefreshResponse } from './response';
 
 const router = '/auth';
 
+/** 토큰 재발급 */
 export const reIssueToken = async (refreshToken: string) => {
 	const response = await instance.put<AuthorizationRefreshResponse>(
 		`${router}/reissue`,

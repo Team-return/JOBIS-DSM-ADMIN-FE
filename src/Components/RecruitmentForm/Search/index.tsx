@@ -38,6 +38,7 @@ export function RecruitmentFormSearch({
 		status: '',
 	});
 
+	/** 검색 input 데이터를 초기화하는 함수입니다. */
 	const handleDefaultData = () => {
 		setFormData({
 			company_name: '',
@@ -51,6 +52,7 @@ export function RecruitmentFormSearch({
 		});
 	};
 
+	/** 검색하는 함수입니다. */
 	const handleSearch = () => {
 		setSearchRecruitmentFormQueryString({
 			...searchRecruitmentFormQueryString,
@@ -61,6 +63,7 @@ export function RecruitmentFormSearch({
 		setTimeout(refetchRecruitmentForm);
 	};
 
+	/** 년도를 순서대로 배열로 만들어 저장합니다. */
 	const yearData = Array.from({ length: 11 }, (_, i) =>
 		(iYear - i).toString()
 	);

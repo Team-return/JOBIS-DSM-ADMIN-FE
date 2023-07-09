@@ -28,11 +28,16 @@ export function ChangeEmploymentModal({
 		isLoading,
 		refetch: refetchKeywordList,
 	} = useGetCode('TECH');
+
+	/** 코드검색을 위한 필터입니다. */
 	const filteredList = keywordList?.codes.filter((keywords) =>
 		keywords.keyword.includes(searchInput.searchInputValue)
 	);
+
+	/** 코드 데이터의 length를 계산한 값입니다. */
 	const dataLength = (filteredList?.length || 0) / 2;
 
+	/** 근로계약일자를 변경하는 api입니다. */
 	const changeEmploymentAPI = useChangeEmployment(
 		selectCodeKeywords,
 		selectStudent,
@@ -44,17 +49,20 @@ export function ChangeEmploymentModal({
 				alert('성공적으로 변경되었습니다.');
 			},
 			onError: () => {
-				alert("변경에 실패했습니다.")
+				alert('변경에 실패했습니다.');
 			},
 		}
 	);
 
+	/** 로딩할 때 보여줄 빈 테이블입니다. */
 	const loadingTableDataArray = Array.from({ length: 4 }, () => [
 		<></>,
 		<></>,
 		<></>,
 		<></>,
 	]);
+
+	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from({ length: 4 - dataLength }, () => [
 		<></>,
 		<></>,
@@ -62,6 +70,7 @@ export function ChangeEmploymentModal({
 		<></>,
 	]);
 
+	/** 데이터 테이블입니다. */
 	const tableAllData = filteredList
 		?.slice(offset, offset + 8)
 		.flatMap((keywords, index) => {
@@ -121,12 +130,15 @@ export function ChangeEmploymentModal({
 		})
 		.concat(emptyTableDataArray);
 
+	/** 테이블의 title입니다. */
 	const tableTitle: JSX.Element[] = [
 		<CheckBox disabled={true} />,
 		<_.TitleText>이름</_.TitleText>,
 		<CheckBox disabled={true} />,
 		<_.TitleText>이름</_.TitleText>,
 	];
+
+	/** 테이블의 width입니다. */
 	const tableWidth: number[] = [10, 40, 10, 40];
 
 	return (

@@ -15,7 +15,6 @@ import { useDownloadData } from '../../../Apis/FileDownload';
 import { useModalContext } from '../../../Utils/Modal';
 import {
 	useChangeRequestStatus,
-	useChangeTrainDate,
 	useRejectApplication,
 } from '../../../Apis/Applications';
 import { useForm } from '../../../Hooks/useForm';
@@ -28,6 +27,8 @@ import { RejectApplicationModal } from '../../Modal/RejectApplicationModal';
 import { ChangeTrainDateModal } from '../../Modal/ChangeTrainDateModal';
 import { useDidMountEffect } from '../../../Hooks/useDidMountEffect';
 import OutsideClickHandler from 'react-outside-click-handler';
+import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
+import { searchInArray } from '../../../Utils/useSearchForArray';
 
 interface PropsType {
 	application: ApplicationResponse;
@@ -58,24 +59,38 @@ export function ApplicationViewTable({
 	const [downloadBoxView, setDownloadBoxView] = useState<number>(0);
 	const [rejectReason, setRejectReason] = useState('');
 	const { form: trainDate, handleChange: trainDateChange } = useForm({
-		start_date: new Date(),
-		end_date: new Date(),
+		start_date: '',
+		end_date: '',
 	});
 	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
 		fileUrl: '',
 		fileName: '',
 	});
 
+	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
-		if (clickedData.length === dataLength) {
-			setClickedData([]);
-			setClickStudentName([]);
+		if (searchInArray(allSelectFormId, clickedData).length === dataLength) {
+			setClickedData(
+				clickedData.filter((data) => !allSelectFormId.includes(data))
+			); // 선택된 학생의 id를 추가하는 부분입니다.
+			setClickStudentName(
+				clickStudentName.filter(
+					(name) => !allSelectStudent.includes(name)
+				)
+			); // 선택된 학생의 이름을 추가하는 부분입니다.
 		} else {
-			setClickedData(allSelectFormId);
-			setClickStudentName(allSelectStudent);
+			setClickedData((datas) => [
+				...datas,
+				...allSelectFormId.filter((data) => !datas.includes(data)),
+			]); // 선택 취소된 학생의 id를 삭제하는 부분입니다.
+			setClickStudentName((names) => [
+				...names,
+				...allSelectStudent.filter((data) => !names.includes(data)),
+			]); // 선택 취소된 학생의 이름을 삭제하는 부분입니다.
 		}
 	};
 
+	/** 지원상태를 변경하는 api호출 함수입니다. */
 	const changeStatusAPI = useChangeRequestStatus(clickedData, changeStatus, {
 		onSuccess: () => {
 			refetchApplication();
@@ -83,9 +98,13 @@ export function ApplicationViewTable({
 			closeModal();
 			alert('성공적으로 변경되었습니다.');
 		},
+		onError: () => {
+			alert('변경에 실패했습니다.');
+		},
 	});
 	const { isLoading: requestStatusIsLoading } = changeStatusAPI;
 
+	/** 지원서 상태 변경할 때 확인하는 확인 모달을 여는 함수입니다. */
 	const openChangeStatusModal = (statusName: string) => {
 		openModal({
 			children: (
@@ -105,6 +124,7 @@ export function ApplicationViewTable({
 		});
 	};
 
+	/** 지원서를 반환하는 api를 호출합니다. */
 	const rejectApplicationAPI = useRejectApplication(
 		clickedData[0],
 		rejectReason,
@@ -122,6 +142,7 @@ export function ApplicationViewTable({
 	);
 	const { isLoading: RejectApplicationIsLoading } = changeStatusAPI;
 
+	/** 지원서를 반환할 때 확인하는 확인 모달을 여는 함수입니다. */
 	const openRejectApplicationModal = () => {
 		openModal({
 			children: (
@@ -140,7 +161,8 @@ export function ApplicationViewTable({
 		});
 	};
 
-	const changeTrainDateAPI = useChangeTrainDate(
+	/** 현장실습 날짜를 바꾸는 api를 호출합입니다. */
+	const changeTrainDateAPI = useChangeStudentFieldTrain(
 		clickedData,
 		trainDate.start_date,
 		trainDate.end_date,
@@ -152,12 +174,13 @@ export function ApplicationViewTable({
 				alert('성공적으로 변경되었습니다.');
 			},
 			onError: () => {
-				alert("변경에 실패했습니다.")
+				alert('변경에 실패했습니다.');
 			},
 		}
 	);
 	const { isLoading: trainDateIsLoading } = changeStatusAPI;
 
+	/** 지원서를 현장실습으로 바꿀 때 확인하는 확인모달을 여는 함수입니다. */
 	const openChangeTrainDateModal = () => {
 		openModal({
 			children: (
@@ -177,12 +200,14 @@ export function ApplicationViewTable({
 		});
 	};
 
+	/** 현장실습 input값을 계속 업데이트하기 위한 useDidMountEffect 호출입니다. */
 	useDidMountEffect(() => {
 		openChangeTrainDateModal();
 	}, [trainDate.end_date, trainDate.start_date]);
 
 	const { mutate: downloadStudentForm } = useDownloadData(downloadUrl);
 
+	/** 파일 다운로드하는 api를 호출합입니다. */
 	const fileDownloadAPI = (url: string, name: string) => {
 		setDownloadUrl({
 			fileUrl: url,
@@ -191,6 +216,7 @@ export function ApplicationViewTable({
 		setTimeout(downloadStudentForm);
 	};
 
+	/** 데이터를 가져올 때 보여줄 빈 테이블입니다. */
 	const loadingTableDataArray = Array.from({ length: 11 }, () => [
 		<></>,
 		<></>,
@@ -200,10 +226,12 @@ export function ApplicationViewTable({
 		<></>,
 		<></>,
 	]);
+	/** 남은 테이블 자리를 채워줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from(
 		{ length: 11 - (dataLength % 11) },
 		() => [<></>, <></>, <></>, <></>, <></>, <></>, <></>]
 	);
+	/** 데이터로 채운 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] = application?.applications
 		.map((application) => {
 			const clickCheckBox = () => {
@@ -232,6 +260,7 @@ export function ApplicationViewTable({
 				}
 			};
 
+			/** 다운로드 박스를 껐다키는 함수입니다. */
 			const changeDownloadBoxView = () => {
 				setDownloadBoxView(
 					application.application_id === downloadBoxView
@@ -240,6 +269,7 @@ export function ApplicationViewTable({
 				);
 			};
 
+			/** 다운로드 박스를 끄는 함수입니다. */
 			const changeDownloadBoxDown = () => {
 				if (application.application_id === downloadBoxView) {
 					setDownloadBoxView(0);
@@ -264,7 +294,7 @@ export function ApplicationViewTable({
 				<_.ContentText>{application.student_name}</_.ContentText>, // 이름
 				<_.ContentText>{application.company_name}</_.ContentText>, // 기업
 				<_.OpenBoxWrapper>
-					{application.application_attachment_url.length !== 0 ? (
+					{application.attachments.length !== 0 ? (
 						<_.UnfoldImgWrapper
 							onClick={
 								downloadBoxView !== application.application_id
@@ -298,48 +328,41 @@ export function ApplicationViewTable({
 					>
 						{downloadBoxView === application.application_id && (
 							<_.DownLoadWrapper>
-								{application.application_attachment_url.map(
-									(url, i) => {
-										const nameArray =
-											decodeURI(url).split('/');
-										return (
-											<_.FileDownloadWrapper key={i}>
-												<Stack>
-													<_.CountNum>
-														{i + 1}
-													</_.CountNum>
-													<div>
-														{
-															nameArray[
-																nameArray.length -
-																	1
-															]
-														}
-													</div>
-												</Stack>
-												<Button
-													size="S"
-													onClick={() =>
-														fileDownloadAPI(
-															url,
-															nameArray[
-																nameArray.length -
-																	1
-															]
-														)
-													}
-												>
-													<Icon
-														icon="FileEarmarkArrowDown"
-														size={16}
-														color="gray10"
-													/>
-													다운
-												</Button>
-											</_.FileDownloadWrapper>
-										);
-									}
-								)}
+								{application.attachments.map((urls, i) => {
+									const nameArray = decodeURI(urls.url).split(
+										'/'
+									);
+									return (
+										<_.FileDownloadWrapper key={i}>
+											<Stack>
+												<_.CountNum>{i + 1}</_.CountNum>
+												<div>
+													{nameArray[
+														nameArray.length - 1
+													].substring(37)}
+												</div>
+											</Stack>
+											<Button
+												size="S"
+												onClick={() =>
+													fileDownloadAPI(
+														urls.url,
+														nameArray[
+															nameArray.length - 1
+														]
+													)
+												}
+											>
+												<Icon
+													icon="FileEarmarkArrowDown"
+													size={16}
+													color="gray10"
+												/>
+												다운
+											</Button>
+										</_.FileDownloadWrapper>
+									);
+								})}
 							</_.DownLoadWrapper>
 						)}
 					</OutsideClickHandler>
@@ -349,11 +372,14 @@ export function ApplicationViewTable({
 		})
 		.concat(emptyTableDataArray);
 
+	/** 테이블 title를 설정한 값입니다. */
 	const tableTitle: JSX.Element[] = [
 		<CheckBox
 			disabled={!(dataLength !== 0)}
 			checked={
-				clickedData.length !== 0 && clickedData.length === dataLength
+				clickedData.length !== 0 &&
+				searchInArray(allSelectFormId, clickedData).length ===
+					dataLength
 			}
 			onChange={checkAllBox}
 		/>,
@@ -364,6 +390,7 @@ export function ApplicationViewTable({
 		<_.TitleText>첨부파일 링크</_.TitleText>,
 		<_.TitleText>지원 일자</_.TitleText>,
 	];
+	/** 테이블 width를 설정한 값입니다. */
 	const tableWidth: number[] = [4, 9, 7, 8, 12, 48, 12];
 
 	return (

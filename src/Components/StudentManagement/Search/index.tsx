@@ -5,7 +5,7 @@ import { useForm } from '../../../Hooks/useForm';
 import { companyType } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
 import { EmployableCompaniesPropsType } from '../../../Apis/Companies/request';
-import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
+import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 
 interface PropsType {
 	setSearchQueryString: Dispatch<
@@ -34,6 +34,7 @@ export function StudentManagementSearch({
 		company_type: '',
 	});
 
+	/** 검색 Input 데이터를 초기화할 함수입니다. */
 	const handleDefaultData = () => {
 		setFormData({
 			company_name: '',
@@ -44,6 +45,7 @@ export function StudentManagementSearch({
 		});
 	};
 
+	/** 검색할 때 실행할 함수입니다. */
 	const handleSearch = () => {
 		setSearchQueryString({
 			...formData,
@@ -56,6 +58,7 @@ export function StudentManagementSearch({
 		setTimeout(refetchEmployableCompanies);
 	};
 
+	/** 년도를 순서대로 배열로 만들어 저장합니다. */
 	const yearData = Array.from({ length: 11 }, (_, i) =>
 		(iYear - i).toString()
 	);

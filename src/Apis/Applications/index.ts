@@ -5,6 +5,7 @@ import { ApplicationResponse, InternshipStudentResponse } from './response';
 
 const router = '/applications';
 
+/** 지원서 리스트 조회 */
 export const getApplicantInfo = async (
 	applicationQueryString: ApplicantInfoQueryStringType
 ) => {
@@ -25,6 +26,7 @@ export const getApplicantInfo = async (
 	return data;
 };
 
+/** 현장실습생 전환시 학생 조회 */
 export const getInternshipStudent = async (company_id: number) => {
 	const { data } = await instance.get<Promise<InternshipStudentResponse>>(
 		`${router}/pass/${company_id}`
@@ -32,6 +34,7 @@ export const getInternshipStudent = async (company_id: number) => {
 	return data;
 };
 
+/** 지원상태 변경 */
 export const useChangeRequestStatus = (
 	id: number[],
 	status: string,
@@ -47,14 +50,15 @@ export const useChangeRequestStatus = (
 	});
 };
 
+/** 현장실습 일자 변경 */
 export const useChangeTrainDate = (
-	student_ids: number[],
+	application_ids: number[],
 	start_date: Date | string,
 	end_date: Date | string,
 	options: MutationOptions
 ) => {
 	const data = {
-		student_ids,
+		application_ids,
 		start_date,
 		end_date,
 	};
@@ -67,6 +71,7 @@ export const useChangeTrainDate = (
 	);
 };
 
+/** 지원서 반려 */
 export const useRejectApplication = (
 	id: number,
 	reason: string,

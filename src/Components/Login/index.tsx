@@ -20,6 +20,7 @@ export function LoginCompo() {
 
 	const { mutate: handleLogin } = Login(loginForm, checkBoxValue);
 
+	/** input type을 바꾸는 함수입니다. */
 	const handleClickEye = useCallback(() => {
 		setInputTypeCheck((prev) => !prev);
 	}, []);

@@ -32,9 +32,11 @@ export function AddInternshipStudentModal({
 		refetch: refetchStudentList,
 	} = useGetInternshipStudent(selectCompany);
 
+	/** 학생의 현장실습 기간을 바꾸는 api를 호출합니다. */
 	const changeStudentFieldTrainAPI = useChangeStudentFieldTrain(
 		studentId,
-		date,
+		date.start_date,
+		date.end_date,
 		{
 			onSuccess: () => {
 				refetch();
@@ -48,11 +50,16 @@ export function AddInternshipStudentModal({
 			},
 		}
 	);
+
+	/** 학생 검색을 위한 필터입니다. */
 	const filteredStudents = studentList?.students.filter((student) =>
 		student.student_name.includes(searchInput.searchInputValue)
 	);
+
+	/** 학생 데이터의 length를 계산한 값입니다. */
 	const dataLength = (filteredStudents?.length || 0) / 2;
 
+	/** 로딩할 때 보여줄 빈 테이블입니다. */
 	const loadingTableDataArray = Array.from({ length: 4 }, () => [
 		<></>,
 		<></>,
@@ -61,6 +68,8 @@ export function AddInternshipStudentModal({
 		<></>,
 		<></>,
 	]);
+
+	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from({ length: 4 - dataLength }, () => [
 		<></>,
 		<></>,
@@ -70,6 +79,7 @@ export function AddInternshipStudentModal({
 		<></>,
 	]);
 
+	/** 데이터 테이블입니다. */
 	const tableAllData = filteredStudents
 		?.slice(offset, offset + 8)
 		.flatMap((student, index) => {
@@ -135,6 +145,7 @@ export function AddInternshipStudentModal({
 		})
 		.concat(emptyTableDataArray);
 
+	/** 테이블의 title입니다. */
 	const tableTitle: JSX.Element[] = [
 		<CheckBox disabled={true} />,
 		<_.TitleText>학번</_.TitleText>,
@@ -143,6 +154,8 @@ export function AddInternshipStudentModal({
 		<_.TitleText>학번</_.TitleText>,
 		<_.TitleText>이름</_.TitleText>,
 	];
+
+	/** 테이블의 width입니다. */
 	const tableWidth: number[] = [10, 17, 23, 10, 17, 23];
 	return (
 		<_.Container>
