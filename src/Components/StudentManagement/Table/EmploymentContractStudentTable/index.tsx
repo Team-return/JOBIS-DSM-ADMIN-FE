@@ -2,6 +2,7 @@ import { CheckBox, Table } from '@team-return/design-system';
 import * as _ from '../style';
 import { CombinedStudentListResponse } from '../../../../Apis/Acceptances/response';
 import { Dispatch, SetStateAction } from 'react';
+import { searchInArray } from '../../../../Utils/useSearchForArray';
 
 interface PropType {
 	setSelectStudent: Dispatch<SetStateAction<number[]>>;
@@ -16,38 +17,57 @@ export function EmploymentContractStudentTable({
 	setSelectStudent,
 	selectStudent,
 }: PropType) {
+	/** 학생 데이터의 length를 계산한 값입니다. */
 	const dataLength = combinedStudentList?.acceptances_response.length;
+
+	/** 로딩할 때 보여줄 빈 테이블입니다. */
 	const loadingTableDataArray = Array.from({ length: 5 }, () => [
 		<></>,
 		<></>,
 		<></>,
 		<></>,
 	]);
+
+	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from({ length: 5 - dataLength }, () => [
 		<></>,
 		<></>,
 		<></>,
 		<></>,
 	]);
-	const AllSelectFormId: number[] =
+
+	/** 전체 선택을 위해 모든 id를 모아둡니다. */
+	const allSelectFormId: number[] =
 		combinedStudentList?.acceptances_response! &&
 		combinedStudentList?.acceptances_response.map((studentList) => {
 			return studentList.acceptance_id;
 		});
+
+	/** 데이터 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] =
 		combinedStudentList?.acceptances_response
 			.map((studentList) => {
+				const clickCheckBox = () => {
+					if (selectStudent.includes(studentList.acceptance_id)) {
+						setSelectStudent(
+							selectStudent.filter(
+								(selectStudents) =>
+									selectStudents !== studentList.acceptance_id
+							)
+						);
+					} else {
+						setSelectStudent((studentId) => [
+							...studentId,
+							studentList.acceptance_id,
+						]);
+					}
+				};
 				return [
 					<CheckBox
 						checked={selectStudent.includes(
 							studentList.acceptance_id
 						)}
-						onChange={() => {
-							setSelectStudent((studentId) => [
-								...studentId,
-								studentList.acceptance_id,
-							]);
-						}}
+						onChange={clickCheckBox}
 					/>,
 					<_.ContentText>{studentList.student_gcn}</_.ContentText>, // 학번
 					<_.ContentText>{studentList.student_name}</_.ContentText>, // 이름
@@ -56,19 +76,29 @@ export function EmploymentContractStudentTable({
 			})
 			.concat(emptyTableDataArray);
 
+	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const selectAllCheckBox = () => {
-		if (selectStudent?.length === AllSelectFormId?.length) {
-			setSelectStudent([]);
+		if (
+			searchInArray(allSelectFormId, selectStudent).length === dataLength
+		) {
+			setSelectStudent(
+				selectStudent.filter((data) => !allSelectFormId.includes(data))
+			);
 		} else {
-			setSelectStudent(AllSelectFormId);
+			setSelectStudent((students) => [
+				...students,
+				...allSelectFormId.filter((data) => !students.includes(data)),
+			]);
 		}
 	};
 
+	/** 테이블의 title입니다. */
 	const tableTitle: JSX.Element[] = [
 		<CheckBox
 			checked={
-				selectStudent?.length === AllSelectFormId?.length &&
-				AllSelectFormId?.length !== 0
+				allSelectFormId?.length !== 0 &&
+				searchInArray(allSelectFormId, selectStudent).length ===
+					allSelectFormId?.length
 			}
 			disabled={
 				combinedStudentList?.acceptances_response === undefined ||
@@ -80,6 +110,8 @@ export function EmploymentContractStudentTable({
 		<_.TitleText>이름</_.TitleText>,
 		<_.TitleText>근로계약 일자</_.TitleText>,
 	];
+
+	/** 테이블의 width입니다. */
 	const tableWidth: number[] = [10, 20, 40, 40];
 
 	return (

@@ -3,7 +3,7 @@ import * as _ from './style';
 import { Dispatch, SetStateAction } from 'react';
 import { useForm } from '../../../Hooks/useForm';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
-import { getValueByKey } from '../../../Hooks/useGetPropertyKey';
+import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { applicationStatus } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
 
@@ -31,6 +31,7 @@ export function ApplicationViewSearch({
 		application_status: '',
 	});
 
+	/** 검색창을 초기화하는 함수입니다. */
 	const defaultData = () => {
 		setData({
 			student_name: '',
@@ -39,6 +40,7 @@ export function ApplicationViewSearch({
 		setSelectedItem({ application_status: '' });
 	};
 
+	/** 검색하는 함수입니다. */
 	const searching = () => {
 		setSearchQueryString({
 			...data,
@@ -59,7 +61,7 @@ export function ApplicationViewSearch({
 						onChange={(type) =>
 							handleSelectedItem('application_status', type)
 						}
-						width={90}
+						width={95}
 						option={[
 							'전체',
 							'승인요청',

@@ -20,7 +20,7 @@ export function CompanyRecruitmentPage() {
 		isLoading,
 	} = useGetCompanyRecruitments(searchQueryString);
 
-	const AllSelectFormId: number[] =
+	const allSelectFormId: number[] =
 		companyRecruitment! &&
 		companyRecruitment.companies.map((companie) => {
 			return companie.company_id;
@@ -38,7 +38,7 @@ export function CompanyRecruitmentPage() {
 					companyRecruitmentIsLoading={isLoading}
 					companyRecruitment={companyRecruitment!}
 					refetchCompanyRecruitment={refetchCompanyRecruitment}
-					AllSelectFormId={AllSelectFormId}
+					allSelectFormId={allSelectFormId}
 					searchQueryString={searchQueryString}
 					setSearchQueryString={setSearchQueryString}
 				/>

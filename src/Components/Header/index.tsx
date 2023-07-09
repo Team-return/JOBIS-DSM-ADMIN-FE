@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 export function Header() {
 	let location = useLocation();
 
+	/** path를 체크하는 함수입니다. */
 	const clickedStatus = (path: string) => {
 		return location.pathname.includes(path);
 	};

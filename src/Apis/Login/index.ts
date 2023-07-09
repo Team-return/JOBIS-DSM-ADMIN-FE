@@ -7,6 +7,7 @@ import { AxiosError } from 'axios';
 
 const router = '/users';
 
+/** 로그인 */
 export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 	const navigator = useNavigate();
 	const [, setCookies, removeCookies] = useCookies();
@@ -37,7 +38,6 @@ export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 				}
 			},
 			onError: (err: AxiosError<AxiosError>) => {
-				console.log(err);
 				if (err.response) {
 					switch (err.response.status) {
 						case 401:

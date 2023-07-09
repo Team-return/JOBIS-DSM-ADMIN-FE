@@ -63,6 +63,7 @@ export const NotingFileText = styled.div`
 
 export const DownLoadWrapper = styled.div`
 	position: absolute;
+	z-index: 100;
 	background-color: white;
 	width: 30%;
 	gap: 20px;

@@ -3,6 +3,7 @@ import fileSaver from 'file-saver';
 import { DownloadDataPropsType } from './request';
 import axios from 'axios';
 
+/** S3에서 파일 가져와서 다운로드 */
 export const useDownloadData = (propsData: DownloadDataPropsType) =>
 	useMutation(() => axios.get(propsData.fileUrl, { responseType: 'blob' }), {
 		onSuccess: (res) => {
@@ -11,5 +12,8 @@ export const useDownloadData = (propsData: DownloadDataPropsType) =>
 			});
 			fileSaver.saveAs(data, propsData.fileName);
 			alert('성공적으로 다운로드 되었습니다.');
+		},
+		onError: () => {
+			alert('다운로드에 실패했습니다.');
 		},
 	});

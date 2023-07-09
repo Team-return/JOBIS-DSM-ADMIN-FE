@@ -5,6 +5,7 @@ import { StudentTable } from '../../../Components/PopUp/RecruitmentPopup/Student
 import { DownloadTable } from '../../../Components/PopUp/RecruitmentPopup/DownloadTable';
 import { Button } from '@team-return/design-system';
 import * as _ from './style';
+import { AttachmentUrlType } from '../../../Apis/Applications/response';
 
 export function ApplicationPopup() {
 	const id = new URLSearchParams(window.location.search).get('id');
@@ -21,7 +22,7 @@ export function ApplicationPopup() {
 	} = useGetApplicantInfo(applicationQueryString);
 
 	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<
-		string[]
+		AttachmentUrlType[]
 	>([]);
 	return (
 		<>
@@ -33,7 +34,7 @@ export function ApplicationPopup() {
 				applicationIsLoading={isLoading}
 			/>
 			<DownloadTable
-				applicationAttachmentUrl={applicationAttachmentUrl!}
+				applicationAttachmentUrl={applicationAttachmentUrl}
 			/>
 			<_.BtnWrapper>
 				<Button onClick={() => window.close()}>닫기</Button>

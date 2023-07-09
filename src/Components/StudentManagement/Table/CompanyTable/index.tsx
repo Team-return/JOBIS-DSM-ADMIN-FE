@@ -17,19 +17,26 @@ export function CompanyTable({
 	isLoading,
 	refetchCombinedStudentList,
 }: PropType) {
+	/** 학생 데이터의 length를 계산한 값입니다. */
 	const dataLength = employableCompanies?.companies.length;
+
+	/** 로딩할 때 보여줄 빈 테이블입니다. */
 	const loadingTableDataArray = Array.from({ length: 14 }, () => [
 		<></>,
 		<></>,
 		<></>,
 		<></>,
 	]);
+
+	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from({ length: 14 - dataLength }, () => [
 		<></>,
 		<></>,
 		<></>,
 		<></>,
 	]);
+
+	/** 데이터 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] = employableCompanies?.companies
 		.map((company) => {
 			return [
@@ -53,6 +60,7 @@ export function CompanyTable({
 		})
 		.concat(emptyTableDataArray);
 
+	/** 테이블의 title입니다. */
 	const tableTitle: JSX.Element[] = [
 		<RadioButton disabled={true}></RadioButton>,
 		<_.TitleText>기업명</_.TitleText>,
@@ -67,6 +75,8 @@ export function CompanyTable({
 			계약
 		</_.TitleText>,
 	];
+
+	/** 테이블의 width입니다. */
 	const tableWidth: number[] = [12, 48, 20, 20];
 
 	return (

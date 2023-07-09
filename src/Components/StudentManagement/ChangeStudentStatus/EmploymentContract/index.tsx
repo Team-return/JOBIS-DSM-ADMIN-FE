@@ -16,6 +16,8 @@ export function ChangeEmploymentContractStudentStatus({
 	refetch,
 }: PropType) {
 	const date = new Date();
+
+	/** 현재 날짜를 0000-00-00 형식으로 바꿉니다. */
 	const allDate =
 		date.getFullYear() +
 		'-' +
@@ -26,6 +28,8 @@ export function ChangeEmploymentContractStudentStatus({
 	const { form, setForm, handleChange } = useForm({
 		contract_date: '',
 	});
+	
+	/** 지원 요청 상태로 변경하는 api를 호출합니다. */
 	const changeTrainDateAPI = useChangeStudentContractDate(
 		selectStudent,
 		form.contract_date,
@@ -39,7 +43,7 @@ export function ChangeEmploymentContractStudentStatus({
 				alert('성공적으로 변경되었습니다.');
 			},
 			onError: () => {
-				alert("변경에 실패했습니다.")
+				alert('변경에 실패했습니다.');
 			},
 		}
 	);

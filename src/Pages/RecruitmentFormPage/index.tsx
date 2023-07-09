@@ -27,7 +27,7 @@ export function RecruitmentFormPage() {
 		isLoading,
 	} = useGetRecruitmentForm(searchRecruitmentFormQueryString);
 
-	const AllSelectFormId: string[] =
+	const allSelectFormId: string[] =
 		recruitmentForm! &&
 		recruitmentForm.recruitments.map((recruitment) => {
 			return recruitment.id;
@@ -47,7 +47,7 @@ export function RecruitmentFormPage() {
 					refetchRecruitmentForm={refetchRecruitmentForm}
 				/>
 				<RecruitmentFormTable
-					AllSelectFormId={AllSelectFormId}
+					allSelectFormId={allSelectFormId}
 					recruitmentForm={recruitmentForm!}
 					refetchRecruitmentForm={refetchRecruitmentForm}
 					searchRecruitmentFormQueryString={

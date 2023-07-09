@@ -36,7 +36,7 @@ export const ContentWrapper = styled.div<{ width?: number }>`
 	border: 1px solid #e5e5e5;
 	display: flex;
 	align-items: center;
-	padding-left: 1%;
+	padding-left: 0.5%;
 	gap: 10px;
 `;
 
