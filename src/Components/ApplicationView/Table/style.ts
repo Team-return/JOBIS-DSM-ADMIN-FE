@@ -21,7 +21,6 @@ export const BtnWrapper = styled.div`
 
 export const TableWrapper = styled.div`
 	width: 100%;
-	overflow: scroll;
 `;
 
 export const TitleText = styled.div`
