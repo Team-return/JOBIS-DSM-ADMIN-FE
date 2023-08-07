@@ -1,4 +1,4 @@
-import { Button, CheckBox, Table } from '@team-return/design-system';
+import { Button, CheckBox, Table, useToastStore } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
@@ -28,6 +28,7 @@ export function CompanyRecruitmentTable({
 	setSearchQueryString,
 	companyRecruitmentIsLoading,
 }: PropsType) {
+	const { append } = useToastStore();
 	const dataLength = companyRecruitment?.companies.length;
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
@@ -51,10 +52,18 @@ export function CompanyRecruitmentTable({
 		onSuccess: () => {
 			refetchCompanyRecruitment();
 			setClickedData([]);
-			alert('성공적으로 변경되었습니다.');
+			append({
+				title: '성공적으로 변경되었습니다.',
+				message: '',
+				type: 'BLUE',
+			});
 		},
 		onError: () => {
-			alert('변경에 실패했습니다.');
+			append({
+				title: '변경에 실패했습니다.',
+				message: '',
+				type: 'RED',
+			});
 		},
 	});
 	const { isLoading } = changeStatusAPI;
@@ -64,10 +73,18 @@ export function CompanyRecruitmentTable({
 		onSuccess: () => {
 			refetchCompanyRecruitment();
 			setClickedData([]);
-			alert('성공적으로 변경되었습니다.');
+			append({
+				title: '성공적으로 변경되었습니다.',
+				message: '',
+				type: 'BLUE',
+			});
 		},
 		onError: () => {
-			alert('변경에 실패했습니다.');
+			append({
+				title: '변경에 실패했습니다.',
+				message: '',
+				type: 'RED',
+			});
 		},
 	});
 

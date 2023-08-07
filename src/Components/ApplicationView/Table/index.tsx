@@ -4,6 +4,7 @@ import {
 	Icon,
 	Stack,
 	Table,
+	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -51,6 +52,7 @@ export function ApplicationViewTable({
 	applicationIsLoading,
 	allSelectStudent,
 }: PropsType) {
+	const { append } = useToastStore();
 	const dataLength = application?.applications.length;
 	const { openModal, closeModal } = useModalContext();
 	const [clickedData, setClickedData] = useState<number[]>([]);
@@ -96,10 +98,18 @@ export function ApplicationViewTable({
 			refetchApplication();
 			setClickedData([]);
 			closeModal();
-			alert('성공적으로 변경되었습니다.');
+			append({
+				title: '성공적으로 변경되었습니다.',
+				message: '',
+				type: 'BLUE',
+			});
 		},
 		onError: () => {
-			alert('변경에 실패했습니다.');
+			append({
+				title: '변경에 실패했습니다.',
+				message: '',
+				type: 'RED',
+			});
 		},
 	});
 	const { isLoading: requestStatusIsLoading } = changeStatusAPI;
@@ -133,10 +143,18 @@ export function ApplicationViewTable({
 				refetchApplication();
 				setClickedData([]);
 				closeModal();
-				alert('반려에 성공했습니다.');
+				append({
+					title: '반려에 성공했습니다.',
+					message: '',
+					type: 'BLUE',
+				});
 			},
 			onError: () => {
-				alert('반려에 실패했습니다.');
+				append({
+					title: '반려에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
 			},
 		}
 	);
@@ -171,10 +189,18 @@ export function ApplicationViewTable({
 				refetchApplication();
 				setClickedData([]);
 				closeModal();
-				alert('성공적으로 변경되었습니다.');
+				append({
+					title: '성공적으로 변경되었습니다.',
+					message: '',
+					type: 'BLUE',
+				});
 			},
 			onError: () => {
-				alert('변경에 실패했습니다.');
+				append({
+					title: '변경에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
 			},
 		}
 	);

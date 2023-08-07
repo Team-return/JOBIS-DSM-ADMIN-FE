@@ -1,4 +1,4 @@
-import { Button, Stack } from '@team-return/design-system';
+import { Button, Stack, useToastStore } from '@team-return/design-system';
 import * as _ from '../style';
 import { Dispatch, SetStateAction } from 'react';
 import { useChangeStudentContractDate } from '../../../../Apis/Acceptances';
@@ -16,6 +16,7 @@ export function ChangeEmploymentContractStudentStatus({
 	refetch,
 }: PropType) {
 	const date = new Date();
+	const { append } = useToastStore();
 
 	/** 현재 날짜를 0000-00-00 형식으로 바꿉니다. */
 	const allDate =
@@ -28,7 +29,7 @@ export function ChangeEmploymentContractStudentStatus({
 	const { form, setForm, handleChange } = useForm({
 		contract_date: '',
 	});
-	
+
 	/** 지원 요청 상태로 변경하는 api를 호출합니다. */
 	const changeTrainDateAPI = useChangeStudentContractDate(
 		selectStudent,
@@ -40,10 +41,18 @@ export function ChangeEmploymentContractStudentStatus({
 				setForm({
 					contract_date: '',
 				});
-				alert('성공적으로 변경되었습니다.');
+				append({
+					title: '성공적으로 변경되었습니다.',
+					message: '',
+					type: 'BLUE',
+				});
 			},
 			onError: () => {
-				alert('변경에 실패했습니다.');
+				append({
+					title: '변경에 실패했습니다.',
+					message: '',
+					type: 'BLUE',
+				});
 			},
 		}
 	);

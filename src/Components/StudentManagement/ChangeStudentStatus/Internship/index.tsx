@@ -1,4 +1,4 @@
-import { Button, Icon, Stack } from '@team-return/design-system';
+import { Button, Icon, Stack, useToastStore } from '@team-return/design-system';
 import * as _ from '../style';
 import { useChangeTrainDate } from '../../../../Apis/Applications';
 import { useForm } from '../../../../Hooks/useForm';
@@ -21,6 +21,7 @@ export function ChangeInternshipStudentStatus({
 	refetch,
 }: PropType) {
 	const date = new Date();
+	const { append } = useToastStore();
 
 	/** 현재 날짜를 0000-00-00 형식으로 바꿉니다. */
 	const allDate =
@@ -63,10 +64,18 @@ export function ChangeInternshipStudentStatus({
 					start_date: '',
 					end_date: '',
 				});
-				alert('성공적으로 변경되었습니다.');
+				append({
+					title: '성공적으로 변경되었습니다.',
+					message: '',
+					type: 'BLUE',
+				});
 			},
 			onError: () => {
-				alert('변경에 실패했습니다.');
+				append({
+					title: '변경에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
 			},
 		}
 	);
@@ -78,10 +87,18 @@ export function ChangeInternshipStudentStatus({
 			onSuccess: () => {
 				refetch();
 				setSelectStudent([]);
-				alert('성공적으로 삭제되었습니다.');
+				append({
+					title: '성공적으로 삭제되었습니다.',
+					message: '',
+					type: 'BLUE',
+				});
 			},
 			onError: () => {
-				alert('삭제에 실패했습니다.');
+				append({
+					title: '삭제에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
 			},
 		}
 	);
@@ -91,16 +108,28 @@ export function ChangeInternshipStudentStatus({
 		if (selectStudent.length !== 0) {
 			deleteInternshipStudentAPI.mutate();
 		} else {
-			alert('학생을 먼저 선택해주세요.');
+			append({
+				title: '학생을 먼저 선택해주세요.',
+				message: '',
+				type: 'RED',
+			});
 		}
 	};
 
 	/** 현장 실습 학생 추가 버튼을 눌렀을 때 실행할 함수입니다. */
 	const addInternshipStudentCheck = () => {
 		if (selectCompany === 0) {
-			alert('회사를 먼저 선택해주세요.');
+			append({
+				title: '회사를 먼저 선택해주세요.',
+				message: '',
+				type: 'RED',
+			});
 		} else if (form.end_date === '' && form.start_date === '') {
-			alert('파견일자, 종료일자를 먼저 선택해주세요.');
+			append({
+				title: '파견일자, 종료일자를 먼저 선택해주세요.',
+				message: '',
+				type: 'RED',
+			});
 		} else {
 			openAddInternshipStudentModal();
 		}
