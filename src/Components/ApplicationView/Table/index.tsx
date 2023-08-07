@@ -101,7 +101,7 @@ export function ApplicationViewTable({
 			append({
 				title: '성공적으로 변경되었습니다.',
 				message: '',
-				type: 'BLUE',
+				type: 'GREEN',
 			});
 		},
 		onError: () => {
@@ -146,7 +146,7 @@ export function ApplicationViewTable({
 				append({
 					title: '반려에 성공했습니다.',
 					message: '',
-					type: 'BLUE',
+					type: 'GREEN',
 				});
 			},
 			onError: () => {
@@ -192,7 +192,7 @@ export function ApplicationViewTable({
 				append({
 					title: '성공적으로 변경되었습니다.',
 					message: '',
-					type: 'BLUE',
+					type: 'GREEN',
 				});
 			},
 			onError: () => {

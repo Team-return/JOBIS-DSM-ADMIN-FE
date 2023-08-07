@@ -55,7 +55,7 @@ export function CompanyRecruitmentTable({
 			append({
 				title: '성공적으로 변경되었습니다.',
 				message: '',
-				type: 'BLUE',
+				type: 'GREEN',
 			});
 		},
 		onError: () => {
@@ -76,7 +76,7 @@ export function CompanyRecruitmentTable({
 			append({
 				title: '성공적으로 변경되었습니다.',
 				message: '',
-				type: 'BLUE',
+				type: 'GREEN',
 			});
 		},
 		onError: () => {

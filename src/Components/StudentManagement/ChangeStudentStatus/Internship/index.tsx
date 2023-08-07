@@ -67,7 +67,7 @@ export function ChangeInternshipStudentStatus({
 				append({
 					title: '성공적으로 변경되었습니다.',
 					message: '',
-					type: 'BLUE',
+					type: 'GREEN',
 				});
 			},
 			onError: () => {
@@ -90,7 +90,7 @@ export function ChangeInternshipStudentStatus({
 				append({
 					title: '성공적으로 삭제되었습니다.',
 					message: '',
-					type: 'BLUE',
+					type: 'GREEN',
 				});
 			},
 			onError: () => {

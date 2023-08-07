@@ -44,14 +44,14 @@ export function ChangeEmploymentContractStudentStatus({
 				append({
 					title: '성공적으로 변경되었습니다.',
 					message: '',
-					type: 'BLUE',
+					type: 'GREEN',
 				});
 			},
 			onError: () => {
 				append({
 					title: '변경에 실패했습니다.',
 					message: '',
-					type: 'BLUE',
+					type: 'GREEN',
 				});
 			},
 		}

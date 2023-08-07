@@ -18,7 +18,7 @@ export const useDownloadData = (propsData: DownloadDataPropsType) => {
 				append({
 					title: '성공적으로 다운로드 되었습니다.',
 					message: '',
-					type: 'BLUE',
+					type: 'GREEN',
 				});
 			},
 			onError: () => {
