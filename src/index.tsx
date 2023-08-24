@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { App } from './App';
 import { ModalContextProvider } from './Utils/Modal';
+import { ToastContainer } from '@team-return/design-system';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -26,6 +27,7 @@ root.render(
 		<ThemeProvider theme={baseTheme}>
 			<ModalContextProvider>
 				<QueryClientProvider client={queryClient}>
+					<ToastContainer />
 					<App />
 					<ReactQueryDevtools />
 				</QueryClientProvider>

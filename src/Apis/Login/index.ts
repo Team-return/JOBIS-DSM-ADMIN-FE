@@ -4,11 +4,13 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { LoginDataType } from './request';
 import { AxiosError } from 'axios';
+import { useToastStore } from '@team-return/design-system';
 
 const router = '/users';
 
 /** 로그인 */
 export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
+	const { append } = useToastStore();
 	const navigator = useNavigate();
 	const [, setCookies, removeCookies] = useCookies();
 
@@ -17,7 +19,11 @@ export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 		{
 			onSuccess: (res) => {
 				if (res.data.authority !== 'TEACHER') {
-					alert('해당 계정은 사용할 수 없어요.');
+					append({
+						title: '해당 계정은 사용할 수 없어요.',
+						message: '',
+						type: 'RED',
+					});
 				} else {
 					if (checkBoxValue) {
 						setCookies('account_id', loginData.account_id);
@@ -41,16 +47,33 @@ export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 				if (err.response) {
 					switch (err.response.status) {
 						case 401:
-							alert('비밀번호를 다시 확인해주세요.');
+							append({
+								title: '비밀번호를 다시 확인해주세요.',
+								message: '',
+								type: 'RED',
+							});
 							break;
 						case 404:
-							alert('아이디와 비밀번호를 다시 확인해주세요.');
+							append({
+								title: '아이디와 비밀번호를 다시 확인해주세요.',
+								message: '',
+								type: 'RED',
+							});
 							break;
 						case 500:
-							return alert('개발자에게 문의해주세요.');
+							append({
+								title: '개발자에게 문의해주세요.',
+								message: '',
+								type: 'RED',
+							});
+							break;
 					}
 				} else {
-					alert('네트워크 연결을 확인해주세요.');
+					append({
+						title: '네트워크 연결을 확인해주세요.',
+						message: '',
+						type: 'RED',
+					});
 				}
 			},
 		}

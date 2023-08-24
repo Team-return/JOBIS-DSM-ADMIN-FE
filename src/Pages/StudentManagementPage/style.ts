@@ -9,7 +9,6 @@ export const TableContainer = styled.div`
 	align-items: center;
 	padding-top: 95px;
 	padding-bottom: 11px;
-	overflow: scroll;
 `;
 
 export const TableWrapper = styled.div`
@@ -17,7 +16,6 @@ export const TableWrapper = styled.div`
 	background: #fafafa;
 	display: flex;
 	padding-bottom: 11px;
-	overflow: scroll;
 	background-color: #ffffff;
 	border: 1px solid #e5e5e5;
 `;

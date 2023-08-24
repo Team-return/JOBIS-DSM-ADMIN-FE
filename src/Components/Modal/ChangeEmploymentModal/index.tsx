@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Button, CheckBox, Input, Table } from '@team-return/design-system';
+import { Button, CheckBox, Input, Table, useToastStore } from '@team-return/design-system';
 import * as _ from '../style';
 import { useForm } from '../../../Hooks/useForm';
 import { Pagination } from '../../../Utils/Pagination';
@@ -17,6 +17,7 @@ export function ChangeEmploymentModal({
 	setSelectStudent,
 	refetch,
 }: PropType) {
+	const { append } = useToastStore();
 	const [pages, setPages] = useState({ page: 1 });
 	const [selectCodeKeywords, setSelectCodeKeywords] = useState<string[]>([]);
 	const offset = (pages.page - 1) * 8;
@@ -46,10 +47,18 @@ export function ChangeEmploymentModal({
 				refetch();
 				setSelectStudent([]);
 				setSelectCodeKeywords([]);
-				alert('성공적으로 변경되었습니다.');
+				append({
+					title: '성공적으로 변경되었습니다.',
+					message: '',
+					type: 'GREEN',
+				});
 			},
 			onError: () => {
-				alert('변경에 실패했습니다.');
+				append({
+					title: '변경에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
 			},
 		}
 	);

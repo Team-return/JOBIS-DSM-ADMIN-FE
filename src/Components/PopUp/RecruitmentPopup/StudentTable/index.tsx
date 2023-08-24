@@ -1,6 +1,9 @@
-import { Button, RadioButton, Table } from '@team-return/design-system';
+import { Button, RadioButton, Table, useToastStore } from '@team-return/design-system';
 import * as _ from './style';
-import { ApplicationResponse, AttachmentUrlType } from '../../../../Apis/Applications/response';
+import {
+	ApplicationResponse,
+	AttachmentUrlType,
+} from '../../../../Apis/Applications/response';
 import { useState } from 'react';
 import { useChangeRequestStatus } from '../../../../Apis/Applications';
 
@@ -8,7 +11,9 @@ interface PropsType {
 	application: ApplicationResponse;
 	refetchApplication: () => void;
 	isRequest?: boolean;
-	setApplicationAttachmentUrl: React.Dispatch<React.SetStateAction<AttachmentUrlType[]>>;
+	setApplicationAttachmentUrl: React.Dispatch<
+		React.SetStateAction<AttachmentUrlType[]>
+	>;
 	applicationIsLoading: boolean;
 }
 
@@ -19,6 +24,7 @@ export function StudentTable({
 	isRequest,
 	applicationIsLoading,
 }: PropsType) {
+	const { append } = useToastStore();
 	const [clickId, setClickId] = useState<number[]>([]);
 
 	/** 테이블의 length입니다. */
@@ -45,9 +51,7 @@ export function StudentTable({
 				name="student"
 				onClick={() => {
 					setClickId([student.application_id]);
-					setApplicationAttachmentUrl(
-						student.attachments
-					);
+					setApplicationAttachmentUrl(student.attachments);
 				}}
 			/>,
 			<_.ContentText>{student.student_gcn}</_.ContentText>,
@@ -60,10 +64,18 @@ export function StudentTable({
 	const ChangeStatusAPI = useChangeRequestStatus(clickId, 'APPROVED', {
 		onSuccess: () => {
 			refetchApplication();
-			alert('성공적으로 변경되었습니다.');
+			append({
+				title: '성공적으로 변경되었습니다.',
+				message: '',
+				type: 'GREEN',
+			});
 		},
 		onError: () => {
-			alert('변경에 실패했습니다.');
+			append({
+				title: '변경에 실패했습니다.',
+				message: '',
+				type: 'RED',
+			});
 		},
 	});
 
