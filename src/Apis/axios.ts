@@ -7,6 +7,11 @@ export const instance = axios.create({
 	timeout: 10000,
 });
 
+export const noneTokenInstance = axios.create({
+	baseURL: process.env.REACT_APP_BASE_URL,
+	timeout: 10000,
+});
+
 const cookies = new Cookies();
 
 instance.interceptors.request.use(
@@ -32,12 +37,13 @@ instance.interceptors.response.use(
 			if (
 				error.response.data.message === 'Invalid Token' ||
 				error.response.data.message === 'Token Expired' ||
-				error.message === 'Request failed with status code 403'
+				!cookies.get('access_token')
 			) {
 				if (refreshToken) {
 					cookies.remove('access_token');
 					reIssueToken(refreshToken)
 						.then((res) => {
+							cookies.remove('refresh_token');
 							const accessExpired = new Date(
 								res.access_token_expired_at
 							);

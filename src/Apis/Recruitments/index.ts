@@ -1,9 +1,20 @@
 import { instance } from '../axios';
 import { RecruitmentFormQueryStringType } from './request';
-import { RecruitmentFormResponse } from './response';
+import {
+	RecruitmentFormDetailResponse,
+	RecruitmentFormResponse,
+} from './response';
 import { useMutation, MutationOptions } from 'react-query';
 
 const router = '/recruitments';
+
+/** 모집의뢰서 상세 조회 */
+export const getRecruitmentFormDetail = async (recruitmentId: string) => {
+	const { data } = await instance.get<Promise<RecruitmentFormDetailResponse>>(
+		`${router}/${recruitmentId}`
+	);
+	return data;
+};
 
 /** 선생님 모집의뢰 리스트 조회 */
 export const getAllRecruitmentForm = async (

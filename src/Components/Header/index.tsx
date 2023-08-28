@@ -3,7 +3,7 @@ import logo from '../../Assets/PNG/logo.png';
 import { Link, useLocation } from 'react-router-dom';
 
 export function Header() {
-	let location = useLocation();
+	const location = useLocation();
 
 	/** path를 체크하는 함수입니다. */
 	const clickedStatus = (path: string) => {
@@ -27,9 +27,9 @@ export function Header() {
 						모집의뢰서
 					</_.NavBtn>
 				</Link>
-				<Link to="/RequestForm">
-					<_.NavBtn clicked={clickedStatus('RequestForm')} width={68}>
-						등록
+				<Link to="/Company">
+					<_.NavBtn clicked={clickedStatus('Company')} width={68}>
+						기업
 					</_.NavBtn>
 				</Link>
 				<Link to="/Student">

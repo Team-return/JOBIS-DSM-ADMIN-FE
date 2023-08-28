@@ -21,3 +21,8 @@ export interface TrainDate {
 export interface RejectReason {
 	reason: string;
 }
+
+export interface selectStudent {
+	id: number;
+	name: string;
+}

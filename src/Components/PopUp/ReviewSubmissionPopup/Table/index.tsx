@@ -58,7 +58,7 @@ export function ReviewSubmissionTable({
 				<RadioButton name="review" onClick={ClickCheckBox} />,
 				<_.ContentText>{review.year}</_.ContentText>, // 연도
 				<_.ContentText>{review.writer}</_.ContentText>, // 작성자
-				<_.ContentText>{review.created_date}</_.ContentText>, // 후기 작성일자
+				<_.ContentText>{review.date}</_.ContentText>, // 후기 작성일자
 			];
 		})
 		.concat(emptyTableDataArray);

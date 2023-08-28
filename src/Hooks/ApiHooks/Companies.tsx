@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { dataType } from '../../Apis/Companies/request';
-import { getAllCompanyRecruitment } from '../../Apis/Companies';
+import { getAllCompanyRecruitment, getCompanyDetail } from '../../Apis/Companies';
 import { EmployableCompaniesPropsType } from '../../Apis/Companies/request';
 import { getEmployableCompanies } from '../../Apis/Companies';
 
@@ -22,6 +22,19 @@ export function useGetEmployableCompanies(
 	return useQuery(
 		['getEmployableCompanies', searchString],
 		() => getEmployableCompanies(searchString),
+		{
+			refetchOnWindowFocus: true,
+		}
+	);
+}
+
+/** 기업 페이지에서 기업의 상세정보를 조회하는 api입니다. */
+export function useGetCompanyDetail(
+	companyId: string
+) {
+	return useQuery(
+		['getCompanyDetail', companyId],
+		() => getCompanyDetail(companyId),
 		{
 			refetchOnWindowFocus: true,
 		}

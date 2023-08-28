@@ -4,7 +4,7 @@ import { RecruitmentFormQueryStringType } from '../../Apis/Recruitments/request'
 import { Header } from '../../Components/Header';
 import { RecruitmentFormSearch } from '../../Components/RecruitmentForm/Search';
 import { RecruitmentFormTable } from '../../Components/RecruitmentForm/Table';
-import { useGetRecruitmentForm } from '../../Hooks/ApiHooks/Applications';
+import { useGetRecruitmentForm } from '../../Hooks/ApiHooks/Recruitments';
 
 export function RecruitmentFormPage() {
 	const date = new Date(); // 현재 날짜 및 시간

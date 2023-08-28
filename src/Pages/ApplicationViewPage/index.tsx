@@ -2,7 +2,10 @@ import * as _ from './style';
 import { Header } from '../../Components/Header';
 import { useState } from 'react';
 import { ApplicationViewSearch } from '../../Components/ApplicationView/Search';
-import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
+import {
+	ApplicantInfoQueryStringType,
+	selectStudent,
+} from '../../Apis/Applications/request';
 import { useGetApplicantInfo } from '../../Hooks/ApiHooks/Applications';
 import { ApplicationViewTable } from '../../Components/ApplicationView/Table';
 
@@ -20,16 +23,10 @@ export function ApplicationViewPage() {
 		isLoading,
 	} = useGetApplicantInfo(searchQueryString);
 
-	const allSelectFormId: number[] =
+	const allSelectFormIdAndName: selectStudent[] =
 		application! &&
 		application.applications.map((companie) => {
-			return companie.application_id;
-		});
-
-	const allSelectStudent: string[] =
-		application! &&
-		application.applications.slice(0, 3).map((companie) => {
-			return companie.student_name;
+			return { id: companie.application_id, name: companie.student_name };
 		});
 
 	return (
@@ -44,8 +41,7 @@ export function ApplicationViewPage() {
 					applicationIsLoading={isLoading}
 					application={application!}
 					refetchApplication={refetchApplication}
-					allSelectFormId={allSelectFormId}
-					allSelectStudent={allSelectStudent}
+					allSelectFormIdAndName={allSelectFormIdAndName}
 					searchQueryString={searchQueryString}
 					setSearchQueryString={setSearchQueryString}
 				/>

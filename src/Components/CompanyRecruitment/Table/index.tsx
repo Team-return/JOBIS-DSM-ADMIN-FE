@@ -1,4 +1,9 @@
-import { Button, CheckBox, Table, useToastStore } from '@team-return/design-system';
+import {
+	Button,
+	CheckBox,
+	Table,
+	useToastStore,
+} from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
@@ -10,6 +15,7 @@ import { dataType } from '../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
 import { searchInArray } from '../../../Utils/useSearchForArray';
+import { Link } from 'react-router-dom';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
@@ -157,7 +163,11 @@ export function CompanyRecruitmentTable({
 					checked={clickedData.includes(companie.company_id)}
 					onChange={clickCheckBox}
 				/>,
-				<_.ContentText>{companie.company_name}</_.ContentText>, // 기업명
+				<Link to={`/Company/${companie.company_id}`}>
+					<_.ContentText click={true}>
+						{companie.company_name}
+					</_.ContentText>
+				</Link>, // 기업명
 				<_.ContentText>{companie.region}</_.ContentText>, // 지역
 				<_.ContentText>{companie.business_area}</_.ContentText>, // 사업분야
 				<_.ContentText>{companie.workers_count}</_.ContentText>, // 근로자수

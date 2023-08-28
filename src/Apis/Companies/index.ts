@@ -1,12 +1,26 @@
 import { MutationOptions, useMutation } from 'react-query';
+import { useParams } from 'react-router-dom';
 import { instance } from '../axios';
-import { EmployableCompaniesPropsType, dataType } from './request';
 import {
+	EmployableCompaniesPropsType,
+	dataType,
+	CompanyInfoEditType,
+} from './request';
+import {
+	CompanyDetailResponse,
 	CompanyRecruitmentResponse,
 	EmployableCompaniesResponse,
 } from './response';
 
 const router = '/companies';
+
+/** 회사 상세정보 조회 */
+export const getCompanyDetail = async (companyId: string) => {
+	const { data } = await instance.get<Promise<CompanyDetailResponse>>(
+		`${router}/${companyId}`
+	);
+	return data;
+};
 
 /** 선생님 회사 리스트 조회 */
 export const getAllCompanyRecruitment = async (searchQueryString: dataType) => {
@@ -55,6 +69,20 @@ export const useChangeContractCompany = (
 ) => {
 	return useMutation(
 		async () => instance.patch(`${router}/mou`, { company_ids }),
+		{
+			...options,
+		}
+	);
+};
+
+/** 협약 여부 변경 */
+export const useChangeCompanyInfo = (
+	info: CompanyInfoEditType,
+	options: MutationOptions
+) => {
+	const params = useParams();
+	return useMutation(
+		async () => instance.patch(`${router}/${params.id}`, info),
 		{
 			...options,
 		}
