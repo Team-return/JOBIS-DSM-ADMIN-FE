@@ -1,8 +1,8 @@
 export interface CodeResponse {
-	codes: CodeType[];
+	codes: CodesType[];
 }
 
-export interface CodeType {
+export interface CodesType {
 	code: number;
 	keyword: string;
 	job_type?: string;

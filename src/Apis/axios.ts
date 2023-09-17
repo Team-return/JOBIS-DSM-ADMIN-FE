@@ -7,19 +7,13 @@ export const instance = axios.create({
 	timeout: 10000,
 });
 
-export const noneTokenInstance = axios.create({
-	baseURL: process.env.REACT_APP_BASE_URL,
-	timeout: 10000,
-});
-
 const cookies = new Cookies();
+let isRefreshing = false;
 
 instance.interceptors.request.use(
 	(config) => {
 		const accessToken = cookies.get('access_token');
-		const returnConfig = {
-			...config,
-		};
+		const returnConfig = { ...config };
 		if (accessToken) {
 			returnConfig.headers!['Authorization'] = `Bearer ${accessToken}`;
 		}
@@ -30,19 +24,22 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
 	(response) => response,
-	(error: AxiosError<AxiosError>) => {
+	async (error: AxiosError<AxiosError>) => {
 		if (axios.isAxiosError(error) && error.response) {
 			const { config } = error;
 			const refreshToken = cookies.get('refresh_token');
 			if (
-				error.response.data.message === 'Invalid Token' ||
-				error.response.data.message === 'Token Expired' ||
-				!cookies.get('access_token')
+				(error.response.data.message === 'Invalid Token' ||
+					error.response.data.message === 'Token Expired' ||
+					!cookies.get('access_token')) &&
+				refreshToken
 			) {
-				if (refreshToken) {
+				if (!isRefreshing) {
 					cookies.remove('access_token');
+					isRefreshing = true;
 					reIssueToken(refreshToken)
 						.then((res) => {
+							isRefreshing = false;
 							cookies.remove('refresh_token');
 							const accessExpired = new Date(
 								res.access_token_expired_at
@@ -56,21 +53,26 @@ instance.interceptors.response.use(
 							cookies.set('refresh_token', res.refresh_token, {
 								expires: refreshExpired,
 							});
-							if (config!.headers)
+							if (config!.headers) {
 								config!.headers[
 									'Authorization'
 								] = `Bearer ${res.access_token}`;
+							}
 							return axios(config!);
 						})
 						.catch(() => {
+							isRefreshing = false;
 							cookies.remove('access_token');
 							cookies.remove('refresh_token');
+							alert('리프레쉬 실패');
 							window.location.href = '/login';
 						});
-				} else {
-					window.location.href = '/login';
 				}
-			} else return Promise.reject(error);
+			} else {
+				alert('???');
+				window.location.href = '/login';
+			}
 		}
+		return Promise.reject(error);
 	}
 );

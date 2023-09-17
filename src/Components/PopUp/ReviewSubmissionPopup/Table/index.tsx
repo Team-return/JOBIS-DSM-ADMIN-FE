@@ -51,7 +51,7 @@ export function ReviewSubmissionTable({
 		?.map((review) => {
 			const ClickCheckBox = () => {
 				setReviewId(review.review_id);
-				refetchReviewSubmissionDetail();
+				setTimeout(() => refetchReviewSubmissionDetail());
 			};
 
 			return [
@@ -88,7 +88,7 @@ export function ReviewSubmissionTable({
 						margin={[0, 0, 0, 20]}
 						iconName="Search"
 						width={65}
-						placeHolder="작성자명"
+						placeholder="작성자명"
 						name="searchInputValue"
 						value={searchInput.searchInputValue}
 						onChange={handleChange}

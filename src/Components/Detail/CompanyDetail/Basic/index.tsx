@@ -52,7 +52,7 @@ export function CompanyDetailBasic({
 				</_.ContentBox>
 				<_.TitleBox>매출액</_.TitleBox>
 				<_.ContentBox width={20}>
-					{companyDetailInfo?.take}억
+					{companyDetailInfo?.take}억/년
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>

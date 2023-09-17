@@ -109,7 +109,7 @@ export function RecruitmentFormSearch({
 						name="company_name"
 						value={formData.company_name}
 						onChange={handleChange}
-						placeHolder="기업명 입력"
+						placeholder="기업명 입력"
 					/>
 				</_.ContentWrapper>
 				<_.TitleText>모집상태</_.TitleText>

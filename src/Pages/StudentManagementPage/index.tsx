@@ -17,6 +17,7 @@ import { useGetEmployableCompanies } from '../../Hooks/ApiHooks/Companies';
 export function StudentManagementPage() {
 	const date = new Date();
 	const { openModal } = useModalContext();
+	const [page, setPage] = useState({ page: 1 });
 
 	const { form: searchQueryString, setForm: setSearchQueryString } = useForm({
 		company_name: '',
@@ -37,7 +38,7 @@ export function StudentManagementPage() {
 		data: employableCompanies,
 		refetch: refetchEmployableCompanies,
 		isLoading: employableCompaniesIsLoading,
-	} = useGetEmployableCompanies(searchQueryString);
+	} = useGetEmployableCompanies(searchQueryString, page.page);
 	const {
 		data: combinedStudentList,
 		refetch: refetchCombinedStudentList,
@@ -68,11 +69,16 @@ export function StudentManagementPage() {
 				<_.TableWrapper>
 					<_.CompanyTableWrapper>
 						<CompanyTable
+							page={page}
+							setPage={setPage}
 							employableCompanies={employableCompanies!}
 							isLoading={employableCompaniesIsLoading}
 							setSelectCompany={setSelectCompany}
 							refetchCombinedStudentList={
 								refetchCombinedStudentList
+							}
+							refetchEmployableCompanies={
+								refetchEmployableCompanies
 							}
 						/>
 					</_.CompanyTableWrapper>

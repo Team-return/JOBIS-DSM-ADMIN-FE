@@ -1,21 +1,22 @@
-import { Button, useToastStore } from '@team-return/design-system';
+import { Button, Icon, Stack, useToastStore } from '@team-return/design-system';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { CompanyDetailResponse } from '../../../../Apis/Companies/response';
 import { useForm } from '../../../../Hooks/useForm';
 import * as _ from '../../style';
-import EditImg from '../../../../Assets/SVG/edit.svg';
-import { useFileUpload } from '../../../../Apis/File';
 import { CompanyInfoEditType } from '../../../../Apis/Companies/request';
 import { useChangeCompanyInfo } from '../../../../Apis/Companies';
+import { useFileUpload } from '../../../../Apis/File';
 
 interface PropsType {
 	companyDetailInfo: CompanyDetailResponse;
 	setCanEdit: Dispatch<SetStateAction<boolean>>;
+	refetchCompanyDetailInfo: () => void;
 }
 
 export function CompanyDetailEdit({
 	companyDetailInfo,
 	setCanEdit,
+	refetchCompanyDetailInfo,
 }: PropsType) {
 	const { append } = useToastStore();
 	const fileInput = useRef<HTMLInputElement>(null);
@@ -42,7 +43,7 @@ export function CompanyDetailEdit({
 		worker_number: companyDetailInfo?.worker_number,
 		take: companyDetailInfo?.take,
 		service_name: companyDetailInfo?.service_name,
-		company_profile_url: `https://jobis-bucket.s3.ap-northeast-2.amazonaws.com/${companyDetailInfo?.company_profile_url}`,
+		company_profile_url: companyDetailInfo?.company_profile_url,
 	});
 
 	const {
@@ -63,7 +64,6 @@ export function CompanyDetailEdit({
 		worker_number,
 		take,
 		service_name,
-		company_profile_url,
 	} = companyDetailEditInfo;
 
 	const { mutate: editCompanyInfo } = useChangeCompanyInfo(
@@ -75,6 +75,7 @@ export function CompanyDetailEdit({
 					message: '',
 					type: 'GREEN',
 				});
+				refetchCompanyDetailInfo();
 				setCanEdit(false);
 			},
 			onError: () => {
@@ -87,28 +88,24 @@ export function CompanyDetailEdit({
 		}
 	);
 
-	const { mutate: fileUploader } = useFileUpload(
-		file!,
-		setCompanyDetailEditInfo,
-		{
-			onSuccess: (res: any) => {
-				setCompanyDetailEditInfo((companyDetailEditInfo) => ({
-					...companyDetailEditInfo,
-					company_profile_url: res.data.urls[0],
-				}));
-				setTimeout(() => {
-					editCompanyInfo();
-				});
-			},
-			onError: () => {
-				append({
-					title: '파일 업로드에 실패하였습니다.',
-					message: '',
-					type: 'RED',
-				});
-			},
-		}
-	);
+	const { mutate: fileUploader } = useFileUpload(file!, {
+		onSuccess: (res: any) => {
+			setCompanyDetailEditInfo((companyDetailEditInfo) => ({
+				...companyDetailEditInfo,
+				company_profile_url: res.data?.urls[0],
+			}));
+			setTimeout(() => {
+				editCompanyInfo();
+			});
+		},
+		onError: () => {
+			append({
+				title: '파일 업로드에 실패하였습니다.',
+				message: '',
+				type: 'RED',
+			});
+		},
+	});
 
 	const submitEditCompanyInfo = () => {
 		if (file) {
@@ -127,28 +124,39 @@ export function CompanyDetailEdit({
 							src={
 								file
 									? URL.createObjectURL(file)
-									: company_profile_url
+									: `https://jobis-bucket.s3.ap-northeast-2.amazonaws.com/${companyDetailInfo?.company_profile_url}`
 							}
 						/>
 					</_.LogoWrapper>
 					<_.LogoEditImg
-						src={EditImg}
 						onClick={() => {
 							fileInput.current?.click();
 						}}
-					></_.LogoEditImg>
+					>
+						<Icon icon="EditPencil" size={20} color="gray70" />
+					</_.LogoEditImg>
 					<input
 						type="file"
 						hidden
 						ref={fileInput}
+						accept="image/jpg, image/png"
 						onChange={(e) => {
 							setFile(e.target.files ? e.target.files[0] : null);
 						}}
 					/>
 				</_.LogoEditWrapper>
-				<Button size="M" onClick={submitEditCompanyInfo}>
-					확인
-				</Button>
+				<Stack gap={20}>
+					<Button
+						size="M"
+						kind="Shadow"
+						onClick={() => setCanEdit(false)}
+					>
+						취소
+					</Button>
+					<Button size="M" onClick={submitEditCompanyInfo}>
+						확인
+					</Button>
+				</Stack>
 			</_.Wrapper>
 			<_.Stack>
 				<_.TitleBox>기업명</_.TitleBox>
@@ -189,7 +197,7 @@ export function CompanyDetailEdit({
 				<_.ContentBox width={25}>
 					<_.CustomInput
 						width={100}
-						type="text"
+						type="date"
 						value={companyDetailInfo?.founded_at}
 						disabled={true}
 					/>
@@ -197,31 +205,35 @@ export function CompanyDetailEdit({
 				<_.TitleBox>근로자 수</_.TitleBox>
 				<_.ContentBox width={25}>
 					<_.CustomInput
-						placeHolder="근로자 수"
+						placeholder="근로자 수"
 						width={100}
-						type="text"
+						style={{ paddingRight: '50px' }}
+						type="number"
 						value={worker_number}
 						name="worker_number"
 						onChange={companyDetailEditInfohandler}
 					/>
+					<_.AbsoluteText right={50}>명</_.AbsoluteText>
 				</_.ContentBox>
 				<_.TitleBox>매출액</_.TitleBox>
 				<_.ContentBox width={20}>
 					<_.CustomInput
-						placeHolder="매출액"
+						placeholder="매출액"
 						width={100}
-						type="text"
+						style={{ paddingRight: '50px' }}
+						type="number"
 						value={take}
 						name="take"
 						onChange={companyDetailEditInfohandler}
 					/>
+					<_.AbsoluteText right={40}>억/년</_.AbsoluteText>
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
 				<_.TitleBox>본사주소</_.TitleBox>
 				<_.ContentBox width={25}>
 					<_.CustomInput
-						placeHolder="본사주소"
+						placeholder="본사주소"
 						width={100}
 						type="text"
 						value={main_address}
@@ -232,7 +244,7 @@ export function CompanyDetailEdit({
 				<_.TitleBox>본사 상세주소</_.TitleBox>
 				<_.ContentBox width={25}>
 					<_.CustomInput
-						placeHolder="본사 상세주소"
+						placeholder="본사 상세주소"
 						width={100}
 						type="text"
 						value={main_address_detail}
@@ -243,7 +255,7 @@ export function CompanyDetailEdit({
 				<_.TitleBox>본사 우편번호</_.TitleBox>
 				<_.ContentBox width={20}>
 					<_.CustomInput
-						placeHolder="본사 우편번호"
+						placeholder="본사 우편번호"
 						width={100}
 						type="number"
 						value={main_zip_code}
@@ -256,7 +268,7 @@ export function CompanyDetailEdit({
 				<_.TitleBox>지점주소</_.TitleBox>
 				<_.ContentBox width={25}>
 					<_.CustomInput
-						placeHolder="지점주소"
+						placeholder="지점주소"
 						width={100}
 						type="text"
 						value={sub_address ? sub_address : ''}
@@ -267,7 +279,7 @@ export function CompanyDetailEdit({
 				<_.TitleBox>지점 상세주소</_.TitleBox>
 				<_.ContentBox width={25}>
 					<_.CustomInput
-						placeHolder="지점 상세주소"
+						placeholder="지점 상세주소"
 						width={100}
 						type="text"
 						value={sub_address_detail ? sub_address_detail : ''}
@@ -278,7 +290,7 @@ export function CompanyDetailEdit({
 				<_.TitleBox>지점 우편번호</_.TitleBox>
 				<_.ContentBox width={20}>
 					<_.CustomInput
-						placeHolder="지점 우편번호"
+						placeholder="지점 우편번호"
 						width={100}
 						type="number"
 						value={sub_zip_code ? sub_zip_code : ''}
@@ -291,7 +303,7 @@ export function CompanyDetailEdit({
 				<_.TitleBox>담당자1</_.TitleBox>
 				<_.ContentBox width={15}>
 					<_.CustomInput
-						placeHolder="담당자1"
+						placeholder="담당자1"
 						width={100}
 						type="text"
 						value={manager_name}
@@ -302,9 +314,10 @@ export function CompanyDetailEdit({
 				<_.TitleBox>전화번호1</_.TitleBox>
 				<_.ContentBox width={15}>
 					<_.CustomInput
-						placeHolder="전화번호1"
+						placeholder="전화번호1"
 						width={100}
-						type="text"
+						type="number"
+						maxLength={11}
 						value={manager_phone_no}
 						name="manager_phone_no"
 						onChange={companyDetailEditInfohandler}
@@ -313,10 +326,10 @@ export function CompanyDetailEdit({
 				<_.TitleBox>담당자2</_.TitleBox>
 				<_.ContentBox width={15}>
 					<_.CustomInput
-						placeHolder="담당자2"
+						placeholder="담당자2"
 						width={100}
 						type="text"
-						value={sub_manager_name ? sub_manager_name : '-'}
+						value={sub_manager_name ? sub_manager_name : ''}
 						name="sub_manager_name"
 						onChange={companyDetailEditInfohandler}
 					/>
@@ -324,12 +337,11 @@ export function CompanyDetailEdit({
 				<_.TitleBox>전화번호2</_.TitleBox>
 				<_.ContentBox width={15}>
 					<_.CustomInput
-						placeHolder="전화번호2"
+						placeholder="전화번호2"
 						width={100}
-						type="text"
-						value={
-							sub_manager_phone_no ? sub_manager_phone_no : '-'
-						}
+						type="number"
+						maxLength={11}
+						value={sub_manager_phone_no ? sub_manager_phone_no : ''}
 						name="sub_manager_phone_no"
 						onChange={companyDetailEditInfohandler}
 					/>
@@ -339,7 +351,7 @@ export function CompanyDetailEdit({
 				<_.TitleBox>이메일</_.TitleBox>
 				<_.ContentBox width={40}>
 					<_.CustomInput
-						placeHolder="이메일"
+						placeholder="이메일"
 						width={100}
 						type="text"
 						value={email}
@@ -350,10 +362,10 @@ export function CompanyDetailEdit({
 				<_.TitleBox>팩스번호</_.TitleBox>
 				<_.ContentBox width={40}>
 					<_.CustomInput
-						placeHolder="팩스번호"
+						placeholder="팩스번호"
 						width={100}
-						type="text"
-						value={fax ? fax : '-'}
+						type="number"
+						value={fax ? fax : ''}
 						name="fax"
 						onChange={companyDetailEditInfohandler}
 					/>

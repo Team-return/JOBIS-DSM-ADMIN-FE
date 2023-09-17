@@ -14,8 +14,8 @@ import {
 	ApplicantInfoQueryStringType,
 	selectStudent,
 } from '../../../Apis/Applications/request';
-import { DownloadDataPropsType } from '../../../Apis/FileDownload/request';
-import { useDownloadData } from '../../../Apis/FileDownload';
+import { DownloadDataPropsType } from '../../../Apis/File/request';
+import { useDownloadData } from '../../../Apis/File';
 import { useModalContext } from '../../../Utils/Modal';
 import {
 	useChangeRequestStatus,
@@ -295,6 +295,13 @@ export function ApplicationViewTable({
 				}
 			};
 
+			const urlApplication = application.attachments.filter(
+				(urls) => urls.type === 'URL'
+			);
+			const fileApplication = application.attachments.filter(
+				(urls) => urls.type === 'FILE'
+			);
+
 			return [
 				<CheckBox
 					checked={selectFormId.includes(application.application_id)}
@@ -347,7 +354,39 @@ export function ApplicationViewTable({
 					>
 						{downloadBoxView === application.application_id && (
 							<_.DownLoadWrapper>
-								{application.attachments.map((urls, i) => {
+								{urlApplication.length !== 0 && (
+									<_.MiddleText>URL</_.MiddleText>
+								)}
+								{urlApplication.map((urls, i) => {
+									return (
+										<_.FileDownloadWrapper key={i}>
+											<Stack>
+												<_.CountNum>{i + 1}</_.CountNum>
+												<div>{`https://${urls.url}`}</div>
+											</Stack>
+											<Button
+												size="S"
+												onClick={() => {
+													window.open(
+														`https://${urls.url}`,
+														'_blank',
+														'noopener, noreferrer'
+													);
+												}}
+											>
+												링크 이동
+											</Button>
+										</_.FileDownloadWrapper>
+									);
+								})}
+								{fileApplication.length !== 0 && (
+									<_.MiddleText
+										style={{ margin: '20px 0 10px 25px' }}
+									>
+										첨부파일
+									</_.MiddleText>
+								)}
+								{fileApplication.map((urls, i) => {
 									const nameArray = decodeURI(urls.url).split(
 										'/'
 									);
@@ -410,7 +449,7 @@ export function ApplicationViewTable({
 		<_.TitleText>지원 일자</_.TitleText>,
 	];
 	/** 테이블 width를 설정한 값입니다. */
-	const tableWidth: number[] = [4, 9, 7, 8, 12, 48, 12];
+	const tableWidth: number[] = [4, 9, 7, 8, 15, 45, 12];
 
 	return (
 		<_.Container>

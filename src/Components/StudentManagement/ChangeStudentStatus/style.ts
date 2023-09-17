@@ -29,6 +29,8 @@ export const ContentText = styled.div`
 	color: #7f7f7f;
 	font-size: 14px;
 	font-weight: 500;
+	height: 100%;
+	align-items: center;
 `;
 
 export const DateInput = styled.input`

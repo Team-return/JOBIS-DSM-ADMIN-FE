@@ -1,5 +1,9 @@
 import { instance } from '../axios';
-import { RecruitmentFormQueryStringType } from './request';
+import {
+	editAreasType,
+	editRecruitmentRequest,
+	RecruitmentFormQueryStringType,
+} from './request';
 import {
 	RecruitmentFormDetailResponse,
 	RecruitmentFormResponse,
@@ -33,15 +37,68 @@ export const getAllRecruitmentForm = async (
 /** 선생님 모집의뢰 상태 변경 */
 export const useChangeRecruitmentsStatus = (
 	status: string,
-	recruitment_ids: string[],
+	recruitmentIds: string[],
 	options: MutationOptions
 ) => {
 	const data = {
-		recruitment_ids,
+		recruitmentIds,
 		status,
 	};
 
 	return useMutation(async () => instance.patch(`${router}/status`, data), {
 		...options,
 	});
+};
+
+/** 모집 분야 삭제 */
+export const useDeleteArea = (areaIds: number, options: MutationOptions) => {
+	return useMutation(
+		async () => instance.delete(`${router}/area/${areaIds}`),
+		{
+			...options,
+		}
+	);
+};
+
+/** 모집 분야 수정 */
+export const useEditArea = (
+	areaIds: number,
+	area: editAreasType,
+	options: MutationOptions
+) => {
+	return useMutation(
+		async () => instance.patch(`${router}/area/${areaIds}`, area),
+		{
+			...options,
+		}
+	);
+};
+
+/** 모집 분야 추가 */
+export const useAddArea = (
+	recruitmentId: string,
+	area: editAreasType,
+	options: MutationOptions
+) => {
+	return useMutation(
+		async () => instance.post(`${router}/${recruitmentId}/area`, area),
+		{
+			...options,
+		}
+	);
+};
+
+/** 모집 의뢰 수정 */
+export const useEditRecruitment = (
+	recruitmentId: string,
+	recruitmentData: editRecruitmentRequest,
+	options: MutationOptions
+) => {
+	return useMutation(
+		async () =>
+			instance.patch(`${router}/${recruitmentId}`, recruitmentData),
+		{
+			...options,
+		}
+	);
 };

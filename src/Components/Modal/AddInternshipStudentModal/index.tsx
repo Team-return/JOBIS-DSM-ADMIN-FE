@@ -175,7 +175,7 @@ export function AddInternshipStudentModal({
 						margin={[0, 0, 0, 20]}
 						iconName="Search"
 						width={65}
-						placeHolder="학생 검색"
+						placeholder="학생 검색"
 						name="searchInputValue"
 						value={searchInput.searchInputValue}
 						onChange={handleChange}

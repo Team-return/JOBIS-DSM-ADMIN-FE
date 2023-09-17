@@ -35,13 +35,14 @@ export const getAllCompanyRecruitment = async (searchQueryString: dataType) => {
 
 /** 취업 관리 페이지 회사 조회 */
 export const getEmployableCompanies = async (
-	searchQueryString: EmployableCompaniesPropsType
+	searchQueryString: EmployableCompaniesPropsType,
+	page: number
 ) => {
 	const { company_name, company_type, year } = searchQueryString;
 	const companyType = company_type ? `&company_type=${company_type}` : '';
 	const companyName = company_name ? `&company_name=${company_name}` : '';
 	const { data } = await instance.get<Promise<EmployableCompaniesResponse>>(
-		`${router}/employment?year=${year}${companyName}${companyType}`
+		`${router}/employment?year=${year}${companyName}${companyType}&page=${page}`
 	);
 	return data;
 };

@@ -80,7 +80,7 @@ export function ApplicationViewSearch({
 						name="student_name"
 						value={data.student_name}
 						onChange={handleChange}
-						placeHolder="검색어 입력"
+						placeholder="검색어 입력"
 						iconName="Search"
 					/>
 				</_.ContentWrapper>

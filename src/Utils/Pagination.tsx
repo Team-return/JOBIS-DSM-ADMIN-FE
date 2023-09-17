@@ -14,7 +14,7 @@ export function Pagination({ page, data, setData, refetch }: PropsType) {
 		setData((prevData: any) => ({ ...prevData, page: num }));
 		setTimeout(refetch);
 	};
-
+	
 	return (
 		<Nav>
 			<Button
@@ -23,7 +23,7 @@ export function Pagination({ page, data, setData, refetch }: PropsType) {
 			>
 				&lt;
 			</Button>
-			{Array.from({ length: page }, (_, i) => (
+			{Array.from({ length: page ? page : 1 }, (_, i) => (
 				<Text
 					key={i + 1}
 					onClick={() => changePageNumber(i + 1)}

@@ -19,6 +19,7 @@ export function CompanyDetailPage() {
 					<CompanyDetailEdit
 						companyDetailInfo={companyDetailInfo!}
 						setCanEdit={setCanEdit}
+						refetchCompanyDetailInfo={refetchCompanyDetailInfo}
 					/>
 				) : (
 					<CompanyDetailBasic

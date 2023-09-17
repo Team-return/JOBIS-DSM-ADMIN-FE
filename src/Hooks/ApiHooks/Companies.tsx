@@ -17,11 +17,12 @@ export function useGetCompanyRecruitments(searchQueryString: dataType) {
 
 /** 학생 페이지에서 기업들을 조회하는 api입니다. */
 export function useGetEmployableCompanies(
-	searchString: EmployableCompaniesPropsType
+	searchString: EmployableCompaniesPropsType,
+	page: number
 ) {
 	return useQuery(
-		['getEmployableCompanies', searchString],
-		() => getEmployableCompanies(searchString),
+		['getEmployableCompanies', searchString, page],
+		() => getEmployableCompanies(searchString, page),
 		{
 			refetchOnWindowFocus: true,
 		}

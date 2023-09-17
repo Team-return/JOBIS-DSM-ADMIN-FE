@@ -1,4 +1,4 @@
-import { Input } from '@team-return/design-system';
+import { theme, Input } from '@team-return/design-system';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -36,11 +36,13 @@ export const TitleBox = styled.div<{ width?: number; height?: number }>`
 
 export const CompanyLogo = styled.img`
 	height: 80px;
-	width: 80px;
 `;
 
 export const LogoWrapper = styled.div`
-	height: 80px;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	border: 1.5px solid #cccccc;
 	position: relative;
 	overflow: hidden;
@@ -50,15 +52,19 @@ export const LogoEditWrapper = styled.div`
 	position: relative;
 `;
 
-export const LogoEditImg = styled.img`
+export const LogoEditImg = styled.div`
 	position: absolute;
 	height: 30px;
+	width: 30px;
 	border: 1px solid #7f7f7f;
 	border-radius: 50%;
 	padding: 2px;
 	right: -8px;
 	bottom: -8px;
 	background-color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	cursor: pointer;
 `;
 
@@ -68,6 +74,24 @@ export const Wrapper = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	margin: -30px 0 20px 0;
+`;
+
+export const IconWrapper = styled.div`
+	width: 50px;
+	height: 50px;
+	border: 1.5px solid ${theme.color.gray60};
+	background-color: white;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+`;
+
+export const AbsoluteText = styled.div<{ right: number }>`
+	position: absolute;
+	font-size: 17px;
+	right: ${({ right }) => right + 'px'};
 `;
 
 export const Textarea = styled.textarea<{
@@ -89,6 +113,7 @@ export const Textarea = styled.textarea<{
 	font-size: 18px;
 	outline: none;
 	padding: 15px;
+	white-space: pre-line;
 `;
 
 export const ContentBox = styled.div<{
@@ -101,7 +126,7 @@ export const ContentBox = styled.div<{
 	height: ${({ height }) => (height ? height + 'px' : '75px')};
 	border: 1px solid #e5e5e5;
 	background: #fff;
-	padding: ${({ longText }) => (longText ? '30px' : 0)} 30px;
+	padding: ${({ longText }) => (longText ? '27px' : 0)} 30px;
 	color: #000;
 	display: flex;
 	align-items: ${({ longText }) => (longText ? 'flex-start' : 'center')};

@@ -37,9 +37,9 @@ export interface RecruitmentFormDetailResponse {
 	etc: string | null;
 }
 
-interface areasType {
+export interface areasType {
 	id: number;
-	job: string;
+	job: string[];
 	tech: string[];
 	hiring: number;
 	major_task: string;

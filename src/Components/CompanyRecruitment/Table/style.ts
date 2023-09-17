@@ -36,9 +36,11 @@ export const ContentText = styled.div<{ status?: boolean; click?: boolean }>`
 	font-size: 18px;
 	display: flex;
 	justify-content: center;
+	height: 100%;
+	align-items: center;
 	color: ${({ status }) => (status ? '#FF0000' : '#000000')};
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
 	text-underline-offset: 2px;
-	text-decoration-thickness: 2px;
 	cursor: ${({ click }) => (click ? 'pointer' : 'default')};
+	text-align: center;
 `;

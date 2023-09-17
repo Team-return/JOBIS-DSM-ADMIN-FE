@@ -23,15 +23,15 @@ const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
 root.render(
-	<React.StrictMode>
-		<ThemeProvider theme={baseTheme}>
-			<ModalContextProvider>
-				<QueryClientProvider client={queryClient}>
-					<ToastContainer />
-					<App />
-					<ReactQueryDevtools />
-				</QueryClientProvider>
-			</ModalContextProvider>
-		</ThemeProvider>
-	</React.StrictMode>
+	// <React.StrictMode>
+			<ThemeProvider theme={baseTheme}>
+				<ModalContextProvider>
+					<QueryClientProvider client={queryClient}>
+						<ToastContainer />
+						<App />
+						<ReactQueryDevtools />
+					</QueryClientProvider>
+				</ModalContextProvider>
+			</ThemeProvider>
+	// </React.StrictMode>
 );

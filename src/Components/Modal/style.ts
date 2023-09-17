@@ -83,6 +83,7 @@ export const ContentText = styled.div<{ status?: boolean; click?: boolean }>`
 	text-underline-offset: 2px;
 	text-decoration-thickness: 2px;
 	cursor: ${({ click }) => (click ? 'pointer' : 'default')};
+	text-align: center;
 `;
 
 export const SearchWrapper = styled.div`

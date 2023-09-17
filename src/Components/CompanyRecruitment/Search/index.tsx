@@ -118,7 +118,7 @@ export function CompanyRecruitmentSearch({
 						name="company_name"
 						value={data.company_name}
 						onChange={handleChange}
-						placeHolder="검색어 입력"
+						placeholder="검색어 입력"
 						iconName="Search"
 					/>
 				</_.ContentWrapper>

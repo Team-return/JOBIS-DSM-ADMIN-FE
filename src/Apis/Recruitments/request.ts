@@ -6,3 +6,26 @@ export interface RecruitmentFormQueryStringType {
 	status: string;
 	page: number;
 }
+
+export interface editRecruitmentRequest {
+	preferential_treatment: string;
+	required_licenses: string[];
+	required_grade?: number | null;
+	work_hours: number;
+	train_pay: number;
+	pay: number;
+	benefits: string | null;
+	military: boolean;
+	hiring_progress: string[];
+	submit_document: string
+	start_date: string;
+	end_date: string;
+	etc: string | null;
+  }
+
+export interface editAreasType {
+	job_codes: number[];
+	tech_codes: number[];
+	hiring: number;
+	major_task: string;
+}

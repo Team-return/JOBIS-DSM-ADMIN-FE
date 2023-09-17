@@ -22,6 +22,7 @@ export function RecruitmentFormDetailPage() {
 					<RecruitmentFormDetailEdit
 					recruitmentFormDetail={recruitmentFormDetailInfo!}
 					setCanEdit={setCanEdit}
+					refetchRecruitmentFormDetailInfo={refetchRecruitmentFormDetailInfo}
 				/>
 				) : (
 					<RecruitmentFormDetailBasic

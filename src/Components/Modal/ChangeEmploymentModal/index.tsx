@@ -1,5 +1,11 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Button, CheckBox, Input, Table, useToastStore } from '@team-return/design-system';
+import {
+	Button,
+	CheckBox,
+	Input,
+	Table,
+	useToastStore,
+} from '@team-return/design-system';
 import * as _ from '../style';
 import { useForm } from '../../../Hooks/useForm';
 import { Pagination } from '../../../Utils/Pagination';
@@ -159,7 +165,7 @@ export function ChangeEmploymentModal({
 						margin={[0, 0, 0, 20]}
 						iconName="Search"
 						width={65}
-						placeHolder="학생 검색"
+						placeholder="학생 검색"
 						name="searchInputValue"
 						value={searchInput.searchInputValue}
 						onChange={handleChange}
