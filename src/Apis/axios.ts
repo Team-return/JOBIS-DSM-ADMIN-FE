@@ -1,3 +1,4 @@
+import { useToastStore } from '@team-return/design-system';
 import axios, { AxiosError } from 'axios';
 import { Cookies } from 'react-cookie';
 import { reIssueToken } from './Auth';
@@ -26,6 +27,7 @@ instance.interceptors.response.use(
 	(response) => response,
 	async (error: AxiosError<AxiosError>) => {
 		if (axios.isAxiosError(error) && error.response) {
+			const { append } = useToastStore();
 			const { config } = error;
 			const refreshToken = cookies.get('refresh_token');
 			if (
@@ -64,12 +66,20 @@ instance.interceptors.response.use(
 							isRefreshing = false;
 							cookies.remove('access_token');
 							cookies.remove('refresh_token');
-							alert('리프레쉬 실패');
+							append({
+								title: '리프레쉬 토큰이 만료되었습니다.',
+								message: '다시 로그인해주세요.',
+								type: 'RED',
+							});
 							window.location.href = '/login';
 						});
 				}
 			} else {
-				alert('???');
+				append({
+					title: '의도치 않은 에러가 발생했습니다.',
+					message: '개발자에게 문의해주세요.',
+					type: 'RED',
+				});
 				window.location.href = '/login';
 			}
 		}
