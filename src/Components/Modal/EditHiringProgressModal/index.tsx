@@ -102,7 +102,7 @@ export function EditHiringProgressModal({
 												>
 													<img src={dndIcon} alt="" />
 													<_.DndText>
-														{hiringProgress[item]}
+														{`${index + 1}. ${hiringProgress[item]}`}
 													</_.DndText>
 												</_.DndItemWrapper>
 											)}
