@@ -15,7 +15,7 @@ export function ApplicationViewPage() {
 			page: 1,
 			application_status: '',
 			student_name: '',
-			company_id: '',
+			recruitment_id: '',
 		});
 	const {
 		data: application,

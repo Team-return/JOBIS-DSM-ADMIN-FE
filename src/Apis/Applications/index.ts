@@ -9,13 +9,13 @@ const router = '/applications';
 export const getApplicantInfo = async (
 	applicationQueryString: ApplicantInfoQueryStringType
 ) => {
-	const { page, application_status, student_name, company_id } =
+	const { page, application_status, student_name, recruitment_id } =
 		applicationQueryString;
 	const pageNum = page ? `&page=${page}` : '';
 	const studentName = student_name ? `&student_name=${student_name}` : '';
-	const companyId = company_id ? `&company_id=${company_id}` : '';
+	const companyId = recruitment_id ? `&recruitment_id=${recruitment_id}` : '';
 	const queryString =
-		application_status || student_name || company_id || page
+		application_status || student_name || recruitment_id || page
 			? `?application_status=${
 					application_status ? application_status : ''
 			  }${companyId}${studentName}${pageNum}`

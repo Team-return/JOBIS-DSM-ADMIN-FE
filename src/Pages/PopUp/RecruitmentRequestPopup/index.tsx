@@ -12,7 +12,7 @@ export function RecruitmentRequestPopup() {
 	const [applicationQueryString] = useState<ApplicantInfoQueryStringType>({
 		application_status: 'REQUESTED',
 		student_name: '',
-		company_id: id ? id : '',
+		recruitment_id: id ? id : '',
 	});
 
 	const {

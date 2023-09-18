@@ -321,7 +321,7 @@ export function RecruitmentFormDetailEdit({
 							</_.Stack>
 						);
 					})}
-					<_.TitleBox height={275} width={100}>
+					<_.TitleBox height={325} width={100}>
 						<_.IconWrapper
 							onClick={() => {
 								openModal({

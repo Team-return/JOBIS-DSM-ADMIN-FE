@@ -24,7 +24,7 @@ export function ApplicationViewSearch({
 		handleChange,
 	} = useForm({
 		student_name: '',
-		company_id: '',
+		recruitment_id: '',
 	});
 
 	const { selectedItem, setSelectedItem, handleSelectedItem } = useDropDown({
@@ -35,7 +35,7 @@ export function ApplicationViewSearch({
 	const defaultData = () => {
 		setData({
 			student_name: '',
-			company_id: '',
+			recruitment_id: '',
 		});
 		setSelectedItem({ application_status: '' });
 	};

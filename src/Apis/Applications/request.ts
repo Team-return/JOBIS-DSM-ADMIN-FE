@@ -10,7 +10,7 @@ export interface ApplicantInfoQueryStringType {
 	page?: number;
 	application_status: string | StatusType;
 	student_name: string;
-	company_id: string;
+	recruitment_id: string;
 }
 
 export interface TrainDate {
