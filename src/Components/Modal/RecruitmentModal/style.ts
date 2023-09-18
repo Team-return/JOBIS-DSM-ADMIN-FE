@@ -138,6 +138,7 @@ export const Input = styled.input<{ marginTop?: number }>`
 
 export const Textarea = styled.textarea`
 	width: 100%;
+	min-height: 110px;
 	margin-top: 15px;
 	font-size: 15px;
 	padding: 10px 25px 10px 15px;

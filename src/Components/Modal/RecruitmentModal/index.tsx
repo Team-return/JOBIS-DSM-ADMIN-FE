@@ -105,7 +105,7 @@ export function GatherModal({
 
 	const handleResizeHeight = useCallback(() => {
 		if (textRef && textRef.current) {
-			textRef.current.style.height = 'auto';
+			textRef.current.style.height = '80px';
 			textRef.current.style.height = textRef.current.scrollHeight + 'px';
 		}
 	}, []);
