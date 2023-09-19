@@ -8,7 +8,7 @@ const router = '/reviews';
 
 /** 리뷰 후기 리스트 조회 */
 export const getAllReviewSubmission = async (company_id: string) => {
-	const { data } = await instance.get<Promise<ReviewSubmissionResponse>>(
+	const { data } = await instance.get<ReviewSubmissionResponse>(
 		`${router}/${company_id}`
 	);
 	return data;

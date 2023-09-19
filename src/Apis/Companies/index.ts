@@ -16,7 +16,7 @@ const router = '/companies';
 
 /** 회사 상세정보 조회 */
 export const getCompanyDetail = async (companyId: string) => {
-	const { data } = await instance.get<Promise<CompanyDetailResponse>>(
+	const { data } = await instance.get<CompanyDetailResponse>(
 		`${router}/${companyId}`
 	);
 	return data;
@@ -27,7 +27,7 @@ export const getAllCompanyRecruitment = async (searchQueryString: dataType) => {
 	const { page, company_type, region, company_name, industry } =
 		searchQueryString;
 	const business_area = industry ? `&business_area=${industry}` : '';
-	const { data } = await instance.get<Promise<CompanyRecruitmentResponse>>(
+	const { data } = await instance.get<CompanyRecruitmentResponse>(
 		`${router}/teacher?page=${page}&type=${company_type}&name=${company_name}&region=${region}${business_area}`
 	);
 	return data;
@@ -41,7 +41,7 @@ export const getEmployableCompanies = async (
 	const { company_name, company_type, year } = searchQueryString;
 	const companyType = company_type ? `&company_type=${company_type}` : '';
 	const companyName = company_name ? `&company_name=${company_name}` : '';
-	const { data } = await instance.get<Promise<EmployableCompaniesResponse>>(
+	const { data } = await instance.get<EmployableCompaniesResponse>(
 		`${router}/employment?year=${year}${companyName}${companyType}&page=${page}`
 	);
 	return data;

@@ -1,4 +1,3 @@
-import { useToastStore } from '@team-return/design-system';
 import axios, { AxiosError } from 'axios';
 import { Cookies } from 'react-cookie';
 import { reIssueToken } from './Auth';
@@ -65,8 +64,6 @@ instance.interceptors.response.use(
 							isRefreshing = false;
 							cookies.remove('access_token');
 							cookies.remove('refresh_token');
-							alert("개발자가 문의해주세요.")
-							// window.location.href = '/login';
 						});
 				}
 			} else {

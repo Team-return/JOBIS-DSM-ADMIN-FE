@@ -6,7 +6,7 @@ const router = '/acceptances';
 
 /** 현장실습생, 근로계약생 조회 */
 export const getCombinedStudentList = async (company_id: number) => {
-	const { data } = await instance.get<Promise<CombinedStudentListResponse>>(
+	const { data } = await instance.get<CombinedStudentListResponse>(
 		`${router}/${company_id}`
 	);
 	return data;

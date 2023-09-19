@@ -20,7 +20,7 @@ export const getApplicantInfo = async (
 					application_status ? application_status : ''
 			  }${companyId}${studentName}${pageNum}`
 			: '';
-	const { data } = await instance.get<Promise<ApplicationResponse>>(
+	const { data } = await instance.get<ApplicationResponse>(
 		`${router}${queryString}`
 	);
 	return data;
@@ -28,7 +28,7 @@ export const getApplicantInfo = async (
 
 /** 현장실습생 전환시 학생 조회 */
 export const getInternshipStudent = async (company_id: number) => {
-	const { data } = await instance.get<Promise<InternshipStudentResponse>>(
+	const { data } = await instance.get<InternshipStudentResponse>(
 		`${router}/pass/${company_id}`
 	);
 	return data;

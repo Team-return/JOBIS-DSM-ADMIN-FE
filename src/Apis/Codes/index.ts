@@ -6,7 +6,7 @@ const router = '/codes';
 
 /** 코드 조회 */
 export const getAllCode = async (type: CodeType) => {
-	const { data } = await instance.get<Promise<CodeResponse>>(
+	const { data } = await instance.get<CodeResponse>(
 		`${router}?type=${type}`
 	);
 	return data;
