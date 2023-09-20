@@ -66,8 +66,6 @@ instance.interceptors.response.use(
 							cookies.remove('refresh_token');
 						});
 				}
-			} else {
-				alert("개발자에게 문의해주세요.")
 			}
 		}
 		return Promise.reject(error);
