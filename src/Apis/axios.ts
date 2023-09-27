@@ -64,8 +64,11 @@ instance.interceptors.response.use(
 							isRefreshing = false;
 							cookies.remove('access_token');
 							cookies.remove('refresh_token');
+							window.location.href = '/login';
 						});
 				}
+			} else {
+				window.location.href = '/login';
 			}
 		}
 		return Promise.reject(error);
