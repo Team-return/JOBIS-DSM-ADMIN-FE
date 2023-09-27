@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
+	recruitmentFormPageNum: number;
 	refetchRecruitmentForm: () => void;
 	allSelectFormId: string[];
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
@@ -28,6 +29,7 @@ interface PropsType {
 
 export function RecruitmentFormTable({
 	recruitmentForm,
+	recruitmentFormPageNum,
 	refetchRecruitmentForm,
 	allSelectFormId,
 	searchRecruitmentFormQueryString,
@@ -42,7 +44,7 @@ export function RecruitmentFormTable({
 	const [changeStatus, setChangeStatus] = useState<string>('');
 
 	/** 지원서 상태를 변경하는 api를 호출합니다. */
-	const changeStatusAPI = useChangeRecruitmentsStatus(
+	const { mutate: changeStatusAPI, isLoading } = useChangeRecruitmentsStatus(
 		changeStatus,
 		clickedData,
 		{
@@ -64,7 +66,6 @@ export function RecruitmentFormTable({
 			},
 		}
 	);
-	const { isLoading } = changeStatusAPI;
 
 	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
@@ -83,7 +84,7 @@ export function RecruitmentFormTable({
 	/** 상태 변경 버튼을 눌렀을 때 실행할 함수입니다. */
 	const changeStatusBtnClick = (statusName: string) => {
 		setChangeStatus(statusName);
-		setTimeout(() => changeStatusAPI.mutate());
+		setTimeout(changeStatusAPI);
 	};
 
 	/** 로딩할 때 보여줄 빈 테이블입니다. */
@@ -266,7 +267,7 @@ export function RecruitmentFormTable({
 				/>
 			</_.TableWrapper>
 			<Pagination
-				page={recruitmentForm?.total_page_count}
+				page={recruitmentFormPageNum!}
 				data={searchRecruitmentFormQueryString}
 				setData={setSearchRecruitmentFormQueryString}
 				refetch={refetchRecruitmentForm}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import * as _ from './style';
 import { RecruitmentFormQueryStringType } from '../../Apis/Recruitments/request';
 import { Header } from '../../Components/Header';
@@ -21,15 +21,17 @@ export function RecruitmentFormPage() {
 		status: '',
 		page: 1,
 	});
-	const {
-		data: recruitmentForm,
-		refetch: refetchRecruitmentForm,
-		isLoading,
-	} = useGetRecruitmentForm(searchRecruitmentFormQueryString);
+	const recruitmentForm = useGetRecruitmentForm(
+		searchRecruitmentFormQueryString
+	);
+	const isLoading = recruitmentForm.some((result) => result.isLoading);
+	const allRefetchRecruitmentForm = useCallback(() => {
+		recruitmentForm.forEach((result) => result.refetch());
+	}, [recruitmentForm]);
 
 	const allSelectFormId: string[] =
-		recruitmentForm! &&
-		recruitmentForm.recruitments.map((recruitment) => {
+		recruitmentForm[0].data! &&
+		recruitmentForm[0].data?.recruitments.map((recruitment) => {
 			return recruitment.id;
 		});
 
@@ -44,12 +46,15 @@ export function RecruitmentFormPage() {
 					setSearchRecruitmentFormQueryString={
 						setSearchRecruitmentFormQueryString
 					}
-					refetchRecruitmentForm={refetchRecruitmentForm}
+					refetchRecruitmentForm={allRefetchRecruitmentForm}
 				/>
 				<RecruitmentFormTable
 					allSelectFormId={allSelectFormId}
-					recruitmentForm={recruitmentForm!}
-					refetchRecruitmentForm={refetchRecruitmentForm}
+					recruitmentForm={recruitmentForm[0].data!}
+					recruitmentFormPageNum={
+						recruitmentForm[1].data?.total_page_count!
+					}
+					refetchRecruitmentForm={recruitmentForm[0].refetch}
 					searchRecruitmentFormQueryString={
 						searchRecruitmentFormQueryString
 					}

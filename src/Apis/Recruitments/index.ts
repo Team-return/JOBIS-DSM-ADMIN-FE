@@ -34,6 +34,22 @@ export const getAllRecruitmentForm = async (
 	return data;
 };
 
+/** 선생님 모집의뢰 리스트 총 페이지 조회 */
+export const getAllRecruitmentFormPageNum = async (
+	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType
+) => {
+	const { year, page, company_name, start, end, status } =
+		searchRecruitmentFormQueryString;
+	const { data } = await instance.get<{
+		total_page_count: number;
+	}>(
+		`${router}/teacher/count?year=${year}&page=${page}&company_name=${company_name}&start=${start}&end=${end}&status=${
+			status === '전체' || status === undefined ? '' : status
+		}`
+	);
+	return data;
+};
+
 /** 선생님 모집의뢰 상태 변경 */
 export const useChangeRecruitmentsStatus = (
 	status: string,

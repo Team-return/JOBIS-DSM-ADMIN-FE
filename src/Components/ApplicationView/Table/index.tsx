@@ -36,6 +36,7 @@ import { searchInArray } from '../../../Utils/useSearchForArray';
 
 interface PropsType {
 	application: ApplicationResponse;
+	applicationPageNum: number;
 	refetchApplication: () => void;
 	allSelectFormIdAndName: selectStudent[];
 	searchQueryString: ApplicantInfoQueryStringType;
@@ -47,6 +48,7 @@ interface PropsType {
 
 export function ApplicationViewTable({
 	application,
+	applicationPageNum,
 	refetchApplication,
 	allSelectFormIdAndName,
 	searchQueryString,
@@ -515,7 +517,7 @@ export function ApplicationViewTable({
 				/>
 			</_.TableWrapper>
 			<Pagination
-				page={application?.total_page_count}
+				page={applicationPageNum}
 				data={searchQueryString}
 				setData={setSearchQueryString}
 				refetch={refetchApplication}

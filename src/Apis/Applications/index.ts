@@ -26,6 +26,27 @@ export const getApplicantInfo = async (
 	return data;
 };
 
+/** 지원서 리스트 총 페이지 조회 */
+export const getApplicantInfoPageNum = async (
+	applicationQueryString: ApplicantInfoQueryStringType
+) => {
+	const { page, application_status, student_name, recruitment_id } =
+		applicationQueryString;
+	const pageNum = page ? `&page=${page}` : '';
+	const studentName = student_name ? `&student_name=${student_name}` : '';
+	const companyId = recruitment_id ? `&recruitment_id=${recruitment_id}` : '';
+	const queryString =
+		application_status || student_name || recruitment_id || page
+			? `?application_status=${
+					application_status ? application_status : ''
+			  }${companyId}${studentName}${pageNum}`
+			: '';
+	const { data } = await instance.get<{ total_page_count: number }>(
+		`${router}/count${queryString}`
+	);
+	return data;
+};
+
 /** 현장실습생 전환시 학생 조회 */
 export const getInternshipStudent = async (company_id: number) => {
 	const { data } = await instance.get<InternshipStudentResponse>(

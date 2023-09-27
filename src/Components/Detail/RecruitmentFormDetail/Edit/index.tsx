@@ -153,7 +153,7 @@ export function RecruitmentFormDetailEdit({
 			<_.Wrapper>
 				<_.LogoWrapper>
 					<_.CompanyLogo
-						src={`${process.env.REACT_APP_S3_URL}${recruitmentFormDetail?.company_profile_url}`}
+						src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
 					/>
 				</_.LogoWrapper>
 				<Stack gap={20}>
@@ -260,9 +260,9 @@ export function RecruitmentFormDetailEdit({
 														),
 														onSubmit: () => {
 															setAreaId(area.id);
-															setTimeout(() => {
-																deleteArea();
-															});
+															setTimeout(
+																deleteArea
+															);
 														},
 														onCancel: () => {
 															closeModal();

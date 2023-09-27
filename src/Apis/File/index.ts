@@ -12,7 +12,7 @@ export const useDownloadData = (propsData: DownloadDataPropsType) => {
 	const { append } = useToastStore();
 	return useMutation(
 		() =>
-			axios.get(`${process.env.REACT_APP_S3_URL}${propsData.fileUrl}`, {
+			axios.get(`${process.env.REACT_APP_FILE_URL}${propsData.fileUrl}`, {
 				responseType: 'blob',
 			}),
 		{

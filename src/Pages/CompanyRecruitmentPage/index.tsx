@@ -2,7 +2,7 @@ import * as _ from './style';
 import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/Search';
 import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/Table';
 import { Header } from '../../Components/Header';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { DataType } from '../../Apis/Companies/request';
 import { useGetCompanyRecruitments } from '../../Hooks/ApiHooks/Companies';
 
@@ -14,15 +14,16 @@ export function CompanyRecruitmentPage() {
 		company_name: '',
 		industry: '',
 	});
-	const {
-		data: companyRecruitment,
-		refetch: refetchCompanyRecruitment,
-		isLoading,
-	} = useGetCompanyRecruitments(searchQueryString);
+
+	const companyRecruitment = useGetCompanyRecruitments(searchQueryString);
+	const isLoading = companyRecruitment.some((result) => result.isLoading);
+	const refetchCompanyRecruitment = useCallback(() => {
+		companyRecruitment.forEach((result) => result.refetch());
+	}, [companyRecruitment]);
 
 	const allSelectFormId: number[] =
-		companyRecruitment! &&
-		companyRecruitment.companies.map((companie) => {
+		companyRecruitment[0].data! &&
+		companyRecruitment[0].data?.companies.map((companie) => {
 			return companie.company_id;
 		});
 
@@ -36,8 +37,11 @@ export function CompanyRecruitmentPage() {
 				/>
 				<CompanyRecruitmentTable
 					companyRecruitmentIsLoading={isLoading}
-					companyRecruitment={companyRecruitment!}
-					refetchCompanyRecruitment={refetchCompanyRecruitment}
+					companyRecruitment={companyRecruitment[0].data!}
+					companyRecruitmentPageNum={
+						companyRecruitment[1].data?.total_page_count!
+					}
+					refetchCompanyRecruitment={companyRecruitment[0].refetch}
 					allSelectFormId={allSelectFormId}
 					searchQueryString={searchQueryString}
 					setSearchQueryString={setSearchQueryString}

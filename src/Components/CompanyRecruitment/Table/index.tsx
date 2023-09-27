@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
+	companyRecruitmentPageNum: number;
 	refetchCompanyRecruitment: () => void;
 	allSelectFormId: number[];
 	searchQueryString: DataType;
@@ -28,6 +29,7 @@ interface PropsType {
 
 export function CompanyRecruitmentTable({
 	companyRecruitment,
+	companyRecruitmentPageNum,
 	refetchCompanyRecruitment,
 	allSelectFormId,
 	searchQueryString,
@@ -54,25 +56,28 @@ export function CompanyRecruitmentTable({
 	};
 
 	/** 회사 상태를 변경하는 api를 호출합입니다. */
-	const changeStatusAPI = useChangeCompanyStatus(changeStatus, clickedData, {
-		onSuccess: () => {
-			refetchCompanyRecruitment();
-			setClickedData([]);
-			append({
-				title: '성공적으로 변경되었습니다.',
-				message: '',
-				type: 'GREEN',
-			});
-		},
-		onError: () => {
-			append({
-				title: '변경에 실패했습니다.',
-				message: '',
-				type: 'RED',
-			});
-		},
-	});
-	const { isLoading } = changeStatusAPI;
+	const { mutate: changeStatusAPI, isLoading } = useChangeCompanyStatus(
+		changeStatus,
+		clickedData,
+		{
+			onSuccess: () => {
+				refetchCompanyRecruitment();
+				setClickedData([]);
+				append({
+					title: '성공적으로 변경되었습니다.',
+					message: '',
+					type: 'GREEN',
+				});
+			},
+			onError: () => {
+				append({
+					title: '변경에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
+			},
+		}
+	);
 
 	/** 회사 상태를 mou로 변경하는 api를 호출합니다. */
 	const changeContractAPI = useChangeContractCompany(clickedData, {
@@ -97,7 +102,7 @@ export function CompanyRecruitmentTable({
 	/** 변경 버튼을 클릭했을 때 실행할 함수입니다. */
 	const changeStatusBtnClick = (statusName: string) => {
 		setChangeStatus(statusName);
-		setTimeout(() => changeStatusAPI.mutate());
+		setTimeout(changeStatusAPI);
 	};
 
 	/** 로딩 중일 때 보여줄 빈 테이블입니다. */
@@ -289,7 +294,7 @@ export function CompanyRecruitmentTable({
 				/>
 			</_.TableWrapper>
 			<Pagination
-				page={companyRecruitment?.total_page_count}
+				page={companyRecruitmentPageNum}
 				data={searchQueryString}
 				setData={setSearchQueryString}
 				refetch={refetchCompanyRecruitment}

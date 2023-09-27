@@ -41,7 +41,7 @@ export function ApplicationViewSearch({
 	};
 
 	/** 검색하는 함수입니다. */
-	const searching = () => {
+	const searching = async () => {
 		setSearchQueryString({
 			...data,
 			application_status: getValueByKey(

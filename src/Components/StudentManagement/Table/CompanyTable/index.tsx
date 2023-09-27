@@ -10,6 +10,7 @@ interface PropType {
 	setPage: Dispatch<SetStateAction<{ page: number }>>;
 	setSelectCompany: Dispatch<SetStateAction<number>>;
 	employableCompanies: EmployableCompaniesResponse;
+	employableCompaniesPageNum: number;
 	isLoading: boolean;
 	refetchCombinedStudentList: () => void;
 	refetchEmployableCompanies: () => void;
@@ -20,6 +21,7 @@ export function CompanyTable({
 	setPage,
 	setSelectCompany,
 	employableCompanies,
+	employableCompaniesPageNum,
 	isLoading,
 	refetchCombinedStudentList,
 	refetchEmployableCompanies,
@@ -98,7 +100,7 @@ export function CompanyTable({
 					width={tableWidth}
 				/>
 				<Pagination
-					page={employableCompanies?.total_page_count}
+					page={employableCompaniesPageNum}
 					data={page}
 					setData={setPage}
 					refetch={refetchEmployableCompanies}

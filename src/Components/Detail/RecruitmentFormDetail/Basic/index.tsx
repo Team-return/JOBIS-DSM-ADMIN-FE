@@ -17,7 +17,7 @@ export function RecruitmentFormDetailBasic({
 			<_.Wrapper>
 				<_.LogoWrapper>
 					<_.CompanyLogo
-						src={`${process.env.REACT_APP_S3_URL}${recruitmentFormDetail?.company_profile_url}`}
+						src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
 					/>
 				</_.LogoWrapper>
 				<Button size="M" onClick={() => setCanEdit(true)}>
@@ -31,8 +31,8 @@ export function RecruitmentFormDetailBasic({
 				</_.ContentBox>
 				<_.TitleBox>모집기간</_.TitleBox>
 				<_.ContentBox width={40}>
-					{recruitmentFormDetail?.start_date.replace(/-/gi, '.')} ~{' '}
-					{recruitmentFormDetail?.end_date.replace(/-/gi, '.')}
+					{recruitmentFormDetail?.start_date.replace(/-/g, '.')} ~{' '}
+					{recruitmentFormDetail?.end_date.replace(/-/g, '.')}
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>

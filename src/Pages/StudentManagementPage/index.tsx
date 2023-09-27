@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Header } from '../../Components/Header';
 import { CompanyTable } from '../../Components/StudentManagement/Table/CompanyTable';
 import { StudentManagementSearch } from '../../Components/StudentManagement/Search';
@@ -34,11 +34,17 @@ export function StudentManagementPage() {
 		setSelectEmploymentContractStudent,
 	] = useState<number[]>([]);
 
-	const {
-		data: employableCompanies,
-		refetch: refetchEmployableCompanies,
-		isLoading: employableCompaniesIsLoading,
-	} = useGetEmployableCompanies(searchQueryString, page.page);
+	const employableCompanies = useGetEmployableCompanies(
+		searchQueryString,
+		page.page
+	);
+	const employableCompaniesIsLoading = employableCompanies.some(
+		(result) => result.isLoading
+	);
+	const refetchEmployableCompanies = useCallback(() => {
+		employableCompanies.forEach((result) => result.refetch());
+	}, [employableCompanies]);
+
 	const {
 		data: combinedStudentList,
 		refetch: refetchCombinedStudentList,
@@ -71,11 +77,12 @@ export function StudentManagementPage() {
 						<CompanyTable
 							page={page}
 							setPage={setPage}
-							employableCompanies={employableCompanies!}
+							employableCompanies={employableCompanies[0].data!}
+							employableCompaniesPageNum={employableCompanies[1].data?.total_page_count!}
 							isLoading={employableCompaniesIsLoading}
 							setSelectCompany={setSelectCompany}
 							refetchCombinedStudentList={
-								refetchCombinedStudentList
+								employableCompanies[0].refetch
 							}
 							refetchEmployableCompanies={
 								refetchEmployableCompanies

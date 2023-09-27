@@ -1,6 +1,5 @@
 export interface CompanyRecruitmentResponse {
 	companies: CompanyRecruitmentType[];
-	total_page_count: number;
 }
 
 export interface CompanyRecruitmentType {
@@ -20,7 +19,6 @@ export interface CompanyRecruitmentType {
 
 export interface EmployableCompaniesResponse {
 	companies: EmployableCompaniesType[];
-	total_page_count: number;
 }
 
 export interface EmployableCompaniesType {

@@ -14,7 +14,7 @@ export function Pagination({ page, data, setData, refetch }: PropsType) {
 		setData((prevData: any) => ({ ...prevData, page: num }));
 		setTimeout(refetch);
 	};
-	
+
 	return (
 		<Nav>
 			<Button

@@ -94,9 +94,7 @@ export function CompanyDetailEdit({
 				...companyDetailEditInfo,
 				company_profile_url: res.data?.urls[0],
 			}));
-			setTimeout(() => {
-				editCompanyInfo();
-			});
+			setTimeout(editCompanyInfo);
 		},
 		onError: () => {
 			append({
@@ -124,7 +122,7 @@ export function CompanyDetailEdit({
 							src={
 								file
 									? URL.createObjectURL(file)
-									: `${process.env.REACT_APP_S3_URL}${companyDetailInfo?.company_profile_url}`
+									: `${process.env.REACT_APP_FILE_URL}${companyDetailInfo?.company_profile_url}`
 							}
 						/>
 					</_.LogoWrapper>

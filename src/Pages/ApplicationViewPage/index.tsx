@@ -1,6 +1,6 @@
 import * as _ from './style';
 import { Header } from '../../Components/Header';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ApplicationViewSearch } from '../../Components/ApplicationView/Search';
 import {
 	ApplicantInfoQueryStringType,
@@ -17,15 +17,16 @@ export function ApplicationViewPage() {
 			student_name: '',
 			recruitment_id: '',
 		});
-	const {
-		data: application,
-		refetch: refetchApplication,
-		isLoading,
-	} = useGetApplicantInfo(searchQueryString);
+
+	const application = useGetApplicantInfo(searchQueryString);
+	const isLoading = application.some((result) => result.isLoading);
+	const refetchApplication = useCallback(() => {
+		application.forEach((result) => result.refetch());
+	}, [application]);
 
 	const allSelectFormIdAndName: selectStudent[] =
-		application! &&
-		application.applications.map((companie) => {
+		application[0].data! &&
+		application[0].data?.applications.map((companie) => {
 			return { id: companie.application_id, name: companie.student_name };
 		});
 
@@ -39,8 +40,9 @@ export function ApplicationViewPage() {
 				/>
 				<ApplicationViewTable
 					applicationIsLoading={isLoading}
-					application={application!}
-					refetchApplication={refetchApplication}
+					application={application[0].data!}
+					applicationPageNum={application[1].data?.total_page_count!}
+					refetchApplication={application[0].refetch}
 					allSelectFormIdAndName={allSelectFormIdAndName}
 					searchQueryString={searchQueryString}
 					setSearchQueryString={setSearchQueryString}

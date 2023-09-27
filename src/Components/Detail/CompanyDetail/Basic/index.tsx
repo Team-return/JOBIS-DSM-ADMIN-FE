@@ -17,7 +17,7 @@ export function CompanyDetailBasic({
 			<_.Wrapper>
 				<_.LogoWrapper>
 					<_.CompanyLogo
-						src={`${process.env.REACT_APP_S3_URL}${companyDetailInfo?.company_profile_url}`}
+						src={`${process.env.REACT_APP_FILE_URL}${companyDetailInfo?.company_profile_url}`}
 					/>
 				</_.LogoWrapper>
 				<Button size="M" onClick={() => setCanEdit(true)}>

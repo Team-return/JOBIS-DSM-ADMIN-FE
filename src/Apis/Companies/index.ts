@@ -33,6 +33,19 @@ export const getAllCompanyRecruitment = async (searchQueryString: DataType) => {
 	return data;
 };
 
+/** 선생님 회사 리스트 총 페이지 조회 */
+export const getAllCompanyRecruitmentPageNum = async (
+	searchQueryString: DataType
+) => {
+	const { page, company_type, region, company_name, industry } =
+		searchQueryString;
+	const business_area = industry ? `&business_area=${industry}` : '';
+	const { data } = await instance.get<{ total_page_count: number }>(
+		`${router}/teacher/count?page=${page}&type=${company_type}&name=${company_name}&region=${region}${business_area}`
+	);
+	return data;
+};
+
 /** 취업 관리 페이지 회사 조회 */
 export const getEmployableCompanies = async (
 	searchQueryString: EmployableCompaniesPropsType,
@@ -43,6 +56,20 @@ export const getEmployableCompanies = async (
 	const companyName = company_name ? `&company_name=${company_name}` : '';
 	const { data } = await instance.get<EmployableCompaniesResponse>(
 		`${router}/employment?year=${year}${companyName}${companyType}&page=${page}`
+	);
+	return data;
+};
+
+/** 취업 관리 페이지 회사 총 페이지 조회 */
+export const getEmployableCompaniesPageNum = async (
+	searchQueryString: EmployableCompaniesPropsType,
+	page: number
+) => {
+	const { company_name, company_type, year } = searchQueryString;
+	const companyType = company_type ? `&company_type=${company_type}` : '';
+	const companyName = company_name ? `&company_name=${company_name}` : '';
+	const { data } = await instance.get<{ total_page_count: number }>(
+		`${router}/employment/count?year=${year}${companyName}${companyType}&page=${page}`
 	);
 	return data;
 };

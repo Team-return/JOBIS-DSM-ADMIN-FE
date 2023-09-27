@@ -1,5 +1,8 @@
-import { useQuery } from 'react-query';
-import { getApplicantInfo } from '../../Apis/Applications';
+import { useQueries, useQuery } from 'react-query';
+import {
+	getApplicantInfo,
+	getApplicantInfoPageNum,
+} from '../../Apis/Applications';
 import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
 import { getInternshipStudent } from '../../Apis/Applications';
 
@@ -18,11 +21,14 @@ export function useGetInternshipStudent(company_id: number) {
 export function useGetApplicantInfo(
 	applicationQueryString: ApplicantInfoQueryStringType
 ) {
-	return useQuery(
-		['getApplicantInfo', applicationQueryString],
-		() => getApplicantInfo(applicationQueryString),
+	return useQueries([
 		{
-			refetchOnWindowFocus: true,
-		}
-	);
+			queryKey: ['getApplicantInfo', applicationQueryString],
+			queryFn: () => getApplicantInfo(applicationQueryString),
+		},
+		{
+			queryKey: ['getApplicantInfoPageNum', applicationQueryString],
+			queryFn: () => getApplicantInfoPageNum(applicationQueryString),
+		},
+	]);
 }

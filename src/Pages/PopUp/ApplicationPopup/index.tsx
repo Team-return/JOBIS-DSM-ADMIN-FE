@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useGetApplicantInfo } from '../../../Hooks/ApiHooks/Applications';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
 import { StudentTable } from '../../../Components/PopUp/RecruitmentPopup/StudentTable';
@@ -15,11 +15,11 @@ export function ApplicationPopup() {
 		recruitment_id: id ? id : '',
 	});
 
-	const {
-		data: application,
-		refetch: refetchApplication,
-		isLoading,
-	} = useGetApplicantInfo(applicationQueryString);
+	const application = useGetApplicantInfo(applicationQueryString);
+	const isLoading = application.some((result) => result.isLoading);
+	const refetchApplication = useCallback(() => {
+		application.forEach((result) => result.refetch());
+	}, [application]);
 
 	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<
 		AttachmentUrlType[]
@@ -27,7 +27,7 @@ export function ApplicationPopup() {
 	return (
 		<>
 			<StudentTable
-				application={application!}
+				application={application[0].data!}
 				isRequest={false}
 				refetchApplication={refetchApplication}
 				setApplicationAttachmentUrl={setApplicationAttachmentUrl}
@@ -37,7 +37,7 @@ export function ApplicationPopup() {
 				applicationAttachmentUrl={applicationAttachmentUrl}
 			/>
 			<_.BtnWrapper>
-				<Button onClick={() => window.close()}>닫기</Button>
+				<Button onClick={window.close}>닫기</Button>
 			</_.BtnWrapper>
 		</>
 	);
