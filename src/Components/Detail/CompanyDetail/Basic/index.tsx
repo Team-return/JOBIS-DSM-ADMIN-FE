@@ -17,7 +17,7 @@ export function CompanyDetailBasic({
 			<_.Wrapper>
 				<_.LogoWrapper>
 					<_.CompanyLogo
-						src={`https://jobis-bucket.s3.ap-northeast-2.amazonaws.com/${companyDetailInfo?.company_profile_url}`}
+						src={`${process.env.REACT_APP_S3_URL}${companyDetailInfo?.company_profile_url}`}
 					/>
 				</_.LogoWrapper>
 				<Button size="M" onClick={() => setCanEdit(true)}>

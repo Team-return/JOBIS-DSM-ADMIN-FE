@@ -51,7 +51,7 @@ export function ReviewSubmissionTable({
 		?.map((review) => {
 			const ClickCheckBox = () => {
 				setReviewId(review.review_id);
-				setTimeout(() => refetchReviewSubmissionDetail());
+				setTimeout(refetchReviewSubmissionDetail);
 			};
 
 			return [

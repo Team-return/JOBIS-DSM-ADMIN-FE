@@ -3,11 +3,11 @@ import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/Se
 import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/Table';
 import { Header } from '../../Components/Header';
 import { useState } from 'react';
-import { dataType } from '../../Apis/Companies/request';
+import { DataType } from '../../Apis/Companies/request';
 import { useGetCompanyRecruitments } from '../../Hooks/ApiHooks/Companies';
 
 export function CompanyRecruitmentPage() {
-	const [searchQueryString, setSearchQueryString] = useState<dataType>({
+	const [searchQueryString, setSearchQueryString] = useState<DataType>({
 		page: 1,
 		company_type: '',
 		region: '',

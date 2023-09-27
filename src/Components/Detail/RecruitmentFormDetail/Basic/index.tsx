@@ -17,7 +17,7 @@ export function RecruitmentFormDetailBasic({
 			<_.Wrapper>
 				<_.LogoWrapper>
 					<_.CompanyLogo
-						src={`https://jobis-bucket.s3.ap-northeast-2.amazonaws.com/${recruitmentFormDetail?.company_profile_url}`}
+						src={`${process.env.REACT_APP_S3_URL}${recruitmentFormDetail?.company_profile_url}`}
 					/>
 				</_.LogoWrapper>
 				<Button size="M" onClick={() => setCanEdit(true)}>

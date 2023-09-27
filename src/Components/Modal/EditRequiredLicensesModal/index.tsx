@@ -1,13 +1,13 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import * as _ from './style';
 import { useGetRequiredLicensesList } from '../../../Hooks/ApiHooks/RequiredLicensesList';
-import { editRecruitmentRequest } from '../../../Apis/Recruitments/request';
+import { EditRecruitmentRequest } from '../../../Apis/Recruitments/request';
 import { useModalContext } from '../../../Utils/Modal';
 
 interface PropsType {
 	requiredLicensesArray: string[];
 	setRecruitmentFormDetailInfo: Dispatch<
-		SetStateAction<editRecruitmentRequest>
+		SetStateAction<EditRecruitmentRequest>
 	>;
 }
 
@@ -63,20 +63,18 @@ export function EditRequiredLicensesModal({
 						value={search}
 						onChange={onChange}
 					/>
-					<_.SearchIcon icon="Search"></_.SearchIcon>
+					<_.SearchIcon icon="Search" />
 				</div>
 			</_.TitleWrapper>
 			<_.SmallCardWrapper>
 				{requiredLicensesArray.map((res, i) => {
 					return (
-						<>
-							<_.SmallCard key={i}>
-								{res}
-								<_.XCardText onClick={() => CheckArray(res)}>
-									x
-								</_.XCardText>
-							</_.SmallCard>
-						</>
+						<_.SmallCard key={i}>
+							{res}
+							<_.XCardText onClick={() => CheckArray(res)}>
+								x
+							</_.XCardText>
+						</_.SmallCard>
 					);
 				})}
 			</_.SmallCardWrapper>

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { instance } from '../axios';
 import {
 	EmployableCompaniesPropsType,
-	dataType,
+	DataType,
 	CompanyInfoEditType,
 } from './request';
 import {
@@ -23,7 +23,7 @@ export const getCompanyDetail = async (companyId: string) => {
 };
 
 /** 선생님 회사 리스트 조회 */
-export const getAllCompanyRecruitment = async (searchQueryString: dataType) => {
+export const getAllCompanyRecruitment = async (searchQueryString: DataType) => {
 	const { page, company_type, region, company_name, industry } =
 		searchQueryString;
 	const business_area = industry ? `&business_area=${industry}` : '';

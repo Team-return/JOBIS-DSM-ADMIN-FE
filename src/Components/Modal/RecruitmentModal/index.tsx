@@ -3,17 +3,18 @@ import { useGetCode } from '../../../Hooks/ApiHooks/Codes';
 import { CodesType } from '../../../Apis/Codes/response';
 import * as _ from './style';
 import { useModalContext } from '../../../Utils/Modal';
-import { editAreasType } from '../../../Apis/Recruitments/request';
-import { areasType } from '../../../Apis/Recruitments/response';
+import { EditAreasType } from '../../../Apis/Recruitments/request';
+import { AreasType } from '../../../Apis/Recruitments/response';
 import { Icon, Stack, theme, useToastStore } from '@team-return/design-system';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useAddArea, useEditArea } from '../../../Apis/Recruitments';
+import { useInput } from '../../../Hooks/useInput';
 
 const jobType = ['WEB', 'APP', 'GAME', 'EMBEDDED', 'SECURITY', 'AI', 'ASD'];
 
 interface IPropsType {
 	refetchRecruitmentFormDetailInfo: () => void;
-	areaData?: areasType;
+	areaData?: AreasType;
 	recruitmentId: string;
 }
 
@@ -23,7 +24,8 @@ export function GatherModal({
 	recruitmentId,
 }: IPropsType) {
 	const { append } = useToastStore();
-	const [searchString, setSearchString] = useState<string>('');
+	const { form: searchString, handleChange: searchStringHandler } =
+		useInput<string>('');
 	const [inputFocus, setInputFocus] = useState<boolean>(false);
 	const [tech, setTech] = useState<CodesType[]>([]);
 	const selectTechCode = tech.map((techItem) => techItem.code);
@@ -47,7 +49,7 @@ export function GatherModal({
 		.filter((techItem) => !selectTechsCodeArray?.includes(techItem.code));
 
 	const { closeModal } = useModalContext();
-	const [area, setArea] = useState<editAreasType>({
+	const [area, setArea] = useState<EditAreasType>({
 		job_codes: [],
 		tech_codes: [],
 		hiring: 0,
@@ -232,9 +234,7 @@ export function GatherModal({
 							<_.Input
 								value={searchString}
 								placeholder="기술 이름 검색"
-								onChange={(e) => {
-									setSearchString(e.target.value);
-								}}
+								onChange={searchStringHandler}
 								onFocus={() => {
 									setInputFocus(true);
 								}}
@@ -361,13 +361,7 @@ export function GatherModal({
 					</_.SmallWrapper>
 				</_.BigWrapper>
 				<_.BtnWrapper>
-					<_.CancleBtn
-						onClick={() => {
-							closeModal();
-						}}
-					>
-						취소
-					</_.CancleBtn>
+					<_.CancleBtn onClick={closeModal}>취소</_.CancleBtn>
 					<_.SuccessBtn
 						disabled={
 							!(
@@ -384,9 +378,7 @@ export function GatherModal({
 									(techItem) => techItem.code
 								),
 							}));
-							setTimeout(() => {
-								submit();
-							});
+							setTimeout(submit);
 						}}
 					>
 						확인

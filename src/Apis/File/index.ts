@@ -2,7 +2,7 @@ import { MutationOptions, useMutation } from 'react-query';
 import fileSaver from 'file-saver';
 import { DownloadDataPropsType } from './request';
 import axios from 'axios';
-import { useToastStore } from '@team-return/design-system'; 
+import { useToastStore } from '@team-return/design-system';
 import { instance } from '../axios';
 
 const router = '/files';
@@ -11,7 +11,10 @@ const router = '/files';
 export const useDownloadData = (propsData: DownloadDataPropsType) => {
 	const { append } = useToastStore();
 	return useMutation(
-		() => axios.get(`https://jobis-bucket.s3.ap-northeast-2.amazonaws.com/${propsData.fileUrl}`, { responseType: 'blob' }),
+		() =>
+			axios.get(`${process.env.REACT_APP_S3_URL}${propsData.fileUrl}`, {
+				responseType: 'blob',
+			}),
 		{
 			onSuccess: (res) => {
 				const data = new Blob([res.data], {
@@ -36,10 +39,7 @@ export const useDownloadData = (propsData: DownloadDataPropsType) => {
 };
 
 /** 선생님 모집의뢰 상태 변경 */
-export const useFileUpload = (
-	file: File,
-	options: MutationOptions
-) => {
+export const useFileUpload = (file: File, options: MutationOptions) => {
 	const formData = new FormData();
 	formData.append('file', file);
 	return useMutation(

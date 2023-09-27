@@ -1,7 +1,7 @@
 import { instance } from '../axios';
 import {
-	editAreasType,
-	editRecruitmentRequest,
+	EditAreasType,
+	EditRecruitmentRequest,
 	RecruitmentFormQueryStringType,
 } from './request';
 import {
@@ -63,7 +63,7 @@ export const useDeleteArea = (areaIds: number, options: MutationOptions) => {
 /** 모집 분야 수정 */
 export const useEditArea = (
 	areaIds: number,
-	area: editAreasType,
+	area: EditAreasType,
 	options: MutationOptions
 ) => {
 	return useMutation(
@@ -77,7 +77,7 @@ export const useEditArea = (
 /** 모집 분야 추가 */
 export const useAddArea = (
 	recruitmentId: string,
-	area: editAreasType,
+	area: EditAreasType,
 	options: MutationOptions
 ) => {
 	return useMutation(
@@ -91,7 +91,7 @@ export const useAddArea = (
 /** 모집 의뢰 수정 */
 export const useEditRecruitment = (
 	recruitmentId: string,
-	recruitmentData: editRecruitmentRequest,
+	recruitmentData: EditRecruitmentRequest,
 	options: MutationOptions
 ) => {
 	return useMutation(

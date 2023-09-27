@@ -1,7 +1,7 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction } from 'react';
-import { dataType } from '../../../Apis/Companies/request';
+import { DataType } from '../../../Apis/Companies/request';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { useForm } from '../../../Hooks/useForm';
 import { companyType } from '../../../Utils/Translation';
@@ -9,7 +9,7 @@ import { useDropDown } from '../../../Hooks/useDropDown';
 import { useGetCode } from '../../../Hooks/ApiHooks/Codes';
 
 interface PropsType {
-	setSearchQueryString: Dispatch<SetStateAction<dataType>>;
+	setSearchQueryString: Dispatch<SetStateAction<DataType>>;
 	refetchCompanyRecruitment: () => void;
 }
 

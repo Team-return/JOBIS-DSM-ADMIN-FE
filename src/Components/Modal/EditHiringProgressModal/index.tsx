@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { editRecruitmentRequest } from '../../../Apis/Recruitments/request';
+import { EditRecruitmentRequest } from '../../../Apis/Recruitments/request';
 import { useModalContext } from '../../../Utils/Modal';
 import { hiringProgress } from '../../../Utils/Translation';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
@@ -12,7 +12,7 @@ import { Stack } from '@team-return/design-system';
 interface PropsType {
 	hiringProgressArray: string[];
 	setRecruitmentFormDetailInfo: Dispatch<
-		SetStateAction<editRecruitmentRequest>
+		SetStateAction<EditRecruitmentRequest>
 	>;
 }
 
@@ -21,18 +21,8 @@ export function EditHiringProgressModal({
 	setRecruitmentFormDetailInfo,
 }: PropsType) {
 	const { closeModal } = useModalContext();
-	const progressList = [
-		'컬쳐핏면접',
-		'서류전형',
-		'과제 제출',
-		'라이브코딩',
-		'기술면접',
-		'최종면접',
-		'인적성 테스트',
-		'AI면접',
-		'코딩테스트',
-	];
-
+	const progressList = Object.values(hiringProgress);
+	
 	const clickHiringProgress = (progressName: string) => {
 		!hiringProgressArray.includes(
 			getValueByKey(hiringProgress, progressName)
@@ -102,7 +92,9 @@ export function EditHiringProgressModal({
 												>
 													<img src={dndIcon} alt="" />
 													<_.DndText>
-														{`${index + 1}. ${hiringProgress[item]}`}
+														{`${index + 1}. ${
+															hiringProgress[item]
+														}`}
 													</_.DndText>
 												</_.DndItemWrapper>
 											)}

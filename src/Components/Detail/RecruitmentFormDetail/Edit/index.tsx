@@ -17,7 +17,7 @@ import {
 	useEditRecruitment,
 } from '../../../../Apis/Recruitments';
 import { useParams } from 'react-router-dom';
-import { editRecruitmentRequest } from '../../../../Apis/Recruitments/request';
+import { EditRecruitmentRequest } from '../../../../Apis/Recruitments/request';
 import { useForm } from '../../../../Hooks/useForm';
 import { EditHiringProgressModal } from '../../../Modal/EditHiringProgressModal';
 import { useDidMountEffect } from '../../../../Hooks/useDidMountEffect';
@@ -41,7 +41,7 @@ export function RecruitmentFormDetailEdit({
 		form: recruitmentFormDetailInfo,
 		setForm: setRecruitmentFormDetailInfo,
 		handleChange: recruitmentFormDetailInfohandler,
-	} = useForm<editRecruitmentRequest>({
+	} = useForm<EditRecruitmentRequest>({
 		preferential_treatment: recruitmentFormDetail?.preferential_treatment,
 		required_grade: recruitmentFormDetail?.required_grade,
 		required_licenses: recruitmentFormDetail?.required_licenses,
@@ -153,7 +153,7 @@ export function RecruitmentFormDetailEdit({
 			<_.Wrapper>
 				<_.LogoWrapper>
 					<_.CompanyLogo
-						src={`https://jobis-bucket.s3.ap-northeast-2.amazonaws.com/${recruitmentFormDetail?.company_profile_url}`}
+						src={`${process.env.REACT_APP_S3_URL}${recruitmentFormDetail?.company_profile_url}`}
 					/>
 				</_.LogoWrapper>
 				<Stack gap={20}>

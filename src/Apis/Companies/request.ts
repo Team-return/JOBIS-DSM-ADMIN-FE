@@ -1,4 +1,4 @@
-export interface dataType {
+export interface DataType {
 	page: number;
 	company_type: string;
 	region: string;

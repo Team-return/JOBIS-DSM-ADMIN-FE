@@ -7,7 +7,7 @@ export interface RecruitmentFormQueryStringType {
 	page: number;
 }
 
-export interface editRecruitmentRequest {
+export interface EditRecruitmentRequest {
 	preferential_treatment: string;
 	required_licenses: string[];
 	required_grade?: number | null;
@@ -23,7 +23,7 @@ export interface editRecruitmentRequest {
 	etc: string | null;
   }
 
-export interface editAreasType {
+export interface EditAreasType {
 	job_codes: number[];
 	tech_codes: number[];
 	hiring: number;

@@ -21,7 +21,7 @@ export interface RecruitmentFormDetailResponse {
 	company_id: number;
 	company_profile_url: string;
 	company_name: string;
-	areas: areasType[];
+	areas: AreasType[];
 	preferential_treatment: string;
 	required_grade: number | null;
 	work_hours: number;
@@ -37,7 +37,7 @@ export interface RecruitmentFormDetailResponse {
 	etc: string | null;
 }
 
-export interface areasType {
+export interface AreasType {
 	id: number;
 	job: string[];
 	tech: string[];

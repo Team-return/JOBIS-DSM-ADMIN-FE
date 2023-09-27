@@ -1,11 +1,11 @@
 import { useQuery } from 'react-query';
-import { dataType } from '../../Apis/Companies/request';
+import { DataType } from '../../Apis/Companies/request';
 import { getAllCompanyRecruitment, getCompanyDetail } from '../../Apis/Companies';
 import { EmployableCompaniesPropsType } from '../../Apis/Companies/request';
 import { getEmployableCompanies } from '../../Apis/Companies';
 
 /** 회사 리스트를 조회하는 api입니다. */
-export function useGetCompanyRecruitments(searchQueryString: dataType) {
+export function useGetCompanyRecruitments(searchQueryString: DataType) {
 	return useQuery(
 		['getCompanyRecruitments', searchQueryString],
 		() => getAllCompanyRecruitment(searchQueryString),

@@ -124,7 +124,7 @@ export function CompanyDetailEdit({
 							src={
 								file
 									? URL.createObjectURL(file)
-									: `https://jobis-bucket.s3.ap-northeast-2.amazonaws.com/${companyDetailInfo?.company_profile_url}`
+									: `${process.env.REACT_APP_S3_URL}${companyDetailInfo?.company_profile_url}`
 							}
 						/>
 					</_.LogoWrapper>
