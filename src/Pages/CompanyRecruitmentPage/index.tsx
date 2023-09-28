@@ -3,17 +3,18 @@ import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/Se
 import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/Table';
 import { Header } from '../../Components/Header';
 import { useCallback, useState } from 'react';
-import { DataType } from '../../Apis/Companies/request';
+import { QueryStringDataType } from '../../Apis/Companies/request';
 import { useGetCompanyRecruitments } from '../../Hooks/ApiHooks/Companies';
 
 export function CompanyRecruitmentPage() {
-	const [searchQueryString, setSearchQueryString] = useState<DataType>({
-		page: 1,
-		company_type: '',
-		region: '',
-		company_name: '',
-		industry: '',
-	});
+	const [searchQueryString, setSearchQueryString] =
+		useState<QueryStringDataType>({
+			page: 1,
+			company_type: '',
+			region: '',
+			company_name: '',
+			industry: '',
+		});
 
 	const companyRecruitment = useGetCompanyRecruitments(searchQueryString);
 	const isLoading = companyRecruitment.some((result) => result.isLoading);

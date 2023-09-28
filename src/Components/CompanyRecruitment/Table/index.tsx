@@ -11,7 +11,7 @@ import {
 	useChangeCompanyStatus,
 	useChangeContractCompany,
 } from '../../../Apis/Companies';
-import { DataType } from '../../../Apis/Companies/request';
+import { QueryStringDataType } from '../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
 import { searchInArray } from '../../../Utils/useSearchForArray';
@@ -22,8 +22,8 @@ interface PropsType {
 	companyRecruitmentPageNum: number;
 	refetchCompanyRecruitment: () => void;
 	allSelectFormId: number[];
-	searchQueryString: DataType;
-	setSearchQueryString: Dispatch<SetStateAction<DataType>>;
+	searchQueryString: QueryStringDataType;
+	setSearchQueryString: Dispatch<SetStateAction<QueryStringDataType>>;
 	companyRecruitmentIsLoading: boolean;
 }
 

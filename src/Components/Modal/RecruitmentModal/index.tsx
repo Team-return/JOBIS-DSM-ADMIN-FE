@@ -12,7 +12,7 @@ import { useInput } from '../../../Hooks/useInput';
 
 const jobType = ['WEB', 'APP', 'GAME', 'EMBEDDED', 'SECURITY', 'AI', 'ASD'];
 
-interface IPropsType {
+interface PropsType {
 	refetchRecruitmentFormDetailInfo: () => void;
 	areaData?: AreasType;
 	recruitmentId: string;
@@ -22,7 +22,7 @@ export function GatherModal({
 	refetchRecruitmentFormDetailInfo,
 	areaData,
 	recruitmentId,
-}: IPropsType) {
+}: PropsType) {
 	const { append } = useToastStore();
 	const { form: searchString, handleChange: searchStringHandler } =
 		useInput<string>('');
