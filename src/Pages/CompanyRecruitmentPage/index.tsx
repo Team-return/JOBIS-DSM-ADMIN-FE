@@ -4,7 +4,7 @@ import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/Tab
 import { Header } from '../../Components/Header';
 import { useCallback, useState } from 'react';
 import { QueryStringDataType } from '../../Apis/Companies/request';
-import { useGetCompanyRecruitments } from '../../Hooks/ApiHooks/Companies';
+import { useGetCompanyRecruitments } from '../../Apis/Companies';
 
 export function CompanyRecruitmentPage() {
 	const [searchQueryString, setSearchQueryString] =
@@ -16,15 +16,21 @@ export function CompanyRecruitmentPage() {
 			industry: '',
 		});
 
-	const companyRecruitment = useGetCompanyRecruitments(searchQueryString);
-	const isLoading = companyRecruitment.some((result) => result.isLoading);
+	const companyRecruitmentQueries =
+		useGetCompanyRecruitments(searchQueryString);
+	const companyRecruitmentData = companyRecruitmentQueries[0];
+	const companyRecruitmentPage =
+		companyRecruitmentQueries[1].data?.total_page_count!;
+	const isLoading = companyRecruitmentQueries.some(
+		(result) => result.isLoading
+	);
 	const refetchCompanyRecruitment = useCallback(() => {
-		companyRecruitment.forEach((result) => result.refetch());
-	}, [companyRecruitment]);
+		companyRecruitmentQueries.forEach((result) => result.refetch());
+	}, [companyRecruitmentQueries]);
 
 	const allSelectFormId: number[] =
-		companyRecruitment[0].data! &&
-		companyRecruitment[0].data?.companies.map((companie) => {
+		companyRecruitmentData.data! &&
+		companyRecruitmentData.data?.companies.map((companie) => {
 			return companie.company_id;
 		});
 
@@ -38,11 +44,9 @@ export function CompanyRecruitmentPage() {
 				/>
 				<CompanyRecruitmentTable
 					companyRecruitmentIsLoading={isLoading}
-					companyRecruitment={companyRecruitment[0].data!}
-					companyRecruitmentPageNum={
-						companyRecruitment[1].data?.total_page_count!
-					}
-					refetchCompanyRecruitment={companyRecruitment[0].refetch}
+					companyRecruitment={companyRecruitmentData.data!}
+					companyRecruitmentPageNum={companyRecruitmentPage}
+					refetchCompanyRecruitment={companyRecruitmentData.refetch}
 					allSelectFormId={allSelectFormId}
 					searchQueryString={searchQueryString}
 					setSearchQueryString={setSearchQueryString}

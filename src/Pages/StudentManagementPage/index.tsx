@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import { Header } from '../../Components/Header';
 import { CompanyTable } from '../../Components/StudentManagement/Table/CompanyTable';
 import { StudentManagementSearch } from '../../Components/StudentManagement/Search';
-import { useGetCombinedStudentList } from '../../Hooks/ApiHooks/Acceptances';
 import { useForm } from '../../Hooks/useForm';
 import * as _ from './style';
 import { InternshipStudentTable } from '../../Components/StudentManagement/Table/InternshipStudentTable';
@@ -12,7 +11,8 @@ import { ChangeEmploymentContractStudentStatus } from '../../Components/StudentM
 import { ChangeInternshipStudentStatus } from '../../Components/StudentManagement/ChangeStudentStatus/Internship';
 import { useModalContext } from '../../Utils/Modal';
 import { ChangeEmploymentModal } from '../../Components/Modal/ChangeEmploymentModal';
-import { useGetEmployableCompanies } from '../../Hooks/ApiHooks/Companies';
+import { useGetEmployableCompanies } from '../../Apis/Companies';
+import { useGetCombinedStudentList } from '../../Apis/Acceptances';
 
 export function StudentManagementPage() {
 	const date = new Date();
@@ -34,16 +34,19 @@ export function StudentManagementPage() {
 		setSelectEmploymentContractStudent,
 	] = useState<number[]>([]);
 
-	const employableCompanies = useGetEmployableCompanies(
+	const employableCompaniesQueries = useGetEmployableCompanies(
 		searchQueryString,
 		page.page
 	);
-	const employableCompaniesIsLoading = employableCompanies.some(
+	const employableCompaniesData = employableCompaniesQueries[0];
+	const employableCompaniesPage =
+		employableCompaniesQueries[1].data?.total_page_count!;
+	const employableCompaniesIsLoading = employableCompaniesQueries.some(
 		(result) => result.isLoading
 	);
 	const refetchEmployableCompanies = useCallback(() => {
-		employableCompanies.forEach((result) => result.refetch());
-	}, [employableCompanies]);
+		employableCompaniesQueries.forEach((result) => result.refetch());
+	}, [employableCompaniesQueries]);
 
 	const {
 		data: combinedStudentList,
@@ -77,12 +80,12 @@ export function StudentManagementPage() {
 						<CompanyTable
 							page={page}
 							setPage={setPage}
-							employableCompanies={employableCompanies[0].data!}
-							employableCompaniesPageNum={employableCompanies[1].data?.total_page_count!}
+							employableCompanies={employableCompaniesData.data!}
+							employableCompaniesPageNum={employableCompaniesPage}
 							isLoading={employableCompaniesIsLoading}
 							setSelectCompany={setSelectCompany}
 							refetchCombinedStudentList={
-								employableCompanies[0].refetch
+								employableCompaniesData.refetch
 							}
 							refetchEmployableCompanies={
 								refetchEmployableCompanies

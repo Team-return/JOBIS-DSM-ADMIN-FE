@@ -5,7 +5,7 @@ import { useForm } from '../../../Hooks/useForm';
 import { Pagination } from '../../../Utils/Pagination';
 import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
 import { DateProps } from '../../../Apis/Acceptances/request';
-import { useGetInternshipStudent } from '../../../Hooks/ApiHooks/Applications';
+import { useGetInternshipStudent } from '../../../Apis/Applications';
 
 interface PropType {
 	selectCompany: number;

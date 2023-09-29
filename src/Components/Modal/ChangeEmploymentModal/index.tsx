@@ -10,7 +10,7 @@ import * as _ from '../style';
 import { useForm } from '../../../Hooks/useForm';
 import { Pagination } from '../../../Utils/Pagination';
 import { useChangeEmployment } from '../../../Apis/Acceptances';
-import { useGetCode } from '../../../Hooks/ApiHooks/Codes';
+import { useGetCode } from '../../../Apis/Codes';
 
 interface PropType {
 	selectStudent: number[];

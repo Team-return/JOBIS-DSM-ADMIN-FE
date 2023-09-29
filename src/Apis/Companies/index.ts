@@ -1,4 +1,9 @@
-import { MutationOptions, useMutation } from 'react-query';
+import {
+	MutationOptions,
+	useMutation,
+	useQueries,
+	useQuery,
+} from 'react-query';
 import { useParams } from 'react-router-dom';
 import { instance } from '../axios';
 import {
@@ -14,66 +19,102 @@ import {
 
 const router = '/companies';
 
-/** 회사 상세정보 조회 */
-export const getCompanyDetail = async (companyId: string) => {
-	const { data } = await instance.get<CompanyDetailResponse>(
-		`${router}/${companyId}`
-	);
-	return data;
-};
-
-/** 선생님 회사 리스트 조회 */
-export const getAllCompanyRecruitment = async (
+/** 회사 리스트를 조회하는 api입니다. */
+export const useGetCompanyRecruitments = (
 	searchQueryString: QueryStringDataType
 ) => {
-	const { page, company_type, region, company_name, industry } =
-		searchQueryString;
-	const business_area = industry ? `&business_area=${industry}` : '';
-	const { data } = await instance.get<CompanyRecruitmentResponse>(
-		`${router}/teacher?page=${page}&type=${company_type}&name=${company_name}&region=${region}${business_area}`
-	);
-	return data;
+	return useQueries([
+		{
+			queryKey: ['getCompanyRecruitments', searchQueryString],
+			queryFn: async () => {
+				const { page, company_type, region, company_name, industry } =
+					searchQueryString;
+				const business_area = industry
+					? `&business_area=${industry}`
+					: '';
+				const { data } = await instance.get<CompanyRecruitmentResponse>(
+					`${router}/teacher?page=${page}&type=${company_type}&name=${company_name}&region=${region}${business_area}`
+				);
+				return data;
+			},
+		},
+		{
+			queryKey: ['getCompanyRecruitmentsPageNum', searchQueryString],
+			queryFn: async () => {
+				const { page, company_type, region, company_name, industry } =
+					searchQueryString;
+				const business_area = industry
+					? `&business_area=${industry}`
+					: '';
+				const { data } = await instance.get<{
+					total_page_count: number;
+				}>(
+					`${router}/teacher/count?page=${page}&type=${company_type}&name=${company_name}&region=${region}${business_area}`
+				);
+				return data;
+			},
+		},
+	]);
 };
 
-/** 선생님 회사 리스트 총 페이지 조회 */
-export const getAllCompanyRecruitmentPageNum = async (
-	searchQueryString: QueryStringDataType
-) => {
-	const { page, company_type, region, company_name, industry } =
-		searchQueryString;
-	const business_area = industry ? `&business_area=${industry}` : '';
-	const { data } = await instance.get<{ total_page_count: number }>(
-		`${router}/teacher/count?page=${page}&type=${company_type}&name=${company_name}&region=${region}${business_area}`
-	);
-	return data;
-};
-
-/** 취업 관리 페이지 회사 조회 */
-export const getEmployableCompanies = async (
-	searchQueryString: EmployableCompaniesPropsType,
+/** 학생 페이지에서 기업들을 조회하는 api입니다. */
+export const useGetEmployableCompanies = (
+	searchString: EmployableCompaniesPropsType,
 	page: number
 ) => {
-	const { company_name, company_type, year } = searchQueryString;
-	const companyType = company_type ? `&company_type=${company_type}` : '';
-	const companyName = company_name ? `&company_name=${company_name}` : '';
-	const { data } = await instance.get<EmployableCompaniesResponse>(
-		`${router}/employment?year=${year}${companyName}${companyType}&page=${page}`
-	);
-	return data;
+	return useQueries([
+		{
+			queryKey: ['getEmployableCompanies', searchString, page],
+			queryFn: async () => {
+				const { company_name, company_type, year } = searchString;
+				const companyType = company_type
+					? `&company_type=${company_type}`
+					: '';
+				const companyName = company_name
+					? `&company_name=${company_name}`
+					: '';
+				const { data } =
+					await instance.get<EmployableCompaniesResponse>(
+						`${router}/employment?year=${year}${companyName}${companyType}&page=${page}`
+					);
+				return data;
+			},
+		},
+		{
+			queryKey: ['getCompanyRecruitmentsPageNum', searchString, page],
+			queryFn: async () => {
+				const { company_name, company_type, year } = searchString;
+				const companyType = company_type
+					? `&company_type=${company_type}`
+					: '';
+				const companyName = company_name
+					? `&company_name=${company_name}`
+					: '';
+				const { data } = await instance.get<{
+					total_page_count: number;
+				}>(
+					`${router}/employment/count?year=${year}${companyName}${companyType}&page=${page}`
+				);
+				return data;
+			},
+		},
+	]);
 };
 
-/** 취업 관리 페이지 회사 총 페이지 조회 */
-export const getEmployableCompaniesPageNum = async (
-	searchQueryString: EmployableCompaniesPropsType,
-	page: number
-) => {
-	const { company_name, company_type, year } = searchQueryString;
-	const companyType = company_type ? `&company_type=${company_type}` : '';
-	const companyName = company_name ? `&company_name=${company_name}` : '';
-	const { data } = await instance.get<{ total_page_count: number }>(
-		`${router}/employment/count?year=${year}${companyName}${companyType}&page=${page}`
+/** 기업 페이지에서 기업의 상세정보를 조회하는 api입니다. */
+export const useGetCompanyDetail = (companyId: string) => {
+	return useQuery(
+		['getCompanyDetail', companyId],
+		async () => {
+			const { data } = await instance.get<CompanyDetailResponse>(
+				`${router}/${companyId}`
+			);
+			return data;
+		},
+		{
+			refetchOnWindowFocus: true,
+		}
 	);
-	return data;
 };
 
 /** 기업 구분 변경 */

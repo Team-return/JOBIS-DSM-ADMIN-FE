@@ -1,8 +1,8 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import * as _ from './style';
-import { useGetRequiredLicensesList } from '../../../Hooks/ApiHooks/RequiredLicensesList';
 import { EditRecruitmentRequest } from '../../../Apis/Recruitments/request';
 import { useModalContext } from '../../../Utils/Modal';
+import { useGetRequiredLicensesList } from '../../../Apis/OpenApi';
 
 interface PropsType {
 	requiredLicensesArray: string[];

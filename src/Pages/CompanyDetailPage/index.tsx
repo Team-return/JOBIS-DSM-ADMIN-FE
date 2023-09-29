@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useGetCompanyDetail } from '../../Apis/Companies';
 import { CompanyDetailBasic } from '../../Components/Detail/CompanyDetail/Basic';
 import { CompanyDetailEdit } from '../../Components/Detail/CompanyDetail/Edit';
 import { Header } from '../../Components/Header';
-import { useGetCompanyDetail } from '../../Hooks/ApiHooks/Companies';
 import * as _ from './style';
 
 export function CompanyDetailPage() {

@@ -1,3 +1,4 @@
+import { useQuery } from 'react-query';
 import { instance } from '../axios';
 import {
 	ReviewSubmissioDetailnResponse,
@@ -6,18 +7,35 @@ import {
 
 const router = '/reviews';
 
-/** 리뷰 후기 리스트 조회 */
-export const getAllReviewSubmission = async (company_id: string) => {
-	const { data } = await instance.get<ReviewSubmissionResponse>(
-		`${router}/${company_id}`
+/** 특정 회사 후기 리스트를 조회하는 api입니다. */
+export const useGetReviewSubmission = (company_id: string) => {
+	return useQuery(
+		['getReviewSubmission', company_id],
+		async () => {
+			const { data } = await instance.get<ReviewSubmissionResponse>(
+				`${router}/${company_id}`
+			);
+			return data;
+		},
+		{
+			refetchOnWindowFocus: true,
+		}
 	);
-	return data;
 };
 
-/** 리뷰 후기 상세 조회 */
-export const getAllReviewSubmissionDetail = async (review_id: string) => {
-	const { data } = await instance.get<
-		Promise<ReviewSubmissioDetailnResponse>
-	>(`${router}/details/${review_id}`);
-	return data;
+/** 특정 회사 후기 리스트에서 특정 인물의 후기를 조회하는 api입니다. */
+export const useGetReviewSubmissionDetail = (review_id: string) => {
+	return useQuery(
+		['getReviewSubmissionDetail', review_id],
+		async () => {
+			const { data } = await instance.get<
+				Promise<ReviewSubmissioDetailnResponse>
+			>(`${router}/details/${review_id}`);
+			return data;
+		},
+		{
+			refetchOnWindowFocus: true,
+			enabled: review_id !== '',
+		}
+	);
 };

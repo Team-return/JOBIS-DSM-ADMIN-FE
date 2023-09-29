@@ -6,8 +6,8 @@ import {
 	ApplicantInfoQueryStringType,
 	selectStudent,
 } from '../../Apis/Applications/request';
-import { useGetApplicantInfo } from '../../Hooks/ApiHooks/Applications';
 import { ApplicationViewTable } from '../../Components/ApplicationView/Table';
+import { useGetApplicantInfo } from '../../Apis/Applications';
 
 export function ApplicationViewPage() {
 	const [searchQueryString, setSearchQueryString] =
@@ -18,15 +18,17 @@ export function ApplicationViewPage() {
 			recruitment_id: '',
 		});
 
-	const application = useGetApplicantInfo(searchQueryString);
-	const isLoading = application.some((result) => result.isLoading);
+	const applicationQueries = useGetApplicantInfo(searchQueryString);
+	const applicationData = applicationQueries[0];
+	const applicationPage = applicationQueries[1].data?.total_page_count!;
+	const isLoading = applicationQueries.some((result) => result.isLoading);
 	const refetchApplication = useCallback(() => {
-		application.forEach((result) => result.refetch());
-	}, [application]);
+		applicationQueries.forEach((result) => result.refetch());
+	}, [applicationQueries]);
 
 	const allSelectFormIdAndName: selectStudent[] =
-		application[0].data! &&
-		application[0].data?.applications.map((companie) => {
+		applicationData.data! &&
+		applicationData.data?.applications.map((companie) => {
 			return { id: companie.application_id, name: companie.student_name };
 		});
 
@@ -40,9 +42,9 @@ export function ApplicationViewPage() {
 				/>
 				<ApplicationViewTable
 					applicationIsLoading={isLoading}
-					application={application[0].data!}
-					applicationPageNum={application[1].data?.total_page_count!}
-					refetchApplication={application[0].refetch}
+					application={applicationData.data!}
+					applicationPageNum={applicationPage}
+					refetchApplication={applicationData.refetch}
 					allSelectFormIdAndName={allSelectFormIdAndName}
 					searchQueryString={searchQueryString}
 					setSearchQueryString={setSearchQueryString}

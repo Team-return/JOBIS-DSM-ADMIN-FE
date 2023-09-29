@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useGetCode } from '../../../Hooks/ApiHooks/Codes';
 import { CodesType } from '../../../Apis/Codes/response';
 import * as _ from './style';
 import { useModalContext } from '../../../Utils/Modal';
@@ -9,6 +8,7 @@ import { Icon, Stack, theme, useToastStore } from '@team-return/design-system';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useAddArea, useEditArea } from '../../../Apis/Recruitments';
 import { useInput } from '../../../Hooks/useInput';
+import { useGetCode } from '../../../Apis/Codes';
 
 const jobType = ['WEB', 'APP', 'GAME', 'EMBEDDED', 'SECURITY', 'AI', 'ASD'];
 

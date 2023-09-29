@@ -8,46 +8,71 @@ import {
 	RecruitmentFormDetailResponse,
 	RecruitmentFormResponse,
 } from './response';
-import { useMutation, MutationOptions } from 'react-query';
+import {
+	useMutation,
+	MutationOptions,
+	useQueries,
+	useQuery,
+} from 'react-query';
 
 const router = '/recruitments';
 
-/** 모집의뢰서 상세 조회 */
-export const getRecruitmentFormDetail = async (recruitmentId: string) => {
-	const { data } = await instance.get<RecruitmentFormDetailResponse>(
-		`${router}/${recruitmentId}`
-	);
-	return data;
-};
-
-/** 선생님 모집의뢰 리스트 조회 */
-export const getAllRecruitmentForm = async (
+/** 모집의뢰서를 조회하는 api입니다. */
+export const useGetRecruitmentForm = (
 	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType
 ) => {
-	const { year, page, company_name, start, end, status } =
-		searchRecruitmentFormQueryString;
-	const { data } = await instance.get<RecruitmentFormResponse>(
-		`${router}/teacher?year=${year}&page=${page}&company_name=${company_name}&start=${start}&end=${end}&status=${
-			status === '전체' || status === undefined ? '' : status
-		}`
-	);
-	return data;
+	return useQueries([
+		{
+			queryKey: [
+				'getAllRecruitmentForm',
+				searchRecruitmentFormQueryString,
+			],
+			queryFn: async () => {
+				const { year, page, company_name, start, end, status } =
+					searchRecruitmentFormQueryString;
+				const { data } = await instance.get<RecruitmentFormResponse>(
+					`${router}/teacher?year=${year}&page=${page}&company_name=${company_name}&start=${start}&end=${end}&status=${
+						status === '전체' || status === undefined ? '' : status
+					}`
+				);
+				return data;
+			},
+		},
+		{
+			queryKey: [
+				'getAllRecruitmentFormPageNum',
+				searchRecruitmentFormQueryString,
+			],
+			queryFn: async () => {
+				const { year, page, company_name, start, end, status } =
+					searchRecruitmentFormQueryString;
+				const { data } = await instance.get<{
+					total_page_count: number;
+				}>(
+					`${router}/teacher/count?year=${year}&page=${page}&company_name=${company_name}&start=${start}&end=${end}&status=${
+						status === '전체' || status === undefined ? '' : status
+					}`
+				);
+				return data;
+			},
+		},
+	]);
 };
 
-/** 선생님 모집의뢰 리스트 총 페이지 조회 */
-export const getAllRecruitmentFormPageNum = async (
-	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType
-) => {
-	const { year, page, company_name, start, end, status } =
-		searchRecruitmentFormQueryString;
-	const { data } = await instance.get<{
-		total_page_count: number;
-	}>(
-		`${router}/teacher/count?year=${year}&page=${page}&company_name=${company_name}&start=${start}&end=${end}&status=${
-			status === '전체' || status === undefined ? '' : status
-		}`
+/** 모집의뢰서를 상세 조회하는 api입니다. */
+export const useGetRecruitmentFormDetail = (recruitmentId: string) => {
+	return useQuery(
+		['getAllRecruitmentForm', recruitmentId],
+		async () => {
+			const { data } = await instance.get<RecruitmentFormDetailResponse>(
+				`${router}/${recruitmentId}`
+			);
+			return data;
+		},
+		{
+			refetchOnWindowFocus: true,
+		}
 	);
-	return data;
 };
 
 /** 선생님 모집의뢰 상태 변경 */

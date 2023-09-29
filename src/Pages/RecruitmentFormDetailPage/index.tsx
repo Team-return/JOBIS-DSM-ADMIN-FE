@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useGetRecruitmentFormDetail } from '../../Apis/Recruitments';
 import { RecruitmentFormDetailBasic } from '../../Components/Detail/RecruitmentFormDetail/Basic';
 import { RecruitmentFormDetailEdit } from '../../Components/Detail/RecruitmentFormDetail/Edit';
 import { Header } from '../../Components/Header';
-import { useGetRecruitmentFormDetail } from '../../Hooks/ApiHooks/Recruitments';
 import * as _ from './style';
 
 export function RecruitmentFormDetailPage() {
