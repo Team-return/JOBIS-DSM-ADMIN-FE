@@ -1,37 +1,87 @@
-import { useMutation, MutationOptions } from 'react-query';
+import {
+	useMutation,
+	MutationOptions,
+	useQueries,
+	useQuery,
+} from 'react-query';
 import { instance } from '../axios';
 import { ApplicantInfoQueryStringType } from './request';
 import { ApplicationResponse, InternshipStudentResponse } from './response';
 
 const router = '/applications';
 
-/** 지원서 리스트 조회 */
-export const getApplicantInfo = async (
+/** 지원서를 조회하는 api입니다. */
+export const useGetApplicantInfo = (
 	applicationQueryString: ApplicantInfoQueryStringType
 ) => {
-	const { page, application_status, student_name, company_id } =
-		applicationQueryString;
-	const pageNum = page ? `&page=${page}` : '';
-	const studentName = student_name ? `&student_name=${student_name}` : '';
-	const companyId = company_id ? `&company_id=${company_id}` : '';
-	const queryString =
-		application_status || student_name || company_id || page
-			? `?application_status=${
-					application_status ? application_status : ''
-			  }${companyId}${studentName}${pageNum}`
-			: '';
-	const { data } = await instance.get<Promise<ApplicationResponse>>(
-		`${router}${queryString}`
-	);
-	return data;
+	return useQueries([
+		{
+			queryKey: ['getApplicantInfo', applicationQueryString],
+			queryFn: async () => {
+				const {
+					page,
+					application_status,
+					student_name,
+					recruitment_id,
+				} = applicationQueryString;
+				const pageNum = page ? `&page=${page}` : '';
+				const studentName = student_name
+					? `&student_name=${student_name}`
+					: '';
+				const companyId = recruitment_id
+					? `&recruitment_id=${recruitment_id}`
+					: '';
+				const queryString =
+					application_status || student_name || recruitment_id || page
+						? `?application_status=${
+								application_status ? application_status : ''
+						  }${companyId}${studentName}${pageNum}`
+						: '';
+				const { data } = await instance.get<ApplicationResponse>(
+					`${router}${queryString}`
+				);
+				return data;
+			},
+		},
+		{
+			queryKey: ['getApplicantInfoPageNum', applicationQueryString],
+			queryFn: async () => {
+				const {
+					page,
+					application_status,
+					student_name,
+					recruitment_id,
+				} = applicationQueryString;
+				const pageNum = page ? `&page=${page}` : '';
+				const studentName = student_name
+					? `&student_name=${student_name}`
+					: '';
+				const companyId = recruitment_id
+					? `&recruitment_id=${recruitment_id}`
+					: '';
+				const queryString =
+					application_status || student_name || recruitment_id || page
+						? `?application_status=${
+								application_status ? application_status : ''
+						  }${companyId}${studentName}${pageNum}`
+						: '';
+				const { data } = await instance.get<{
+					total_page_count: number;
+				}>(`${router}/count${queryString}`);
+				return data;
+			},
+		},
+	]);
 };
 
 /** 현장실습생 전환시 학생 조회 */
-export const getInternshipStudent = async (company_id: number) => {
-	const { data } = await instance.get<Promise<InternshipStudentResponse>>(
-		`${router}/pass/${company_id}`
-	);
-	return data;
+export const useGetInternshipStudent = (company_id: number) => {
+	return useQuery(['getInternshipStudent', company_id], async () => {
+		const { data } = await instance.get<InternshipStudentResponse>(
+			`${router}/pass/${company_id}`
+		);
+		return data;
+	});
 };
 
 /** 지원상태 변경 */

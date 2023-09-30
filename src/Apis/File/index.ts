@@ -1,14 +1,20 @@
-import { useMutation } from 'react-query';
+import { MutationOptions, useMutation } from 'react-query';
 import fileSaver from 'file-saver';
 import { DownloadDataPropsType } from './request';
 import axios from 'axios';
 import { useToastStore } from '@team-return/design-system';
+import { instance } from '../axios';
+
+const router = '/files';
 
 /** S3에서 파일 가져와서 다운로드 */
 export const useDownloadData = (propsData: DownloadDataPropsType) => {
 	const { append } = useToastStore();
 	return useMutation(
-		() => axios.get(propsData.fileUrl, { responseType: 'blob' }),
+		() =>
+			axios.get(`${process.env.REACT_APP_FILE_URL}${propsData.fileUrl}`, {
+				responseType: 'blob',
+			}),
 		{
 			onSuccess: (res) => {
 				const data = new Blob([res.data], {
@@ -28,6 +34,18 @@ export const useDownloadData = (propsData: DownloadDataPropsType) => {
 					type: 'RED',
 				});
 			},
+		}
+	);
+};
+
+/** 선생님 모집의뢰 상태 변경 */
+export const useFileUpload = (file: File, options: MutationOptions) => {
+	const formData = new FormData();
+	formData.append('file', file);
+	return useMutation(
+		async () => instance.post(`${router}?type=LOGO_IMAGE`, formData),
+		{
+			...options,
 		}
 	);
 };

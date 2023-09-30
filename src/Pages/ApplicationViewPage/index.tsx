@@ -1,10 +1,13 @@
 import * as _ from './style';
 import { Header } from '../../Components/Header';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ApplicationViewSearch } from '../../Components/ApplicationView/Search';
-import { ApplicantInfoQueryStringType } from '../../Apis/Applications/request';
-import { useGetApplicantInfo } from '../../Hooks/ApiHooks/Applications';
+import {
+	ApplicantInfoQueryStringType,
+	selectStudent,
+} from '../../Apis/Applications/request';
 import { ApplicationViewTable } from '../../Components/ApplicationView/Table';
+import { useGetApplicantInfo } from '../../Apis/Applications';
 
 export function ApplicationViewPage() {
 	const [searchQueryString, setSearchQueryString] =
@@ -12,24 +15,21 @@ export function ApplicationViewPage() {
 			page: 1,
 			application_status: '',
 			student_name: '',
-			company_id: '',
-		});
-	const {
-		data: application,
-		refetch: refetchApplication,
-		isLoading,
-	} = useGetApplicantInfo(searchQueryString);
-
-	const allSelectFormId: number[] =
-		application! &&
-		application.applications.map((companie) => {
-			return companie.application_id;
+			recruitment_id: '',
 		});
 
-	const allSelectStudent: string[] =
-		application! &&
-		application.applications.slice(0, 3).map((companie) => {
-			return companie.student_name;
+	const applicationQueries = useGetApplicantInfo(searchQueryString);
+	const applicationData = applicationQueries[0];
+	const applicationPage = applicationQueries[1].data?.total_page_count!;
+	const isLoading = applicationQueries.some((result) => result.isLoading);
+	const refetchApplication = useCallback(() => {
+		applicationQueries.forEach((result) => result.refetch());
+	}, [applicationQueries]);
+
+	const allSelectFormIdAndName: selectStudent[] =
+		applicationData.data! &&
+		applicationData.data?.applications.map((companie) => {
+			return { id: companie.application_id, name: companie.student_name };
 		});
 
 	return (
@@ -42,10 +42,10 @@ export function ApplicationViewPage() {
 				/>
 				<ApplicationViewTable
 					applicationIsLoading={isLoading}
-					application={application!}
-					refetchApplication={refetchApplication}
-					allSelectFormId={allSelectFormId}
-					allSelectStudent={allSelectStudent}
+					application={applicationData.data!}
+					applicationPageNum={applicationPage}
+					refetchApplication={applicationData.refetch}
+					allSelectFormIdAndName={allSelectFormIdAndName}
 					searchQueryString={searchQueryString}
 					setSearchQueryString={setSearchQueryString}
 				/>

@@ -12,7 +12,7 @@ const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			keepPreviousData: true,
-			refetchOnWindowFocus: false,
+			refetchOnWindowFocus: true,
 			refetchOnMount: true,
 			staleTime: 5000,
 		},
@@ -23,15 +23,13 @@ const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
 root.render(
-	<React.StrictMode>
-		<ThemeProvider theme={baseTheme}>
-			<ModalContextProvider>
-				<QueryClientProvider client={queryClient}>
-					<ToastContainer />
-					<App />
-					<ReactQueryDevtools />
-				</QueryClientProvider>
-			</ModalContextProvider>
-		</ThemeProvider>
-	</React.StrictMode>
+	<ThemeProvider theme={baseTheme}>
+		<ModalContextProvider>
+			<QueryClientProvider client={queryClient}>
+				<ToastContainer />
+				<App />
+				<ReactQueryDevtools />
+			</QueryClientProvider>
+		</ModalContextProvider>
+	</ThemeProvider>
 );

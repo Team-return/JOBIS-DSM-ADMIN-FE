@@ -50,6 +50,9 @@ table {
 * {
   box-sizing: border-box;
 }
+textarea {
+  resize: none;
+}
 body {
   font-weight: 300;
   color: black;

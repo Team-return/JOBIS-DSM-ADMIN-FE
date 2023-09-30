@@ -5,7 +5,7 @@ import { useForm } from '../../../Hooks/useForm';
 import { Pagination } from '../../../Utils/Pagination';
 import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
 import { DateProps } from '../../../Apis/Acceptances/request';
-import { useGetInternshipStudent } from '../../../Hooks/ApiHooks/Applications';
+import { useGetInternshipStudent } from '../../../Apis/Applications';
 
 interface PropType {
 	selectCompany: number;
@@ -175,7 +175,7 @@ export function AddInternshipStudentModal({
 						margin={[0, 0, 0, 20]}
 						iconName="Search"
 						width={65}
-						placeHolder="학생 검색"
+						placeholder="학생 검색"
 						name="searchInputValue"
 						value={searchInput.searchInputValue}
 						onChange={handleChange}

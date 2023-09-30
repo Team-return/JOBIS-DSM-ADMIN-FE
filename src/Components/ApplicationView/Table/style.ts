@@ -35,8 +35,11 @@ export const ContentText = styled.div<{ color?: string }>`
 	font-weight: 400;
 	font-size: 18px;
 	display: flex;
+	height: 100%;
+	align-items: center;
 	justify-content: center;
 	color: ${({ color }) => color};
+	text-align: center;
 `;
 
 export const OpenBoxWrapper = styled.div`
@@ -52,6 +55,7 @@ export const UnfoldImgWrapper = styled.div`
 	align-items: center;
 	gap: 4px;
 	width: 100px;
+	height: 100%;
 	cursor: pointer;
 `;
 
@@ -64,9 +68,9 @@ export const DownLoadWrapper = styled.div`
 	position: absolute;
 	z-index: 100;
 	background-color: white;
-	width: 30%;
 	gap: 20px;
 	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+	padding-bottom: 20px;
 `;
 
 export const CountNum = styled.div`
@@ -79,4 +83,12 @@ export const FileDownloadWrapper = styled.div`
 	justify-content: space-between;
 	padding: 15px 30px;
 	color: black;
+	gap: 15px;
 `;
+
+export const MiddleText = styled.div`
+	font-size: 19px;
+	font-weight: 700;
+	margin: 30px 0 0 25px;
+	color: black;
+`

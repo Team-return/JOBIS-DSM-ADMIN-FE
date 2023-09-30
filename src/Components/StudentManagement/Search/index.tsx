@@ -96,7 +96,7 @@ export function StudentManagementSearch({
 						iconName="Search"
 						value={formData.company_name}
 						onChange={handleChange}
-						placeHolder="기업명 입력"
+						placeholder="기업명 입력"
 					/>
 				</_.ContentWrapper>
 			</_.Wrapper>

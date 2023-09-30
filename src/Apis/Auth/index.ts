@@ -1,12 +1,12 @@
-import { instance } from '../axios';
+import axios from 'axios';
 import { AuthorizationRefreshResponse } from './response';
 
 const router = '/auth';
 
 /** 토큰 재발급 */
 export const reIssueToken = async (refreshToken: string) => {
-	const response = await instance.put<AuthorizationRefreshResponse>(
-		`${router}/reissue`,
+	const response = await axios.put<AuthorizationRefreshResponse>(
+		`${process.env.REACT_APP_BASE_URL}${router}/reissue`,
 		null,
 		{
 			headers: {

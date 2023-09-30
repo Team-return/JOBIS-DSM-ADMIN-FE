@@ -10,9 +10,12 @@ import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
 import { ApplicationResponse } from '../../../Apis/Applications/response';
-import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
-import { DownloadDataPropsType } from '../../../Apis/FileDownload/request';
-import { useDownloadData } from '../../../Apis/FileDownload';
+import {
+	ApplicantInfoQueryStringType,
+	selectStudent,
+} from '../../../Apis/Applications/request';
+import { DownloadDataPropsType } from '../../../Apis/File/request';
+import { useDownloadData } from '../../../Apis/File';
 import { useModalContext } from '../../../Utils/Modal';
 import {
 	useChangeRequestStatus,
@@ -33,30 +36,29 @@ import { searchInArray } from '../../../Utils/useSearchForArray';
 
 interface PropsType {
 	application: ApplicationResponse;
+	applicationPageNum: number;
 	refetchApplication: () => void;
-	allSelectFormId: number[];
+	allSelectFormIdAndName: selectStudent[];
 	searchQueryString: ApplicantInfoQueryStringType;
 	setSearchQueryString: Dispatch<
 		SetStateAction<ApplicantInfoQueryStringType>
 	>;
 	applicationIsLoading: boolean;
-	allSelectStudent: string[];
 }
 
 export function ApplicationViewTable({
 	application,
+	applicationPageNum,
 	refetchApplication,
-	allSelectFormId,
+	allSelectFormIdAndName,
 	searchQueryString,
 	setSearchQueryString,
 	applicationIsLoading,
-	allSelectStudent,
 }: PropsType) {
 	const { append } = useToastStore();
 	const dataLength = application?.applications.length;
 	const { openModal, closeModal } = useModalContext();
-	const [clickedData, setClickedData] = useState<number[]>([]);
-	const [clickStudentName, setClickStudentName] = useState<string[]>([]);
+	const [clickedData, setClickedData] = useState<selectStudent[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 	const [downloadBoxView, setDownloadBoxView] = useState<number>(0);
 	const [rejectReason, setRejectReason] = useState('');
@@ -68,50 +70,51 @@ export function ApplicationViewTable({
 		fileUrl: '',
 		fileName: '',
 	});
+	const allSelectFormId = allSelectFormIdAndName?.map((id) => id.id);
+	const selectFormId = clickedData.map((id) => id.id);
+	const selectStudentName = clickedData.map((name) => name.name);
 
 	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
-		if (searchInArray(allSelectFormId, clickedData).length === dataLength) {
+		if (
+			searchInArray(allSelectFormId, selectFormId).length === dataLength
+		) {
 			setClickedData(
-				clickedData.filter((data) => !allSelectFormId.includes(data))
-			); // 선택된 학생의 id를 추가하는 부분입니다.
-			setClickStudentName(
-				clickStudentName.filter(
-					(name) => !allSelectStudent.includes(name)
-				)
-			); // 선택된 학생의 이름을 추가하는 부분입니다.
+				clickedData.filter((data) => !allSelectFormId.includes(data.id))
+			); // 전체 학생의 선택을 해제하는 부분입니다.
 		} else {
-			setClickedData((datas) => [
-				...datas,
-				...allSelectFormId.filter((data) => !datas.includes(data)),
-			]); // 선택 취소된 학생의 id를 삭제하는 부분입니다.
-			setClickStudentName((names) => [
-				...names,
-				...allSelectStudent.filter((data) => !names.includes(data)),
-			]); // 선택 취소된 학생의 이름을 삭제하는 부분입니다.
+			setClickedData([
+				...allSelectFormIdAndName.filter((idAndName) =>
+					allSelectFormId.includes(idAndName.id)
+				),
+			]); // 전체 학생을 선택하는 부분입니다.
 		}
 	};
 
 	/** 지원상태를 변경하는 api호출 함수입니다. */
-	const changeStatusAPI = useChangeRequestStatus(clickedData, changeStatus, {
-		onSuccess: () => {
-			refetchApplication();
-			setClickedData([]);
-			closeModal();
-			append({
-				title: '성공적으로 변경되었습니다.',
-				message: '',
-				type: 'GREEN',
-			});
-		},
-		onError: () => {
-			append({
-				title: '변경에 실패했습니다.',
-				message: '',
-				type: 'RED',
-			});
-		},
-	});
+	const changeStatusAPI = useChangeRequestStatus(
+		clickedData.map((item) => item.id),
+		changeStatus,
+		{
+			onSuccess: () => {
+				refetchApplication();
+				setClickedData([]);
+				closeModal();
+				append({
+					title: '성공적으로 변경되었습니다.',
+					message: '',
+					type: 'GREEN',
+				});
+			},
+			onError: () => {
+				append({
+					title: '변경에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
+			},
+		}
+	);
 	const { isLoading: requestStatusIsLoading } = changeStatusAPI;
 
 	/** 지원서 상태 변경할 때 확인하는 확인 모달을 여는 함수입니다. */
@@ -119,8 +122,8 @@ export function ApplicationViewTable({
 		openModal({
 			children: (
 				<ChangeStatusModal
-					clickedData={clickedData}
-					clickStudentName={clickStudentName}
+					clickedData={selectFormId}
+					clickStudentName={selectStudentName}
 					statusName={statusName}
 				/>
 			),
@@ -136,7 +139,7 @@ export function ApplicationViewTable({
 
 	/** 지원서를 반환하는 api를 호출합니다. */
 	const rejectApplicationAPI = useRejectApplication(
-		clickedData[0],
+		selectFormId[0],
 		rejectReason,
 		{
 			onSuccess: () => {
@@ -165,8 +168,8 @@ export function ApplicationViewTable({
 		openModal({
 			children: (
 				<RejectApplicationModal
-					clickedData={clickedData}
-					clickStudentName={clickStudentName}
+					clickedData={selectFormId}
+					clickStudentName={selectStudentName}
 					setRejectReason={setRejectReason}
 				/>
 			),
@@ -181,7 +184,7 @@ export function ApplicationViewTable({
 
 	/** 현장실습 날짜를 바꾸는 api를 호출합입니다. */
 	const changeTrainDateAPI = useChangeStudentFieldTrain(
-		clickedData,
+		selectFormId,
 		trainDate.start_date,
 		trainDate.end_date,
 		{
@@ -211,8 +214,8 @@ export function ApplicationViewTable({
 		openModal({
 			children: (
 				<ChangeTrainDateModal
-					clickedData={clickedData}
-					clickStudentName={clickStudentName}
+					clickedData={selectFormId}
+					clickStudentName={selectStudentName}
 					trainDateChange={trainDateChange}
 					trainDate={trainDate}
 				/>
@@ -261,27 +264,19 @@ export function ApplicationViewTable({
 	const tableAllDatas: JSX.Element[][] = application?.applications
 		.map((application) => {
 			const clickCheckBox = () => {
-				if (clickedData.includes(application.application_id)) {
+				if (selectFormId.includes(application.application_id)) {
 					setClickedData(
 						clickedData.filter(
-							(clickedDataId) =>
-								clickedDataId !== application.application_id
-						)
-					);
-					setClickStudentName(
-						clickStudentName.filter(
-							(clickStudentNames) =>
-								clickStudentNames !== application.student_name
+							(data) => application.application_id !== data.id
 						)
 					);
 				} else {
 					setClickedData((datas) => [
 						...datas,
-						application.application_id,
-					]);
-					setClickStudentName((student) => [
-						...student,
-						application.student_name,
+						{
+							id: application.application_id,
+							name: application.student_name,
+						},
 					]);
 				}
 			};
@@ -302,9 +297,16 @@ export function ApplicationViewTable({
 				}
 			};
 
+			const urlApplication = application.attachments.filter(
+				(urls) => urls.type === 'URL'
+			);
+			const fileApplication = application.attachments.filter(
+				(urls) => urls.type === 'FILE'
+			);
+
 			return [
 				<CheckBox
-					checked={clickedData.includes(application.application_id)}
+					checked={selectFormId.includes(application.application_id)}
 					onChange={clickCheckBox}
 				/>,
 				<_.ContentText
@@ -354,7 +356,39 @@ export function ApplicationViewTable({
 					>
 						{downloadBoxView === application.application_id && (
 							<_.DownLoadWrapper>
-								{application.attachments.map((urls, i) => {
+								{urlApplication.length !== 0 && (
+									<_.MiddleText>URL</_.MiddleText>
+								)}
+								{urlApplication.map((urls, i) => {
+									return (
+										<_.FileDownloadWrapper key={i}>
+											<Stack>
+												<_.CountNum>{i + 1}</_.CountNum>
+												<div>{`https://${urls.url}`}</div>
+											</Stack>
+											<Button
+												size="S"
+												onClick={() => {
+													window.open(
+														`https://${urls.url}`,
+														'_blank',
+														'noopener, noreferrer'
+													);
+												}}
+											>
+												링크 이동
+											</Button>
+										</_.FileDownloadWrapper>
+									);
+								})}
+								{fileApplication.length !== 0 && (
+									<_.MiddleText
+										style={{ margin: '20px 0 10px 25px' }}
+									>
+										첨부파일
+									</_.MiddleText>
+								)}
+								{fileApplication.map((urls, i) => {
 									const nameArray = decodeURI(urls.url).split(
 										'/'
 									);
@@ -404,7 +438,7 @@ export function ApplicationViewTable({
 			disabled={!(dataLength !== 0)}
 			checked={
 				clickedData.length !== 0 &&
-				searchInArray(allSelectFormId, clickedData).length ===
+				searchInArray(allSelectFormId, selectFormId).length ===
 					dataLength
 			}
 			onChange={checkAllBox}
@@ -417,7 +451,7 @@ export function ApplicationViewTable({
 		<_.TitleText>지원 일자</_.TitleText>,
 	];
 	/** 테이블 width를 설정한 값입니다. */
-	const tableWidth: number[] = [4, 9, 7, 8, 12, 48, 12];
+	const tableWidth: number[] = [4, 9, 7, 8, 15, 45, 12];
 
 	return (
 		<_.Container>
@@ -483,7 +517,7 @@ export function ApplicationViewTable({
 				/>
 			</_.TableWrapper>
 			<Pagination
-				page={application?.total_page_count}
+				page={applicationPageNum}
 				data={searchQueryString}
 				setData={setSearchQueryString}
 				refetch={refetchApplication}
