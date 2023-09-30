@@ -1,12 +1,9 @@
 import * as _ from './style';
 import { Button } from '@team-return/design-system';
-import {
-	useGetReviewSubmission,
-	useGetReviewSubmissionDetail,
-} from '../../../Hooks/ApiHooks/Reviews';
 import { ReviewSubmissionTable } from '../../../Components/PopUp/ReviewSubmissionPopup/Table';
 import { useState } from 'react';
 import { ReviewSubmissionContents } from '../../../Components/PopUp/ReviewSubmissionPopup/Contents';
+import { useGetReviewSubmission, useGetReviewSubmissionDetail } from '../../../Apis/Reviews';
 
 export function ReviewSubmissionPopup() {
 	const companyId = new URLSearchParams(window.location.search).get(

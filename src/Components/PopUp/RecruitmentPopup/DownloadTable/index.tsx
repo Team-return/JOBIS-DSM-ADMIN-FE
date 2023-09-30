@@ -1,8 +1,8 @@
 import { Button, Icon, Table } from '@team-return/design-system';
 import * as _ from './style';
-import { useDownloadData } from '../../../../Apis/FileDownload';
+import { useDownloadData } from '../../../../Apis/File';
 import { useState } from 'react';
-import { DownloadDataPropsType } from '../../../../Apis/FileDownload/request';
+import { DownloadDataPropsType } from '../../../../Apis/File/request';
 import { AttachmentUrlType } from '../../../../Apis/Applications/response';
 
 interface PropsType {
@@ -32,12 +32,12 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 		() => [<></>, <></>]
 	);
 
-	/** 데이터 테이블입니다. */
-	const tableAllDatas: JSX.Element[][] = applicationAttachmentUrl
-		?.map((urls, i) => {
+	/** FILE 데이터 테이블입니다. */
+	const tableFileDatas: JSX.Element[][] = applicationAttachmentUrl
+		?.filter((urls) => urls.type === 'FILE')
+		.map((urls, i) => {
 			const nameArray = decodeURI(urls.url).split('/');
 			return [
-				<_.ContentText>{i + 1}</_.ContentText>,
 				<_.TextWrapper>
 					<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>
 						{nameArray[nameArray.length - 1].substring(37)}
@@ -60,17 +60,44 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 					</Button>
 				</_.TextWrapper>,
 			];
-		})
-		.concat(emptyTableDataArray);
+		});
+
+	/** URL 데이터 테이블입니다. */
+	const tableUrlDatas: JSX.Element[][] = applicationAttachmentUrl
+		?.filter((urls) => urls.type === 'URL')
+		.map((urls, i) => {
+			return [
+				<_.TextWrapper>
+					<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>
+						{`https://${urls.url}`}
+					</_.ContentText>
+					<Button
+						size="S"
+						onClick={() =>
+							window.open(
+								`https://${urls.url}`,
+								'_blank',
+								'noopener, noreferrer'
+							)
+						}
+					>
+						링크 이동
+					</Button>
+				</_.TextWrapper>,
+			];
+		});
+
+	/** 전체 데이터 테이블입니다. */
+	const tableAllDatas: JSX.Element[][] = tableUrlDatas.concat(
+		tableFileDatas,
+		emptyTableDataArray
+	);
 
 	/** 테이블의 title입니다. */
-	const tableTitle: JSX.Element[] = [
-		<_.TitleText>순번</_.TitleText>,
-		<_.TitleText>첨부파일</_.TitleText>,
-	];
+	const tableTitle: JSX.Element[] = [<_.TitleText>첨부파일</_.TitleText>];
 
 	/** 테이블의 width입니다. */
-	const tableWidth: number[] = [10, 90];
+	const tableWidth: number[] = [100];
 
 	return (
 		<_.Container>

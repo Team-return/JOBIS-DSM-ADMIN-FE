@@ -51,14 +51,14 @@ export function ReviewSubmissionTable({
 		?.map((review) => {
 			const ClickCheckBox = () => {
 				setReviewId(review.review_id);
-				refetchReviewSubmissionDetail();
+				setTimeout(refetchReviewSubmissionDetail);
 			};
 
 			return [
 				<RadioButton name="review" onClick={ClickCheckBox} />,
 				<_.ContentText>{review.year}</_.ContentText>, // 연도
 				<_.ContentText>{review.writer}</_.ContentText>, // 작성자
-				<_.ContentText>{review.created_date}</_.ContentText>, // 후기 작성일자
+				<_.ContentText>{review.date}</_.ContentText>, // 후기 작성일자
 			];
 		})
 		.concat(emptyTableDataArray);
@@ -88,7 +88,7 @@ export function ReviewSubmissionTable({
 						margin={[0, 0, 0, 20]}
 						iconName="Search"
 						width={65}
-						placeHolder="작성자명"
+						placeholder="작성자명"
 						name="searchInputValue"
 						value={searchInput.searchInputValue}
 						onChange={handleChange}

@@ -7,6 +7,8 @@ import { CompanyRecruitmentPage } from './Pages/CompanyRecruitmentPage';
 import { ReviewSubmissionPopup } from './Pages/PopUp/ReviewSubmissionPopup';
 import { ApplicationViewPage } from './Pages/ApplicationViewPage';
 import { StudentManagementPage } from './Pages/StudentManagementPage';
+import { CompanyDetailPage } from './Pages/CompanyDetailPage';
+import { RecruitmentFormDetailPage } from './Pages/RecruitmentFormDetailPage';
 
 const Router = createBrowserRouter([
 	{
@@ -25,8 +27,16 @@ const Router = createBrowserRouter([
 				element: <RecruitmentFormPage />,
 			},
 			{
-				path: 'RequestForm',
+				path: 'RecruitmentRequest/:id',
+				element: <RecruitmentFormDetailPage />,
+			},
+			{
+				path: 'Company',
 				element: <CompanyRecruitmentPage />,
+			},
+			{
+				path: 'Company/:id',
+				element: <CompanyDetailPage />,
 			},
 			{
 				path: 'Student',

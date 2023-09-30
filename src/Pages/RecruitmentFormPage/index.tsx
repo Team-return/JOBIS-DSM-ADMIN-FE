@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import * as _ from './style';
 import { RecruitmentFormQueryStringType } from '../../Apis/Recruitments/request';
 import { Header } from '../../Components/Header';
 import { RecruitmentFormSearch } from '../../Components/RecruitmentForm/Search';
 import { RecruitmentFormTable } from '../../Components/RecruitmentForm/Table';
-import { useGetRecruitmentForm } from '../../Hooks/ApiHooks/Applications';
+import { useGetRecruitmentForm } from '../../Apis/Recruitments';
 
 export function RecruitmentFormPage() {
 	const date = new Date(); // 현재 날짜 및 시간
@@ -21,15 +21,20 @@ export function RecruitmentFormPage() {
 		status: '',
 		page: 1,
 	});
-	const {
-		data: recruitmentForm,
-		refetch: refetchRecruitmentForm,
-		isLoading,
-	} = useGetRecruitmentForm(searchRecruitmentFormQueryString);
+	const recruitmentFormQueries = useGetRecruitmentForm(
+		searchRecruitmentFormQueryString
+	);
+	const recruitmentFormData = recruitmentFormQueries[0];
+	const recruitmentFormPage =
+		recruitmentFormQueries[1].data?.total_page_count!;
+	const isLoading = recruitmentFormQueries.some((result) => result.isLoading);
+	const allRefetchRecruitmentForm = useCallback(() => {
+		recruitmentFormQueries.forEach((result) => result.refetch());
+	}, [recruitmentFormQueries]);
 
 	const allSelectFormId: string[] =
-		recruitmentForm! &&
-		recruitmentForm.recruitments.map((recruitment) => {
+		recruitmentFormData.data! &&
+		recruitmentFormData.data?.recruitments.map((recruitment) => {
 			return recruitment.id;
 		});
 
@@ -44,12 +49,13 @@ export function RecruitmentFormPage() {
 					setSearchRecruitmentFormQueryString={
 						setSearchRecruitmentFormQueryString
 					}
-					refetchRecruitmentForm={refetchRecruitmentForm}
+					refetchRecruitmentForm={allRefetchRecruitmentForm}
 				/>
 				<RecruitmentFormTable
 					allSelectFormId={allSelectFormId}
-					recruitmentForm={recruitmentForm!}
-					refetchRecruitmentForm={refetchRecruitmentForm}
+					recruitmentForm={recruitmentFormData.data!}
+					recruitmentFormPageNum={recruitmentFormPage}
+					refetchRecruitmentForm={recruitmentFormData.refetch}
 					searchRecruitmentFormQueryString={
 						searchRecruitmentFormQueryString
 					}

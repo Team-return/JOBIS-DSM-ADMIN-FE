@@ -6,7 +6,7 @@ export interface ReviewSubmissionType {
 	review_id: string;
 	year: number;
 	writer: string;
-	created_date: string;
+	date: string;
 }
 
 export interface ReviewSubmissioDetailnResponse {

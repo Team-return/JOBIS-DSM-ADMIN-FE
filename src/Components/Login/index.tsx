@@ -42,7 +42,7 @@ export function LoginCompo() {
 							error={false}
 							value={account_id}
 							kind="LineInput"
-							placeHolder="이메일을 입력해주세요."
+							placeholder="이메일을 입력해주세요."
 							disabled={false}
 						/>
 					</_.InputWrapper>
@@ -61,7 +61,7 @@ export function LoginCompo() {
 								error={false}
 								value={password}
 								kind="LineInput"
-								placeHolder="비밀번호를 입력해주세요."
+								placeholder="비밀번호를 입력해주세요."
 								disabled={false}
 							/>
 						</div>

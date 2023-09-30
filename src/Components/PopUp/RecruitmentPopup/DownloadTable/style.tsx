@@ -46,10 +46,12 @@ export const ContentText = styled.div<{ status?: string; click?: number }>`
 	font-size: 18px;
 	display: flex;
 	justify-content: center;
+	height: 100%;
 	align-items: center;
 	color: ${({ status }) => (status === 'REQUESTED' ? '#FF0000' : '#000000')};
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
 	text-underline-offset: 2px;
 	text-decoration-thickness: 2px;
 	cursor: ${({ click }) => (click ? 'pointer' : 'default')};
+	text-align: center;
 `;

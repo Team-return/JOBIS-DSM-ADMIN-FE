@@ -1,15 +1,24 @@
-import { MutationOptions, useMutation } from 'react-query';
+import { MutationOptions, useMutation, useQuery } from 'react-query';
 import { instance } from '../axios';
 import { CombinedStudentListResponse } from './response';
 
 const router = '/acceptances';
 
 /** 현장실습생, 근로계약생 조회 */
-export const getCombinedStudentList = async (company_id: number) => {
-	const { data } = await instance.get<Promise<CombinedStudentListResponse>>(
-		`${router}/${company_id}`
+export const useGetCombinedStudentList = (company_id: number) => {
+	return useQuery(
+		['getCombinedStudentList', company_id],
+		async () => {
+			const { data } = await instance.get<CombinedStudentListResponse>(
+				`${router}/${company_id}`
+			);
+			return data;
+		},
+		{
+			refetchOnWindowFocus: true,
+			enabled: company_id !== 0,
+		}
 	);
-	return data;
 };
 
 /** 현장실습생 삭제 */

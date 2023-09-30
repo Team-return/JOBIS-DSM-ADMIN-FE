@@ -1,4 +1,4 @@
-import { Button } from '@team-return/design-system';
+import { Button, Icon } from '@team-return/design-system';
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useEffect } from 'react';
@@ -77,6 +77,7 @@ export const Modal = () => {
 		<Modals>
 			<ModalDropdown onClick={closeModal} />
 			<ModalContents>
+				<XIcon icon="Close" onClick={closeModal}/>
 				<div>{children}</div>
 				{onCancel && onSubmit && (
 					<ModalActions>
@@ -122,6 +123,7 @@ const ModalContents = styled.div`
 	overflow-y: scroll;
 	background-color: #fff;
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+	border-radius: 4px;
 `;
 
 const ModalActions = styled.div`
@@ -129,4 +131,11 @@ const ModalActions = styled.div`
 	justify-content: flex-end;
 	gap: 10px;
 	margin-top: 25px;
+`;
+
+const XIcon = styled(Icon)`
+	position: absolute;
+	right: 25px;
+	top: 25px;
+	cursor: pointer;
 `;

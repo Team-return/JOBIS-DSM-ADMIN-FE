@@ -1,15 +1,15 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction } from 'react';
-import { dataType } from '../../../Apis/Companies/request';
+import { QueryStringDataType } from '../../../Apis/Companies/request';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { useForm } from '../../../Hooks/useForm';
 import { companyType } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
-import { useGetCode } from '../../../Hooks/ApiHooks/Codes';
+import { useGetCode } from '../../../Apis/Codes';
 
 interface PropsType {
-	setSearchQueryString: Dispatch<SetStateAction<dataType>>;
+	setSearchQueryString: Dispatch<SetStateAction<QueryStringDataType>>;
 	refetchCompanyRecruitment: () => void;
 }
 
@@ -118,7 +118,7 @@ export function CompanyRecruitmentSearch({
 						name="company_name"
 						value={data.company_name}
 						onChange={handleChange}
-						placeHolder="검색어 입력"
+						placeholder="검색어 입력"
 						iconName="Search"
 					/>
 				</_.ContentWrapper>

@@ -1,4 +1,9 @@
-import { Button, CheckBox, Table } from '@team-return/design-system';
+import {
+	Button,
+	CheckBox,
+	Table,
+	useToastStore,
+} from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
@@ -6,28 +11,32 @@ import {
 	useChangeCompanyStatus,
 	useChangeContractCompany,
 } from '../../../Apis/Companies';
-import { dataType } from '../../../Apis/Companies/request';
+import { QueryStringDataType } from '../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
 import { searchInArray } from '../../../Utils/useSearchForArray';
+import { Link } from 'react-router-dom';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
+	companyRecruitmentPageNum: number;
 	refetchCompanyRecruitment: () => void;
 	allSelectFormId: number[];
-	searchQueryString: dataType;
-	setSearchQueryString: Dispatch<SetStateAction<dataType>>;
+	searchQueryString: QueryStringDataType;
+	setSearchQueryString: Dispatch<SetStateAction<QueryStringDataType>>;
 	companyRecruitmentIsLoading: boolean;
 }
 
 export function CompanyRecruitmentTable({
 	companyRecruitment,
+	companyRecruitmentPageNum,
 	refetchCompanyRecruitment,
 	allSelectFormId,
 	searchQueryString,
 	setSearchQueryString,
 	companyRecruitmentIsLoading,
 }: PropsType) {
+	const { append } = useToastStore();
 	const dataLength = companyRecruitment?.companies.length;
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
@@ -47,34 +56,53 @@ export function CompanyRecruitmentTable({
 	};
 
 	/** 회사 상태를 변경하는 api를 호출합입니다. */
-	const changeStatusAPI = useChangeCompanyStatus(changeStatus, clickedData, {
-		onSuccess: () => {
-			refetchCompanyRecruitment();
-			setClickedData([]);
-			alert('성공적으로 변경되었습니다.');
-		},
-		onError: () => {
-			alert('변경에 실패했습니다.');
-		},
-	});
-	const { isLoading } = changeStatusAPI;
+	const { mutate: changeStatusAPI, isLoading } = useChangeCompanyStatus(
+		changeStatus,
+		clickedData,
+		{
+			onSuccess: () => {
+				refetchCompanyRecruitment();
+				setClickedData([]);
+				append({
+					title: '성공적으로 변경되었습니다.',
+					message: '',
+					type: 'GREEN',
+				});
+			},
+			onError: () => {
+				append({
+					title: '변경에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
+			},
+		}
+	);
 
 	/** 회사 상태를 mou로 변경하는 api를 호출합니다. */
 	const changeContractAPI = useChangeContractCompany(clickedData, {
 		onSuccess: () => {
 			refetchCompanyRecruitment();
 			setClickedData([]);
-			alert('성공적으로 변경되었습니다.');
+			append({
+				title: '성공적으로 변경되었습니다.',
+				message: '',
+				type: 'GREEN',
+			});
 		},
 		onError: () => {
-			alert('변경에 실패했습니다.');
+			append({
+				title: '변경에 실패했습니다.',
+				message: '',
+				type: 'RED',
+			});
 		},
 	});
 
 	/** 변경 버튼을 클릭했을 때 실행할 함수입니다. */
 	const changeStatusBtnClick = (statusName: string) => {
 		setChangeStatus(statusName);
-		setTimeout(() => changeStatusAPI.mutate());
+		setTimeout(changeStatusAPI);
 	};
 
 	/** 로딩 중일 때 보여줄 빈 테이블입니다. */
@@ -140,7 +168,11 @@ export function CompanyRecruitmentTable({
 					checked={clickedData.includes(companie.company_id)}
 					onChange={clickCheckBox}
 				/>,
-				<_.ContentText>{companie.company_name}</_.ContentText>, // 기업명
+				<Link to={`/Company/${companie.company_id}`}>
+					<_.ContentText click={true}>
+						{companie.company_name}
+					</_.ContentText>
+				</Link>, // 기업명
 				<_.ContentText>{companie.region}</_.ContentText>, // 지역
 				<_.ContentText>{companie.business_area}</_.ContentText>, // 사업분야
 				<_.ContentText>{companie.workers_count}</_.ContentText>, // 근로자수
@@ -262,7 +294,7 @@ export function CompanyRecruitmentTable({
 				/>
 			</_.TableWrapper>
 			<Pagination
-				page={companyRecruitment?.total_page_count}
+				page={companyRecruitmentPageNum}
 				data={searchQueryString}
 				setData={setSearchQueryString}
 				refetch={refetchCompanyRecruitment}

@@ -1,6 +1,5 @@
 export interface RecruitmentFormResponse {
 	recruitments: RecruitmentFormType[];
-	total_page_count: number;
 }
 
 export interface RecruitmentFormType {
@@ -15,4 +14,32 @@ export interface RecruitmentFormType {
 	start: string;
 	end: string;
 	military_support: boolean;
+}
+
+export interface RecruitmentFormDetailResponse {
+	company_id: number;
+	company_profile_url: string;
+	company_name: string;
+	areas: AreasType[];
+	preferential_treatment: string;
+	required_grade: number | null;
+	work_hours: number;
+	required_licenses: string[];
+	hiring_progress: string[];
+	train_pay: number;
+	pay: number;
+	benefits: string | null;
+	military: true;
+	submit_document: string;
+	start_date: string;
+	end_date: string;
+	etc: string | null;
+}
+
+export interface AreasType {
+	id: number;
+	job: string[];
+	tech: string[];
+	hiring: number;
+	major_task: string;
 }

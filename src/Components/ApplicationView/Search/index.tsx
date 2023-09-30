@@ -24,7 +24,7 @@ export function ApplicationViewSearch({
 		handleChange,
 	} = useForm({
 		student_name: '',
-		company_id: '',
+		recruitment_id: '',
 	});
 
 	const { selectedItem, setSelectedItem, handleSelectedItem } = useDropDown({
@@ -35,13 +35,13 @@ export function ApplicationViewSearch({
 	const defaultData = () => {
 		setData({
 			student_name: '',
-			company_id: '',
+			recruitment_id: '',
 		});
 		setSelectedItem({ application_status: '' });
 	};
 
 	/** 검색하는 함수입니다. */
-	const searching = () => {
+	const searching = async () => {
 		setSearchQueryString({
 			...data,
 			application_status: getValueByKey(
@@ -80,7 +80,7 @@ export function ApplicationViewSearch({
 						name="student_name"
 						value={data.student_name}
 						onChange={handleChange}
-						placeHolder="검색어 입력"
+						placeholder="검색어 입력"
 						iconName="Search"
 					/>
 				</_.ContentWrapper>

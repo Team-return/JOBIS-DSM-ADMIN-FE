@@ -1,11 +1,11 @@
-import { Button, CheckBox, Input, Table } from '@team-return/design-system';
+import { Button, CheckBox, Input, Table, useToastStore } from '@team-return/design-system';
 import * as _ from '../style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useForm } from '../../../Hooks/useForm';
 import { Pagination } from '../../../Utils/Pagination';
 import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
 import { DateProps } from '../../../Apis/Acceptances/request';
-import { useGetInternshipStudent } from '../../../Hooks/ApiHooks/Applications';
+import { useGetInternshipStudent } from '../../../Apis/Applications';
 
 interface PropType {
 	selectCompany: number;
@@ -20,6 +20,7 @@ export function AddInternshipStudentModal({
 	setDate,
 	refetch,
 }: PropType) {
+	const { append } = useToastStore();
 	const [pages, setPages] = useState({ page: 1 });
 	const offset = (pages.page - 1) * 8;
 	const { form: searchInput, handleChange } = useForm({
@@ -43,10 +44,18 @@ export function AddInternshipStudentModal({
 				refetchStudentList();
 				setStudentId([]);
 				setDate({ start_date: '', end_date: '' });
-				alert('성공적으로 추가되었습니다.');
+				append({
+					title: '성공적으로 추가되었습니다.',
+					message: '',
+					type: 'GREEN',
+				});
 			},
 			onError: () => {
-				alert('추가에 실패했습니다.');
+				append({
+					title: '추가에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
 			},
 		}
 	);
@@ -166,7 +175,7 @@ export function AddInternshipStudentModal({
 						margin={[0, 0, 0, 20]}
 						iconName="Search"
 						width={65}
-						placeHolder="학생 검색"
+						placeholder="학생 검색"
 						name="searchInputValue"
 						value={searchInput.searchInputValue}
 						onChange={handleChange}

@@ -1,25 +1,26 @@
-import { useState } from 'react';
-import { useGetApplicantInfo } from '../../../Hooks/ApiHooks/Applications';
+import { useCallback, useState } from 'react';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
 import { StudentTable } from '../../../Components/PopUp/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../../Components/PopUp/RecruitmentPopup/DownloadTable';
 import { Button } from '@team-return/design-system';
 import * as _ from './style';
 import { AttachmentUrlType } from '../../../Apis/Applications/response';
+import { useGetApplicantInfo } from '../../../Apis/Applications';
 
 export function ApplicationPopup() {
 	const id = new URLSearchParams(window.location.search).get('id');
 	const [applicationQueryString] = useState<ApplicantInfoQueryStringType>({
 		application_status: 'APPROVED',
 		student_name: '',
-		company_id: id ? id : '',
+		recruitment_id: id ? id : '',
 	});
 
-	const {
-		data: application,
-		refetch: refetchApplication,
-		isLoading,
-	} = useGetApplicantInfo(applicationQueryString);
+	const applicationQueries = useGetApplicantInfo(applicationQueryString);
+	const applicationData = applicationQueries[0];
+	const isLoading = applicationQueries.some((result) => result.isLoading);
+	const refetchApplication = useCallback(() => {
+		applicationQueries.forEach((result) => result.refetch());
+	}, [applicationQueries]);
 
 	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<
 		AttachmentUrlType[]
@@ -27,7 +28,7 @@ export function ApplicationPopup() {
 	return (
 		<>
 			<StudentTable
-				application={application!}
+				application={applicationData.data!}
 				isRequest={false}
 				refetchApplication={refetchApplication}
 				setApplicationAttachmentUrl={setApplicationAttachmentUrl}
@@ -37,7 +38,7 @@ export function ApplicationPopup() {
 				applicationAttachmentUrl={applicationAttachmentUrl}
 			/>
 			<_.BtnWrapper>
-				<Button onClick={() => window.close()}>닫기</Button>
+				<Button onClick={window.close}>닫기</Button>
 			</_.BtnWrapper>
 		</>
 	);

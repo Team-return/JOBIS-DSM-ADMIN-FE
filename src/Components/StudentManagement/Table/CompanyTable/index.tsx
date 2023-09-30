@@ -3,25 +3,34 @@ import * as _ from '../style';
 
 import { EmployableCompaniesResponse } from '../../../../Apis/Companies/response';
 import { Dispatch, SetStateAction } from 'react';
+import { Pagination } from '../../../../Utils/Pagination';
 
 interface PropType {
+	page: { page: number };
+	setPage: Dispatch<SetStateAction<{ page: number }>>;
 	setSelectCompany: Dispatch<SetStateAction<number>>;
 	employableCompanies: EmployableCompaniesResponse;
+	employableCompaniesPageNum: number;
 	isLoading: boolean;
 	refetchCombinedStudentList: () => void;
+	refetchEmployableCompanies: () => void;
 }
 
 export function CompanyTable({
+	page,
+	setPage,
 	setSelectCompany,
 	employableCompanies,
+	employableCompaniesPageNum,
 	isLoading,
 	refetchCombinedStudentList,
+	refetchEmployableCompanies,
 }: PropType) {
 	/** 학생 데이터의 length를 계산한 값입니다. */
 	const dataLength = employableCompanies?.companies.length;
 
 	/** 로딩할 때 보여줄 빈 테이블입니다. */
-	const loadingTableDataArray = Array.from({ length: 14 }, () => [
+	const loadingTableDataArray = Array.from({ length: 13 }, () => [
 		<></>,
 		<></>,
 		<></>,
@@ -29,7 +38,7 @@ export function CompanyTable({
 	]);
 
 	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
-	const emptyTableDataArray = Array.from({ length: 14 - dataLength }, () => [
+	const emptyTableDataArray = Array.from({ length: 13 - dataLength }, () => [
 		<></>,
 		<></>,
 		<></>,
@@ -89,6 +98,12 @@ export function CompanyTable({
 					}
 					title={tableTitle}
 					width={tableWidth}
+				/>
+				<Pagination
+					page={employableCompaniesPageNum}
+					data={page}
+					setData={setPage}
+					refetch={refetchEmployableCompanies}
 				/>
 			</_.TableWrapper>
 		</_.Container>
