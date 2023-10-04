@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as _ from './style';
 import { RecruitmentFormQueryStringType } from '../../Apis/Recruitments/request';
 import { Header } from '../../Components/Header';
@@ -37,6 +37,11 @@ export function RecruitmentFormPage() {
 		recruitmentFormData.data?.recruitments.map((recruitment) => {
 			return recruitment.id;
 		});
+
+	useEffect(() => {
+		recruitmentFormQueries[1].refetch();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<>

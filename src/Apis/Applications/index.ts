@@ -69,6 +69,7 @@ export const useGetApplicantInfo = (
 				}>(`${router}/count${queryString}`);
 				return data;
 			},
+			enabled: false,
 		},
 	]);
 };

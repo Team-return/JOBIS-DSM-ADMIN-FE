@@ -1,6 +1,6 @@
 import * as _ from './style';
 import { Header } from '../../Components/Header';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ApplicationViewSearch } from '../../Components/ApplicationView/Search';
 import {
 	ApplicantInfoQueryStringType,
@@ -31,6 +31,11 @@ export function ApplicationViewPage() {
 		applicationData.data?.applications.map((companie) => {
 			return { id: companie.application_id, name: companie.student_name };
 		});
+
+	useEffect(() => {
+		applicationQueries[1].refetch();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<>

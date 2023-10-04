@@ -53,6 +53,7 @@ export const useGetCompanyRecruitments = (
 				);
 				return data;
 			},
+			enabled: false,
 		},
 	]);
 };
@@ -97,6 +98,7 @@ export const useGetEmployableCompanies = (
 				);
 				return data;
 			},
+			enabled: false,
 		},
 	]);
 };
