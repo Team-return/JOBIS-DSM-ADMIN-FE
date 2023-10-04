@@ -41,7 +41,7 @@ export const useGetCompanyRecruitments = (
 		{
 			queryKey: ['getCompanyRecruitmentsPageNum', searchQueryString],
 			queryFn: async () => {
-				const { page, company_type, region, company_name, industry } =
+				const { company_type, region, company_name, industry } =
 					searchQueryString;
 				const business_area = industry
 					? `&business_area=${industry}`
@@ -49,7 +49,7 @@ export const useGetCompanyRecruitments = (
 				const { data } = await instance.get<{
 					total_page_count: number;
 				}>(
-					`${router}/teacher/count?page=${page}&type=${company_type}&name=${company_name}&region=${region}${business_area}`
+					`${router}/teacher/count?&type=${company_type}&name=${company_name}&region=${region}${business_area}`
 				);
 				return data;
 			},
@@ -81,7 +81,7 @@ export const useGetEmployableCompanies = (
 			},
 		},
 		{
-			queryKey: ['getCompanyRecruitmentsPageNum', searchString, page],
+			queryKey: ['getCompanyRecruitmentsPageNum', searchString],
 			queryFn: async () => {
 				const { company_name, company_type, year } = searchString;
 				const companyType = company_type
@@ -93,7 +93,7 @@ export const useGetEmployableCompanies = (
 				const { data } = await instance.get<{
 					total_page_count: number;
 				}>(
-					`${router}/employment/count?year=${year}${companyName}${companyType}&page=${page}`
+					`${router}/employment/count?year=${year}${companyName}${companyType}`
 				);
 				return data;
 			},

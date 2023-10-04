@@ -52,7 +52,6 @@ export const useGetApplicantInfo = (
 					student_name,
 					recruitment_id,
 				} = applicationQueryString;
-				const pageNum = page ? `&page=${page}` : '';
 				const studentName = student_name
 					? `&student_name=${student_name}`
 					: '';
@@ -63,7 +62,7 @@ export const useGetApplicantInfo = (
 					application_status || student_name || recruitment_id || page
 						? `?application_status=${
 								application_status ? application_status : ''
-						  }${companyId}${studentName}${pageNum}`
+						  }${companyId}${studentName}`
 						: '';
 				const { data } = await instance.get<{
 					total_page_count: number;
