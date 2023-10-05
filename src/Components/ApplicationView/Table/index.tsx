@@ -364,13 +364,13 @@ export function ApplicationViewTable({
 										<_.FileDownloadWrapper key={i}>
 											<Stack>
 												<_.CountNum>{i + 1}</_.CountNum>
-												<div>{`https://${urls.url}`}</div>
+												<div>{urls.url}</div>
 											</Stack>
 											<Button
 												size="S"
 												onClick={() => {
 													window.open(
-														`https://${urls.url}`,
+														urls.url,
 														'_blank',
 														'noopener, noreferrer'
 													);

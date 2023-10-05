@@ -69,13 +69,13 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 			return [
 				<_.TextWrapper>
 					<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>
-						{`https://${urls.url}`}
+						{urls.url}
 					</_.ContentText>
 					<Button
 						size="S"
 						onClick={() =>
 							window.open(
-								`https://${urls.url}`,
+								urls.url,
 								'_blank',
 								'noopener, noreferrer'
 							)
