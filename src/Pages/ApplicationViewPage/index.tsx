@@ -29,7 +29,11 @@ export function ApplicationViewPage() {
 	const allSelectFormIdAndName: selectStudent[] =
 		applicationData.data! &&
 		applicationData.data?.applications.map((companie) => {
-			return { id: companie.application_id, name: companie.student_name };
+			return {
+				id: companie.application_id,
+				name: companie.student_name,
+				status: companie.application_status,
+			};
 		});
 
 	useEffect(() => {

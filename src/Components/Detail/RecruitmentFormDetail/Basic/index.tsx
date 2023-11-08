@@ -1,8 +1,9 @@
-import { Button } from '@team-return/design-system';
+import { Button, Stack } from '@team-return/design-system';
 import { RecruitmentFormDetailResponse } from '../../../../Apis/Recruitments/response';
 import { hiringProgress } from '../../../../Utils/Translation';
 import * as _ from '../../style';
 import { Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface PropsType {
 	recruitmentFormDetail: RecruitmentFormDetailResponse;
@@ -12,14 +13,18 @@ export function RecruitmentFormDetailBasic({
 	recruitmentFormDetail,
 	setCanEdit,
 }: PropsType) {
+	const navigate = useNavigate();
 	return (
 		<_.Container>
 			<_.Wrapper>
-				<_.LogoWrapper>
-					<_.CompanyLogo
-						src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
-					/>
-				</_.LogoWrapper>
+				<Stack direction="column">
+					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
+					<_.LogoWrapper>
+						<_.CompanyLogo
+							src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
+						/>
+					</_.LogoWrapper>
+				</Stack>
 				<Button size="M" onClick={() => setCanEdit(true)}>
 					수정
 				</Button>
@@ -151,7 +156,7 @@ export function RecruitmentFormDetailBasic({
 							</_.ContentBox>
 							<_.TitleBox>정규직전환시</_.TitleBox>
 							<_.ContentBox width={24}>
-								{recruitmentFormDetail?.pay}만원/년
+								{recruitmentFormDetail?.pay}만원
 							</_.ContentBox>
 						</_.Stack>
 						<_.Stack>
@@ -189,7 +194,11 @@ export function RecruitmentFormDetailBasic({
 									}
 								)}
 							</_.ContentBox>
-							<_.TitleBox>병역특례</_.TitleBox>
+							<_.TitleBox>
+								병역특례
+								<br />
+								신청계획
+							</_.TitleBox>
 							<_.ContentBox width={20}>
 								{recruitmentFormDetail?.military ? 'O' : 'X'}
 							</_.ContentBox>

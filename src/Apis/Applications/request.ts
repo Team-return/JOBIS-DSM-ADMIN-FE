@@ -25,4 +25,5 @@ export interface RejectReason {
 export interface selectStudent {
 	id: number;
 	name: string;
+	status: string;
 }

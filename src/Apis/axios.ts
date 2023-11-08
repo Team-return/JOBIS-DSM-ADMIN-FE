@@ -31,6 +31,8 @@ instance.interceptors.response.use(
 			if (
 				(error.response.data.message === 'Invalid Token' ||
 					error.response.data.message === 'Token Expired' ||
+					error.response.data.message ===
+						'Request failed with status code 403' ||
 					!cookies.get('access_token')) &&
 				refreshToken
 			) {
@@ -65,10 +67,9 @@ instance.interceptors.response.use(
 							cookies.remove('access_token');
 							cookies.remove('refresh_token');
 							window.location.href = '/login';
+							window.close();
 						});
 				}
-			} else {
-				window.location.href = '/login';
 			}
 		}
 		return Promise.reject(error);

@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ThemeProvider } from 'styled-components';
 import { baseTheme } from './Styles/Global/gloablTheme.style';
@@ -15,6 +14,7 @@ const queryClient = new QueryClient({
 			refetchOnWindowFocus: true,
 			refetchOnMount: true,
 			staleTime: 5000,
+			retry: 1,
 		},
 	},
 });

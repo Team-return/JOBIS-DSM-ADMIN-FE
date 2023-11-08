@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
 export const ModalTitleText = styled.div`
+	width: 90%;
 	font-weight: 600;
 	font-size: 18px;
 	margin-bottom: 10px;
+	word-wrap: break-word;
+	word-break: keep-all;
 `;
 
 export const ModalContentText = styled.div`
@@ -80,10 +83,11 @@ export const ContentText = styled.div<{ status?: boolean; click?: boolean }>`
 	justify-content: center;
 	color: ${({ status }) => (status ? '#FF0000' : '#000000')};
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
-	text-underline-offset: 2px;
-	text-decoration-thickness: 2px;
+	text-underline-offset: 1.5px;
+	text-decoration-thickness: 1.5px;
 	cursor: ${({ click }) => (click ? 'pointer' : 'default')};
 	text-align: center;
+	word-break: keep-all;
 `;
 
 export const SearchWrapper = styled.div`

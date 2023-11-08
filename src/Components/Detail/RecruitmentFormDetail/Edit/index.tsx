@@ -8,7 +8,7 @@ import {
 import { RecruitmentFormDetailResponse } from '../../../../Apis/Recruitments/response';
 import { hiringProgress } from '../../../../Utils/Translation';
 import * as _ from '../../style';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { useModalContext } from '../../../../Utils/Modal';
 import { GatherModal } from '../../../Modal/RecruitmentModal';
 import { DeleteRecruitmentModal } from '../../../Modal/DeleteRecruitmentModal';
@@ -16,7 +16,7 @@ import {
 	useDeleteArea,
 	useEditRecruitment,
 } from '../../../../Apis/Recruitments';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { EditRecruitmentRequest } from '../../../../Apis/Recruitments/request';
 import { useForm } from '../../../../Hooks/useForm';
 import { EditHiringProgressModal } from '../../../Modal/EditHiringProgressModal';
@@ -33,6 +33,7 @@ export function RecruitmentFormDetailEdit({
 	setCanEdit,
 	refetchRecruitmentFormDetailInfo,
 }: PropsType) {
+	const navigate = useNavigate();
 	const { append } = useToastStore();
 	const params = useParams();
 	const { openModal, closeModal } = useModalContext();
@@ -151,11 +152,14 @@ export function RecruitmentFormDetailEdit({
 	return (
 		<_.Container>
 			<_.Wrapper>
-				<_.LogoWrapper>
-					<_.CompanyLogo
-						src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
-					/>
-				</_.LogoWrapper>
+				<Stack direction="column">
+					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
+					<_.LogoWrapper>
+						<_.CompanyLogo
+							src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
+						/>
+					</_.LogoWrapper>
+				</Stack>
 				<Stack gap={20}>
 					<Button
 						size="M"
@@ -187,7 +191,18 @@ export function RecruitmentFormDetailEdit({
 						type="date"
 						value={start_date}
 						name="start_date"
-						onChange={recruitmentFormDetailInfohandler}
+						onChange={(
+							e: ChangeEvent<
+								HTMLInputElement | HTMLTextAreaElement
+							>
+						) =>
+							e.target.value
+								? recruitmentFormDetailInfohandler(e)
+								: setRecruitmentFormDetailInfo((prev) => ({
+										...prev,
+										start_date: start_date,
+								  }))
+						}
 					/>
 					<span style={{ margin: '0 10px' }}>~</span>
 					<_.CustomInput
@@ -195,7 +210,18 @@ export function RecruitmentFormDetailEdit({
 						type="date"
 						value={end_date}
 						name="end_date"
-						onChange={recruitmentFormDetailInfohandler}
+						onChange={(
+							e: ChangeEvent<
+								HTMLInputElement | HTMLTextAreaElement
+							>
+						) =>
+							e.target.value
+								? recruitmentFormDetailInfohandler(e)
+								: setRecruitmentFormDetailInfo((prev) => ({
+										...prev,
+										end_date: end_date,
+								  }))
+						}
 					/>
 				</_.ContentBox>
 			</_.Stack>
@@ -449,9 +475,7 @@ export function RecruitmentFormDetailEdit({
 									name="pay"
 									onChange={recruitmentFormDetailInfohandler}
 								/>
-								<_.AbsoluteText right={42}>
-									만원/년
-								</_.AbsoluteText>
+								<_.AbsoluteText right={42}>만원</_.AbsoluteText>
 							</_.ContentBox>
 						</_.Stack>
 						<_.Stack>
@@ -504,7 +528,11 @@ export function RecruitmentFormDetailEdit({
 									color="gray70"
 								/>
 							</_.TitleBox>
-							<_.TitleBox>병역특례</_.TitleBox>
+							<_.TitleBox>
+								병역특례
+								<br />
+								신청계획
+							</_.TitleBox>
 							<_.ContentBox width={20}>
 								<Stack direction="column">
 									<Stack gap={5}>
@@ -522,7 +550,7 @@ export function RecruitmentFormDetailEdit({
 											}}
 											checked={military === true}
 										/>
-										가능
+										있음
 									</Stack>
 									<Stack gap={5}>
 										<RadioButton
@@ -539,7 +567,7 @@ export function RecruitmentFormDetailEdit({
 											}}
 											checked={military === false}
 										/>
-										불가능
+										없음
 									</Stack>
 								</Stack>
 							</_.ContentBox>

@@ -1,4 +1,4 @@
-import { theme, Input } from '@team-return/design-system';
+import { theme, Input, Icon } from '@team-return/design-system';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -27,6 +27,7 @@ export const TitleBox = styled.div<{ width?: number; height?: number }>`
 	border: 1px solid #e5e5e5;
 	background: #fafafa;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	color: #000;
@@ -145,4 +146,12 @@ export const CustomInput = styled(Input)`
 		background-color: #f7f7f7;
 		color: #7f7f7f;
 	}
+`;
+
+export const BackIcon = styled(Icon)`
+	rotate: 90deg;
+	width: 30px;
+	height: 30px;
+	margin-bottom: 20px;
+	cursor: pointer;
 `;

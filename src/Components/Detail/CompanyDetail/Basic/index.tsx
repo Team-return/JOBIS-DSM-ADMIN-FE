@@ -1,5 +1,6 @@
-import { Button } from '@team-return/design-system';
+import { Button, Stack } from '@team-return/design-system';
 import { Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CompanyDetailResponse } from '../../../../Apis/Companies/response';
 import * as _ from '../../style';
 
@@ -12,14 +13,18 @@ export function CompanyDetailBasic({
 	companyDetailInfo,
 	setCanEdit,
 }: PropsType) {
+	const navigate = useNavigate();
 	return (
 		<_.Container>
 			<_.Wrapper>
-				<_.LogoWrapper>
-					<_.CompanyLogo
-						src={`${process.env.REACT_APP_FILE_URL}${companyDetailInfo?.company_profile_url}`}
-					/>
-				</_.LogoWrapper>
+				<Stack direction="column">
+					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
+					<_.LogoWrapper>
+						<_.CompanyLogo
+							src={`${process.env.REACT_APP_FILE_URL}${companyDetailInfo?.company_profile_url}`}
+						/>
+					</_.LogoWrapper>
+				</Stack>
 				<Button size="M" onClick={() => setCanEdit(true)}>
 					수정
 				</Button>
@@ -52,42 +57,20 @@ export function CompanyDetailBasic({
 				</_.ContentBox>
 				<_.TitleBox>매출액</_.TitleBox>
 				<_.ContentBox width={20}>
-					{companyDetailInfo?.take}억/년
+					{companyDetailInfo?.take}억
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
 				<_.TitleBox>본사주소</_.TitleBox>
-				<_.ContentBox width={25}>
-					{companyDetailInfo?.main_address}
-				</_.ContentBox>
-				<_.TitleBox>본사 상세주소</_.TitleBox>
-				<_.ContentBox width={25}>
-					{companyDetailInfo?.main_address_detail
-						? companyDetailInfo?.main_address_detail
-						: '-'}
-				</_.ContentBox>
-				<_.TitleBox>본사 우편번호</_.TitleBox>
-				<_.ContentBox width={20}>
-					{companyDetailInfo?.main_zip_code}
+				<_.ContentBox width={90}>
+					{`(${companyDetailInfo?.main_zip_code}) ${companyDetailInfo?.main_address} ${companyDetailInfo?.main_address_detail}`}
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
 				<_.TitleBox>지점주소</_.TitleBox>
-				<_.ContentBox width={25}>
+				<_.ContentBox width={90}>
 					{companyDetailInfo?.sub_address
-						? companyDetailInfo?.sub_address
-						: '-'}
-				</_.ContentBox>
-				<_.TitleBox>지점 상세주소</_.TitleBox>
-				<_.ContentBox width={25}>
-					{companyDetailInfo?.sub_address_detail
-						? companyDetailInfo?.sub_address_detail
-						: '-'}
-				</_.ContentBox>
-				<_.TitleBox>지점 우편번호</_.TitleBox>
-				<_.ContentBox width={20}>
-					{companyDetailInfo?.sub_zip_code
-						? companyDetailInfo?.sub_zip_code
+						? `(${companyDetailInfo?.sub_zip_code}) ${companyDetailInfo?.sub_address} ${companyDetailInfo?.sub_address_detail}`
 						: '-'}
 				</_.ContentBox>
 			</_.Stack>
@@ -130,7 +113,7 @@ export function CompanyDetailBasic({
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox>대표 서비스명</_.TitleBox>
+				<_.TitleBox>앱/웹 서비스명</_.TitleBox>
 				<_.ContentBox width={60}>
 					{companyDetailInfo?.service_name}
 				</_.ContentBox>

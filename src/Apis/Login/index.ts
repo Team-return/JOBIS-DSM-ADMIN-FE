@@ -2,9 +2,8 @@ import { useMutation } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { LoginDataType } from './request';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useToastStore } from '@team-return/design-system';
-import { instance } from '../axios';
 
 const router = '/users';
 
@@ -15,7 +14,7 @@ export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 	const [, setCookies, removeCookies] = useCookies();
 
 	return useMutation(
-		async () => instance.post(`${router}/login`, loginData),
+		async () => axios.post(`${process.env.REACT_APP_BASE_URL}${router}/login`, loginData),
 		{
 			onSuccess: (res) => {
 				if (res.data.authority !== 'TEACHER') {

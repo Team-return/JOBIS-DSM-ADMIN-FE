@@ -1,4 +1,4 @@
-import { Button, RadioButton, Table, useToastStore } from '@team-return/design-system';
+import { Button, Table, useToastStore } from '@team-return/design-system';
 import * as _ from './style';
 import {
 	ApplicationResponse,
@@ -35,28 +35,44 @@ export function StudentTable({
 		<></>,
 		<></>,
 		<></>,
-		<></>,
 	]);
 
 	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
 	const emptyTableData = Array.from(
 		{ length: tableLength - application?.applications.length },
-		() => [<></>, <></>, <></>, <></>]
+		() => [<></>, <></>, <></>]
 	);
+
+	/** 학생 클릭시 data를 보여주기 위한 함수입니다. */
+	const clickIdOnClick = (id: number, attachments: AttachmentUrlType[]) => {
+		setClickId([id]);
+		setApplicationAttachmentUrl(attachments);
+	};
 
 	/** 데이터 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] = application?.applications
 		.map((student) => [
-			<RadioButton
-				name="student"
+			<_.ContentText
 				onClick={() => {
-					setClickId([student.application_id]);
-					setApplicationAttachmentUrl(student.attachments);
+					clickIdOnClick(student.application_id, student.attachments);
 				}}
-			/>,
-			<_.ContentText>{student.student_gcn}</_.ContentText>,
-			<_.ContentText>{student.student_name}</_.ContentText>,
-			<_.ContentText>{student.created_at}</_.ContentText>,
+			>
+				{student.student_gcn}
+			</_.ContentText>,
+			<_.ContentText
+				onClick={() => {
+					clickIdOnClick(student.application_id, student.attachments);
+				}}
+			>
+				{student.student_name}
+			</_.ContentText>,
+			<_.ContentText
+				onClick={() => {
+					clickIdOnClick(student.application_id, student.attachments);
+				}}
+			>
+				{student.created_at}
+			</_.ContentText>,
 		])
 		.concat(emptyTableData);
 
@@ -81,14 +97,13 @@ export function StudentTable({
 
 	/** 테이블의 title입니다. */
 	const tableTitle: JSX.Element[] = [
-		<RadioButton disabled={true} />,
 		<_.TitleText>학번</_.TitleText>,
 		<_.TitleText>이름</_.TitleText>,
 		<_.TitleText>지원일자</_.TitleText>,
 	];
 
 	/** 테이블의 width입니다. */
-	const tableWidth: number[] = [10, 24, 33, 33];
+	const tableWidth: number[] = [27, 35, 38];
 
 	/** 테이블의 margin입니다. */
 	const buttonMargin: [number, number, number, number] = [10, 0, 0, 0];

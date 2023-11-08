@@ -4,6 +4,7 @@ export interface RecruitmentFormResponse {
 
 export interface RecruitmentFormType {
 	id: string;
+	company_id: string;
 	recruitment_status: string;
 	company_name: string;
 	company_type: string;
