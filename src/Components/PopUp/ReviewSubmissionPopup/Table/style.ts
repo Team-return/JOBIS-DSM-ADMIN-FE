@@ -36,6 +36,7 @@ export const ContentText = styled.div<{ status?: boolean; click?: boolean }>`
 	font-size: 18px;
 	display: flex;
 	justify-content: center;
+	width: 100%;
 	height: 100%;
 	align-items: center;
 	color: ${({ status }) => (status ? '#FF0000' : '#000000')};

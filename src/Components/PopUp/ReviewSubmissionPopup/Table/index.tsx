@@ -35,12 +35,10 @@ export function ReviewSubmissionTable({
 		<></>,
 		<></>,
 		<></>,
-		<></>,
 	]);
 
 	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from({ length: 5 - dataLength }, () => [
-		<></>,
 		<></>,
 		<></>,
 		<></>,
@@ -55,10 +53,15 @@ export function ReviewSubmissionTable({
 			};
 
 			return [
-				<RadioButton name="review" onClick={ClickCheckBox} />,
-				<_.ContentText>{review.year}</_.ContentText>, // 연도
-				<_.ContentText>{review.writer}</_.ContentText>, // 작성자
-				<_.ContentText>{review.date}</_.ContentText>, // 후기 작성일자
+				<_.ContentText onClick={ClickCheckBox}>
+					{review.year}
+				</_.ContentText>, // 연도
+				<_.ContentText onClick={ClickCheckBox}>
+					{review.writer}
+				</_.ContentText>, // 작성자
+				<_.ContentText onClick={ClickCheckBox}>
+					{review.date}
+				</_.ContentText>, // 후기 작성일자
 			];
 		})
 		.concat(emptyTableDataArray);
@@ -70,14 +73,13 @@ export function ReviewSubmissionTable({
 
 	/** 테이블의 title입니다. */
 	const tableTitle: JSX.Element[] = [
-		<RadioButton disabled={true} />,
 		<_.TitleText>연도</_.TitleText>,
 		<_.TitleText>작성자</_.TitleText>,
 		<_.TitleText>후기 작성일자</_.TitleText>,
 	];
 
 	/** 테이블의 width입니다. */
-	const tableWidth: number[] = [15, 25, 25, 35];
+	const tableWidth: number[] = [30, 30, 40];
 
 	return (
 		<_.Container>

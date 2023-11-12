@@ -79,11 +79,11 @@ export const useGetRecruitmentFormDetail = (recruitmentId: string) => {
 /** 선생님 모집의뢰 상태 변경 */
 export const useChangeRecruitmentsStatus = (
 	status: string,
-	recruitmentIds: string[],
+	recruitment_ids: string[],
 	options: MutationOptions
 ) => {
 	const data = {
-		recruitmentIds,
+		recruitment_ids,
 		status,
 	};
 
