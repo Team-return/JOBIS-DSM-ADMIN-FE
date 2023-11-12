@@ -1,4 +1,4 @@
-import { Button, Input, RadioButton, Table } from '@team-return/design-system';
+import { Button, Input, Table } from '@team-return/design-system';
 import * as _ from './style';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { ReviewSubmissionResponse } from '../../../../Apis/Reviews/response';
