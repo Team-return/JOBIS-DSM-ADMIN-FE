@@ -43,7 +43,6 @@ export function RecruitmentFormDetailEdit({
 		setForm: setRecruitmentFormDetailInfo,
 		handleChange: recruitmentFormDetailInfohandler,
 	} = useForm<EditRecruitmentRequest>({
-		preferential_treatment: recruitmentFormDetail?.preferential_treatment,
 		required_grade: recruitmentFormDetail?.required_grade,
 		required_licenses: recruitmentFormDetail?.required_licenses,
 		start_time: recruitmentFormDetail?.start_time,
@@ -60,7 +59,6 @@ export function RecruitmentFormDetailEdit({
 	});
 
 	const {
-		preferential_treatment,
 		required_grade,
 		required_licenses,
 		start_time,
@@ -338,11 +336,22 @@ export function RecruitmentFormDetailEdit({
 										</_.TitleBox>
 										<_.ContentBox
 											height={200}
-											width={90}
+											width={50}
 											longText={true}
 											overflow="scroll"
 										>
 											{area.major_task}
+										</_.ContentBox>
+										<_.TitleBox height={200}>
+											주요업무
+										</_.TitleBox>
+										<_.ContentBox
+											height={200}
+											width={50}
+											longText={true}
+											overflow="scroll"
+										>
+											{area.preferential_treatment}
 										</_.ContentBox>
 									</_.Stack>
 								</_.Stack>
@@ -370,7 +379,7 @@ export function RecruitmentFormDetailEdit({
 				</_.Stack>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox height={275}>자격요건</_.TitleBox>
+				<_.TitleBox >자격요건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
@@ -408,22 +417,6 @@ export function RecruitmentFormDetailEdit({
 									onChange={recruitmentFormDetailInfohandler}
 								/>
 								<_.AbsoluteText right={50}>%</_.AbsoluteText>
-							</_.ContentBox>
-						</_.Stack>
-						<_.Stack>
-							<_.TitleBox height={200}>우대사항</_.TitleBox>
-							<_.ContentBox
-								height={200}
-								width={90}
-								longText={true}
-							>
-								<_.Textarea
-									height={135}
-									placeholder="우대사항"
-									name="preferential_treatment"
-									value={preferential_treatment}
-									onChange={recruitmentFormDetailInfohandler}
-								/>
 							</_.ContentBox>
 						</_.Stack>
 					</_.Stack>

@@ -22,7 +22,6 @@ export interface RecruitmentFormDetailResponse {
 	company_profile_url: string;
 	company_name: string;
 	areas: AreasType[];
-	preferential_treatment: string;
 	required_grade: number | null;
 	start_time: string;
 	end_time: string;
@@ -44,4 +43,5 @@ export interface AreasType {
 	tech: string[];
 	hiring: number;
 	major_task: string;
+  preferential_treatment: string | null;
 }

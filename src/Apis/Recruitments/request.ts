@@ -8,7 +8,6 @@ export interface RecruitmentFormQueryStringType {
 }
 
 export interface EditRecruitmentRequest {
-	preferential_treatment: string;
 	required_licenses: string[];
 	required_grade?: number | null;
 	start_time: string;

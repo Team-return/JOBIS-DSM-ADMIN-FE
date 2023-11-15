@@ -88,11 +88,22 @@ export function RecruitmentFormDetailBasic({
 										</_.TitleBox>
 										<_.ContentBox
 											height={200}
-											width={90}
+											width={50}
 											longText={true}
 											overflow="scroll"
 										>
 											{area.major_task}
+										</_.ContentBox>
+										<_.TitleBox height={200}>
+											우대사항
+										</_.TitleBox>
+										<_.ContentBox
+											height={200}
+											width={50}
+											longText={true}
+											overflow="scroll"
+										>
+											{area.preferential_treatment && '-'}
 										</_.ContentBox>
 									</_.Stack>
 								</_.Stack>
@@ -123,18 +134,6 @@ export function RecruitmentFormDetailBasic({
 								{recruitmentFormDetail?.required_grade
 									? recruitmentFormDetail?.required_grade +
 									  '%'
-									: '-'}
-							</_.ContentBox>
-						</_.Stack>
-						<_.Stack>
-							<_.TitleBox height={200}>우대사항</_.TitleBox>
-							<_.ContentBox
-								height={200}
-								width={90}
-								longText={true}
-							>
-								{recruitmentFormDetail?.preferential_treatment
-									? recruitmentFormDetail?.preferential_treatment
 									: '-'}
 							</_.ContentBox>
 						</_.Stack>
