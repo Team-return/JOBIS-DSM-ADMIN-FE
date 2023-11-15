@@ -46,7 +46,8 @@ export function RecruitmentFormDetailEdit({
 		preferential_treatment: recruitmentFormDetail?.preferential_treatment,
 		required_grade: recruitmentFormDetail?.required_grade,
 		required_licenses: recruitmentFormDetail?.required_licenses,
-		work_hours: recruitmentFormDetail?.work_hours,
+		start_time: recruitmentFormDetail?.start_time,
+		end_time: recruitmentFormDetail?.end_time,
 		train_pay: recruitmentFormDetail?.train_pay,
 		pay: recruitmentFormDetail?.pay,
 		benefits: recruitmentFormDetail?.benefits,
@@ -62,7 +63,8 @@ export function RecruitmentFormDetailEdit({
 		preferential_treatment,
 		required_grade,
 		required_licenses,
-		work_hours,
+		start_time,
+		end_time,
 		train_pay,
 		pay,
 		benefits,
@@ -435,15 +437,32 @@ export function RecruitmentFormDetailEdit({
 							<_.TitleBox>근무시간</_.TitleBox>
 							<_.ContentBox width={23}>
 								<_.CustomInput
-									width={100}
-									type="number"
-									placeholder="근무시간"
-									style={{ paddingRight: '60px' }}
-									value={work_hours}
-									name="work_hours"
+									width={45}
+									placeholder="출근시간"
+									style={{
+										paddingRight: '10px',
+									}}
+									value={start_time}
+									name="start_time"
 									onChange={recruitmentFormDetailInfohandler}
 								/>
-								<_.AbsoluteText right={50}>시간</_.AbsoluteText>
+								<p
+									style={{
+										margin: '0 10px',
+									}}
+								>
+									~
+								</p>
+								<_.CustomInput
+									width={45}
+									placeholder="퇴근시간"
+									style={{
+										paddingRight: '10px',
+									}}
+									value={end_time}
+									name="end_time"
+									onChange={recruitmentFormDetailInfohandler}
+								/>
 							</_.ContentBox>
 							<_.TitleBox>실습수당</_.TitleBox>
 							<_.ContentBox width={23}>
@@ -468,10 +487,9 @@ export function RecruitmentFormDetailEdit({
 							<_.ContentBox width={24}>
 								<_.CustomInput
 									width={100}
-									type="number"
 									placeholder="정규직 전환 시 연봉"
 									style={{ paddingRight: '70px' }}
-									value={pay}
+									value={pay!}
 									name="pay"
 									onChange={recruitmentFormDetailInfohandler}
 								/>

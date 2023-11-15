@@ -148,7 +148,9 @@ export function RecruitmentFormDetailBasic({
 						<_.Stack>
 							<_.TitleBox>근무시간</_.TitleBox>
 							<_.ContentBox width={23}>
-								{recruitmentFormDetail?.work_hours}시간
+								{recruitmentFormDetail?.start_time}
+								{' ~ '}
+								{recruitmentFormDetail?.end_time}
 							</_.ContentBox>
 							<_.TitleBox>실습수당</_.TitleBox>
 							<_.ContentBox width={23}>

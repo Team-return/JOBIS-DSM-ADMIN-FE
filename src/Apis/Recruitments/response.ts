@@ -24,11 +24,12 @@ export interface RecruitmentFormDetailResponse {
 	areas: AreasType[];
 	preferential_treatment: string;
 	required_grade: number | null;
-	work_hours: number;
+	start_time: string;
+	end_time: string;
 	required_licenses: string[];
 	hiring_progress: string[];
 	train_pay: number;
-	pay: number;
+	pay: string | null;
 	benefits: string | null;
 	military: true;
 	submit_document: string;
