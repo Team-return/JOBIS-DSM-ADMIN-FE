@@ -379,7 +379,7 @@ export function RecruitmentFormDetailEdit({
 				</_.Stack>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox >자격요건</_.TitleBox>
+				<_.TitleBox>자격요건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
@@ -435,7 +435,10 @@ export function RecruitmentFormDetailEdit({
 									style={{
 										paddingRight: '10px',
 									}}
-									value={start_time}
+									value={start_time.replace(
+										/^(\d{2}:\d{2}):\d{2}$/,
+										'$1'
+									)}
 									name="start_time"
 									onChange={recruitmentFormDetailInfohandler}
 								/>
@@ -452,7 +455,10 @@ export function RecruitmentFormDetailEdit({
 									style={{
 										paddingRight: '10px',
 									}}
-									value={end_time}
+									value={end_time.replace(
+										/^(\d{2}:\d{2}):\d{2}$/,
+										'$1'
+									)}
 									name="end_time"
 									onChange={recruitmentFormDetailInfohandler}
 								/>

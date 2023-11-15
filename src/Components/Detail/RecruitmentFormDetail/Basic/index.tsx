@@ -113,7 +113,7 @@ export function RecruitmentFormDetailBasic({
 				</_.Stack>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox height={275}>자격요건</_.TitleBox>
+				<_.TitleBox>자격요건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
@@ -147,9 +147,15 @@ export function RecruitmentFormDetailBasic({
 						<_.Stack>
 							<_.TitleBox>근무시간</_.TitleBox>
 							<_.ContentBox width={23}>
-								{recruitmentFormDetail?.start_time}
+								{recruitmentFormDetail?.start_time.replace(
+									/^(\d{2}:\d{2}):\d{2}$/,
+									'$1'
+								)}
 								{' ~ '}
-								{recruitmentFormDetail?.end_time}
+								{recruitmentFormDetail?.end_time.replace(
+									/^(\d{2}:\d{2}):\d{2}$/,
+									'$1'
+								)}
 							</_.ContentBox>
 							<_.TitleBox>실습수당</_.TitleBox>
 							<_.ContentBox width={23}>
