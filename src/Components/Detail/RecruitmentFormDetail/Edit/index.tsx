@@ -262,73 +262,12 @@ export function RecruitmentFormDetailEdit({
 										</_.TitleBox>
 										<_.ContentBox
 											height={125}
-											width={
-												recruitmentFormDetail?.areas
-													.length === 1
-													? 34
-													: 28
-											}
+											width={40}
 											overflow="scroll"
 											longText={true}
 										>
 											{area.tech.join(' / ')}
 										</_.ContentBox>
-										{recruitmentFormDetail?.areas.length !==
-											1 && (
-											<_.TitleBox
-												height={125}
-												width={6}
-												style={{ cursor: 'pointer' }}
-												onClick={() => {
-													openModal({
-														children: (
-															<DeleteRecruitmentModal />
-														),
-														onSubmit: () => {
-															setAreaId(area.id);
-															setTimeout(
-																deleteArea
-															);
-														},
-														onCancel: () => {
-															closeModal();
-														},
-													});
-												}}
-											>
-												<Icon
-													icon="Trash"
-													size={43}
-													color="error"
-												/>
-											</_.TitleBox>
-										)}
-										<_.TitleBox
-											height={125}
-											width={6}
-											style={{ cursor: 'pointer' }}
-											onClick={() => {
-												openModal({
-													children: (
-														<GatherModal
-															recruitmentId={
-																params.id!
-															}
-															areaData={area}
-															refetchRecruitmentFormDetailInfo={
-																refetchRecruitmentFormDetailInfo
-															}
-														/>
-													),
-												});
-											}}
-										>
-											<Icon
-												icon="EditPencil"
-												size={30}
-												color="gray70"
-											/>
-										</_.TitleBox>
 									</_.Stack>
 									<_.Stack>
 										<_.TitleBox height={200}>
@@ -336,18 +275,18 @@ export function RecruitmentFormDetailEdit({
 										</_.TitleBox>
 										<_.ContentBox
 											height={200}
-											width={50}
+											width={40}
 											longText={true}
 											overflow="scroll"
 										>
 											{area.major_task}
 										</_.ContentBox>
 										<_.TitleBox height={200}>
-											주요업무
+											우대사항
 										</_.TitleBox>
 										<_.ContentBox
 											height={200}
-											width={50}
+											width={40}
 											longText={true}
 											overflow="scroll"
 										>
@@ -355,6 +294,57 @@ export function RecruitmentFormDetailEdit({
 										</_.ContentBox>
 									</_.Stack>
 								</_.Stack>
+								{recruitmentFormDetail?.areas.length !== 1 && (
+									<_.TitleBox
+										height={325}
+										width={6}
+										style={{ cursor: 'pointer' }}
+										onClick={() => {
+											openModal({
+												children: (
+													<DeleteRecruitmentModal />
+												),
+												onSubmit: () => {
+													setAreaId(area.id);
+													setTimeout(deleteArea);
+												},
+												onCancel: () => {
+													closeModal();
+												},
+											});
+										}}
+									>
+										<Icon
+											icon="Trash"
+											size={43}
+											color="error"
+										/>
+									</_.TitleBox>
+								)}
+								<_.TitleBox
+									height={325}
+									width={6}
+									style={{ cursor: 'pointer' }}
+									onClick={() => {
+										openModal({
+											children: (
+												<GatherModal
+													recruitmentId={params.id!}
+													areaData={area}
+													refetchRecruitmentFormDetailInfo={
+														refetchRecruitmentFormDetailInfo
+													}
+												/>
+											),
+										});
+									}}
+								>
+									<Icon
+										icon="EditPencil"
+										size={30}
+										color="gray70"
+									/>
+								</_.TitleBox>
 							</_.Stack>
 						);
 					})}
@@ -389,9 +379,7 @@ export function RecruitmentFormDetailEdit({
 								longText={true}
 								overflow="scroll"
 							>
-								{required_licenses.length
-									? required_licenses.join(', ')
-									: '-'}
+								{required_licenses.join(', ') || '-'}
 							</_.ContentBox>
 							<_.TitleBox
 								width={6}

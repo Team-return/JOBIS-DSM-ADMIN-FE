@@ -88,9 +88,7 @@ export function CompanyDetailBasic({
 				</_.ContentBox>
 				<_.TitleBox>담당자2</_.TitleBox>
 				<_.ContentBox width={15}>
-					{companyDetailInfo?.sub_manager_name
-						? companyDetailInfo?.sub_manager_name
-						: '-'}
+					{companyDetailInfo?.sub_manager_name || '-'}
 				</_.ContentBox>
 				<_.TitleBox>전화번호2</_.TitleBox>
 				<_.ContentBox width={15}>
@@ -109,7 +107,7 @@ export function CompanyDetailBasic({
 				</_.ContentBox>
 				<_.TitleBox>팩스번호</_.TitleBox>
 				<_.ContentBox width={40}>
-					{companyDetailInfo?.fax ? companyDetailInfo?.fax : '-'}
+					{companyDetailInfo?.fax || '-'}
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>

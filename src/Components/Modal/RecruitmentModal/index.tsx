@@ -54,6 +54,7 @@ export function GatherModal({
 		tech_codes: [],
 		hiring: 0,
 		major_task: '',
+		preferential_treatment: '',
 	});
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -68,6 +69,9 @@ export function GatherModal({
 					: [],
 				hiring: areaData?.hiring ? areaData?.hiring : 0,
 				major_task: areaData?.major_task ? areaData?.major_task : '',
+				preferential_treatment: areaData?.preferential_treatment
+					? areaData?.preferential_treatment
+					: '',
 			});
 			setTech(selectTechsArray ? selectTechsArray : []);
 			setIsLoading(false);
@@ -80,6 +84,7 @@ export function GatherModal({
 		isLoading,
 		areaData?.hiring,
 		areaData?.major_task,
+		areaData?.preferential_treatment,
 	]);
 
 	const pushJobArray = (job: CodesType) => {
@@ -103,12 +108,22 @@ export function GatherModal({
 		setTech(tech.filter((tech) => tech.code !== id));
 	};
 
-	const textRef = useRef<HTMLTextAreaElement>(null);
+	const text1Ref = useRef<HTMLTextAreaElement>(null);
+	const text2Ref = useRef<HTMLTextAreaElement>(null);
 
-	const handleResizeHeight = useCallback(() => {
-		if (textRef && textRef.current) {
-			textRef.current.style.height = '80px';
-			textRef.current.style.height = textRef.current.scrollHeight + 'px';
+	const handleText1RefResizeHeight = useCallback(() => {
+		if (text1Ref && text1Ref.current) {
+			text1Ref.current.style.height = '80px';
+			text1Ref.current.style.height =
+				text1Ref.current.scrollHeight + 'px';
+		}
+	}, []);
+
+	const handleText2RefResizeHeight = useCallback(() => {
+		if (text2Ref && text2Ref.current) {
+			text2Ref.current.style.height = '80px';
+			text2Ref.current.style.height =
+				text2Ref.current.scrollHeight + 'px';
 		}
 	}, []);
 
@@ -350,12 +365,32 @@ export function GatherModal({
 					</_.ContentsText>
 					<_.SmallWrapper>
 						<_.Textarea
-							ref={textRef}
+							ref={text1Ref}
 							value={area.major_task}
 							placeholder="해당 직무에서 하는 일"
-							onInput={handleResizeHeight}
+							onInput={handleText1RefResizeHeight}
 							onChange={(e) =>
 								setArea({ ...area, major_task: e.target.value })
+							}
+						/>
+					</_.SmallWrapper>
+				</_.BigWrapper>
+				<_.BigWrapper>
+					<_.Title>우대사항</_.Title>
+					<_.ContentsText>
+						해당 직무의 우대사항을 상세하게 입력해주세요.
+					</_.ContentsText>
+					<_.SmallWrapper>
+						<_.Textarea
+							ref={text2Ref}
+							value={area.preferential_treatment}
+							placeholder="우대사항"
+							onInput={handleText2RefResizeHeight}
+							onChange={(e) =>
+								setArea({
+									...area,
+									preferential_treatment: e.target.value,
+								})
 							}
 						/>
 					</_.SmallWrapper>

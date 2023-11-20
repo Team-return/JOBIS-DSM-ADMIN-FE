@@ -88,7 +88,7 @@ export function RecruitmentFormDetailBasic({
 										</_.TitleBox>
 										<_.ContentBox
 											height={200}
-											width={50}
+											width={40}
 											longText={true}
 											overflow="scroll"
 										>
@@ -99,11 +99,11 @@ export function RecruitmentFormDetailBasic({
 										</_.TitleBox>
 										<_.ContentBox
 											height={200}
-											width={50}
+											width={40}
 											longText={true}
 											overflow="scroll"
 										>
-											{area.preferential_treatment && '-'}
+											{area.preferential_treatment || '-'}
 										</_.ContentBox>
 									</_.Stack>
 								</_.Stack>
@@ -123,11 +123,9 @@ export function RecruitmentFormDetailBasic({
 								longText={true}
 								overflow="scroll"
 							>
-								{recruitmentFormDetail?.required_licenses
-									? recruitmentFormDetail?.required_licenses.join(
-											', '
-									  )
-									: '-'}
+								{recruitmentFormDetail?.required_licenses.join(
+									', '
+								) || '-'}
 							</_.ContentBox>
 							<_.TitleBox>성적</_.TitleBox>
 							<_.ContentBox width={20}>
@@ -173,9 +171,7 @@ export function RecruitmentFormDetailBasic({
 								width={90}
 								longText={true}
 							>
-								{recruitmentFormDetail?.benefits
-									? recruitmentFormDetail?.benefits
-									: '-'}
+								{recruitmentFormDetail?.benefits || '-'}
 							</_.ContentBox>
 						</_.Stack>
 					</_.Stack>
@@ -223,9 +219,7 @@ export function RecruitmentFormDetailBasic({
 								width={90}
 								longText={true}
 							>
-								{recruitmentFormDetail?.etc
-									? recruitmentFormDetail?.etc
-									: '-'}
+								{recruitmentFormDetail?.etc || '-'}
 							</_.ContentBox>
 						</_.Stack>
 					</_.Stack>

@@ -28,4 +28,5 @@ export interface EditAreasType {
 	tech_codes: number[];
 	hiring: number;
 	major_task: string;
+	preferential_treatment: string;
 }

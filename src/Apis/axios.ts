@@ -28,13 +28,18 @@ instance.interceptors.response.use(
 		if (axios.isAxiosError(error) && error.response) {
 			const { config } = error;
 			const refreshToken = cookies.get('refresh_token');
+			if (!refreshToken) {
+				cookies.remove('access_token');
+				cookies.remove('refresh_token');
+				window.location.href = '/login';
+				return;
+			}
 			if (
-				(error.response.data.message === 'Invalid Token' ||
-					error.response.data.message === 'Token Expired' ||
-					error.response.data.message ===
-						'Request failed with status code 403' ||
-					!cookies.get('access_token')) &&
-				refreshToken
+				error.response.data.message === 'Invalid Token' ||
+				error.response.data.message === 'Token Expired' ||
+				error.response.data.message ===
+					'Request failed with status code 403' ||
+				!cookies.get('access_token')
 			) {
 				if (!flag) {
 					cookies.remove('access_token');
@@ -67,7 +72,6 @@ instance.interceptors.response.use(
 							cookies.remove('access_token');
 							cookies.remove('refresh_token');
 							window.location.href = '/login';
-							window.close();
 						});
 				}
 			}
