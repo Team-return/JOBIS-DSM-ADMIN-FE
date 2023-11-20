@@ -8,7 +8,7 @@ export const instance = axios.create({
 });
 
 const cookies = new Cookies();
-let isRefreshing = false;
+let flag = false;
 
 instance.interceptors.request.use(
 	(config) => {
@@ -36,12 +36,12 @@ instance.interceptors.response.use(
 					!cookies.get('access_token')) &&
 				refreshToken
 			) {
-				if (!isRefreshing) {
+				if (!flag) {
 					cookies.remove('access_token');
-					isRefreshing = true;
+					flag = true;
 					reIssueToken(refreshToken)
 						.then((res) => {
-							isRefreshing = false;
+							flag = false;
 							cookies.remove('refresh_token');
 							const accessExpired = new Date(
 								res.access_token_expired_at
@@ -63,7 +63,7 @@ instance.interceptors.response.use(
 							return axios(config!);
 						})
 						.catch(() => {
-							isRefreshing = false;
+							flag = false;
 							cookies.remove('access_token');
 							cookies.remove('refresh_token');
 							window.location.href = '/login';
