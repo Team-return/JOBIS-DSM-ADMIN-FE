@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom/client';
+import "./globals.css";
 import { ThemeProvider } from 'styled-components';
 import { baseTheme } from './Styles/Global/gloablTheme.style';
 import { QueryClient, QueryClientProvider } from 'react-query';

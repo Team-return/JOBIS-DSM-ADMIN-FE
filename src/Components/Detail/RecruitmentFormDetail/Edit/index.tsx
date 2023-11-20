@@ -43,10 +43,10 @@ export function RecruitmentFormDetailEdit({
 		setForm: setRecruitmentFormDetailInfo,
 		handleChange: recruitmentFormDetailInfohandler,
 	} = useForm<EditRecruitmentRequest>({
-		preferential_treatment: recruitmentFormDetail?.preferential_treatment,
 		required_grade: recruitmentFormDetail?.required_grade,
 		required_licenses: recruitmentFormDetail?.required_licenses,
-		work_hours: recruitmentFormDetail?.work_hours,
+		start_time: recruitmentFormDetail?.start_time,
+		end_time: recruitmentFormDetail?.end_time,
 		train_pay: recruitmentFormDetail?.train_pay,
 		pay: recruitmentFormDetail?.pay,
 		benefits: recruitmentFormDetail?.benefits,
@@ -59,10 +59,10 @@ export function RecruitmentFormDetailEdit({
 	});
 
 	const {
-		preferential_treatment,
 		required_grade,
 		required_licenses,
-		work_hours,
+		start_time,
+		end_time,
 		train_pay,
 		pay,
 		benefits,
@@ -336,11 +336,22 @@ export function RecruitmentFormDetailEdit({
 										</_.TitleBox>
 										<_.ContentBox
 											height={200}
-											width={90}
+											width={50}
 											longText={true}
 											overflow="scroll"
 										>
 											{area.major_task}
+										</_.ContentBox>
+										<_.TitleBox height={200}>
+											주요업무
+										</_.TitleBox>
+										<_.ContentBox
+											height={200}
+											width={50}
+											longText={true}
+											overflow="scroll"
+										>
+											{area.preferential_treatment}
 										</_.ContentBox>
 									</_.Stack>
 								</_.Stack>
@@ -368,7 +379,7 @@ export function RecruitmentFormDetailEdit({
 				</_.Stack>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox height={275}>자격요건</_.TitleBox>
+				<_.TitleBox>자격요건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
@@ -408,22 +419,6 @@ export function RecruitmentFormDetailEdit({
 								<_.AbsoluteText right={50}>%</_.AbsoluteText>
 							</_.ContentBox>
 						</_.Stack>
-						<_.Stack>
-							<_.TitleBox height={200}>우대사항</_.TitleBox>
-							<_.ContentBox
-								height={200}
-								width={90}
-								longText={true}
-							>
-								<_.Textarea
-									height={135}
-									placeholder="우대사항"
-									name="preferential_treatment"
-									value={preferential_treatment}
-									onChange={recruitmentFormDetailInfohandler}
-								/>
-							</_.ContentBox>
-						</_.Stack>
 					</_.Stack>
 				</_.Stack>
 			</_.Stack>
@@ -435,15 +430,38 @@ export function RecruitmentFormDetailEdit({
 							<_.TitleBox>근무시간</_.TitleBox>
 							<_.ContentBox width={23}>
 								<_.CustomInput
-									width={100}
-									type="number"
-									placeholder="근무시간"
-									style={{ paddingRight: '60px' }}
-									value={work_hours}
-									name="work_hours"
+									width={45}
+									placeholder="출근시간"
+									style={{
+										paddingRight: '10px',
+									}}
+									value={start_time.replace(
+										/^(\d{2}:\d{2}):\d{2}$/,
+										'$1'
+									)}
+									name="start_time"
 									onChange={recruitmentFormDetailInfohandler}
 								/>
-								<_.AbsoluteText right={50}>시간</_.AbsoluteText>
+								<p
+									style={{
+										margin: '0 10px',
+									}}
+								>
+									~
+								</p>
+								<_.CustomInput
+									width={45}
+									placeholder="퇴근시간"
+									style={{
+										paddingRight: '10px',
+									}}
+									value={end_time.replace(
+										/^(\d{2}:\d{2}):\d{2}$/,
+										'$1'
+									)}
+									name="end_time"
+									onChange={recruitmentFormDetailInfohandler}
+								/>
 							</_.ContentBox>
 							<_.TitleBox>실습수당</_.TitleBox>
 							<_.ContentBox width={23}>
@@ -468,10 +486,9 @@ export function RecruitmentFormDetailEdit({
 							<_.ContentBox width={24}>
 								<_.CustomInput
 									width={100}
-									type="number"
 									placeholder="정규직 전환 시 연봉"
 									style={{ paddingRight: '70px' }}
-									value={pay}
+									value={pay!}
 									name="pay"
 									onChange={recruitmentFormDetailInfohandler}
 								/>
