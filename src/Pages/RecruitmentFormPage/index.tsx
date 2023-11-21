@@ -19,6 +19,7 @@ export function RecruitmentFormPage() {
 		start: ``,
 		end: ``,
 		status: '',
+		winter_intern: null,
 		page: 1,
 	});
 	const recruitmentFormQueries = useGetRecruitmentForm(

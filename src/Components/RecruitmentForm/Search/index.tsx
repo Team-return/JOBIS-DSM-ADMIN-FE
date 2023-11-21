@@ -3,7 +3,7 @@ import * as _ from './style';
 import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
 import { Dispatch, SetStateAction } from 'react';
 import { useForm } from '../../../Hooks/useForm';
-import { companyStatus } from '../../../Utils/Translation';
+import { companyStatus, winterIntern } from '../../../Utils/Translation';
 import { useDropDown } from '../../../Hooks/useDropDown';
 
 interface PropsType {
@@ -36,6 +36,7 @@ export function RecruitmentFormSearch({
 	const { selectedItem, setSelectedItem, handleSelectedItem } = useDropDown({
 		year: searchRecruitmentFormQueryString.year,
 		status: '',
+		type: '전체',
 	});
 
 	/** 검색 input 데이터를 초기화하는 함수입니다. */
@@ -49,6 +50,7 @@ export function RecruitmentFormSearch({
 		setSelectedItem({
 			year: searchRecruitmentFormQueryString.year,
 			status: '',
+			type: '전체',
 		});
 	};
 
@@ -59,6 +61,7 @@ export function RecruitmentFormSearch({
 			...formData,
 			year: selectedItem.year,
 			status: companyStatus[selectedItem.status],
+			winter_intern: winterIntern[selectedItem.type],
 		});
 		setTimeout(refetchRecruitmentForm);
 	};
@@ -98,6 +101,17 @@ export function RecruitmentFormSearch({
 						value={formData.end}
 						onChange={handleChange}
 						min={formData.start}
+					/>
+				</_.ContentWrapper>
+				<_.TitleText>모집구분</_.TitleText>
+				<_.ContentWrapper width={12.3}>
+					<DropDown
+						width={86}
+						option={['전체', '체험형', '채용형']}
+						value={selectedItem.type || '전체'}
+						onChange={(type) =>
+							type !== '전체' && handleSelectedItem('type', type)
+						}
 					/>
 				</_.ContentWrapper>
 			</_.Wrapper>

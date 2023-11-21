@@ -479,9 +479,7 @@ export function ApplicationViewTable({
 						RejectApplicationIsLoading ||
 						clickedData.length !== 1 ||
 						!!clickedData.filter(
-							(item) =>
-								item.status === 'APPROVED' ||
-								item.status === 'REJECTED'
+							(item) => item.status === 'REJECTED'
 						).length
 					}
 				>
