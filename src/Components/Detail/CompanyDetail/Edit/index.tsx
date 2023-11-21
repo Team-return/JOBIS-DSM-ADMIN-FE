@@ -6,6 +6,7 @@ import * as _ from '../../style';
 import { CompanyInfoEditType } from '../../../../Apis/Companies/request';
 import { useChangeCompanyInfo } from '../../../../Apis/Companies';
 import { useFileUpload } from '../../../../Apis/File';
+import { useNavigate } from 'react-router-dom';
 
 interface PropsType {
 	companyDetailInfo: CompanyDetailResponse;
@@ -18,6 +19,7 @@ export function CompanyDetailEdit({
 	setCanEdit,
 	refetchCompanyDetailInfo,
 }: PropsType) {
+	const navigate = useNavigate();
 	const { append } = useToastStore();
 	const fileInput = useRef<HTMLInputElement>(null);
 	const [file, setFile] = useState<File | null>(null);
@@ -117,6 +119,7 @@ export function CompanyDetailEdit({
 		<_.Container>
 			<_.Wrapper>
 				<_.LogoEditWrapper>
+					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
 					<_.LogoWrapper>
 						<_.CompanyLogo
 							src={
@@ -224,7 +227,7 @@ export function CompanyDetailEdit({
 						name="take"
 						onChange={companyDetailEditInfohandler}
 					/>
-					<_.AbsoluteText right={40}>억/년</_.AbsoluteText>
+					<_.AbsoluteText right={40}>억</_.AbsoluteText>
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
@@ -370,7 +373,7 @@ export function CompanyDetailEdit({
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox>대표 서비스명</_.TitleBox>
+				<_.TitleBox>앱/웹 서비스명</_.TitleBox>
 				<_.ContentBox width={60}>
 					<_.CustomInput
 						width={100}
@@ -391,7 +394,10 @@ export function CompanyDetailEdit({
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox height={250}>회사소개</_.TitleBox>
+				<_.TitleBox height={250}>
+					<p>회사소개</p>
+					<p>{company_introduce.length} / 4000</p>
+				</_.TitleBox>
 				<_.ContentBox
 					width={90}
 					height={250}
@@ -401,6 +407,7 @@ export function CompanyDetailEdit({
 					<_.Textarea
 						height={190}
 						placeholder="회사소개"
+						maxLength={4000}
 						value={company_introduce}
 						name="company_introduce"
 						onChange={companyDetailEditInfohandler}

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
 import { StudentTable } from '../../../Components/PopUp/RecruitmentPopup/StudentTable';
 import { DownloadTable } from '../../../Components/PopUp/RecruitmentPopup/DownloadTable';
@@ -25,6 +25,12 @@ export function ApplicationPopup() {
 	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<
 		AttachmentUrlType[]
 	>([]);
+
+	useEffect(() => {
+		applicationQueries[1].refetch();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<>
 			<StudentTable

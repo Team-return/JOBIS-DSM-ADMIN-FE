@@ -29,13 +29,13 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from(
 		{ length: 5 - (applicationAttachmentUrl?.length || 0) },
-		() => [<></>, <></>]
+		() => [<></>]
 	);
 
 	/** FILE 데이터 테이블입니다. */
 	const tableFileDatas: JSX.Element[][] = applicationAttachmentUrl
 		?.filter((urls) => urls.type === 'FILE')
-		.map((urls, i) => {
+		.map((urls) => {
 			const nameArray = decodeURI(urls.url).split('/');
 			return [
 				<_.TextWrapper>
@@ -65,17 +65,17 @@ export function DownloadTable({ applicationAttachmentUrl }: PropsType) {
 	/** URL 데이터 테이블입니다. */
 	const tableUrlDatas: JSX.Element[][] = applicationAttachmentUrl
 		?.filter((urls) => urls.type === 'URL')
-		.map((urls, i) => {
+		.map((urls) => {
 			return [
 				<_.TextWrapper>
 					<_.ContentText style={{ marginTop: 3, marginLeft: 5 }}>
-						{`https://${urls.url}`}
+						{urls.url}
 					</_.ContentText>
 					<Button
 						size="S"
 						onClick={() =>
 							window.open(
-								`https://${urls.url}`,
+								urls.url,
 								'_blank',
 								'noopener, noreferrer'
 							)

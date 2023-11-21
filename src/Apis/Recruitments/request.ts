@@ -8,24 +8,25 @@ export interface RecruitmentFormQueryStringType {
 }
 
 export interface EditRecruitmentRequest {
-	preferential_treatment: string;
 	required_licenses: string[];
 	required_grade?: number | null;
-	work_hours: number;
+	start_time: string;
+	end_time: string;
 	train_pay: number;
-	pay: number;
+	pay: string | null;
 	benefits: string | null;
 	military: boolean;
 	hiring_progress: string[];
-	submit_document: string
+	submit_document: string;
 	start_date: string;
 	end_date: string;
 	etc: string | null;
-  }
+}
 
 export interface EditAreasType {
 	job_codes: number[];
 	tech_codes: number[];
 	hiring: number;
 	major_task: string;
+	preferential_treatment: string;
 }

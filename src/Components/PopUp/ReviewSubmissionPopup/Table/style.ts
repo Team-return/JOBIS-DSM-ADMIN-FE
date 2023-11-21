@@ -36,14 +36,16 @@ export const ContentText = styled.div<{ status?: boolean; click?: boolean }>`
 	font-size: 18px;
 	display: flex;
 	justify-content: center;
+	width: 100%;
 	height: 100%;
 	align-items: center;
 	color: ${({ status }) => (status ? '#FF0000' : '#000000')};
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
-	text-underline-offset: 2px;
-	text-decoration-thickness: 2px;
+	text-underline-offset: 1.5px;
+	text-decoration-thickness: 1.5px;
 	cursor: ${({ click }) => (click ? 'pointer' : 'default')};
 	text-align: center;
+	word-break: keep-all;
 `;
 
 export const SearchWrapper = styled.div`

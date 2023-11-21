@@ -158,12 +158,14 @@ export function RecruitmentFormTable({
 						recruitment.recruitment_status
 					)}
 				</_.ContentText>, // 상태
-				<Link to={`/RecruitmentRequest/${recruitment.id}`}>
+				<Link to={`/Company/${recruitment.company_id}`}>
 					<_.ContentText click={1}>
 						{recruitment.company_name}
 					</_.ContentText>
 				</Link>, // 회사 이름
-				<_.ContentText>{job}</_.ContentText>, // 채용 직군
+				<Link to={`/RecruitmentRequest/${recruitment.id}`}>
+					<_.ContentText click={1}>{job}</_.ContentText>
+				</Link>, // 채용 직군
 				<_.ContentText>
 					{companyType[recruitment.company_type]}
 				</_.ContentText>, // 구분

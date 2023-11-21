@@ -2,7 +2,7 @@ import * as _ from './style';
 import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/Search';
 import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/Table';
 import { Header } from '../../Components/Header';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { QueryStringDataType } from '../../Apis/Companies/request';
 import { useGetCompanyRecruitments } from '../../Apis/Companies';
 
@@ -33,6 +33,11 @@ export function CompanyRecruitmentPage() {
 		companyRecruitmentData.data?.companies.map((companie) => {
 			return companie.company_id;
 		});
+
+	useEffect(() => {
+		companyRecruitmentQueries[1].refetch();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<>

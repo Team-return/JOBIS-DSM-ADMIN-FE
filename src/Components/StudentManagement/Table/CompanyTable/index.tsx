@@ -58,13 +58,9 @@ export function CompanyTable({
 				/>,
 				<_.ContentText>{company.company_name}</_.ContentText>, // 기업명
 				<_.ContentText>
-					{company.field_trainee_count
-						? company.field_trainee_count
-						: '-'}
+					{company.field_trainee_count || '-'}
 				</_.ContentText>, // 현장 실습
-				<_.ContentText>
-					{company.contract_count ? company.contract_count : '-'}
-				</_.ContentText>, // 근로 계약
+				<_.ContentText>{company.contract_count || '-'}</_.ContentText>, // 근로 계약
 			];
 		})
 		.concat(emptyTableDataArray);

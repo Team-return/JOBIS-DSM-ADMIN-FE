@@ -8,7 +8,7 @@ import {
 import { RecruitmentFormDetailResponse } from '../../../../Apis/Recruitments/response';
 import { hiringProgress } from '../../../../Utils/Translation';
 import * as _ from '../../style';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { useModalContext } from '../../../../Utils/Modal';
 import { GatherModal } from '../../../Modal/RecruitmentModal';
 import { DeleteRecruitmentModal } from '../../../Modal/DeleteRecruitmentModal';
@@ -16,7 +16,7 @@ import {
 	useDeleteArea,
 	useEditRecruitment,
 } from '../../../../Apis/Recruitments';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { EditRecruitmentRequest } from '../../../../Apis/Recruitments/request';
 import { useForm } from '../../../../Hooks/useForm';
 import { EditHiringProgressModal } from '../../../Modal/EditHiringProgressModal';
@@ -33,6 +33,7 @@ export function RecruitmentFormDetailEdit({
 	setCanEdit,
 	refetchRecruitmentFormDetailInfo,
 }: PropsType) {
+	const navigate = useNavigate();
 	const { append } = useToastStore();
 	const params = useParams();
 	const { openModal, closeModal } = useModalContext();
@@ -42,10 +43,10 @@ export function RecruitmentFormDetailEdit({
 		setForm: setRecruitmentFormDetailInfo,
 		handleChange: recruitmentFormDetailInfohandler,
 	} = useForm<EditRecruitmentRequest>({
-		preferential_treatment: recruitmentFormDetail?.preferential_treatment,
 		required_grade: recruitmentFormDetail?.required_grade,
 		required_licenses: recruitmentFormDetail?.required_licenses,
-		work_hours: recruitmentFormDetail?.work_hours,
+		start_time: recruitmentFormDetail?.start_time,
+		end_time: recruitmentFormDetail?.end_time,
 		train_pay: recruitmentFormDetail?.train_pay,
 		pay: recruitmentFormDetail?.pay,
 		benefits: recruitmentFormDetail?.benefits,
@@ -58,10 +59,10 @@ export function RecruitmentFormDetailEdit({
 	});
 
 	const {
-		preferential_treatment,
 		required_grade,
 		required_licenses,
-		work_hours,
+		start_time,
+		end_time,
 		train_pay,
 		pay,
 		benefits,
@@ -151,11 +152,14 @@ export function RecruitmentFormDetailEdit({
 	return (
 		<_.Container>
 			<_.Wrapper>
-				<_.LogoWrapper>
-					<_.CompanyLogo
-						src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
-					/>
-				</_.LogoWrapper>
+				<Stack direction="column">
+					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
+					<_.LogoWrapper>
+						<_.CompanyLogo
+							src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
+						/>
+					</_.LogoWrapper>
+				</Stack>
 				<Stack gap={20}>
 					<Button
 						size="M"
@@ -187,7 +191,18 @@ export function RecruitmentFormDetailEdit({
 						type="date"
 						value={start_date}
 						name="start_date"
-						onChange={recruitmentFormDetailInfohandler}
+						onChange={(
+							e: ChangeEvent<
+								HTMLInputElement | HTMLTextAreaElement
+							>
+						) =>
+							e.target.value
+								? recruitmentFormDetailInfohandler(e)
+								: setRecruitmentFormDetailInfo((prev) => ({
+										...prev,
+										start_date: start_date,
+								  }))
+						}
 					/>
 					<span style={{ margin: '0 10px' }}>~</span>
 					<_.CustomInput
@@ -195,7 +210,18 @@ export function RecruitmentFormDetailEdit({
 						type="date"
 						value={end_date}
 						name="end_date"
-						onChange={recruitmentFormDetailInfohandler}
+						onChange={(
+							e: ChangeEvent<
+								HTMLInputElement | HTMLTextAreaElement
+							>
+						) =>
+							e.target.value
+								? recruitmentFormDetailInfohandler(e)
+								: setRecruitmentFormDetailInfo((prev) => ({
+										...prev,
+										end_date: end_date,
+								  }))
+						}
 					/>
 				</_.ContentBox>
 			</_.Stack>
@@ -236,73 +262,12 @@ export function RecruitmentFormDetailEdit({
 										</_.TitleBox>
 										<_.ContentBox
 											height={125}
-											width={
-												recruitmentFormDetail?.areas
-													.length === 1
-													? 34
-													: 28
-											}
+											width={40}
 											overflow="scroll"
 											longText={true}
 										>
 											{area.tech.join(' / ')}
 										</_.ContentBox>
-										{recruitmentFormDetail?.areas.length !==
-											1 && (
-											<_.TitleBox
-												height={125}
-												width={6}
-												style={{ cursor: 'pointer' }}
-												onClick={() => {
-													openModal({
-														children: (
-															<DeleteRecruitmentModal />
-														),
-														onSubmit: () => {
-															setAreaId(area.id);
-															setTimeout(
-																deleteArea
-															);
-														},
-														onCancel: () => {
-															closeModal();
-														},
-													});
-												}}
-											>
-												<Icon
-													icon="Trash"
-													size={43}
-													color="error"
-												/>
-											</_.TitleBox>
-										)}
-										<_.TitleBox
-											height={125}
-											width={6}
-											style={{ cursor: 'pointer' }}
-											onClick={() => {
-												openModal({
-													children: (
-														<GatherModal
-															recruitmentId={
-																params.id!
-															}
-															areaData={area}
-															refetchRecruitmentFormDetailInfo={
-																refetchRecruitmentFormDetailInfo
-															}
-														/>
-													),
-												});
-											}}
-										>
-											<Icon
-												icon="EditPencil"
-												size={30}
-												color="gray70"
-											/>
-										</_.TitleBox>
 									</_.Stack>
 									<_.Stack>
 										<_.TitleBox height={200}>
@@ -310,14 +275,76 @@ export function RecruitmentFormDetailEdit({
 										</_.TitleBox>
 										<_.ContentBox
 											height={200}
-											width={90}
+											width={40}
 											longText={true}
 											overflow="scroll"
 										>
 											{area.major_task}
 										</_.ContentBox>
+										<_.TitleBox height={200}>
+											우대사항
+										</_.TitleBox>
+										<_.ContentBox
+											height={200}
+											width={40}
+											longText={true}
+											overflow="scroll"
+										>
+											{area.preferential_treatment}
+										</_.ContentBox>
 									</_.Stack>
 								</_.Stack>
+								{recruitmentFormDetail?.areas.length !== 1 && (
+									<_.TitleBox
+										height={325}
+										width={6}
+										style={{ cursor: 'pointer' }}
+										onClick={() => {
+											openModal({
+												children: (
+													<DeleteRecruitmentModal />
+												),
+												onSubmit: () => {
+													setAreaId(area.id);
+													setTimeout(deleteArea);
+												},
+												onCancel: () => {
+													closeModal();
+												},
+											});
+										}}
+									>
+										<Icon
+											icon="Trash"
+											size={43}
+											color="error"
+										/>
+									</_.TitleBox>
+								)}
+								<_.TitleBox
+									height={325}
+									width={6}
+									style={{ cursor: 'pointer' }}
+									onClick={() => {
+										openModal({
+											children: (
+												<GatherModal
+													recruitmentId={params.id!}
+													areaData={area}
+													refetchRecruitmentFormDetailInfo={
+														refetchRecruitmentFormDetailInfo
+													}
+												/>
+											),
+										});
+									}}
+								>
+									<Icon
+										icon="EditPencil"
+										size={30}
+										color="gray70"
+									/>
+								</_.TitleBox>
 							</_.Stack>
 						);
 					})}
@@ -342,7 +369,7 @@ export function RecruitmentFormDetailEdit({
 				</_.Stack>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox height={275}>자격요건</_.TitleBox>
+				<_.TitleBox>자격요건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
@@ -352,9 +379,7 @@ export function RecruitmentFormDetailEdit({
 								longText={true}
 								overflow="scroll"
 							>
-								{required_licenses.length
-									? required_licenses.join(', ')
-									: '-'}
+								{required_licenses.join(', ') || '-'}
 							</_.ContentBox>
 							<_.TitleBox
 								width={6}
@@ -382,22 +407,6 @@ export function RecruitmentFormDetailEdit({
 								<_.AbsoluteText right={50}>%</_.AbsoluteText>
 							</_.ContentBox>
 						</_.Stack>
-						<_.Stack>
-							<_.TitleBox height={200}>우대사항</_.TitleBox>
-							<_.ContentBox
-								height={200}
-								width={90}
-								longText={true}
-							>
-								<_.Textarea
-									height={135}
-									placeholder="우대사항"
-									name="preferential_treatment"
-									value={preferential_treatment}
-									onChange={recruitmentFormDetailInfohandler}
-								/>
-							</_.ContentBox>
-						</_.Stack>
 					</_.Stack>
 				</_.Stack>
 			</_.Stack>
@@ -409,15 +418,38 @@ export function RecruitmentFormDetailEdit({
 							<_.TitleBox>근무시간</_.TitleBox>
 							<_.ContentBox width={23}>
 								<_.CustomInput
-									width={100}
-									type="number"
-									placeholder="근무시간"
-									style={{ paddingRight: '60px' }}
-									value={work_hours}
-									name="work_hours"
+									width={45}
+									placeholder="출근시간"
+									style={{
+										paddingRight: '10px',
+									}}
+									value={start_time.replace(
+										/^(\d{2}:\d{2}):\d{2}$/,
+										'$1'
+									)}
+									name="start_time"
 									onChange={recruitmentFormDetailInfohandler}
 								/>
-								<_.AbsoluteText right={50}>시간</_.AbsoluteText>
+								<p
+									style={{
+										margin: '0 10px',
+									}}
+								>
+									~
+								</p>
+								<_.CustomInput
+									width={45}
+									placeholder="퇴근시간"
+									style={{
+										paddingRight: '10px',
+									}}
+									value={end_time.replace(
+										/^(\d{2}:\d{2}):\d{2}$/,
+										'$1'
+									)}
+									name="end_time"
+									onChange={recruitmentFormDetailInfohandler}
+								/>
 							</_.ContentBox>
 							<_.TitleBox>실습수당</_.TitleBox>
 							<_.ContentBox width={23}>
@@ -442,16 +474,13 @@ export function RecruitmentFormDetailEdit({
 							<_.ContentBox width={24}>
 								<_.CustomInput
 									width={100}
-									type="number"
 									placeholder="정규직 전환 시 연봉"
 									style={{ paddingRight: '70px' }}
-									value={pay}
+									value={pay!}
 									name="pay"
 									onChange={recruitmentFormDetailInfohandler}
 								/>
-								<_.AbsoluteText right={42}>
-									만원/년
-								</_.AbsoluteText>
+								<_.AbsoluteText right={42}>만원</_.AbsoluteText>
 							</_.ContentBox>
 						</_.Stack>
 						<_.Stack>
@@ -504,7 +533,11 @@ export function RecruitmentFormDetailEdit({
 									color="gray70"
 								/>
 							</_.TitleBox>
-							<_.TitleBox>병역특례</_.TitleBox>
+							<_.TitleBox>
+								병역특례
+								<br />
+								신청계획
+							</_.TitleBox>
 							<_.ContentBox width={20}>
 								<Stack direction="column">
 									<Stack gap={5}>
@@ -522,7 +555,7 @@ export function RecruitmentFormDetailEdit({
 											}}
 											checked={military === true}
 										/>
-										가능
+										있음
 									</Stack>
 									<Stack gap={5}>
 										<RadioButton
@@ -539,7 +572,7 @@ export function RecruitmentFormDetailEdit({
 											}}
 											checked={military === false}
 										/>
-										불가능
+										없음
 									</Stack>
 								</Stack>
 							</_.ContentBox>

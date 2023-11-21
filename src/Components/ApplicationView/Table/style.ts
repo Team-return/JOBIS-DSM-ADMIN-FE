@@ -78,6 +78,7 @@ export const CountNum = styled.div`
 `;
 
 export const FileDownloadWrapper = styled.div`
+	max-width: 645px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

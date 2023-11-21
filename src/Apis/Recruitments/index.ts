@@ -44,17 +44,18 @@ export const useGetRecruitmentForm = (
 				searchRecruitmentFormQueryString,
 			],
 			queryFn: async () => {
-				const { year, page, company_name, start, end, status } =
+				const { year, company_name, start, end, status } =
 					searchRecruitmentFormQueryString;
 				const { data } = await instance.get<{
 					total_page_count: number;
 				}>(
-					`${router}/teacher/count?year=${year}&page=${page}&company_name=${company_name}&start=${start}&end=${end}&status=${
+					`${router}/teacher/count?year=${year}&company_name=${company_name}&start=${start}&end=${end}&status=${
 						status === '전체' || status === undefined ? '' : status
 					}`
 				);
 				return data;
 			},
+			enabled: false,
 		},
 	]);
 };
@@ -78,11 +79,11 @@ export const useGetRecruitmentFormDetail = (recruitmentId: string) => {
 /** 선생님 모집의뢰 상태 변경 */
 export const useChangeRecruitmentsStatus = (
 	status: string,
-	recruitmentIds: string[],
+	recruitment_ids: string[],
 	options: MutationOptions
 ) => {
 	const data = {
-		recruitmentIds,
+		recruitment_ids,
 		status,
 	};
 

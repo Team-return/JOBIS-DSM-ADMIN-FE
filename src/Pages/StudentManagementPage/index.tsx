@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Header } from '../../Components/Header';
 import { CompanyTable } from '../../Components/StudentManagement/Table/CompanyTable';
 import { StudentManagementSearch } from '../../Components/StudentManagement/Search';
@@ -66,6 +66,11 @@ export function StudentManagementPage() {
 			),
 		});
 	};
+
+	useEffect(() => {
+		employableCompaniesQueries[1].refetch();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<>

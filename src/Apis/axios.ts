@@ -8,7 +8,7 @@ export const instance = axios.create({
 });
 
 const cookies = new Cookies();
-let isRefreshing = false;
+let flag = false;
 
 instance.interceptors.request.use(
 	(config) => {
@@ -28,18 +28,25 @@ instance.interceptors.response.use(
 		if (axios.isAxiosError(error) && error.response) {
 			const { config } = error;
 			const refreshToken = cookies.get('refresh_token');
+			if (!refreshToken) {
+				cookies.remove('access_token');
+				cookies.remove('refresh_token');
+				window.location.href = '/login';
+				return;
+			}
 			if (
-				(error.response.data.message === 'Invalid Token' ||
-					error.response.data.message === 'Token Expired' ||
-					!cookies.get('access_token')) &&
-				refreshToken
+				error.response.data.message === 'Invalid Token' ||
+				error.response.data.message === 'Token Expired' ||
+				error.response.data.message ===
+					'Request failed with status code 403' ||
+				!cookies.get('access_token')
 			) {
-				if (!isRefreshing) {
+				if (!flag) {
 					cookies.remove('access_token');
-					isRefreshing = true;
+					flag = true;
 					reIssueToken(refreshToken)
 						.then((res) => {
-							isRefreshing = false;
+							flag = false;
 							cookies.remove('refresh_token');
 							const accessExpired = new Date(
 								res.access_token_expired_at
@@ -61,14 +68,12 @@ instance.interceptors.response.use(
 							return axios(config!);
 						})
 						.catch(() => {
-							isRefreshing = false;
+							flag = false;
 							cookies.remove('access_token');
 							cookies.remove('refresh_token');
 							window.location.href = '/login';
 						});
 				}
-			} else {
-				window.location.href = '/login';
 			}
 		}
 		return Promise.reject(error);

@@ -276,6 +276,7 @@ export function ApplicationViewTable({
 						{
 							id: application.application_id,
 							name: application.student_name,
+							status: application.application_status,
 						},
 					]);
 				}
@@ -364,13 +365,13 @@ export function ApplicationViewTable({
 										<_.FileDownloadWrapper key={i}>
 											<Stack>
 												<_.CountNum>{i + 1}</_.CountNum>
-												<div>{`https://${urls.url}`}</div>
+												<div>{urls.url}</div>
 											</Stack>
 											<Button
 												size="S"
 												onClick={() => {
 													window.open(
-														`https://${urls.url}`,
+														urls.url,
 														'_blank',
 														'noopener, noreferrer'
 													);
@@ -461,7 +462,11 @@ export function ApplicationViewTable({
 					size="S"
 					onClick={() => openChangeStatusModal('APPROVED')}
 					disabled={
-						requestStatusIsLoading || clickedData.length === 0
+						requestStatusIsLoading ||
+						!clickedData.length ||
+						!!clickedData.filter(
+							(item) => item.status === 'APPROVED'
+						).length
 					}
 				>
 					승인
@@ -471,7 +476,13 @@ export function ApplicationViewTable({
 					size="S"
 					onClick={openRejectApplicationModal}
 					disabled={
-						RejectApplicationIsLoading || clickedData.length !== 1
+						RejectApplicationIsLoading ||
+						clickedData.length !== 1 ||
+						!!clickedData.filter(
+							(item) =>
+								item.status === 'APPROVED' ||
+								item.status === 'REJECTED'
+						).length
 					}
 				>
 					반려
@@ -481,7 +492,14 @@ export function ApplicationViewTable({
 					size="S"
 					onClick={() => openChangeStatusModal('PASS')}
 					disabled={
-						requestStatusIsLoading || clickedData.length === 0
+						requestStatusIsLoading ||
+						!clickedData.length ||
+						!!clickedData.filter(
+							(item) =>
+								item.status === 'REJECTED' ||
+								item.status === 'REQUESTED' ||
+								item.status === 'PASS'
+						).length
 					}
 				>
 					합격
@@ -491,7 +509,14 @@ export function ApplicationViewTable({
 					size="S"
 					onClick={() => openChangeStatusModal('FAILED')}
 					disabled={
-						requestStatusIsLoading || clickedData.length === 0
+						requestStatusIsLoading ||
+						!clickedData.length ||
+						!!clickedData.filter(
+							(item) =>
+								item.status === 'REJECTED' ||
+								item.status === 'REQUESTED' ||
+								item.status === 'FAILED'
+						).length
 					}
 				>
 					불합격
@@ -500,7 +525,16 @@ export function ApplicationViewTable({
 					kind="Ghost"
 					size="S"
 					onClick={openChangeTrainDateModal}
-					disabled={trainDateIsLoading || clickedData.length === 0}
+					disabled={
+						trainDateIsLoading ||
+						!clickedData.length ||
+						!!clickedData.filter(
+							(item) =>
+								item.status === 'REJECTED' ||
+								item.status === 'REQUESTED' ||
+								item.status === 'FIELD_TRAIN'
+						).length
+					}
 				>
 					현장실습
 				</Button>
