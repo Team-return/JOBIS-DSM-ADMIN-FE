@@ -463,7 +463,7 @@ export function RecruitmentFormDetailEdit({
 									onChange={recruitmentFormDetailInfohandler}
 								/>
 								<_.AbsoluteText right={42}>
-									만원/월
+									원/월
 								</_.AbsoluteText>
 							</_.ContentBox>
 							<_.TitleBox>
@@ -480,7 +480,7 @@ export function RecruitmentFormDetailEdit({
 									name="pay"
 									onChange={recruitmentFormDetailInfohandler}
 								/>
-								<_.AbsoluteText right={42}>만원</_.AbsoluteText>
+								<_.AbsoluteText right={42}>만원/연</_.AbsoluteText>
 							</_.ContentBox>
 						</_.Stack>
 						<_.Stack>

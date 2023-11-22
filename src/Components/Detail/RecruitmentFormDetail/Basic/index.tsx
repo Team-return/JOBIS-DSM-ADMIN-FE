@@ -157,11 +157,19 @@ export function RecruitmentFormDetailBasic({
 							</_.ContentBox>
 							<_.TitleBox>실습수당</_.TitleBox>
 							<_.ContentBox width={23}>
-								{recruitmentFormDetail?.train_pay}만원/월
+								{recruitmentFormDetail?.train_pay
+									.toString()
+									.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+								원/월
 							</_.ContentBox>
 							<_.TitleBox>정규직전환시</_.TitleBox>
 							<_.ContentBox width={24}>
-								{recruitmentFormDetail?.pay}만원
+								{recruitmentFormDetail?.pay
+									? `${recruitmentFormDetail?.pay?.replace(
+											/\B(?=(\d{3})+(?!\d))/g,
+											','
+									  )}만원/연`
+									: '-'}
 							</_.ContentBox>
 						</_.Stack>
 						<_.Stack>
