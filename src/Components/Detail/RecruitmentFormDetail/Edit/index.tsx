@@ -4,6 +4,7 @@ import {
 	RadioButton,
 	Stack,
 	useToastStore,
+	Text,
 } from '@team-return/design-system';
 import { RecruitmentFormDetailResponse } from '../../../../Apis/Recruitments/response';
 import { hiringProgress } from '../../../../Utils/Translation';
@@ -153,7 +154,12 @@ export function RecruitmentFormDetailEdit({
 		<_.Container>
 			<_.Wrapper>
 				<Stack direction="column">
-					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
+					<_.BackWrapper onClick={() => navigate(-1)}>
+						<_.BackIcon icon="Chevron" />
+						<Text margin={[0, 0, -4, 0]} size="Body2">
+							뒤로가기
+						</Text>
+					</_.BackWrapper>
 					<_.LogoWrapper>
 						<_.CompanyLogo
 							src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
@@ -474,13 +480,16 @@ export function RecruitmentFormDetailEdit({
 							<_.ContentBox width={24}>
 								<_.CustomInput
 									width={100}
+									type="number"
 									placeholder="정규직 전환 시 연봉"
 									style={{ paddingRight: '70px' }}
 									value={pay!}
 									name="pay"
 									onChange={recruitmentFormDetailInfohandler}
 								/>
-								<_.AbsoluteText right={42}>만원/연</_.AbsoluteText>
+								<_.AbsoluteText right={42}>
+									만원/연
+								</_.AbsoluteText>
 							</_.ContentBox>
 						</_.Stack>
 						<_.Stack>

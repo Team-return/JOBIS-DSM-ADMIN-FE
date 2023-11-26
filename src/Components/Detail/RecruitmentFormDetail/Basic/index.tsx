@@ -1,4 +1,4 @@
-import { Button, Stack } from '@team-return/design-system';
+import { Button, Stack, Text } from '@team-return/design-system';
 import { RecruitmentFormDetailResponse } from '../../../../Apis/Recruitments/response';
 import { hiringProgress } from '../../../../Utils/Translation';
 import * as _ from '../../style';
@@ -18,7 +18,12 @@ export function RecruitmentFormDetailBasic({
 		<_.Container>
 			<_.Wrapper>
 				<Stack direction="column">
-					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
+					<_.BackWrapper onClick={() => navigate(-1)}>
+						<_.BackIcon icon="Chevron" />
+						<Text margin={[0, 0, -4, 0]} size="Body2">
+							뒤로가기
+						</Text>
+					</_.BackWrapper>
 					<_.LogoWrapper>
 						<_.CompanyLogo
 							src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}

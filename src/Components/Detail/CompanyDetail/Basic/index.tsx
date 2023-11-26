@@ -1,4 +1,4 @@
-import { Button, Stack } from '@team-return/design-system';
+import { Button, Stack, Text } from '@team-return/design-system';
 import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CompanyDetailResponse } from '../../../../Apis/Companies/response';
@@ -18,7 +18,12 @@ export function CompanyDetailBasic({
 		<_.Container>
 			<_.Wrapper>
 				<Stack direction="column">
-					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
+					<_.BackWrapper onClick={() => navigate(-1)}>
+						<_.BackIcon
+							icon="Chevron"
+						/>
+						<Text margin={[0, 0, -4, 0]} size='Body2'>뒤로가기</Text>
+					</_.BackWrapper>
 					<_.LogoWrapper>
 						<_.CompanyLogo
 							src={`${process.env.REACT_APP_FILE_URL}${companyDetailInfo?.company_profile_url}`}

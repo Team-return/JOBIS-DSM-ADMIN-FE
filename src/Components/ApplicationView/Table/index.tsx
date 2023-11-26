@@ -365,7 +365,18 @@ export function ApplicationViewTable({
 										<_.FileDownloadWrapper key={i}>
 											<Stack>
 												<_.CountNum>{i + 1}</_.CountNum>
-												<div>{urls.url}</div>
+												<div
+													style={{
+														width: '300px',
+														overflow: 'hidden',
+														whiteSpace: 'nowrap',
+														textOverflow:
+															'ellipsis',
+														wordBreak: 'break-all',
+													}}
+												>
+													{urls.url}
+												</div>
 											</Stack>
 											<Button
 												size="S"
@@ -397,7 +408,16 @@ export function ApplicationViewTable({
 										<_.FileDownloadWrapper key={i}>
 											<Stack>
 												<_.CountNum>{i + 1}</_.CountNum>
-												<div>
+												<div
+													style={{
+														width: '300px',
+														overflow: 'hidden',
+														whiteSpace: 'nowrap',
+														textOverflow:
+															'ellipsis',
+														wordBreak: 'break-all',
+													}}
+												>
 													{nameArray[
 														nameArray.length - 1
 													].substring(37)}

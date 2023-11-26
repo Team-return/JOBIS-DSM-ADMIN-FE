@@ -1,8 +1,8 @@
-import { ReviewSubmissioDetailnResponse } from '../../../../Apis/Reviews/response';
+import { ReviewSubmissionDetailResponse } from '../../../../Apis/Reviews/response';
 import * as _ from './style';
 
 interface PropsType {
-	reviewSubmissionDetail: ReviewSubmissioDetailnResponse;
+	reviewSubmissionDetail: ReviewSubmissionDetailResponse;
 	reviewSubmissionDetailIsLoading: boolean;
 }
 
@@ -17,7 +17,7 @@ export function ReviewSubmissionContents({
 					<_.TextWrapper>
 						<_.ChoiceText>선택 :</_.ChoiceText>
 						<_.StudentText>
-							{reviewSubmissionDetail?.writer}
+							{reviewSubmissionDetail?.answer}
 						</_.StudentText>
 					</_.TextWrapper>
 					<_.ContentsBox>

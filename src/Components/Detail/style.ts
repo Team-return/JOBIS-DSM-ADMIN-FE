@@ -152,6 +152,11 @@ export const BackIcon = styled(Icon)`
 	rotate: 90deg;
 	width: 30px;
 	height: 30px;
-	margin-bottom: 20px;
+	`;
+
+export const BackWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	margin: 0 0 20px 0;
 	cursor: pointer;
 `;

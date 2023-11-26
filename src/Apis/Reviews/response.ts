@@ -9,9 +9,9 @@ export interface ReviewSubmissionType {
 	date: string;
 }
 
-export interface ReviewSubmissioDetailnResponse {
+export interface ReviewSubmissionDetailResponse {
 	year: number;
-	writer: string;
+	answer: string;
 	created_date: string;
 	qna_responses: QnaResponsesType[];
 }
