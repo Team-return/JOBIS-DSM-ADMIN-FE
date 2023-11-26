@@ -89,7 +89,7 @@ export function CompanyRecruitmentSearch({
 					/>
 				</_.ContentWrapper>
 				<_.TitleText>지역</_.TitleText>
-				<_.ContentWrapper width={8.5}>
+				<_.ContentWrapper width={20}>
 					<DropDown
 						onChange={(region) =>
 							handleSelectedItem('region', region)
@@ -123,7 +123,7 @@ export function CompanyRecruitmentSearch({
 					/>
 				</_.ContentWrapper>
 				<_.TitleText>사업분야</_.TitleText>
-				<_.ContentWrapper width={8.5}>
+				<_.ContentWrapper width={20}>
 					<DropDown
 						onChange={(industry) =>
 							handleSelectedItem('industry', industry)
