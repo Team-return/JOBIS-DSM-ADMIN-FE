@@ -246,7 +246,7 @@ export function ApplicationViewTable({
 	};
 
 	/** 데이터를 가져올 때 보여줄 빈 테이블입니다. */
-	const loadingTableDataArray = Array.from({ length: 11 }, () => [
+	const loadingTableDataArray = Array.from({ length: 10 }, () => [
 		<></>,
 		<></>,
 		<></>,
@@ -257,7 +257,7 @@ export function ApplicationViewTable({
 	]);
 	/** 남은 테이블 자리를 채워줄 빈 테이블입니다. */
 	const emptyTableDataArray = Array.from(
-		{ length: 11 - (dataLength % 11) },
+		{ length: 10 - dataLength },
 		() => [<></>, <></>, <></>, <></>, <></>, <></>, <></>]
 	);
 	/** 데이터로 채운 테이블입니다. */

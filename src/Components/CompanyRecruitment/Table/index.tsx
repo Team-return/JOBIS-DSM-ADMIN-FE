@@ -106,7 +106,7 @@ export function CompanyRecruitmentTable({
 	};
 
 	/** 로딩 중일 때 보여줄 빈 테이블입니다. */
-	const loadingTableDataArray = Array.from({ length: 11 }, () => [
+	const loadingTableDataArray = Array.from({ length: 10 }, () => [
 		<></>,
 		<></>,
 		<></>,
@@ -122,7 +122,7 @@ export function CompanyRecruitmentTable({
 	]);
 
 	/** 데이터 테이블 아래 빈 값을 보여줄 때 필요한 빈 테이블입니다. */
-	const emptyTableDataArray = Array.from({ length: 11 - dataLength }, () => [
+	const emptyTableDataArray = Array.from({ length: 10 - dataLength }, () => [
 		<></>,
 		<></>,
 		<></>,
