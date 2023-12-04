@@ -10,6 +10,7 @@ export interface EmployableCompaniesPropsType {
 	company_name: string;
 	company_type: string;
 	year: string;
+	page: number;
 }
 
 export interface CompanyInfoEditType {

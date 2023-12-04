@@ -48,6 +48,7 @@ export const useGetRecruitmentForm = (
 				);
 				return data;
 			},
+			enabled: false,
 		},
 		{
 			queryKey: [

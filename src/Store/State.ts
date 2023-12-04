@@ -2,8 +2,14 @@ import { ChangeEvent } from 'react';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { ApplicantInfoQueryStringType } from '../Apis/Applications/request';
-import { QueryStringDataType } from '../Apis/Companies/request';
+import {
+	EmployableCompaniesPropsType,
+	QueryStringDataType,
+} from '../Apis/Companies/request';
 import { RecruitmentFormQueryStringType } from '../Apis/Recruitments/request';
+
+const date = new Date(); // 현재 날짜 및 시간
+const iYear = date.getFullYear(); // 연도
 
 interface applicationViewQueryStringState {
 	applicationViewQueryString: ApplicantInfoQueryStringType;
@@ -121,9 +127,6 @@ interface recruitmentFormQueryStringState {
 	) => void;
 }
 
-const date = new Date(); // 현재 날짜 및 시간
-const iYear = date.getFullYear(); // 연도
-
 export const useRecruitmentFormQueryString =
 	create<recruitmentFormQueryStringState>()(
 		devtools((set) => ({
@@ -165,6 +168,57 @@ export const useRecruitmentFormQueryString =
 			setRecruitmentFormQueryString: (queryString) =>
 				set({
 					recruitmentFormQueryString: queryString,
+				}),
+		}))
+	);
+
+interface studentManagementQueryStringState {
+	studentManagementQueryString: EmployableCompaniesPropsType;
+	studentManagementQueryStringHandler: (
+		e: ChangeEvent<HTMLInputElement>
+	) => void;
+	studentManagementQueryStringDropDown: (name: string, value: any) => void;
+	setDefaultStudentManagementQueryString: () => void;
+	setStudentManagementQueryString: (
+		queryString: EmployableCompaniesPropsType
+	) => void;
+}
+
+export const useStudentManagementQueryString =
+	create<studentManagementQueryStringState>()(
+		devtools((set) => ({
+			studentManagementQueryString: {
+				company_name: '',
+				company_type: '',
+				year: String(date.getFullYear()),
+				page: 1,
+			},
+			studentManagementQueryStringHandler: (e) =>
+				set((prev) => ({
+					studentManagementQueryString: {
+						...prev.studentManagementQueryString,
+						[e.target.name]: e.target.value,
+					},
+				})),
+			studentManagementQueryStringDropDown: (name, value) =>
+				set((prev) => ({
+					studentManagementQueryString: {
+						...prev.studentManagementQueryString,
+						[name]: value,
+					},
+				})),
+			setDefaultStudentManagementQueryString: () =>
+				set({
+					studentManagementQueryString: {
+						company_name: '',
+						company_type: '',
+						year: String(date.getFullYear()),
+						page: 1,
+					},
+				}),
+			setStudentManagementQueryString: (queryString) =>
+				set({
+					studentManagementQueryString: queryString,
 				}),
 		}))
 	);

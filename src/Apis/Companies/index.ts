@@ -61,12 +61,11 @@ export const useGetCompanyRecruitments = (
 
 /** 학생 페이지에서 기업들을 조회하는 api입니다. */
 export const useGetEmployableCompanies = (
-	searchString: EmployableCompaniesPropsType,
-	page: number
+	searchString: EmployableCompaniesPropsType
 ) => {
 	return useQueries([
 		{
-			queryKey: ['getEmployableCompanies', searchString, page],
+			queryKey: ['getEmployableCompanies', searchString],
 			queryFn: async () => {
 				const { company_name, company_type, year } = searchString;
 				const companyType = company_type
@@ -77,10 +76,11 @@ export const useGetEmployableCompanies = (
 					: '';
 				const { data } =
 					await instance.get<EmployableCompaniesResponse>(
-						`${router}/employment?year=${year}${companyName}${companyType}&page=${page}`
+						`${router}/employment?year=${year}${companyName}${companyType}&page=${searchString.page}`
 					);
 				return data;
 			},
+			enabled: false,
 		},
 		{
 			queryKey: ['getCompanyRecruitmentsPageNum', searchString],
