@@ -508,6 +508,22 @@ export function ApplicationViewTable({
 				<Button
 					kind="Ghost"
 					size="S"
+					onClick={() => openChangeStatusModal('SEND')}
+					disabled={
+						RejectApplicationIsLoading ||
+						clickedData.length !== 1 ||
+						!!clickedData.filter((item) => item.status === 'SEND')
+							.length ||
+						!clickedData.filter(
+							(item) => item.status === 'APPROVED'
+						).length
+					}
+				>
+					전송
+				</Button>
+				<Button
+					kind="Ghost"
+					size="S"
 					onClick={() => openChangeStatusModal('PASS')}
 					disabled={
 						requestStatusIsLoading ||
