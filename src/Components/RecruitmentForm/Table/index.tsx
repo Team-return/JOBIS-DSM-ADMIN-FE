@@ -115,7 +115,7 @@ export function RecruitmentFormTable({
 	/** 데이터 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] = recruitmentForm?.recruitments
 		.map((recruitment) => {
-			const job = recruitment.hiring_jobs.split(',').join(' / ');
+			const job = recruitment.recruitment_job.split(',').join(' / ');
 			const clickCheckBox = () => {
 				if (clickedData.includes(recruitment.id.toString())) {
 					setClickedData(
@@ -150,8 +150,8 @@ export function RecruitmentFormTable({
 					checked={clickedData.includes(recruitment.id.toString())}
 					onChange={clickCheckBox}
 				/>,
-				<_.ContentText status={recruitment.status}>
-					{getValueByKey(companyStatus, recruitment.status)}
+				<_.ContentText status={recruitment.recruitment_status}>
+					{getValueByKey(companyStatus, recruitment.recruitment_status)}
 				</_.ContentText>, // 상태
 				<Link to={`/Company/${recruitment.company_id}`}>
 					<_.ContentText click={1}>
@@ -165,7 +165,7 @@ export function RecruitmentFormTable({
 					{companyType[recruitment.company_type]}
 				</_.ContentText>, // 구분
 				<_.ContentText>
-					{recruitment.total_hiring_count}명
+					{recruitment.recruitment_count}명
 				</_.ContentText>, // 모집 인원 수
 				<_.ContentText
 					onClick={() =>
@@ -185,8 +185,8 @@ export function RecruitmentFormTable({
 				>
 					{recruitment.application_approved_count}명
 				</_.ContentText>, // 지원자 수
-				<_.ContentText>{recruitment.start_date}</_.ContentText>, // 모집 시작 날짜
-				<_.ContentText>{recruitment.end_date}</_.ContentText>, // 모집 종료 날짜
+				<_.ContentText>{recruitment.start}</_.ContentText>, // 모집 시작 날짜
+				<_.ContentText>{recruitment.end}</_.ContentText>, // 모집 종료 날짜
 			];
 		})
 		.concat(emptyTableDataArray);
