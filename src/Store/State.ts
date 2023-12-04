@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { ApplicantInfoQueryStringType } from '../Apis/Applications/request';
 import { QueryStringDataType } from '../Apis/Companies/request';
+import { RecruitmentFormQueryStringType } from '../Apis/Recruitments/request';
 
 interface applicationViewQueryStringState {
 	applicationViewQueryString: ApplicantInfoQueryStringType;
@@ -104,6 +105,66 @@ export const useCompanyRecruitmentQueryString =
 			setCompanyRecruitmentQueryString: (queryString) =>
 				set({
 					companyRecruitmentQueryString: queryString,
+				}),
+		}))
+	);
+
+interface recruitmentFormQueryStringState {
+	recruitmentFormQueryString: RecruitmentFormQueryStringType;
+	recruitmentFormQueryStringHandler: (
+		e: ChangeEvent<HTMLInputElement>
+	) => void;
+	recruitmentFormQueryStringDropDown: (name: string, value: any) => void;
+	setDefaultRecruitmentFormQueryString: () => void;
+	setRecruitmentFormQueryString: (
+		queryString: RecruitmentFormQueryStringType
+	) => void;
+}
+
+const date = new Date(); // 현재 날짜 및 시간
+const iYear = date.getFullYear(); // 연도
+
+export const useRecruitmentFormQueryString =
+	create<recruitmentFormQueryStringState>()(
+		devtools((set) => ({
+			recruitmentFormQueryString: {
+				year: String(iYear),
+				company_name: '',
+				start: ``,
+				end: ``,
+				status: '',
+				winter_intern: null,
+				page: 1,
+			},
+			recruitmentFormQueryStringHandler: (e) =>
+				set((prev) => ({
+					recruitmentFormQueryString: {
+						...prev.recruitmentFormQueryString,
+						[e.target.name]: e.target.value,
+					},
+				})),
+			recruitmentFormQueryStringDropDown: (name, value) =>
+				set((prev) => ({
+					recruitmentFormQueryString: {
+						...prev.recruitmentFormQueryString,
+						[name]: value,
+					},
+				})),
+			setDefaultRecruitmentFormQueryString: () =>
+				set({
+					recruitmentFormQueryString: {
+						year: String(iYear),
+						company_name: '',
+						start: ``,
+						end: ``,
+						status: '',
+						winter_intern: null,
+						page: 1,
+					},
+				}),
+			setRecruitmentFormQueryString: (queryString) =>
+				set({
+					recruitmentFormQueryString: queryString,
 				}),
 		}))
 	);

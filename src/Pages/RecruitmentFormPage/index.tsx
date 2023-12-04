@@ -1,29 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import * as _ from './style';
-import { RecruitmentFormQueryStringType } from '../../Apis/Recruitments/request';
 import { Header } from '../../Components/Header';
 import { RecruitmentFormSearch } from '../../Components/RecruitmentForm/Search';
 import { RecruitmentFormTable } from '../../Components/RecruitmentForm/Table';
 import { useGetRecruitmentForm } from '../../Apis/Recruitments';
+import { useRecruitmentFormQueryString } from '../../Store/State';
 
 export function RecruitmentFormPage() {
-	const date = new Date(); // 현재 날짜 및 시간
-	const iYear = date.getFullYear(); // 연도
+	const { recruitmentFormQueryString } = useRecruitmentFormQueryString();
 
-	const [
-		searchRecruitmentFormQueryString,
-		setSearchRecruitmentFormQueryString,
-	] = useState<RecruitmentFormQueryStringType>({
-		year: String(iYear),
-		company_name: '',
-		start: ``,
-		end: ``,
-		status: '',
-		winter_intern: null,
-		page: 1,
-	});
 	const recruitmentFormQueries = useGetRecruitmentForm(
-		searchRecruitmentFormQueryString
+		recruitmentFormQueryString
 	);
 	const recruitmentFormData = recruitmentFormQueries[0];
 	const recruitmentFormPage =
@@ -40,7 +27,7 @@ export function RecruitmentFormPage() {
 		});
 
 	useEffect(() => {
-		recruitmentFormQueries[1].refetch();
+		allRefetchRecruitmentForm();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -49,12 +36,6 @@ export function RecruitmentFormPage() {
 			<Header />
 			<_.Wrapper>
 				<RecruitmentFormSearch
-					searchRecruitmentFormQueryString={
-						searchRecruitmentFormQueryString
-					}
-					setSearchRecruitmentFormQueryString={
-						setSearchRecruitmentFormQueryString
-					}
 					refetchRecruitmentForm={allRefetchRecruitmentForm}
 				/>
 				<RecruitmentFormTable
@@ -62,12 +43,6 @@ export function RecruitmentFormPage() {
 					recruitmentForm={recruitmentFormData.data!}
 					recruitmentFormPageNum={recruitmentFormPage}
 					refetchRecruitmentForm={recruitmentFormData.refetch}
-					searchRecruitmentFormQueryString={
-						searchRecruitmentFormQueryString
-					}
-					setSearchRecruitmentFormQueryString={
-						setSearchRecruitmentFormQueryString
-					}
 					recruitmentFormIsLoading={isLoading}
 				/>
 			</_.Wrapper>

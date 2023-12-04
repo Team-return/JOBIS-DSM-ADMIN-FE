@@ -1,70 +1,23 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
-import { Dispatch, SetStateAction } from 'react';
-import { useForm } from '../../../Hooks/useForm';
-import { companyStatus, winterIntern } from '../../../Utils/Translation';
-import { useDropDown } from '../../../Hooks/useDropDown';
+import { useRecruitmentFormQueryString } from '../../../Store/State';
+import { winterIntern } from '../../../Utils/Translation';
+import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 
 interface PropsType {
-	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
-	setSearchRecruitmentFormQueryString: Dispatch<
-		SetStateAction<RecruitmentFormQueryStringType>
-	>;
 	refetchRecruitmentForm: () => void;
 }
 
-export function RecruitmentFormSearch({
-	searchRecruitmentFormQueryString,
-	setSearchRecruitmentFormQueryString,
-	refetchRecruitmentForm,
-}: PropsType) {
+export function RecruitmentFormSearch({ refetchRecruitmentForm }: PropsType) {
 	const date = new Date(); // 현재 날짜 및 시간
 	const iYear = date.getFullYear(); // 연도
 
 	const {
-		form: formData,
-		setForm: setFormData,
-		handleChange,
-	} = useForm({
-		company_name: '',
-		start: '',
-		end: '',
-		page: searchRecruitmentFormQueryString.page,
-	});
-
-	const { selectedItem, setSelectedItem, handleSelectedItem } = useDropDown({
-		year: searchRecruitmentFormQueryString.year,
-		status: '',
-		type: '전체',
-	});
-
-	/** 검색 input 데이터를 초기화하는 함수입니다. */
-	const handleDefaultData = () => {
-		setFormData({
-			company_name: '',
-			start: '',
-			end: '',
-			page: searchRecruitmentFormQueryString.page,
-		});
-		setSelectedItem({
-			year: searchRecruitmentFormQueryString.year,
-			status: '',
-			type: '전체',
-		});
-	};
-
-	/** 검색하는 함수입니다. */
-	const handleSearch = () => {
-		setSearchRecruitmentFormQueryString({
-			...searchRecruitmentFormQueryString,
-			...formData,
-			year: selectedItem.year,
-			status: companyStatus[selectedItem.status],
-			winter_intern: winterIntern[selectedItem.type],
-		});
-		setTimeout(refetchRecruitmentForm);
-	};
+		recruitmentFormQueryString,
+		setDefaultRecruitmentFormQueryString,
+		recruitmentFormQueryStringDropDown,
+		recruitmentFormQueryStringHandler,
+	} = useRecruitmentFormQueryString();
 
 	/** 년도를 순서대로 배열로 만들어 저장합니다. */
 	const yearData = Array.from({ length: 11 }, (_, i) =>
@@ -79,9 +32,9 @@ export function RecruitmentFormSearch({
 					<DropDown
 						width={23}
 						option={yearData}
-						value={selectedItem.year}
+						value={recruitmentFormQueryString.year}
 						onChange={(yearData) =>
-							handleSelectedItem('year', yearData)
+							recruitmentFormQueryStringDropDown('year', yearData)
 						}
 					/>
 				</_.ContentWrapper>
@@ -90,17 +43,17 @@ export function RecruitmentFormSearch({
 					<_.DateInput
 						name="start"
 						type="date"
-						value={formData.start}
-						onChange={handleChange}
-						max={formData.end}
+						value={recruitmentFormQueryString.start}
+						onChange={recruitmentFormQueryStringHandler}
+						max={recruitmentFormQueryString.end}
 					/>
 					<div> ~ </div>
 					<_.DateInput
 						name="end"
 						type="date"
-						value={formData.end}
-						onChange={handleChange}
-						min={formData.start}
+						value={recruitmentFormQueryString.end}
+						onChange={recruitmentFormQueryStringHandler}
+						min={recruitmentFormQueryString.start}
 					/>
 				</_.ContentWrapper>
 				<_.TitleText>모집구분</_.TitleText>
@@ -108,9 +61,16 @@ export function RecruitmentFormSearch({
 					<DropDown
 						width={86}
 						option={['전체', '체험형', '채용형']}
-						value={selectedItem.type || '전체'}
+						value={getValueByKey(
+							winterIntern,
+							recruitmentFormQueryString.winter_intern
+						)}
 						onChange={(type) =>
-							type !== '전체' && handleSelectedItem('type', type)
+							type !== '전체' &&
+							recruitmentFormQueryStringDropDown(
+								'winter_intern',
+								winterIntern[type]
+							)
 						}
 					/>
 				</_.ContentWrapper>
@@ -121,8 +81,8 @@ export function RecruitmentFormSearch({
 					<Input
 						width={96}
 						name="company_name"
-						value={formData.company_name}
-						onChange={handleChange}
+						value={recruitmentFormQueryString.company_name}
+						onChange={recruitmentFormQueryStringHandler}
 						placeholder="기업명 입력"
 					/>
 				</_.ContentWrapper>
@@ -137,17 +97,20 @@ export function RecruitmentFormSearch({
 							'종료',
 							'접수요청',
 						]}
-						value={selectedItem.status || '전체'}
+						value={recruitmentFormQueryString.status || '전체'}
 						onChange={(statusData) =>
-							handleSelectedItem('status', statusData)
+							recruitmentFormQueryStringDropDown(
+								'status',
+								statusData
+							)
 						}
 					/>
 				</_.ContentWrapper>
 				<_.ButtonWrapper>
-					<Button onClick={handleSearch}>조회</Button>
+					<Button onClick={refetchRecruitmentForm}>조회</Button>
 					<Button
 						kind="Gray"
-						onClick={handleDefaultData}
+						onClick={setDefaultRecruitmentFormQueryString}
 						margin={[0, 10, 0, 0]}
 					>
 						초기화
