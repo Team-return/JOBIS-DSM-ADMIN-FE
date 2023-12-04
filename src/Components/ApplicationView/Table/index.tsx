@@ -7,13 +7,10 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
 import { ApplicationResponse } from '../../../Apis/Applications/response';
-import {
-	ApplicantInfoQueryStringType,
-	selectStudent,
-} from '../../../Apis/Applications/request';
+import { selectStudent } from '../../../Apis/Applications/request';
 import { DownloadDataPropsType } from '../../../Apis/File/request';
 import { useDownloadData } from '../../../Apis/File';
 import { useModalContext } from '../../../Utils/Modal';

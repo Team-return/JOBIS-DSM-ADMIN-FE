@@ -5,25 +5,23 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
 import {
 	useChangeCompanyStatus,
 	useChangeContractCompany,
 } from '../../../Apis/Companies';
-import { QueryStringDataType } from '../../../Apis/Companies/request';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
 import { searchInArray } from '../../../Utils/useSearchForArray';
 import { Link } from 'react-router-dom';
+import { useCompanyRecruitmentQueryString } from '../../../Store/State';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
 	companyRecruitmentPageNum: number;
 	refetchCompanyRecruitment: () => void;
 	allSelectFormId: number[];
-	searchQueryString: QueryStringDataType;
-	setSearchQueryString: Dispatch<SetStateAction<QueryStringDataType>>;
 	companyRecruitmentIsLoading: boolean;
 }
 
@@ -32,14 +30,17 @@ export function CompanyRecruitmentTable({
 	companyRecruitmentPageNum,
 	refetchCompanyRecruitment,
 	allSelectFormId,
-	searchQueryString,
-	setSearchQueryString,
 	companyRecruitmentIsLoading,
 }: PropsType) {
 	const { append } = useToastStore();
 	const dataLength = companyRecruitment?.companies.length;
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
+
+	const {
+		companyRecruitmentQueryString,
+		setDefaultCompanyRecruitmentQueryString,
+	} = useCompanyRecruitmentQueryString();
 
 	/** 전체 선택 & 전체 선택 해제하는 함수입니다. */
 	const checkAllBox = () => {
@@ -295,8 +296,8 @@ export function CompanyRecruitmentTable({
 			</_.TableWrapper>
 			<Pagination
 				page={companyRecruitmentPageNum}
-				data={searchQueryString}
-				setData={setSearchQueryString}
+				data={companyRecruitmentQueryString}
+				setData={setDefaultCompanyRecruitmentQueryString}
 				refetch={refetchCompanyRecruitment}
 			/>
 		</_.Container>

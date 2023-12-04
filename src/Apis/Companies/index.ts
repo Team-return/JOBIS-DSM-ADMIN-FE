@@ -37,6 +37,7 @@ export const useGetCompanyRecruitments = (
 				);
 				return data;
 			},
+			enabled: false,
 		},
 		{
 			queryKey: ['getCompanyRecruitmentsPageNum', searchQueryString],

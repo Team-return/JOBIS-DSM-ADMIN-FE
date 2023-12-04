@@ -1,11 +1,8 @@
 import * as _ from './style';
 import { Header } from '../../Components/Header';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { ApplicationViewSearch } from '../../Components/ApplicationView/Search';
-import {
-	ApplicantInfoQueryStringType,
-	selectStudent,
-} from '../../Apis/Applications/request';
+import { selectStudent } from '../../Apis/Applications/request';
 import { ApplicationViewTable } from '../../Components/ApplicationView/Table';
 import { useGetApplicantInfo } from '../../Apis/Applications';
 import { useApplicationViewQueryString } from '../../Store/State';
