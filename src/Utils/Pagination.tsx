@@ -11,7 +11,7 @@ interface PropsType {
 /** 페이지네이션을 구현한 함수입니다. */
 export function Pagination({ page, data, setData, refetch }: PropsType) {
 	const changePageNumber = (num: number) => {
-		setData((prevData: any) => ({ ...prevData, page: num }));
+		setData({ ...data, page: num });
 		setTimeout(refetch);
 	};
 

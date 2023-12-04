@@ -3,18 +3,17 @@ export interface RecruitmentFormResponse {
 }
 
 export interface RecruitmentFormType {
-	id: string;
-	company_id: string;
-	recruitment_status: string;
+	application_approved_count: number;
+	application_requested_count: number;
+	company_id: number;
 	company_name: string;
 	company_type: string;
-	recruitment_job: string;
-	recruitment_count: number;
-	application_requested_count: number;
-	application_approved_count: number;
-	start: string;
-	end: string;
-	military_support: boolean;
+	end_date: string;
+	hiring_jobs: string;
+	id: number;
+	start_date: string;
+	status: string;
+	total_hiring_count: number;
 }
 
 export interface RecruitmentFormDetailResponse {
@@ -43,5 +42,5 @@ export interface AreasType {
 	tech: string[];
 	hiring: number;
 	major_task: string;
-  preferential_treatment: string | null;
+	preferential_treatment: string | null;
 }

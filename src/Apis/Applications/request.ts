@@ -4,6 +4,7 @@ export type StatusType =
 	| 'FAILED'
 	| 'PASS'
 	| 'REJECTED'
+	| 'SEND'
 	| '';
 
 export interface ApplicantInfoQueryStringType {

@@ -485,7 +485,9 @@ export function ApplicationViewTable({
 						requestStatusIsLoading ||
 						!clickedData.length ||
 						!!clickedData.filter(
-							(item) => item.status === 'APPROVED'
+							(item) =>
+								item.status === 'APPROVED' ||
+								item.status === 'SEND'
 						).length
 					}
 				>
@@ -499,11 +501,29 @@ export function ApplicationViewTable({
 						RejectApplicationIsLoading ||
 						clickedData.length !== 1 ||
 						!!clickedData.filter(
-							(item) => item.status === 'REJECTED'
+							(item) =>
+								item.status === 'REJECTED' ||
+								item.status === 'SEND'
 						).length
 					}
 				>
 					반려
+				</Button>
+				<Button
+					kind="Ghost"
+					size="S"
+					onClick={() => openChangeStatusModal('SEND')}
+					disabled={
+						RejectApplicationIsLoading ||
+						clickedData.length !== 1 ||
+						!!clickedData.filter((item) => item.status === 'SEND')
+							.length ||
+						!clickedData.filter(
+							(item) => item.status === 'APPROVED'
+						).length
+					}
+				>
+					전송
 				</Button>
 				<Button
 					kind="Ghost"
@@ -516,7 +536,8 @@ export function ApplicationViewTable({
 							(item) =>
 								item.status === 'REJECTED' ||
 								item.status === 'REQUESTED' ||
-								item.status === 'PASS'
+								item.status === 'PASS' ||
+								item.status === 'APPROVED'
 						).length
 					}
 				>
@@ -533,7 +554,8 @@ export function ApplicationViewTable({
 							(item) =>
 								item.status === 'REJECTED' ||
 								item.status === 'REQUESTED' ||
-								item.status === 'FAILED'
+								item.status === 'FAILED' ||
+								item.status === 'APPROVED'
 						).length
 					}
 				>
@@ -550,7 +572,8 @@ export function ApplicationViewTable({
 							(item) =>
 								item.status === 'REJECTED' ||
 								item.status === 'REQUESTED' ||
-								item.status === 'FIELD_TRAIN'
+								item.status === 'FIELD_TRAIN' ||
+								item.status === 'APPROVED'
 						).length
 					}
 				>

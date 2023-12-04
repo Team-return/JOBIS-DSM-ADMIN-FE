@@ -26,7 +26,7 @@ export function ChangeStatusModal({
 					  }(으)로 바꾸시겠습니까?`}
 			</_.ModalTitleText>
 			<_.ModalContentText>
-				삭제하면 되돌릴 수 없습니다.
+				실행하면 되돌릴 수 없습니다.
 			</_.ModalContentText>
 		</>
 	);
