@@ -23,7 +23,7 @@ export function RecruitmentFormPage() {
 	const allSelectFormId: string[] =
 		recruitmentFormData.data! &&
 		recruitmentFormData.data?.recruitments.map((recruitment) => {
-			return recruitment.id;
+			return recruitment.id.toString();
 		});
 
 	useEffect(() => {
