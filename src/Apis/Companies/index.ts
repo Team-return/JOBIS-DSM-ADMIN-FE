@@ -67,7 +67,7 @@ export const useGetEmployableCompanies = (
 		{
 			queryKey: ['getEmployableCompanies', searchString],
 			queryFn: async () => {
-				const { company_name, company_type, year } = searchString;
+				const { company_name, company_type, year, page } = searchString;
 				const companyType = company_type
 					? `&company_type=${company_type}`
 					: '';
@@ -76,7 +76,7 @@ export const useGetEmployableCompanies = (
 					: '';
 				const { data } =
 					await instance.get<EmployableCompaniesResponse>(
-						`${router}/employment?year=${year}${companyName}${companyType}&page=${searchString.page}`
+						`${router}/employment?year=${year}${companyName}${companyType}&page=${page}`
 					);
 				return data;
 			},
