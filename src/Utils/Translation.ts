@@ -12,6 +12,7 @@ export const applicationStatus: { [key: string]: string } = {
 	PASS: '합격',
 	REJECTED: '반려',
 	FIELD_TRAIN: '현장실습',
+	SEND: '전송',
 };
 
 export const companyStatus: { [key: string]: string } = {
@@ -29,6 +30,7 @@ export const applicationStatusTextColor: { [key: string]: string } = {
 	PASS: '#004079',
 	REJECTED: '#F17B0F',
 	FIELD_TRAIN: '#7401DF',
+	SEND: '#135C9D',
 };
 
 export const hiringProgress: { [key: string]: string } = {
