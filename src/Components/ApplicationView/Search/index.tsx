@@ -1,56 +1,22 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
-import { Dispatch, SetStateAction } from 'react';
-import { useForm } from '../../../Hooks/useForm';
-import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { applicationStatus } from '../../../Utils/Translation';
-import { useDropDown } from '../../../Hooks/useDropDown';
+import { useApplicationViewQueryString } from '../../../Store/State';
 
 interface PropsType {
-	setSearchQueryString: Dispatch<
-		SetStateAction<ApplicantInfoQueryStringType>
-	>;
 	refetchCompanyRecruitment: () => void;
 }
 
 export function ApplicationViewSearch({
-	setSearchQueryString,
 	refetchCompanyRecruitment,
 }: PropsType) {
 	const {
-		form: data,
-		setForm: setData,
-		handleChange,
-	} = useForm({
-		student_name: '',
-		recruitment_id: '',
-	});
-
-	const { selectedItem, setSelectedItem, handleSelectedItem } = useDropDown({
-		application_status: '',
-	});
-
-	/** 검색창을 초기화하는 함수입니다. */
-	const defaultData = () => {
-		setData({
-			student_name: '',
-			recruitment_id: '',
-		});
-		setSelectedItem({ application_status: '' });
-	};
-
-	/** 검색하는 함수입니다. */
-	const searching = async () => {
-		setSearchQueryString({
-			...data,
-			application_status: getValueByKey(
-				applicationStatus,
-				selectedItem.application_status
-			),
-		});
-		setTimeout(refetchCompanyRecruitment);
-	};
+		applicationViewQueryString,
+		setDefaultApplicationViewQueryString,
+		applicationViewQueryStringDropDown,
+		applicationViewQueryStringHandler,
+	} = useApplicationViewQueryString();
 
 	return (
 		<_.Container>
@@ -59,7 +25,10 @@ export function ApplicationViewSearch({
 				<_.ContentWrapper width={8.5}>
 					<DropDown
 						onChange={(type) =>
-							handleSelectedItem('application_status', type)
+							applicationViewQueryStringDropDown(
+								'application_status',
+								getValueByKey(applicationStatus, type)
+							)
 						}
 						width={95}
 						option={[
@@ -70,7 +39,11 @@ export function ApplicationViewSearch({
 							'불합격',
 							'반려',
 						]}
-						value={selectedItem.application_status}
+						value={
+							applicationStatus[
+								applicationViewQueryString.application_status
+							]
+						}
 					/>
 				</_.ContentWrapper>
 				<_.TitleText>이름</_.TitleText>
@@ -78,15 +51,18 @@ export function ApplicationViewSearch({
 					<Input
 						width={96}
 						name="student_name"
-						value={data.student_name}
-						onChange={handleChange}
+						value={applicationViewQueryString.student_name}
+						onChange={applicationViewQueryStringHandler}
 						placeholder="검색어 입력"
 						iconName="Search"
 					/>
 				</_.ContentWrapper>
 				<_.Btn>
-					<Button onClick={searching}>조회</Button>
-					<Button kind="Gray" onClick={defaultData}>
+					<Button onClick={refetchCompanyRecruitment}>조회</Button>
+					<Button
+						kind="Gray"
+						onClick={setDefaultApplicationViewQueryString}
+					>
 						초기화
 					</Button>
 				</_.Btn>

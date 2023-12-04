@@ -10,6 +10,9 @@ interface applicationViewQueryStringState {
 	) => void;
 	applicationViewQueryStringDropDown: (name: string, value: any) => void;
 	setDefaultApplicationViewQueryString: () => void;
+	setApplicationViewQueryString: (
+		queryString: ApplicantInfoQueryStringType
+	) => void;
 }
 /** 선택한 카테코리 state */
 export const useApplicationViewQueryString =
@@ -43,6 +46,10 @@ export const useApplicationViewQueryString =
 						student_name: '',
 						recruitment_id: '',
 					},
+				}),
+			setApplicationViewQueryString: (queryString) =>
+				set({
+					applicationViewQueryString: queryString,
 				}),
 		}))
 	);

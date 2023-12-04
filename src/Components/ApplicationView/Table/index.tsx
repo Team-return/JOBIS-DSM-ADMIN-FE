@@ -33,16 +33,13 @@ import { useDidMountEffect } from '../../../Hooks/useDidMountEffect';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
 import { searchInArray } from '../../../Utils/useSearchForArray';
+import { useApplicationViewQueryString } from '../../../Store/State';
 
 interface PropsType {
 	application: ApplicationResponse;
 	applicationPageNum: number;
 	refetchApplication: () => void;
 	allSelectFormIdAndName: selectStudent[];
-	searchQueryString: ApplicantInfoQueryStringType;
-	setSearchQueryString: Dispatch<
-		SetStateAction<ApplicantInfoQueryStringType>
-	>;
 	applicationIsLoading: boolean;
 }
 
@@ -51,8 +48,6 @@ export function ApplicationViewTable({
 	applicationPageNum,
 	refetchApplication,
 	allSelectFormIdAndName,
-	searchQueryString,
-	setSearchQueryString,
 	applicationIsLoading,
 }: PropsType) {
 	const { append } = useToastStore();
@@ -73,6 +68,9 @@ export function ApplicationViewTable({
 	const allSelectFormId = allSelectFormIdAndName?.map((id) => id.id);
 	const selectFormId = clickedData.map((id) => id.id);
 	const selectStudentName = clickedData.map((name) => name.name);
+
+	const { applicationViewQueryString, setApplicationViewQueryString } =
+		useApplicationViewQueryString();
 
 	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
@@ -256,10 +254,15 @@ export function ApplicationViewTable({
 		<></>,
 	]);
 	/** 남은 테이블 자리를 채워줄 빈 테이블입니다. */
-	const emptyTableDataArray = Array.from(
-		{ length: 10 - dataLength },
-		() => [<></>, <></>, <></>, <></>, <></>, <></>, <></>]
-	);
+	const emptyTableDataArray = Array.from({ length: 10 - dataLength }, () => [
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+	]);
 	/** 데이터로 채운 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] = application?.applications
 		.map((application) => {
@@ -570,8 +573,8 @@ export function ApplicationViewTable({
 			</_.TableWrapper>
 			<Pagination
 				page={applicationPageNum}
-				data={searchQueryString}
-				setData={setSearchQueryString}
+				data={applicationViewQueryString}
+				setData={setApplicationViewQueryString}
 				refetch={refetchApplication}
 			/>
 		</_.Container>

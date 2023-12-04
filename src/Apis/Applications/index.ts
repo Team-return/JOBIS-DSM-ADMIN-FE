@@ -42,6 +42,7 @@ export const useGetApplicantInfo = (
 				);
 				return data;
 			},
+			enabled: false,
 		},
 		{
 			queryKey: ['getApplicantInfoPageNum', applicationQueryString],
