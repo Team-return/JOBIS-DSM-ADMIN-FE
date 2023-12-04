@@ -1,4 +1,4 @@
-import { Button, Icon, Stack, useToastStore } from '@team-return/design-system';
+import { Button, Icon, Stack, useToastStore, Text } from '@team-return/design-system';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { CompanyDetailResponse } from '../../../../Apis/Companies/response';
 import { useForm } from '../../../../Hooks/useForm';
@@ -119,7 +119,12 @@ export function CompanyDetailEdit({
 		<_.Container>
 			<_.Wrapper>
 				<_.LogoEditWrapper>
-					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
+					<_.BackWrapper onClick={() => navigate(-1)}>
+						<_.BackIcon icon="Chevron" />
+						<Text margin={[0, 0, -4, 0]} size="Body2">
+							뒤로가기
+						</Text>
+					</_.BackWrapper>
 					<_.LogoWrapper>
 						<_.CompanyLogo
 							src={

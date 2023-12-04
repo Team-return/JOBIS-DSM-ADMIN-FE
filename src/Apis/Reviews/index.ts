@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { instance } from '../axios';
 import {
-	ReviewSubmissioDetailnResponse,
+	ReviewSubmissionDetailResponse,
 	ReviewSubmissionResponse,
 } from './response';
 
@@ -29,7 +29,7 @@ export const useGetReviewSubmissionDetail = (review_id: string) => {
 		['getReviewSubmissionDetail', review_id],
 		async () => {
 			const { data } = await instance.get<
-				Promise<ReviewSubmissioDetailnResponse>
+				Promise<ReviewSubmissionDetailResponse>
 			>(`${router}/details/${review_id}`);
 			return data;
 		},

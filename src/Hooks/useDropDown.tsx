@@ -4,7 +4,10 @@ import { useState } from 'react';
 export function useDropDown<T>(initialState: T) {
 	const [selectedItem, setSelectedItem] = useState<T>(initialState);
 
-	const handleSelectedItem = (name: string, value: string) => {
+	const handleSelectedItem = (
+		name: string,
+		value: string | number | boolean
+	) => {
 		setSelectedItem((prevSelectedItem) => ({
 			...prevSelectedItem,
 			[name]: value,

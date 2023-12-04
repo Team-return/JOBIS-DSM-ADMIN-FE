@@ -28,15 +28,27 @@ export const useGetRecruitmentForm = (
 				searchRecruitmentFormQueryString,
 			],
 			queryFn: async () => {
-				const { year, page, company_name, start, end, status } =
-					searchRecruitmentFormQueryString;
+				const {
+					year,
+					page,
+					company_name,
+					start,
+					end,
+					status,
+					winter_intern,
+				} = searchRecruitmentFormQueryString;
+				const winterIntern =
+					winter_intern !== null
+						? `&winter_intern=${winter_intern}`
+						: '';
 				const { data } = await instance.get<RecruitmentFormResponse>(
-					`${router}/teacher?year=${year}&page=${page}&company_name=${company_name}&start=${start}&end=${end}&status=${
+					`${router}/teacher?year=${year}&page=${page}${winterIntern}&company_name=${company_name}&start=${start}&end=${end}&status=${
 						status === '전체' || status === undefined ? '' : status
 					}`
 				);
 				return data;
 			},
+			enabled: false,
 		},
 		{
 			queryKey: [
@@ -44,12 +56,22 @@ export const useGetRecruitmentForm = (
 				searchRecruitmentFormQueryString,
 			],
 			queryFn: async () => {
-				const { year, company_name, start, end, status } =
-					searchRecruitmentFormQueryString;
+				const {
+					year,
+					company_name,
+					start,
+					end,
+					status,
+					winter_intern,
+				} = searchRecruitmentFormQueryString;
+				const winterIntern =
+					winter_intern !== null
+						? `&winter_intern=${winter_intern}`
+						: '';
 				const { data } = await instance.get<{
 					total_page_count: number;
 				}>(
-					`${router}/teacher/count?year=${year}&company_name=${company_name}&start=${start}&end=${end}&status=${
+					`${router}/teacher/count?year=${year}${winterIntern}&company_name=${company_name}&start=${start}&end=${end}&status=${
 						status === '전체' || status === undefined ? '' : status
 					}`
 				);

@@ -1,4 +1,4 @@
-import { Button, Stack } from '@team-return/design-system';
+import { Button, Stack, Text } from '@team-return/design-system';
 import { RecruitmentFormDetailResponse } from '../../../../Apis/Recruitments/response';
 import { hiringProgress } from '../../../../Utils/Translation';
 import * as _ from '../../style';
@@ -18,7 +18,12 @@ export function RecruitmentFormDetailBasic({
 		<_.Container>
 			<_.Wrapper>
 				<Stack direction="column">
-					<_.BackIcon icon="Chevron" onClick={() => navigate(-1)} />
+					<_.BackWrapper onClick={() => navigate(-1)}>
+						<_.BackIcon icon="Chevron" />
+						<Text margin={[0, 0, -4, 0]} size="Body2">
+							뒤로가기
+						</Text>
+					</_.BackWrapper>
 					<_.LogoWrapper>
 						<_.CompanyLogo
 							src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
@@ -157,11 +162,19 @@ export function RecruitmentFormDetailBasic({
 							</_.ContentBox>
 							<_.TitleBox>실습수당</_.TitleBox>
 							<_.ContentBox width={23}>
-								{recruitmentFormDetail?.train_pay}만원/월
+								{recruitmentFormDetail?.train_pay
+									.toString()
+									.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+								원/월
 							</_.ContentBox>
 							<_.TitleBox>정규직전환시</_.TitleBox>
 							<_.ContentBox width={24}>
-								{recruitmentFormDetail?.pay}만원
+								{recruitmentFormDetail?.pay
+									? `${recruitmentFormDetail?.pay?.replace(
+											/\B(?=(\d{3})+(?!\d))/g,
+											','
+									  )}만원/연`
+									: '-'}
 							</_.ContentBox>
 						</_.Stack>
 						<_.Stack>

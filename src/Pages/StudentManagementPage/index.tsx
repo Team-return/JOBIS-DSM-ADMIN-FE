@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { Header } from '../../Components/Header';
 import { CompanyTable } from '../../Components/StudentManagement/Table/CompanyTable';
 import { StudentManagementSearch } from '../../Components/StudentManagement/Search';
-import { useForm } from '../../Hooks/useForm';
 import * as _ from './style';
 import { InternshipStudentTable } from '../../Components/StudentManagement/Table/InternshipStudentTable';
 import { EmploymentContractStudentTable } from '../../Components/StudentManagement/Table/EmploymentContractStudentTable';
@@ -13,17 +12,12 @@ import { useModalContext } from '../../Utils/Modal';
 import { ChangeEmploymentModal } from '../../Components/Modal/ChangeEmploymentModal';
 import { useGetEmployableCompanies } from '../../Apis/Companies';
 import { useGetCombinedStudentList } from '../../Apis/Acceptances';
+import { useStudentManagementQueryString } from '../../Store/State';
 
 export function StudentManagementPage() {
-	const date = new Date();
 	const { openModal } = useModalContext();
-	const [page, setPage] = useState({ page: 1 });
 
-	const { form: searchQueryString, setForm: setSearchQueryString } = useForm({
-		company_name: '',
-		company_type: '',
-		year: String(date.getFullYear()),
-	});
+	const { studentManagementQueryString } = useStudentManagementQueryString();
 
 	const [selectCompany, setSelectCompany] = useState(0);
 	const [selectInternshipStudent, setSelectInternshipStudent] = useState<
@@ -35,8 +29,7 @@ export function StudentManagementPage() {
 	] = useState<number[]>([]);
 
 	const employableCompaniesQueries = useGetEmployableCompanies(
-		searchQueryString,
-		page.page
+		studentManagementQueryString
 	);
 	const employableCompaniesData = employableCompaniesQueries[0];
 	const employableCompaniesPage =
@@ -68,7 +61,7 @@ export function StudentManagementPage() {
 	};
 
 	useEffect(() => {
-		employableCompaniesQueries[1].refetch();
+		refetchEmployableCompanies();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -77,14 +70,11 @@ export function StudentManagementPage() {
 			<Header />
 			<_.TableContainer>
 				<StudentManagementSearch
-					setSearchQueryString={setSearchQueryString}
 					refetchEmployableCompanies={refetchEmployableCompanies}
 				/>
 				<_.TableWrapper>
 					<_.CompanyTableWrapper>
 						<CompanyTable
-							page={page}
-							setPage={setPage}
 							employableCompanies={employableCompaniesData.data!}
 							employableCompaniesPageNum={employableCompaniesPage}
 							isLoading={employableCompaniesIsLoading}

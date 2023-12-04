@@ -63,6 +63,11 @@ export function LoginCompo() {
 								kind="LineInput"
 								placeholder="비밀번호를 입력해주세요."
 								disabled={false}
+								onKeyPress={(e) => {
+									if (e.key === 'Enter') {
+										account_id && password && handleLogin();
+									}
+								}}
 							/>
 						</div>
 					</_.InputWrapper>

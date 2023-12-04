@@ -5,25 +5,21 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { RecruitmentFormResponse } from '../../../Apis/Recruitments/response';
 import { Pagination } from '../../../Utils/Pagination';
-import { RecruitmentFormQueryStringType } from '../../../Apis/Recruitments/request';
 import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
 import { companyStatus, companyType } from '../../../Utils/Translation';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { searchInArray } from '../../../Utils/useSearchForArray';
 import { Link } from 'react-router-dom';
+import { useRecruitmentFormQueryString } from '../../../Store/State';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
 	recruitmentFormPageNum: number;
 	refetchRecruitmentForm: () => void;
 	allSelectFormId: string[];
-	searchRecruitmentFormQueryString: RecruitmentFormQueryStringType;
-	setSearchRecruitmentFormQueryString: Dispatch<
-		SetStateAction<RecruitmentFormQueryStringType>
-	>;
 	recruitmentFormIsLoading: boolean;
 }
 
@@ -32,11 +28,11 @@ export function RecruitmentFormTable({
 	recruitmentFormPageNum,
 	refetchRecruitmentForm,
 	allSelectFormId,
-	searchRecruitmentFormQueryString,
-	setSearchRecruitmentFormQueryString,
 	recruitmentFormIsLoading,
 }: PropsType) {
 	const { append } = useToastStore();
+
+	const { recruitmentFormQueryString, setRecruitmentFormQueryString } = useRecruitmentFormQueryString();
 
 	/** 지원서 length입니다. */
 	const dataLength = recruitmentForm?.recruitments.length;
@@ -88,7 +84,7 @@ export function RecruitmentFormTable({
 	};
 
 	/** 로딩할 때 보여줄 빈 테이블입니다. */
-	const loadingTableDataArray = Array.from({ length: 11 }, () => [
+	const loadingTableDataArray = Array.from({ length: 10 }, () => [
 		<></>,
 		<></>,
 		<></>,
@@ -102,7 +98,7 @@ export function RecruitmentFormTable({
 	]);
 
 	/** 데이터 테이블 아래 보여줄 빈 테이블입니다. */
-	const emptyTableDataArray = Array.from({ length: 11 - dataLength }, () => [
+	const emptyTableDataArray = Array.from({ length: 10 - dataLength }, () => [
 		<></>,
 		<></>,
 		<></>,
@@ -270,8 +266,8 @@ export function RecruitmentFormTable({
 			</_.TableWrapper>
 			<Pagination
 				page={recruitmentFormPageNum!}
-				data={searchRecruitmentFormQueryString}
-				setData={setSearchRecruitmentFormQueryString}
+				data={recruitmentFormQueryString}
+				setData={setRecruitmentFormQueryString}
 				refetch={refetchRecruitmentForm}
 			/>
 		</_.Container>

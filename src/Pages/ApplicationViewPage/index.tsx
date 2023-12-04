@@ -1,24 +1,16 @@
 import * as _ from './style';
 import { Header } from '../../Components/Header';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { ApplicationViewSearch } from '../../Components/ApplicationView/Search';
-import {
-	ApplicantInfoQueryStringType,
-	selectStudent,
-} from '../../Apis/Applications/request';
+import { selectStudent } from '../../Apis/Applications/request';
 import { ApplicationViewTable } from '../../Components/ApplicationView/Table';
 import { useGetApplicantInfo } from '../../Apis/Applications';
+import { useApplicationViewQueryString } from '../../Store/State';
 
 export function ApplicationViewPage() {
-	const [searchQueryString, setSearchQueryString] =
-		useState<ApplicantInfoQueryStringType>({
-			page: 1,
-			application_status: '',
-			student_name: '',
-			recruitment_id: '',
-		});
+	const { applicationViewQueryString } = useApplicationViewQueryString();
 
-	const applicationQueries = useGetApplicantInfo(searchQueryString);
+	const applicationQueries = useGetApplicantInfo(applicationViewQueryString);
 	const applicationData = applicationQueries[0];
 	const applicationPage = applicationQueries[1].data?.total_page_count!;
 	const isLoading = applicationQueries.some((result) => result.isLoading);
@@ -37,7 +29,7 @@ export function ApplicationViewPage() {
 		});
 
 	useEffect(() => {
-		applicationQueries[1].refetch();
+		refetchApplication();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -46,7 +38,6 @@ export function ApplicationViewPage() {
 			<Header />
 			<_.Wrapper>
 				<ApplicationViewSearch
-					setSearchQueryString={setSearchQueryString}
 					refetchCompanyRecruitment={refetchApplication}
 				/>
 				<ApplicationViewTable
@@ -55,8 +46,6 @@ export function ApplicationViewPage() {
 					applicationPageNum={applicationPage}
 					refetchApplication={applicationData.refetch}
 					allSelectFormIdAndName={allSelectFormIdAndName}
-					searchQueryString={searchQueryString}
-					setSearchQueryString={setSearchQueryString}
 				/>
 			</_.Wrapper>
 		</>

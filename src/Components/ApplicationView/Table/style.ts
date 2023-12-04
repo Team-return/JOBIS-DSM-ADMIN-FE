@@ -92,4 +92,4 @@ export const MiddleText = styled.div`
 	font-weight: 700;
 	margin: 30px 0 0 25px;
 	color: black;
-`
+`;

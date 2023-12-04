@@ -4,6 +4,7 @@ export interface RecruitmentFormQueryStringType {
 	start: string;
 	end: string;
 	status: string;
+	winter_intern: boolean | null;
 	page: number;
 }
 

@@ -7,13 +7,10 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
 import { ApplicationResponse } from '../../../Apis/Applications/response';
-import {
-	ApplicantInfoQueryStringType,
-	selectStudent,
-} from '../../../Apis/Applications/request';
+import { selectStudent } from '../../../Apis/Applications/request';
 import { DownloadDataPropsType } from '../../../Apis/File/request';
 import { useDownloadData } from '../../../Apis/File';
 import { useModalContext } from '../../../Utils/Modal';
@@ -33,16 +30,13 @@ import { useDidMountEffect } from '../../../Hooks/useDidMountEffect';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
 import { searchInArray } from '../../../Utils/useSearchForArray';
+import { useApplicationViewQueryString } from '../../../Store/State';
 
 interface PropsType {
 	application: ApplicationResponse;
 	applicationPageNum: number;
 	refetchApplication: () => void;
 	allSelectFormIdAndName: selectStudent[];
-	searchQueryString: ApplicantInfoQueryStringType;
-	setSearchQueryString: Dispatch<
-		SetStateAction<ApplicantInfoQueryStringType>
-	>;
 	applicationIsLoading: boolean;
 }
 
@@ -51,8 +45,6 @@ export function ApplicationViewTable({
 	applicationPageNum,
 	refetchApplication,
 	allSelectFormIdAndName,
-	searchQueryString,
-	setSearchQueryString,
 	applicationIsLoading,
 }: PropsType) {
 	const { append } = useToastStore();
@@ -73,6 +65,9 @@ export function ApplicationViewTable({
 	const allSelectFormId = allSelectFormIdAndName?.map((id) => id.id);
 	const selectFormId = clickedData.map((id) => id.id);
 	const selectStudentName = clickedData.map((name) => name.name);
+
+	const { applicationViewQueryString, setApplicationViewQueryString } =
+		useApplicationViewQueryString();
 
 	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
@@ -246,7 +241,7 @@ export function ApplicationViewTable({
 	};
 
 	/** 데이터를 가져올 때 보여줄 빈 테이블입니다. */
-	const loadingTableDataArray = Array.from({ length: 11 }, () => [
+	const loadingTableDataArray = Array.from({ length: 10 }, () => [
 		<></>,
 		<></>,
 		<></>,
@@ -256,10 +251,15 @@ export function ApplicationViewTable({
 		<></>,
 	]);
 	/** 남은 테이블 자리를 채워줄 빈 테이블입니다. */
-	const emptyTableDataArray = Array.from(
-		{ length: 11 - (dataLength % 11) },
-		() => [<></>, <></>, <></>, <></>, <></>, <></>, <></>]
-	);
+	const emptyTableDataArray = Array.from({ length: 10 - dataLength }, () => [
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+		<></>,
+	]);
 	/** 데이터로 채운 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] = application?.applications
 		.map((application) => {
@@ -365,7 +365,18 @@ export function ApplicationViewTable({
 										<_.FileDownloadWrapper key={i}>
 											<Stack>
 												<_.CountNum>{i + 1}</_.CountNum>
-												<div>{urls.url}</div>
+												<div
+													style={{
+														width: '300px',
+														overflow: 'hidden',
+														whiteSpace: 'nowrap',
+														textOverflow:
+															'ellipsis',
+														wordBreak: 'break-all',
+													}}
+												>
+													{urls.url}
+												</div>
 											</Stack>
 											<Button
 												size="S"
@@ -397,7 +408,16 @@ export function ApplicationViewTable({
 										<_.FileDownloadWrapper key={i}>
 											<Stack>
 												<_.CountNum>{i + 1}</_.CountNum>
-												<div>
+												<div
+													style={{
+														width: '300px',
+														overflow: 'hidden',
+														whiteSpace: 'nowrap',
+														textOverflow:
+															'ellipsis',
+														wordBreak: 'break-all',
+													}}
+												>
 													{nameArray[
 														nameArray.length - 1
 													].substring(37)}
@@ -479,9 +499,7 @@ export function ApplicationViewTable({
 						RejectApplicationIsLoading ||
 						clickedData.length !== 1 ||
 						!!clickedData.filter(
-							(item) =>
-								item.status === 'APPROVED' ||
-								item.status === 'REJECTED'
+							(item) => item.status === 'REJECTED'
 						).length
 					}
 				>
@@ -552,8 +570,8 @@ export function ApplicationViewTable({
 			</_.TableWrapper>
 			<Pagination
 				page={applicationPageNum}
-				data={searchQueryString}
-				setData={setSearchQueryString}
+				data={applicationViewQueryString}
+				setData={setApplicationViewQueryString}
 				refetch={refetchApplication}
 			/>
 		</_.Container>

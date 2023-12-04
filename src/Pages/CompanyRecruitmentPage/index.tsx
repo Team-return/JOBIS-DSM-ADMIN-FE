@@ -2,22 +2,17 @@ import * as _ from './style';
 import { CompanyRecruitmentSearch } from '../../Components/CompanyRecruitment/Search';
 import { CompanyRecruitmentTable } from '../../Components/CompanyRecruitment/Table';
 import { Header } from '../../Components/Header';
-import { useCallback, useEffect, useState } from 'react';
-import { QueryStringDataType } from '../../Apis/Companies/request';
+import { useCallback, useEffect } from 'react';
 import { useGetCompanyRecruitments } from '../../Apis/Companies';
+import { useCompanyRecruitmentQueryString } from '../../Store/State';
 
 export function CompanyRecruitmentPage() {
-	const [searchQueryString, setSearchQueryString] =
-		useState<QueryStringDataType>({
-			page: 1,
-			company_type: '',
-			region: '',
-			company_name: '',
-			industry: '',
-		});
+	const { companyRecruitmentQueryString } =
+		useCompanyRecruitmentQueryString();
 
-	const companyRecruitmentQueries =
-		useGetCompanyRecruitments(searchQueryString);
+	const companyRecruitmentQueries = useGetCompanyRecruitments(
+		companyRecruitmentQueryString
+	);
 	const companyRecruitmentData = companyRecruitmentQueries[0];
 	const companyRecruitmentPage =
 		companyRecruitmentQueries[1].data?.total_page_count!;
@@ -35,7 +30,7 @@ export function CompanyRecruitmentPage() {
 		});
 
 	useEffect(() => {
-		companyRecruitmentQueries[1].refetch();
+		refetchCompanyRecruitment();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -44,7 +39,6 @@ export function CompanyRecruitmentPage() {
 			<Header />
 			<_.Wrapper>
 				<CompanyRecruitmentSearch
-					setSearchQueryString={setSearchQueryString}
 					refetchCompanyRecruitment={refetchCompanyRecruitment}
 				/>
 				<CompanyRecruitmentTable
@@ -53,8 +47,6 @@ export function CompanyRecruitmentPage() {
 					companyRecruitmentPageNum={companyRecruitmentPage}
 					refetchCompanyRecruitment={companyRecruitmentData.refetch}
 					allSelectFormId={allSelectFormId}
-					searchQueryString={searchQueryString}
-					setSearchQueryString={setSearchQueryString}
 				/>
 			</_.Wrapper>
 		</>

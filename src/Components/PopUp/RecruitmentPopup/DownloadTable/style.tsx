@@ -40,19 +40,20 @@ export const TitleText = styled.div`
 `;
 
 export const ContentText = styled.div<{ status?: string; click?: number }>`
-	font-weight: 400;
-	height: 35px;
-	overflow: scroll;
-	font-size: 18px;
 	display: flex;
-	justify-content: center;
-	height: 100%;
 	align-items: center;
+	height: 100%;
+	width: 73%;
 	color: ${({ status }) => (status === 'REQUESTED' ? '#FF0000' : '#000000')};
+	font-size: 18px;
 	text-decoration: ${({ click }) => (click ? 'underline' : 'none')};
 	text-underline-offset: 1.5px;
 	text-decoration-thickness: 1.5px;
+	font-weight: 400;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
 	cursor: ${({ click }) => (click ? 'pointer' : 'default')};
 	text-align: center;
-	word-break: keep-all;
 `;

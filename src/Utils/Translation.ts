@@ -44,3 +44,9 @@ export const hiringProgress: { [key: string]: string } = {
 	AI: 'AI면접',
 	CODING_TEST: '코딩테스트',
 };
+
+export const winterIntern: { [key: string]: boolean | null } = {
+	전체: null,
+	체험형: true,
+	채용형: false,
+};
