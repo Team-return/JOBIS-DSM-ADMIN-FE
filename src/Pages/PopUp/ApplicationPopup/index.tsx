@@ -27,7 +27,7 @@ export function ApplicationPopup() {
 	>([]);
 
 	useEffect(() => {
-		applicationQueries[1].refetch();
+		refetchApplication();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
