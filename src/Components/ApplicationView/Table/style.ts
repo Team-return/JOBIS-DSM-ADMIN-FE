@@ -62,6 +62,8 @@ export const UnfoldImgWrapper = styled.div`
 export const NotingFileText = styled.div`
 	display: flex;
 	gap: 10px;
+	height: 100%;
+	align-items: center;
 `;
 
 export const DownLoadWrapper = styled.div`

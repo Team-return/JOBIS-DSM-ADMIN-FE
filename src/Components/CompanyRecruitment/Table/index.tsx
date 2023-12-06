@@ -37,10 +37,8 @@ export function CompanyRecruitmentTable({
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 
-	const {
-		companyRecruitmentQueryString,
-		setDefaultCompanyRecruitmentQueryString,
-	} = useCompanyRecruitmentQueryString();
+	const { companyRecruitmentQueryString, setCompanyRecruitmentQueryString } =
+		useCompanyRecruitmentQueryString();
 
 	/** 전체 선택 & 전체 선택 해제하는 함수입니다. */
 	const checkAllBox = () => {
@@ -297,7 +295,7 @@ export function CompanyRecruitmentTable({
 			<Pagination
 				page={companyRecruitmentPageNum}
 				data={companyRecruitmentQueryString}
-				setData={setDefaultCompanyRecruitmentQueryString}
+				setData={setCompanyRecruitmentQueryString}
 				refetch={refetchCompanyRecruitment}
 			/>
 		</_.Container>
