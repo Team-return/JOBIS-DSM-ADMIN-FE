@@ -8,13 +8,12 @@ export interface RecruitmentFormType {
 	company_id: number;
 	company_name: string;
 	company_type: string;
-	end: string;
+	end_date: string;
+	hiring_jobs: string;
 	id: number;
-	military_support: boolean;
-	recruitment_count: number;
-	recruitment_job: string;
-	recruitment_status: string;
-	start: string;
+	start_date: string;
+	status: string;
+	total_hiring_count: number;
 }
 
 export interface RecruitmentFormDetailResponse {
