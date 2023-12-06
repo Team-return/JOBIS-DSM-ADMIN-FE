@@ -1,7 +1,6 @@
 import {
 	useMutation,
 	MutationOptions,
-	useQueries,
 	useQuery,
 } from 'react-query';
 import { instance } from '../axios';
@@ -14,65 +13,31 @@ const router = '/applications';
 export const useGetApplicantInfo = (
 	applicationQueryString: ApplicantInfoQueryStringType
 ) => {
-	return useQueries([
-		{
-			queryKey: ['getApplicantInfo', applicationQueryString],
-			queryFn: async () => {
-				const {
-					page,
-					application_status,
-					student_name,
-					recruitment_id,
-				} = applicationQueryString;
-				const pageNum = page ? `&page=${page}` : '';
-				const studentName = student_name
-					? `&student_name=${student_name}`
+	return useQuery({
+		queryKey: ['getApplicantInfo', applicationQueryString],
+		queryFn: async () => {
+			const { page, application_status, student_name, recruitment_id } =
+				applicationQueryString;
+			const pageNum = page ? `&page=${page}` : '';
+			const studentName = student_name
+				? `&student_name=${student_name}`
+				: '';
+			const companyId = recruitment_id
+				? `&recruitment_id=${recruitment_id}`
+				: '';
+			const queryString =
+				application_status || student_name || recruitment_id || page
+					? `?application_status=${
+							application_status ? application_status : ''
+					  }${companyId}${studentName}${pageNum}`
 					: '';
-				const companyId = recruitment_id
-					? `&recruitment_id=${recruitment_id}`
-					: '';
-				const queryString =
-					application_status || student_name || recruitment_id || page
-						? `?application_status=${
-								application_status ? application_status : ''
-						  }${companyId}${studentName}${pageNum}`
-						: '';
-				const { data } = await instance.get<ApplicationResponse>(
-					`${router}${queryString}`
-				);
-				return data;
-			},
-			enabled: false,
+			const { data } = await instance.get<ApplicationResponse>(
+				`${router}${queryString}`
+			);
+			return data;
 		},
-		{
-			queryKey: ['getApplicantInfoPageNum', applicationQueryString],
-			queryFn: async () => {
-				const {
-					page,
-					application_status,
-					student_name,
-					recruitment_id,
-				} = applicationQueryString;
-				const studentName = student_name
-					? `&student_name=${student_name}`
-					: '';
-				const companyId = recruitment_id
-					? `&recruitment_id=${recruitment_id}`
-					: '';
-				const queryString =
-					application_status || student_name || recruitment_id || page
-						? `?application_status=${
-								application_status ? application_status : ''
-						  }${companyId}${studentName}`
-						: '';
-				const { data } = await instance.get<{
-					total_page_count: number;
-				}>(`${router}/count${queryString}`);
-				return data;
-			},
-			enabled: false,
-		},
-	]);
+		enabled: false,
+	});
 };
 
 /** 현장실습생 전환시 학생 조회 */

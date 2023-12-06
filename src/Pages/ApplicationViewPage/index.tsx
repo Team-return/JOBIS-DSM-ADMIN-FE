@@ -1,6 +1,6 @@
 import * as _ from './style';
 import { Header } from '../../Components/Header';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { ApplicationViewSearch } from '../../Components/ApplicationView/Search';
 import { selectStudent } from '../../Apis/Applications/request';
 import { ApplicationViewTable } from '../../Components/ApplicationView/Table';
@@ -10,17 +10,17 @@ import { useApplicationViewQueryString } from '../../Store/State';
 export function ApplicationViewPage() {
 	const { applicationViewQueryString } = useApplicationViewQueryString();
 
-	const applicationQueries = useGetApplicantInfo(applicationViewQueryString);
-	const applicationData = applicationQueries[0];
-	const applicationPage = applicationQueries[1].data?.total_page_count!;
-	const isLoading = applicationQueries.some((result) => result.isLoading);
-	const refetchApplication = useCallback(() => {
-		applicationQueries.forEach((result) => result.refetch());
-	}, [applicationQueries]);
+	const {
+		data: applicationData,
+		isLoading,
+		refetch: refetchApplication,
+	} = useGetApplicantInfo(applicationViewQueryString);
+
+	const applicationPage = applicationData?.applications?.length! / 10! + 1;
 
 	const allSelectFormIdAndName: selectStudent[] =
-		applicationData.data! &&
-		applicationData.data?.applications.map((companie) => {
+		applicationData! &&
+		applicationData?.applications.map((companie) => {
 			return {
 				id: companie.application_id,
 				name: companie.student_name,
@@ -42,9 +42,9 @@ export function ApplicationViewPage() {
 				/>
 				<ApplicationViewTable
 					applicationIsLoading={isLoading}
-					application={applicationData.data!}
+					application={applicationData!}
 					applicationPageNum={applicationPage}
-					refetchApplication={applicationData.refetch}
+					refetchApplication={refetchApplication}
 					allSelectFormIdAndName={allSelectFormIdAndName}
 				/>
 			</_.Wrapper>
