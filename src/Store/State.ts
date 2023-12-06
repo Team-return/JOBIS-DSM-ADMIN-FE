@@ -21,6 +21,7 @@ interface applicationViewQueryStringState {
 	setApplicationViewQueryString: (
 		queryString: ApplicantInfoQueryStringType
 	) => void;
+	setApplicationPage: () => void;
 }
 
 export const useApplicationViewQueryString =
@@ -59,6 +60,13 @@ export const useApplicationViewQueryString =
 				set({
 					applicationViewQueryString: queryString,
 				}),
+			setApplicationPage: () =>
+				set((prev) => ({
+					applicationViewQueryString: {
+						...prev.applicationViewQueryString,
+						page: 1,
+					},
+				})),
 		}))
 	);
 
@@ -72,6 +80,7 @@ interface companyRecruitmentQueryStringState {
 	setCompanyRecruitmentQueryString: (
 		queryString: QueryStringDataType
 	) => void;
+	setCompanyRecruitmentPage: () => void;
 }
 
 export const useCompanyRecruitmentQueryString =
@@ -112,6 +121,13 @@ export const useCompanyRecruitmentQueryString =
 				set({
 					companyRecruitmentQueryString: queryString,
 				}),
+			setCompanyRecruitmentPage: () =>
+				set((prev) => ({
+					companyRecruitmentQueryString: {
+						...prev.companyRecruitmentQueryString,
+						page: 1,
+					},
+				})),
 		}))
 	);
 
@@ -125,6 +141,7 @@ interface recruitmentFormQueryStringState {
 	setRecruitmentFormQueryString: (
 		queryString: RecruitmentFormQueryStringType
 	) => void;
+	setRecruitmentFormPage: () => void;
 }
 
 export const useRecruitmentFormQueryString =
@@ -169,6 +186,13 @@ export const useRecruitmentFormQueryString =
 				set({
 					recruitmentFormQueryString: queryString,
 				}),
+			setRecruitmentFormPage: () =>
+				set((prev) => ({
+					recruitmentFormQueryString: {
+						...prev.recruitmentFormQueryString,
+						page: 1,
+					},
+				})),
 		}))
 	);
 
@@ -182,6 +206,7 @@ interface studentManagementQueryStringState {
 	setStudentManagementQueryString: (
 		queryString: EmployableCompaniesPropsType
 	) => void;
+	setStudentManagementPage: () => void;
 }
 
 export const useStudentManagementQueryString =
@@ -220,5 +245,12 @@ export const useStudentManagementQueryString =
 				set({
 					studentManagementQueryString: queryString,
 				}),
+			setStudentManagementPage: () =>
+				set((prev) => ({
+					studentManagementQueryString: {
+						...prev.studentManagementQueryString,
+						page: 1,
+					},
+				})),
 		}))
 	);

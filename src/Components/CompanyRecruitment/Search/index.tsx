@@ -21,7 +21,13 @@ export function CompanyRecruitmentSearch({
 		setDefaultCompanyRecruitmentQueryString,
 		companyRecruitmentQueryStringDropDown,
 		companyRecruitmentQueryStringHandler,
+		setCompanyRecruitmentPage,
 	} = useCompanyRecruitmentQueryString();
+
+	const search = () => {
+		setCompanyRecruitmentPage();
+		setTimeout(refetchCompanyRecruitment);
+	};
 
 	return (
 		<_.Container>
@@ -92,8 +98,11 @@ export function CompanyRecruitmentSearch({
 					/>
 				</_.ContentWrapper>
 				<_.Btn>
-					<Button onClick={refetchCompanyRecruitment}>조회</Button>
-					<Button kind="Gray" onClick={setDefaultCompanyRecruitmentQueryString}>
+					<Button onClick={search}>조회</Button>
+					<Button
+						kind="Gray"
+						onClick={setDefaultCompanyRecruitmentQueryString}
+					>
 						초기화
 					</Button>
 				</_.Btn>
