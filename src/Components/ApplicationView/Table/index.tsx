@@ -47,8 +47,14 @@ export function ApplicationViewTable({
 	allSelectFormIdAndName,
 	applicationIsLoading,
 }: PropsType) {
+	const { applicationViewQueryString, setApplicationViewQueryString } =
+		useApplicationViewQueryString();
+		
 	const { append } = useToastStore();
-	const dataLength = application?.applications.length;
+	const dataLength = application?.applications.slice(
+		(applicationViewQueryString.page! - 1) * 10,
+		(applicationViewQueryString.page! - 1) * 10 + 10
+	).length;
 	const { openModal, closeModal } = useModalContext();
 	const [clickedData, setClickedData] = useState<selectStudent[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
@@ -65,9 +71,6 @@ export function ApplicationViewTable({
 	const allSelectFormId = allSelectFormIdAndName?.map((id) => id.id);
 	const selectFormId = clickedData.map((id) => id.id);
 	const selectStudentName = clickedData.map((name) => name.name);
-
-	const { applicationViewQueryString, setApplicationViewQueryString } =
-		useApplicationViewQueryString();
 
 	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
@@ -262,6 +265,10 @@ export function ApplicationViewTable({
 	]);
 	/** 데이터로 채운 테이블입니다. */
 	const tableAllDatas: JSX.Element[][] = application?.applications
+		.slice(
+			(applicationViewQueryString.page! - 1) * 10,
+			(applicationViewQueryString.page! - 1) * 10 + 10
+		)
 		.map((application) => {
 			const clickCheckBox = () => {
 				if (selectFormId.includes(application.application_id)) {
@@ -595,7 +602,7 @@ export function ApplicationViewTable({
 				page={applicationPageNum}
 				data={applicationViewQueryString}
 				setData={setApplicationViewQueryString}
-				refetch={refetchApplication}
+				refetch={() => {}}
 			/>
 		</_.Container>
 	);

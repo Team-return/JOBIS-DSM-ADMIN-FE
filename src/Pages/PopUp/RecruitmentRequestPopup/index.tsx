@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as _ from './style';
 import { ApplicantInfoQueryStringType } from '../../../Apis/Applications/request';
 import { StudentTable } from '../../../Components/PopUp/RecruitmentPopup/StudentTable';
@@ -15,12 +15,11 @@ export function RecruitmentRequestPopup() {
 		recruitment_id: id ? id : '',
 	});
 
-	const applicationQueries = useGetApplicantInfo(applicationQueryString);
-	const applicationData = applicationQueries[0];
-	const isLoading = applicationQueries.some((result) => result.isLoading);
-	const refetchApplication = useCallback(() => {
-		applicationQueries.forEach((result) => result.refetch());
-	}, [applicationQueries]);
+	const {
+		data: applicationData,
+		isLoading,
+		refetch: refetchApplication,
+	} = useGetApplicantInfo(applicationQueryString);
 
 	const [applicationAttachmentUrl, setApplicationAttachmentUrl] = useState<
 		AttachmentUrlType[]
@@ -34,7 +33,7 @@ export function RecruitmentRequestPopup() {
 	return (
 		<>
 			<StudentTable
-				application={applicationData.data!}
+				application={applicationData!}
 				isRequest={true}
 				refetchApplication={refetchApplication}
 				setApplicationAttachmentUrl={setApplicationAttachmentUrl}
