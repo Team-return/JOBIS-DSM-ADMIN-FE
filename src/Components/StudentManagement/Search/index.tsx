@@ -17,12 +17,18 @@ export function StudentManagementSearch({
 		studentManagementQueryStringDropDown,
 		studentManagementQueryStringHandler,
 		setDefaultStudentManagementQueryString,
+		setStudentManagementPage,
 	} = useStudentManagementQueryString();
 
 	/** 년도를 순서대로 배열로 만들어 저장합니다. */
 	const yearData = Array.from({ length: 11 }, (_, i) =>
 		(iYear - i).toString()
 	);
+
+	const search = () => {
+		setStudentManagementPage();
+		setTimeout(refetchEmployableCompanies);
+	};
 
 	return (
 		<_.Container>
@@ -34,7 +40,10 @@ export function StudentManagementSearch({
 						option={yearData}
 						value={studentManagementQueryString.year}
 						onChange={(yearData) =>
-							studentManagementQueryStringDropDown('year', yearData)
+							studentManagementQueryStringDropDown(
+								'year',
+								yearData
+							)
 						}
 					/>
 				</_.ContentWrapper>
@@ -45,7 +54,10 @@ export function StudentManagementSearch({
 						option={['전체', '선도기업', '참여기업']}
 						value={studentManagementQueryString.company_type}
 						onChange={(type) =>
-							studentManagementQueryStringDropDown('company_type', type)
+							studentManagementQueryStringDropDown(
+								'company_type',
+								type
+							)
 						}
 					/>
 				</_.ContentWrapper>
@@ -62,7 +74,7 @@ export function StudentManagementSearch({
 				</_.ContentWrapper>
 			</_.Wrapper>
 			<_.ButtonWrapper>
-				<Button onClick={refetchEmployableCompanies}>조회</Button>
+				<Button onClick={search}>조회</Button>
 				<Button
 					kind="Gray"
 					onClick={setDefaultStudentManagementQueryString}

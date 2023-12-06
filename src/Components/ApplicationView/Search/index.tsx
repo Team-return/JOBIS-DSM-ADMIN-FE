@@ -16,7 +16,13 @@ export function ApplicationViewSearch({
 		setDefaultApplicationViewQueryString,
 		applicationViewQueryStringDropDown,
 		applicationViewQueryStringHandler,
+		setApplicationPage,
 	} = useApplicationViewQueryString();
+
+	const search = () => {
+		setApplicationPage();
+		setTimeout(refetchCompanyRecruitment);
+	};
 
 	return (
 		<_.Container>
@@ -58,7 +64,7 @@ export function ApplicationViewSearch({
 					/>
 				</_.ContentWrapper>
 				<_.Btn>
-					<Button onClick={refetchCompanyRecruitment}>조회</Button>
+					<Button onClick={search}>조회</Button>
 					<Button
 						kind="Gray"
 						onClick={setDefaultApplicationViewQueryString}

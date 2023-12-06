@@ -17,12 +17,18 @@ export function RecruitmentFormSearch({ refetchRecruitmentForm }: PropsType) {
 		setDefaultRecruitmentFormQueryString,
 		recruitmentFormQueryStringDropDown,
 		recruitmentFormQueryStringHandler,
+		setRecruitmentFormPage,
 	} = useRecruitmentFormQueryString();
 
 	/** 년도를 순서대로 배열로 만들어 저장합니다. */
 	const yearData = Array.from({ length: 11 }, (_, i) =>
 		(iYear - i).toString()
 	);
+
+	const search = () => {
+		setRecruitmentFormPage();
+		setTimeout(refetchRecruitmentForm);
+	};
 
 	return (
 		<_.Container>
@@ -107,7 +113,7 @@ export function RecruitmentFormSearch({ refetchRecruitmentForm }: PropsType) {
 					/>
 				</_.ContentWrapper>
 				<_.ButtonWrapper>
-					<Button onClick={refetchRecruitmentForm}>조회</Button>
+					<Button onClick={search}>조회</Button>
 					<Button
 						kind="Gray"
 						onClick={setDefaultRecruitmentFormQueryString}
