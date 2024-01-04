@@ -14,7 +14,12 @@ export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 	const [, setCookies, removeCookies] = useCookies();
 
 	return useMutation(
-		async () => axios.post(`${process.env.REACT_APP_BASE_URL}${router}/login`, loginData),
+		async () =>
+			axios.post(`${process.env.REACT_APP_BASE_URL}${router}/login`, {
+				account_id: loginData.account_id,
+				password: loginData.password,
+				platform_type: 'WEB',
+			}),
 		{
 			onSuccess: (res) => {
 				if (res.data.authority !== 'TEACHER') {
