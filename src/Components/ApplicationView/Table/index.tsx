@@ -49,7 +49,7 @@ export function ApplicationViewTable({
 }: PropsType) {
 	const { applicationViewQueryString, setApplicationViewQueryString } =
 		useApplicationViewQueryString();
-		
+
 	const { append } = useToastStore();
 	const dataLength = application?.applications.slice(
 		(applicationViewQueryString.page! - 1) * 10,
@@ -488,15 +488,7 @@ export function ApplicationViewTable({
 					kind="Ghost"
 					size="S"
 					onClick={() => openChangeStatusModal('APPROVED')}
-					disabled={
-						requestStatusIsLoading ||
-						!clickedData.length ||
-						!!clickedData.filter(
-							(item) =>
-								item.status === 'APPROVED' ||
-								item.status === 'SEND'
-						).length
-					}
+					disabled={requestStatusIsLoading || !clickedData.length}
 				>
 					승인
 				</Button>
@@ -504,15 +496,7 @@ export function ApplicationViewTable({
 					kind="Ghost"
 					size="S"
 					onClick={openRejectApplicationModal}
-					disabled={
-						RejectApplicationIsLoading ||
-						clickedData.length !== 1 ||
-						!!clickedData.filter(
-							(item) =>
-								item.status === 'REJECTED' ||
-								item.status === 'SEND'
-						).length
-					}
+					disabled={RejectApplicationIsLoading || !clickedData.length}
 				>
 					반려
 				</Button>
@@ -520,15 +504,7 @@ export function ApplicationViewTable({
 					kind="Ghost"
 					size="S"
 					onClick={() => openChangeStatusModal('SEND')}
-					disabled={
-						RejectApplicationIsLoading ||
-						clickedData.length !== 1 ||
-						!!clickedData.filter((item) => item.status === 'SEND')
-							.length ||
-						!clickedData.filter(
-							(item) => item.status === 'APPROVED'
-						).length
-					}
+					disabled={RejectApplicationIsLoading || !clickedData.length}
 				>
 					전송
 				</Button>
@@ -536,17 +512,7 @@ export function ApplicationViewTable({
 					kind="Ghost"
 					size="S"
 					onClick={() => openChangeStatusModal('PASS')}
-					disabled={
-						requestStatusIsLoading ||
-						!clickedData.length ||
-						!!clickedData.filter(
-							(item) =>
-								item.status === 'REJECTED' ||
-								item.status === 'REQUESTED' ||
-								item.status === 'PASS' ||
-								item.status === 'APPROVED'
-						).length
-					}
+					disabled={requestStatusIsLoading || !clickedData.length}
 				>
 					합격
 				</Button>
@@ -554,17 +520,7 @@ export function ApplicationViewTable({
 					kind="Ghost"
 					size="S"
 					onClick={() => openChangeStatusModal('FAILED')}
-					disabled={
-						requestStatusIsLoading ||
-						!clickedData.length ||
-						!!clickedData.filter(
-							(item) =>
-								item.status === 'REJECTED' ||
-								item.status === 'REQUESTED' ||
-								item.status === 'FAILED' ||
-								item.status === 'APPROVED'
-						).length
-					}
+					disabled={requestStatusIsLoading || !clickedData.length}
 				>
 					불합격
 				</Button>
@@ -572,17 +528,7 @@ export function ApplicationViewTable({
 					kind="Ghost"
 					size="S"
 					onClick={openChangeTrainDateModal}
-					disabled={
-						trainDateIsLoading ||
-						!clickedData.length ||
-						!!clickedData.filter(
-							(item) =>
-								item.status === 'REJECTED' ||
-								item.status === 'REQUESTED' ||
-								item.status === 'FIELD_TRAIN' ||
-								item.status === 'APPROVED'
-						).length
-					}
+					disabled={trainDateIsLoading || !clickedData.length}
 				>
 					현장실습
 				</Button>
