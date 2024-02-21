@@ -9,6 +9,7 @@ import { ApplicationViewPage } from './Pages/ApplicationViewPage';
 import { StudentManagementPage } from './Pages/StudentManagementPage';
 import { CompanyDetailPage } from './Pages/CompanyDetailPage';
 import { RecruitmentFormDetailPage } from './Pages/RecruitmentFormDetailPage';
+import { NoticePage } from './Pages/NoticePage';
 
 const Router = createBrowserRouter([
 	{
@@ -57,6 +58,10 @@ const Router = createBrowserRouter([
 			{
 				path: 'ReviewSubmissionPopup',
 				element: <ReviewSubmissionPopup />,
+			},
+			{
+				path: 'Notice',
+				element: <NoticePage />,
 			},
 		],
 	},
