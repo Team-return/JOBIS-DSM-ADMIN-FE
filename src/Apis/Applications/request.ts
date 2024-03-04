@@ -12,6 +12,7 @@ export interface ApplicantInfoQueryStringType {
 	application_status: string | StatusType;
 	student_name: string;
 	recruitment_id: string;
+	year: string;
 }
 
 export interface TrainDate {

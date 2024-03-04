@@ -32,6 +32,7 @@ export const useApplicationViewQueryString =
 				application_status: '',
 				student_name: '',
 				recruitment_id: '',
+				year: date.getFullYear().toString(),
 			},
 			applicationViewQueryStringHandler: (e) =>
 				set((prev) => ({
@@ -54,6 +55,7 @@ export const useApplicationViewQueryString =
 						application_status: '',
 						student_name: '',
 						recruitment_id: '',
+						year: date.getFullYear().toString(),
 					},
 				}),
 			setApplicationViewQueryString: (queryString) =>
