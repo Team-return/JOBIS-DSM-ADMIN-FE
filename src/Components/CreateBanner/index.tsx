@@ -1,10 +1,26 @@
 import * as _ from './styled';
+import React, { useState } from 'react';
 import templete from '../../Assets/PNG/templete.png';
 import banner from '../../Assets/PNG/banner.png';
 import search from '../../Assets/SVG/search.svg';
 import { Button } from '@team-return/design-system';
 
 export function CreateBanner() {
+	const [logoPreview, setLogoPreview] = useState<string | null>(null);
+
+	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const selectedFile = event.target.files?.[0];
+
+		if (selectedFile) {
+			const reader = new FileReader();
+
+			reader.onloadend = () => {
+				setLogoPreview(reader.result as string);
+			};
+
+			reader.readAsDataURL(selectedFile);
+		}
+	};
 	return (
 		<>
 			<_.Container>
@@ -33,7 +49,27 @@ export function CreateBanner() {
 								<_.Input placeholder="회사 이름 "></_.Input>
 								<_.Input placeholder="설명"></_.Input>
 							</_.InputWrapper>
-							<_.LogoUpload>로고를 업로드 해 주세요</_.LogoUpload>
+							<_.LogoUpload>
+								<_.FileInputContainer>
+									{logoPreview ? (
+										<img
+											src={logoPreview}
+											alt="로고 미리보기"
+											style={{
+												width: '100%',
+												height: '100%',
+												borderRadius: '12px',
+											}}
+										/>
+									) : (
+										<>로고를 업로드 해주세요.</>
+									)}
+									<_.FileInput
+										type="file"
+										onChange={handleFileChange}
+									/>
+								</_.FileInputContainer>
+							</_.LogoUpload>
 						</div>
 					</_.CreateWrapper>
 					<_.MovePage>

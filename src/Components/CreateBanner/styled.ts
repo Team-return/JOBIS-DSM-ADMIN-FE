@@ -65,7 +65,7 @@ export const Input = styled.input`
 	font-size: 12px;
 	font-weight: 500;
 	color: black;
-	width: auto;
+	width: 250px;
 	height: 34px;
 	padding: 8px;
 	border-radius: 12px;
@@ -76,7 +76,9 @@ export const Input = styled.input`
 	}
 `;
 
-export const LogoUpload = styled.div`
+export const LogoUpload = styled.div``;
+
+export const FileInputContainer = styled.div`
 	position: absolute;
 	top: 35%;
 	left: 400px;
@@ -86,9 +88,19 @@ export const LogoUpload = styled.div`
 	width: 162px;
 	height: 162px;
 	border-radius: 12px;
-	background-color: white;
+	background-color: #ffffff;
 	font-size: 12px;
 	color: #cccccc;
+`;
+
+export const FileInput = styled.input`
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	cursor: pointer;
 `;
 
 export const MovePage = styled.div`
