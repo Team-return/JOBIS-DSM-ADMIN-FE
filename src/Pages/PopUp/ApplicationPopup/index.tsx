@@ -14,7 +14,7 @@ export function ApplicationPopup() {
 		application_status: 'APPROVED',
 		student_name: '',
 		recruitment_id: id ? id : '',
-		year: date.getFullYear().toString(),
+		year: '',
 	});
 
 	const {

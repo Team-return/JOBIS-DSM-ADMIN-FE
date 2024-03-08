@@ -14,7 +14,7 @@ export function RecruitmentRequestPopup() {
 		application_status: 'REQUESTED',
 		student_name: '',
 		recruitment_id: id ? id : '',
-		year: date.getFullYear().toString(),
+		year: '',
 	});
 
 	const {
