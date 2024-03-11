@@ -45,6 +45,9 @@ export function Header() {
 						지원서
 					</_.NavBtn>
 				</Link>
+				<Link to="/Notice">
+					<_.NavBtn clicked={clickedStatus('Notice')} width={68}>
+						공지
 				<Link to="/Banner">
 					<_.NavBtn clicked={clickedStatus('Banner')} width={68}>
 						배너
