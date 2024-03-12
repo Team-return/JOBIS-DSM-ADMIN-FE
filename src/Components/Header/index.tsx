@@ -48,6 +48,8 @@ export function Header() {
 				<Link to="/Notice">
 					<_.NavBtn clicked={clickedStatus('Notice')} width={68}>
 						공지
+					</_.NavBtn>
+				</Link>
 				<Link to="/Banner">
 					<_.NavBtn clicked={clickedStatus('Banner')} width={68}>
 						배너

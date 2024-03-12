@@ -22,10 +22,7 @@ export function NoticeEditPage() {
 		attachments: presignedUrls,
 	});
 
-	// const fileName = jsonData.files[0].file_name;
-
 	const { mutate: getPresignedUrl } = usePresignedUrl();
-	// const { mutate } = useUpload(attachments, { onSuccess: (e) => {} });
 
 	const getTodayDate = (): string => {
 		const today = new Date();
@@ -108,7 +105,10 @@ export function NoticeEditPage() {
 						</_.WriteDateWrap>
 						<_.TitleWrap>
 							<_.Text>제목</_.Text>
-							<_.Input placeholder="공지 제목을 입력하세요" />
+							<_.Input
+								onChange={handleTitleChange}
+								placeholder="공지 제목을 입력하세요"
+							/>
 						</_.TitleWrap>
 						<_.TextWrap>
 							<_.Text>내용</_.Text>
