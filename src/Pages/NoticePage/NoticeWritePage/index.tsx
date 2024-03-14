@@ -1,11 +1,11 @@
 import { Header } from '../../../Components/Header';
 import * as _ from './style';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { Button } from '@team-return/design-system';
-import { useNoticeWriteData } from '../../../Apis/Notices';
-import axios from 'axios';
+// import { useNoticeWriteData } from '../../../Apis/Notices';
+// import axios from 'axios';
 import { usePresignedUrl } from '../../../Apis/Files';
-import { PresignedUrlRequest } from '../../../Apis/Files/request';
+// import { PresignedUrlRequest } from '../../../Apis/Files/request';
 import { Link } from 'react-router-dom';
 
 export function NoticeWritePage() {
@@ -14,13 +14,13 @@ export function NoticeWritePage() {
 	const [title, setTitle] = useState<string>('');
 	const [content, setContent] = useState<string>('');
 	const [attachments, setAttachments] = useState<File[]>([]);
-	const [presignedUrls, setPresignedUrls] = useState<string[]>([]);
+	// const [presignedUrls, setPresignedUrls] = useState<string[]>([]);
 
-	const { mutate: writeNotice } = useNoticeWriteData({
-		title,
-		content,
-		attachments: presignedUrls,
-	});
+	// const { mutate: writeNotice } = useNoticeWriteData({
+	// 	title,
+	// 	content,
+	// 	attachments: presignedUrls,
+	// });
 
 	// const fileName = jsonData.files[0].file_name;
 
