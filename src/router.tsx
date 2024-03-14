@@ -9,6 +9,11 @@ import { ApplicationViewPage } from './Pages/ApplicationViewPage';
 import { StudentManagementPage } from './Pages/StudentManagementPage';
 import { CompanyDetailPage } from './Pages/CompanyDetailPage';
 import { RecruitmentFormDetailPage } from './Pages/RecruitmentFormDetailPage';
+import { NoticeListPage } from './Pages/NoticePage/NoticeListPage';
+import { NoticeWritePage } from './Pages/NoticePage/NoticeWritePage';
+import { NoticeEditPage } from './Pages/NoticePage/NoticeEditPage';
+import { BannerPage } from './Pages/BannerPage';
+import { CreateBannerPage } from './Pages/CreateBannerPage';
 import { PDFFile } from './Pages/PdfPage';
 
 const Router = createBrowserRouter([
@@ -60,9 +65,29 @@ const Router = createBrowserRouter([
 				element: <ReviewSubmissionPopup />,
 			},
 			{
+				path: 'Banner',
+				element: <BannerPage />,
+			},
+			{
+				path: 'Notice',
+				element: <NoticeListPage />,
+			},
+			{
+				path: 'Notice/Write',
+				element: <NoticeWritePage />,
+			},
+			{
+				path: 'Notice/Edit',
+				element: <NoticeEditPage />,
+			},
+			{
+				path: 'CreateBanner',
+				element: <CreateBannerPage />,
+			},
+      {
 				path: 'pdf/:id',
 				element: <PDFFile />,
-			},
+      }
 		],
 	},
 ]);

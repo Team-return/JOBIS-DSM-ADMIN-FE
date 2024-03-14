@@ -8,12 +8,13 @@ import { AttachmentUrlType } from '../../../Apis/Applications/response';
 import { useGetApplicantInfo } from '../../../Apis/Applications';
 
 export function RecruitmentRequestPopup() {
+	const date = new Date();
 	const id = new URLSearchParams(window.location.search).get('id');
 	const [applicationQueryString] = useState<ApplicantInfoQueryStringType>({
 		application_status: 'REQUESTED',
 		student_name: '',
 		recruitment_id: id ? id : '',
-		year: '',
+		year: date.getFullYear().toString(),
 	});
 
 	const {

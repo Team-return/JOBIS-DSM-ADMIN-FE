@@ -54,3 +54,18 @@ export const useFileUpload = (file: File, options: MutationOptions) => {
 		}
 	);
 };
+
+
+/** 선생님 모집의뢰 상태 변경 */
+export const useUpload = (files: File[], options: MutationOptions) => {
+	const formData = new FormData();
+	files.forEach((file) => {
+		formData.append('file', file);
+	})
+	return useMutation(
+		async () => instance.post(`${router}?type=EXTENSION_FILE`, formData),
+		{
+			...options,
+		}
+	);
+};
