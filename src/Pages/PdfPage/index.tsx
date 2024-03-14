@@ -1,10 +1,28 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ImgImg from './img.png';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { useParams } from 'react-router-dom';
+import { useGetRecruitmentFormDetail } from '../../Apis/Recruitments';
+import { useGetCompanyDetail } from '../../Apis/Companies';
+import { hiringProgress } from '../../Utils/Translation';
+import { regex } from '../../Utils/Regex';
 
 export const PDFFile = () => {
+	const params = useParams();
+	const [companyId, setCompanyId] = useState(0);
+	const { data: recruitmentDetail } = useGetRecruitmentFormDetail(params.id!);
+	const { data: companyDetail } = useGetCompanyDetail(companyId.toString());
+	console.log(recruitmentDetail);
+	const { buisness_number, phone_number, money } = regex;
+
+	useEffect(() => {
+		if (recruitmentDetail) {
+			setCompanyId(recruitmentDetail?.company_id);
+		}
+	}, [recruitmentDetail]);
+
 	const date = new Date();
 
 	const converToPdf = async () => {
@@ -85,145 +103,355 @@ export const PDFFile = () => {
 					}}
 				>
 					<tr>
-						<td>1</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>1</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							모집인원
 						</td>
-						<td colSpan={20}></td>
+						<td colSpan={20}>
+							{recruitmentDetail?.areas
+								.map(
+									(area) =>
+										`${area.job.join(', ')}(${
+											area.hiring
+										}명)`
+								)
+								.join(' / ')}
+						</td>
 					</tr>
 					<tr>
-						<td>2</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>2</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							기업명
 						</td>
-						<td colSpan={6}></td>
-						<td colSpan={4} align="center">
+						<td colSpan={6} align="center">
+							{companyDetail?.company_name}
+						</td>
+						<td
+							colSpan={4}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							사업자등록번호
 						</td>
-						<td colSpan={10}></td>
+						<td colSpan={10}>
+							{buisness_number(
+								companyDetail?.business_number || ''
+							)}
+						</td>
 					</tr>
 					<tr>
-						<td>3</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>3</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							업종형태
 						</td>
-						<td colSpan={6}></td>
-						<td rowSpan={2} colSpan={4} align="center">
+						<td colSpan={6} align="center">
+							{companyDetail?.business_area}
+						</td>
+						<td
+							rowSpan={2}
+							colSpan={4}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							연락처
 						</td>
-						<td colSpan={10}></td>
+						<td rowSpan={2} colSpan={10}>{`대표번호: ${phone_number(
+							companyDetail?.representative_phone_no || ''
+						)}\n담당자(직위): ${
+							companyDetail?.manager_name
+						}\n연락처(cell): ${phone_number(
+							companyDetail?.manager_phone_no || ''
+						)}\ne-mail: ${companyDetail?.email}`}</td>
 					</tr>
 					<tr>
-						<td>4</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>4</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							{'앱/웹\n서비스명'}
 						</td>
-						<td colSpan={6}></td>
-						<td colSpan={10}></td>
+						<td colSpan={6} align="center">
+							{companyDetail?.service_name}
+						</td>
 					</tr>
 					<tr>
-						<td>5</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>5</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							근무지
 						</td>
-						<td colSpan={20}></td>
+						<td colSpan={20}>
+							{`${companyDetail?.main_address} ${companyDetail?.main_address_detail}`}
+						</td>
 					</tr>
 					<tr>
-						<td>6</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>6</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							설립일자
 						</td>
-						<td colSpan={6}></td>
-						<td colSpan={3} align="center">
+						<td colSpan={6} align="center">
+							{companyDetail?.founded_at}
+						</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							연매출액
 						</td>
-						<td colSpan={5}></td>
-						<td colSpan={3} align="center">
+						<td colSpan={5} align="center">
+							약 {companyDetail?.take}억/원
+						</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							근로자수
 						</td>
-						<td colSpan={3}></td>
+						<td colSpan={3}>{companyDetail?.worker_number}명</td>
 					</tr>
 					<tr>
-						<td>7</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>7</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							회사소개
 						</td>
-						<td colSpan={20}></td>
+						<td colSpan={20}>{companyDetail?.company_introduce}</td>
 					</tr>
 					<tr>
-						<td>8</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>8</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							{'현장\n실습생\n선발\n직무'}
 						</td>
-						<td colSpan={20}></td>
+						<td colSpan={20}>
+							{recruitmentDetail?.areas
+								.map((area) => area.job.join(', '))
+								.join(' / ')}
+						</td>
 					</tr>
 					<tr>
-						<td>9</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>9</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							{'자격\n조건'}
 						</td>
-						<td colSpan={20}></td>
+						<td colSpan={20}>
+							{recruitmentDetail?.areas
+								.map(
+									(area) =>
+										`${area.major_task}\n${
+											area.preferential_treatment &&
+											`(우대사항) ${area.preferential_treatment}\n`
+										}`
+								)
+								.join('/\n')}
+						</td>
 					</tr>
 					<tr>
-						<td rowSpan={6}>10</td>
-						<td rowSpan={6} colSpan={3} align="center">
+						<td rowSpan={6} style={{ fontWeight: 700 }}>
+							10
+						</td>
+						<td
+							rowSpan={6}
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							{'현장\n실습생\n근무조건'}
 						</td>
-						<td colSpan={4} align="center">
+						<td
+							colSpan={4}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							{'현장 실습생\n출근 및 근무'}
 						</td>
-						<td colSpan={16}></td>
+						<td colSpan={16}>{`${
+							recruitmentDetail?.working_hours
+						} ${
+							recruitmentDetail?.flexible_working
+								? '유연근무제'
+								: ''
+						}`}</td>
 					</tr>
 					<tr>
-						<td colSpan={4} align="center">
+						<td
+							colSpan={4}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							{'수당 및\n채용 시\n급여 정보'}
 						</td>
-						<td colSpan={16}></td>
-					</tr>
-					<tr>
-						<td colSpan={4} align="center">
-							식사 제공
+						<td colSpan={16}>
+							{`현장 실습) 수당 ${recruitmentDetail?.train_pay} 원\n`}
+							{`채용 전환) 연봉 ${
+								recruitmentDetail?.pay
+									? `${recruitmentDetail.pay}만원`
+									: `추후협의`
+							} \n`}
+							{`※ 참고: 2024년 최저임금 2,060,740원(시급 9,860원)\n`}
+							<span style={{ color: '#D80000' }}>
+								※ 현장실습수당, 채용시 연봉정보 필수 작성
+							</span>
 						</td>
-						<td colSpan={16}></td>
 					</tr>
 					<tr>
-						<td colSpan={4} align="center">
+						<td
+							colSpan={4}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
+							기술스택
+						</td>
+						<td colSpan={16}>
+							{recruitmentDetail?.areas
+								.map((area) => area.tech.join(', '))
+								.join(' / ')}
+						</td>
+					</tr>
+					<tr>
+						<td
+							colSpan={4}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							사내 복지
 						</td>
-						<td colSpan={16}></td>
+						<td colSpan={16}>{recruitmentDetail?.benefits}</td>
 					</tr>
 					<tr>
-						<td rowSpan={2} colSpan={4} align="center">
+						<td
+							rowSpan={2}
+							colSpan={4}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							전형절차
 						</td>
-						<td rowSpan={2} colSpan={6}></td>
-						<td colSpan={5} align="center">
+						<td rowSpan={2} colSpan={6} align="center">
+							{recruitmentDetail?.hiring_progress
+								.map((progress) => hiringProgress[progress])
+								.join(' → ')}
+						</td>
+						<td
+							colSpan={5}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							병역특례기업
 						</td>
-						<td colSpan={5}></td>
+						<td colSpan={5}>
+							{recruitmentDetail?.military ? 'true' : 'false'}
+						</td>
 					</tr>
 					<tr>
-						<td colSpan={5} align="center">
+						<td
+							colSpan={5}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							{'산업기능요원 TO\n및 신청계획'}
 						</td>
 						<td colSpan={5}></td>
 					</tr>
 					<tr>
-						<td>11</td>
-						<td colSpan={3} align="center">
+						<td style={{ fontWeight: 700 }}>11</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							필요서류
 						</td>
-						<td colSpan={7}></td>
-						<td colSpan={3} align="center">
+						<td colSpan={7}>
+							{recruitmentDetail?.submit_document}
+						</td>
+						<td
+							colSpan={3}
+							align="center"
+							style={{ fontWeight: 700 }}
+						>
 							모집기간
 						</td>
-						<td colSpan={10}></td>
+						<td colSpan={10}>
+							{!recruitmentDetail?.start_date &&
+							!recruitmentDetail?.end_date
+								? '상시모집'
+								: `${
+										recruitmentDetail.end_date.split('-')[1]
+								  }월 ${
+										recruitmentDetail.end_date.split('-')[2]
+								  }일 까지`}
+						</td>
 					</tr>
 				</table>
 				<DateWrapper>
-					<DateText>2024년</DateText>
-					<DateText>03월</DateText>
-					<DateText>06일</DateText>
+					<Text $size={16} $weight={500}>
+						{date.getFullYear()}년
+					</Text>
+					<Text $size={16} $weight={500}>
+						{(date.getMonth() + 1).toString().padStart(2, '0')}월
+					</Text>
+					<Text $size={16} $weight={500}>
+						{date.getDate().toString().padStart(2, '0')}일
+					</Text>
+				</DateWrapper>
+				<DateWrapper style={{ gap: 20 }}>
+					<Text
+						$size={16}
+						$weight={500}
+						style={{ textDecoration: 'underline' }}
+					>
+						{companyDetail?.company_name}
+					</Text>
+					<Text $size={16} $weight={500}>
+						대표
+					</Text>
+					<Text
+						$size={16}
+						$weight={500}
+						style={{
+							textDecoration: 'underline',
+							letterSpacing: 20,
+						}}
+					>
+						{companyDetail?.representative_name}
+					</Text>
+					<Text $size={16} $weight={500}>
+						(인)
+					</Text>
 				</DateWrapper>
 			</Wrapper>
 		</Container>
@@ -275,9 +503,4 @@ const DateWrapper = styled.footer`
 	display: flex;
 	gap: 30px;
 	margin: 20px auto;
-`;
-
-const DateText = styled.span`
-	font-size: 16px;
-	font-weight: 500;
 `;

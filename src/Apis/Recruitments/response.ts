@@ -22,6 +22,8 @@ export interface RecruitmentFormDetailResponse {
 	company_name: string;
 	areas: AreasType[];
 	required_grade: number | null;
+	working_hours: string;
+	flexible_working: boolean;
 	start_time: string;
 	end_time: string;
 	required_licenses: string[];

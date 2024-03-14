@@ -48,9 +48,9 @@ table {
   border-spacing: 0;
 }
 table, th, td {
-  border: 1px solid black; /* 테두리 선 스타일 지정 */
+  border: 0.7px solid black; /* 테두리 선 스타일 지정 */
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
   vertical-align: middle;
   white-space: pre-wrap;
   padding: 10px 3px;
@@ -58,6 +58,7 @@ table, th, td {
 td {
   min-height: 40px;
   height: 40px;
+  line-height: 16px
 }
 * {
   box-sizing: border-box;

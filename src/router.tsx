@@ -60,7 +60,7 @@ const Router = createBrowserRouter([
 				element: <ReviewSubmissionPopup />,
 			},
 			{
-				path: 'pdf',
+				path: 'pdf/:id',
 				element: <PDFFile />,
 			},
 		],
