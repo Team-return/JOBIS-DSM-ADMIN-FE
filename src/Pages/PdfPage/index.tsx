@@ -2,7 +2,7 @@ import { CSSProperties, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useGetRecruitmentFormDetail } from '../../Apis/Recruitments';
 import { useGetCompanyDetail } from '../../Apis/Companies';
 import { hiringProgress } from '../../Utils/Translation';

@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 export function NoticeEditPage() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [inputCount, setInputCount] = useState<number>(0);
-	const [title, setTitle] = useState<string>('');
+	const [, setTitle] = useState<string>('');
 	const [content, setContent] = useState<string>('');
 	const [attachments, setAttachments] = useState<File[]>([]);
 	// const [presignedUrls, setPresignedUrls] = useState<string[]>([]);
