@@ -14,6 +14,7 @@ import { NoticeWritePage } from './Pages/NoticePage/NoticeWritePage';
 import { NoticeEditPage } from './Pages/NoticePage/NoticeEditPage';
 import { BannerPage } from './Pages/BannerPage';
 import { CreateBannerPage } from './Pages/CreateBannerPage';
+import { PDFFile } from './Pages/PdfPage';
 
 const Router = createBrowserRouter([
 	{
@@ -83,6 +84,10 @@ const Router = createBrowserRouter([
 				path: 'CreateBanner',
 				element: <CreateBannerPage />,
 			},
+      {
+				path: 'pdf/:id',
+				element: <PDFFile />,
+      }
 		],
 	},
 ]);

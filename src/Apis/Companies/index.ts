@@ -116,6 +116,7 @@ export const useGetCompanyDetail = (companyId: string) => {
 		},
 		{
 			refetchOnWindowFocus: true,
+			enabled: !!+companyId,
 		}
 	);
 };

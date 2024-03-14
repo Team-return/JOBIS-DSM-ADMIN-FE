@@ -30,9 +30,21 @@ export function RecruitmentFormDetailBasic({
 						/>
 					</_.LogoWrapper>
 				</Stack>
-				<Button size="M" onClick={() => setCanEdit(true)}>
-					수정
-				</Button>
+				<Stack gap={10}>
+					<Button size="M" onClick={() => setCanEdit(true)}>
+						수정
+					</Button>
+					<Button
+						size="M"
+						onClick={() =>
+							navigate(
+								`/pdf/${recruitmentFormDetail.recruitment_id}`
+							)
+						}
+					>
+						pdf 출력
+					</Button>
+				</Stack>
 			</_.Wrapper>
 			<_.Stack>
 				<_.TitleBox>기업명</_.TitleBox>
@@ -41,8 +53,8 @@ export function RecruitmentFormDetailBasic({
 				</_.ContentBox>
 				<_.TitleBox>모집기간</_.TitleBox>
 				<_.ContentBox width={40}>
-					{recruitmentFormDetail?.start_date.replace(/-/g, '.')} ~{' '}
-					{recruitmentFormDetail?.end_date.replace(/-/g, '.')}
+					{/* {recruitmentFormDetail?.start_date.replace(/-/g, '.')} ~{' '}
+					{recruitmentFormDetail?.end_date.replace(/-/g, '.')} */}
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
@@ -150,7 +162,7 @@ export function RecruitmentFormDetailBasic({
 						<_.Stack>
 							<_.TitleBox>근무시간</_.TitleBox>
 							<_.ContentBox width={23}>
-								{recruitmentFormDetail?.start_time.replace(
+								{/* {recruitmentFormDetail?.start_time.replace(
 									/^(\d{2}:\d{2}):\d{2}$/,
 									'$1'
 								)}
@@ -158,7 +170,7 @@ export function RecruitmentFormDetailBasic({
 								{recruitmentFormDetail?.end_time.replace(
 									/^(\d{2}:\d{2}):\d{2}$/,
 									'$1'
-								)}
+								)} */}
 							</_.ContentBox>
 							<_.TitleBox>실습수당</_.TitleBox>
 							<_.ContentBox width={23}>

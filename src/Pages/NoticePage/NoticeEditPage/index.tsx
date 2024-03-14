@@ -1,26 +1,26 @@
 import { Header } from '../../../Components/Header';
 import * as _ from './style';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { Button } from '@team-return/design-system';
-import { useNoticeWriteData } from '../../../Apis/Notices';
-import axios from 'axios';
+// import { useNoticeWriteData } from '../../../Apis/Notices';
+// import axios from 'axios';
 import { usePresignedUrl } from '../../../Apis/Files';
-import { PresignedUrlRequest } from '../../../Apis/Files/request';
+// import { PresignedUrlRequest } from '../../../Apis/Files/request';
 import { Link } from 'react-router-dom';
 
 export function NoticeEditPage() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [inputCount, setInputCount] = useState<number>(0);
-	const [title, setTitle] = useState<string>('');
+	const [, setTitle] = useState<string>('');
 	const [content, setContent] = useState<string>('');
 	const [attachments, setAttachments] = useState<File[]>([]);
-	const [presignedUrls, setPresignedUrls] = useState<string[]>([]);
+	// const [presignedUrls, setPresignedUrls] = useState<string[]>([]);
 
-	const { mutate: writeNotice } = useNoticeWriteData({
-		title,
-		content,
-		attachments: presignedUrls,
-	});
+	// const { mutate: writeNotice } = useNoticeWriteData({
+	// 	title,
+	// 	content,
+	// 	attachments: presignedUrls,
+	// });
 
 	const { mutate: getPresignedUrl } = usePresignedUrl();
 
@@ -60,7 +60,7 @@ export function NoticeEditPage() {
 		console.log('내용:', e.target.value);
 	};
 
-	let files_: any;
+	// let files_: any;
 
 	const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
@@ -70,10 +70,10 @@ export function NoticeEditPage() {
 				...newAttachments,
 			]);
 
-			files_ = attachments.map((item) => ({
-				type: 'EXTENSION_FILE',
-				file_name: item.name,
-			}));
+			// files_ = attachments.map((item) => ({
+			// 	type: 'EXTENSION_FILE',
+			// 	file_name: item.name,
+			// }));
 
 			// const presignedUrls = await Promise.all(promises);
 
