@@ -1,6 +1,5 @@
 import { CSSProperties, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ImgImg from './img.png';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useParams } from 'react-router-dom';
@@ -15,7 +14,7 @@ export const PDFFile = () => {
 	const { data: recruitmentDetail } = useGetRecruitmentFormDetail(params.id!);
 	const { data: companyDetail } = useGetCompanyDetail(companyId.toString());
 	console.log(recruitmentDetail);
-	const { buisness_number, phone_number, money } = regex;
+	const { buisness_number, phone_number } = regex;
 
 	useEffect(() => {
 		if (recruitmentDetail) {
@@ -26,8 +25,6 @@ export const PDFFile = () => {
 	const date = new Date();
 
 	const converToPdf = async () => {
-		const date = new Date();
-
 		const canvas = await html2canvas(document.querySelector('#wrting')!);
 		const imageFile = canvas.toDataURL('image/svg');
 		const doc = new jsPDF('p', 'mm', 'a4');
