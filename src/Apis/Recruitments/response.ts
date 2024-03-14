@@ -27,6 +27,7 @@ export interface RecruitmentFormDetailResponse {
 	start_time: string;
 	end_time: string;
 	required_licenses: string[];
+	recruitment_id: number;
 	hiring_progress: string[];
 	train_pay: number;
 	pay: string | null;

@@ -2,11 +2,12 @@ import { CSSProperties, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetRecruitmentFormDetail } from '../../Apis/Recruitments';
 import { useGetCompanyDetail } from '../../Apis/Companies';
 import { hiringProgress } from '../../Utils/Translation';
 import { regex } from '../../Utils/Regex';
+import { Button } from '@team-return/design-system';
 
 export const PDFFile = () => {
 	const params = useParams();
@@ -60,7 +61,11 @@ export const PDFFile = () => {
 				alt=""
 				style={{ width: '595px', height: '842px' }}
 			/> */}
-			<button onClick={converToPdf}>다운로드</button>
+			<DownloadButton>
+				<Button onClick={converToPdf} iconName="Download">
+					다운로드
+				</Button>
+			</DownloadButton>
 			<Wrapper id="wrting">
 				<HeaderLine />
 				<Text
@@ -454,6 +459,12 @@ export const PDFFile = () => {
 		</Container>
 	);
 };
+
+const DownloadButton = styled.div`
+	position: fixed;
+	right: 50px;
+	bottom: 40px;
+`;
 
 const Container = styled.div`
 	width: 100vw;
