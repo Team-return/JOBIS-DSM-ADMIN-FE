@@ -52,23 +52,54 @@ export const BannerImg = styled.img`
 	z-index: 0;
 `;
 
-export const InputWrapper = styled.div`
+export const InputWrapper = styled.div<{
+	hasValue: {
+		title1: boolean;
+		title2: boolean;
+		companyName: boolean;
+		description: boolean;
+	};
+}>`
 	position: absolute;
 	top: 35%;
 	left: 90px;
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
+
+	.title1 {
+		color: white;
+		font-size: ${(props) => (props.hasValue.title1 ? '32px' : '12px')};
+		font-weight: ${(props) => (props.hasValue.title1 ? '700' : '500')};
+	}
+
+	.title2 {
+		color: white;
+		font-size: ${(props) => (props.hasValue.title2 ? '32px' : '12px')};
+		font-weight: ${(props) => (props.hasValue.title2 ? '700' : '500')};
+	}
+
+	.companyName {
+		color: ${(props) => (props.hasValue.companyName ? 'white' : 'black')};
+		font-size: ${(props) => (props.hasValue.companyName ? '20px' : '12px')};
+		font-weight: 500;
+	}
+
+	.description {
+		color: ${(props) => (props.hasValue.description ? '#E5E5E5' : 'black')};
+		font-size: ${(props) => (props.hasValue.description ? '14px' : '12px')};
+		font-weight: 500;
+	}
 `;
 
-export const Input = styled.input`
-	font-size: 12px;
-	font-weight: 500;
-	color: black;
+export const Input = styled.input<{ hasValue: boolean }>`
 	width: 250px;
 	height: 34px;
 	padding: 8px;
 	border-radius: 12px;
+	background-color: ${(props) => (props.hasValue ? 'transparent' : 'white')};
+	transition: background-color 0.3s ease;
+
 	&::placeholder {
 		font-size: 12px;
 		font-weight: 500;
