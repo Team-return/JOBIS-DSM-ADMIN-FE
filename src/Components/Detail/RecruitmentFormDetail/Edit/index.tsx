@@ -429,7 +429,7 @@ export function RecruitmentFormDetailEdit({
 									style={{
 										paddingRight: '10px',
 									}}
-									value={start_time.replace(
+									value={start_time?.replace(
 										/^(\d{2}:\d{2}):\d{2}$/,
 										'$1'
 									)}
@@ -449,7 +449,7 @@ export function RecruitmentFormDetailEdit({
 									style={{
 										paddingRight: '10px',
 									}}
-									value={end_time.replace(
+									value={end_time?.replace(
 										/^(\d{2}:\d{2}):\d{2}$/,
 										'$1'
 									)}
