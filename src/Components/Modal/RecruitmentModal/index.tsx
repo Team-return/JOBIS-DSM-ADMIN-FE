@@ -32,12 +32,12 @@ export function GatherModal({
 
 	const { data: jobs, isLoading: jobsLoading } = useGetCode('JOB');
 	const selectJobsArray = jobs?.codes.filter((code) =>
-		areaData?.job.includes(code.keyword)
+		areaData?.job.includes({ name: code.keyword, id: code.code })
 	);
 
 	const { data: techs, isLoading: techsLoading } = useGetCode('TECH');
 	const selectTechsArray = techs?.codes.filter((techItem) =>
-		areaData?.tech.includes(techItem.keyword)
+		areaData?.tech.includes({ name: techItem.keyword, id: techItem.code })
 	);
 	const selectTechsCodeArray = selectTechsArray?.map(
 		(techItem) => techItem.code

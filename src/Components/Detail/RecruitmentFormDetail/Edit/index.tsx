@@ -34,6 +34,12 @@ export function RecruitmentFormDetailEdit({
 	setCanEdit,
 	refetchRecruitmentFormDetailInfo,
 }: PropsType) {
+	const [every, setEvery] = useState(!recruitmentFormDetail?.start_date);
+	const [working, setWorking] = useState(
+		recruitmentFormDetail?.flexible_working
+			? recruitmentFormDetail?.working_hours
+			: ''
+	);
 	const navigate = useNavigate();
 	const { append } = useToastStore();
 	const params = useParams();
@@ -43,11 +49,15 @@ export function RecruitmentFormDetailEdit({
 		form: recruitmentFormDetailInfo,
 		setForm: setRecruitmentFormDetailInfo,
 		handleChange: recruitmentFormDetailInfohandler,
-	} = useForm<EditRecruitmentRequest>({
+	} = useForm<Omit<EditRecruitmentRequest, 'working_hours'>>({
 		required_grade: recruitmentFormDetail?.required_grade,
 		required_licenses: recruitmentFormDetail?.required_licenses,
-		start_time: recruitmentFormDetail?.start_time,
-		end_time: recruitmentFormDetail?.end_time,
+		start_time: recruitmentFormDetail?.flexible_working
+			? '00:00'
+			: recruitmentFormDetail?.working_hours.split(' ~ ')[0],
+		end_time: recruitmentFormDetail?.flexible_working
+			? '00:00'
+			: recruitmentFormDetail?.working_hours.split(' ~ ')[1],
 		train_pay: recruitmentFormDetail?.train_pay,
 		pay: recruitmentFormDetail?.pay,
 		benefits: recruitmentFormDetail?.benefits,
@@ -57,22 +67,22 @@ export function RecruitmentFormDetailEdit({
 		start_date: recruitmentFormDetail?.start_date,
 		end_date: recruitmentFormDetail?.end_date,
 		etc: recruitmentFormDetail?.etc,
+		flexible_working: recruitmentFormDetail?.flexible_working,
 	});
 
 	const {
 		required_grade,
 		required_licenses,
-		start_time,
-		end_time,
+		start_date,
+		end_date,
 		train_pay,
 		pay,
 		benefits,
 		military,
 		hiring_progress,
 		submit_document,
-		start_date,
-		end_date,
 		etc,
+		flexible_working,
 	} = recruitmentFormDetailInfo;
 
 	const [areaId, setAreaId] = useState<number>(0);
@@ -127,9 +137,17 @@ export function RecruitmentFormDetailEdit({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hiring_progress]);
 
+	const { start_time, end_time, ...detailInfo } = recruitmentFormDetailInfo;
 	const { mutate: editRecruitmentFormDetail } = useEditRecruitment(
 		params.id!,
-		recruitmentFormDetailInfo,
+		{
+			...detailInfo,
+			start_date: every ? null : detailInfo?.start_date,
+			end_date: every ? null : detailInfo?.end_date,
+			working_hours: flexible_working
+				? start_time
+				: `${start_time} ~ ${end_time}`,
+		},
 		{
 			onSuccess: () => {
 				append({
@@ -180,8 +198,8 @@ export function RecruitmentFormDetailEdit({
 				</Stack>
 			</_.Wrapper>
 			<_.Stack>
-				<_.TitleBox>기업명</_.TitleBox>
-				<_.ContentBox width={40}>
+				<_.TitleBox height={90}>기업명</_.TitleBox>
+				<_.ContentBox width={40} height={90}>
 					<_.CustomInput
 						width={100}
 						type="text"
@@ -190,45 +208,61 @@ export function RecruitmentFormDetailEdit({
 						disabled={true}
 					/>
 				</_.ContentBox>
-				<_.TitleBox>모집기간</_.TitleBox>
-				<_.ContentBox width={40}>
-					<_.CustomInput
-						width={100}
-						type="date"
-						value={start_date}
-						name="start_date"
-						onChange={(
-							e: ChangeEvent<
-								HTMLInputElement | HTMLTextAreaElement
-							>
-						) =>
-							e.target.value
-								? recruitmentFormDetailInfohandler(e)
-								: setRecruitmentFormDetailInfo((prev) => ({
-										...prev,
-										start_date: start_date,
-								  }))
-						}
-					/>
-					<span style={{ margin: '0 10px' }}>~</span>
-					<_.CustomInput
-						width={100}
-						type="date"
-						value={end_date}
-						name="end_date"
-						onChange={(
-							e: ChangeEvent<
-								HTMLInputElement | HTMLTextAreaElement
-							>
-						) =>
-							e.target.value
-								? recruitmentFormDetailInfohandler(e)
-								: setRecruitmentFormDetailInfo((prev) => ({
-										...prev,
-										end_date: end_date,
-								  }))
-						}
-					/>
+				<_.TitleBox height={90}>모집기간</_.TitleBox>
+				<_.ContentBox
+					width={40}
+					height={90}
+					style={{ padding: '0px', flexDirection: 'column' }}
+				>
+					<_.DateBox>
+						<_.CustomInput
+							width={100}
+							type="date"
+							value={start_date!}
+							name="start_date"
+							disabled={every}
+							onChange={(
+								e: ChangeEvent<
+									HTMLInputElement | HTMLTextAreaElement
+								>
+							) =>
+								e.target.value
+									? recruitmentFormDetailInfohandler(e)
+									: setRecruitmentFormDetailInfo((prev) => ({
+											...prev,
+											start_date: start_date,
+									  }))
+							}
+						/>
+						<span style={{ margin: '0 10px' }}>~</span>
+						<_.CustomInput
+							width={100}
+							type="date"
+							value={end_date!}
+							name="end_date"
+							disabled={every}
+							onChange={(
+								e: ChangeEvent<
+									HTMLInputElement | HTMLTextAreaElement
+								>
+							) =>
+								e.target.value
+									? recruitmentFormDetailInfohandler(e)
+									: setRecruitmentFormDetailInfo((prev) => ({
+											...prev,
+											end_date: end_date,
+									  }))
+							}
+						/>
+					</_.DateBox>
+					<_.CheckEmailWrapper>
+						<_.CheckBox
+							type="checkbox"
+							checked={every}
+							onChange={() => setEvery((prev) => !prev)}
+						/>
+						<_.CheckLogin>상시모집</_.CheckLogin>
+					</_.CheckEmailWrapper>
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
@@ -261,7 +295,9 @@ export function RecruitmentFormDetailEdit({
 											overflow="scroll"
 											longText={true}
 										>
-											{area.job.join(' / ')}
+											{area.job
+												.map((item) => item.name)
+												.join(' / ')}
 										</_.ContentBox>
 										<_.TitleBox height={125}>
 											사용기술
@@ -272,7 +308,9 @@ export function RecruitmentFormDetailEdit({
 											overflow="scroll"
 											longText={true}
 										>
-											{area.tech.join(' / ')}
+											{area.tech
+												.map((item) => item.name)
+												.join(' / ')}
 										</_.ContentBox>
 									</_.Stack>
 									<_.Stack>
@@ -417,48 +455,118 @@ export function RecruitmentFormDetailEdit({
 				</_.Stack>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox height={275}>근무조건</_.TitleBox>
+				<_.TitleBox height={290}>근무조건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
-							<_.TitleBox>근무시간</_.TitleBox>
-							<_.ContentBox width={23}>
-								<_.CustomInput
-									width={45}
-									placeholder="출근시간"
-									style={{
-										paddingRight: '10px',
-									}}
-									value={start_time?.replace(
-										/^(\d{2}:\d{2}):\d{2}$/,
-										'$1'
+							<_.TitleBox height={90}>근무시간</_.TitleBox>
+							<_.ContentBox
+								width={23}
+								height={90}
+								style={{
+									padding: '0px',
+									flexDirection: 'column',
+								}}
+							>
+								<_.DateBox>
+									<_.CustomInput
+										width={flexible_working ? 100 : 45}
+										placeholder="출근시간"
+										style={{
+											paddingRight: '10px',
+										}}
+										value={
+											flexible_working
+												? working
+												: start_time?.replace(
+														/^(\d{2}:\d{2})$/,
+														'$1'
+												  )
+										}
+										name="start_time"
+										maxLength={5}
+										onChange={(e) => {
+											// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+											flexible_working
+												? setWorking(e.target.value)
+												: setRecruitmentFormDetailInfo(
+														(prev) => ({
+															...prev,
+															start_time:
+																e.target.value
+																	.replaceAll(
+																		/[^0-9]/g,
+																		''
+																	)
+																	?.replaceAll(
+																		/^(\d{2})(\d{2})$/g,
+																		'$1:$2'
+																	),
+														})
+												  );
+										}}
+									/>
+									{!flexible_working && (
+										<>
+											<p
+												style={{
+													margin: '0 10px',
+												}}
+											>
+												~
+											</p>
+											<_.CustomInput
+												width={45}
+												placeholder="퇴근시간"
+												style={{
+													paddingRight: '10px',
+												}}
+												maxLength={5}
+												value={end_time?.replace(
+													/^(\d{2}:\d{2}):\d{2}$/,
+													'$1'
+												)}
+												name="end_time"
+												onChange={(e) =>
+													setRecruitmentFormDetailInfo(
+														(prev) => ({
+															...prev,
+															end_time:
+																e.target.value
+																	.replaceAll(
+																		/[^0-9]/g,
+																		''
+																	)
+																	?.replaceAll(
+																		/^(\d{2})(\d{2})$/g,
+																		'$1:$2'
+																	),
+														})
+													)
+												}
+											/>
+										</>
 									)}
-									name="start_time"
-									onChange={recruitmentFormDetailInfohandler}
-								/>
-								<p
-									style={{
-										margin: '0 10px',
-									}}
-								>
-									~
-								</p>
-								<_.CustomInput
-									width={45}
-									placeholder="퇴근시간"
-									style={{
-										paddingRight: '10px',
-									}}
-									value={end_time?.replace(
-										/^(\d{2}:\d{2}):\d{2}$/,
-										'$1'
-									)}
-									name="end_time"
-									onChange={recruitmentFormDetailInfohandler}
-								/>
+								</_.DateBox>
+								<_.CheckEmailWrapper>
+									<_.CheckBox
+										type="checkbox"
+										checked={flexible_working}
+										onChange={() =>
+											setRecruitmentFormDetailInfo(
+												(prev) => ({
+													...prev,
+													flexible_working:
+														!prev.flexible_working,
+												})
+											)
+										}
+									/>
+									<_.CheckLogin>상시모집</_.CheckLogin>
+								</_.CheckEmailWrapper>
 							</_.ContentBox>
-							<_.TitleBox>실습수당</_.TitleBox>
-							<_.ContentBox width={23}>
+							<_.TitleBox height={90}>실습수당</_.TitleBox>
+							<_.ContentBox height={90} width={23}>
 								<_.CustomInput
 									width={100}
 									type="number"
@@ -472,12 +580,12 @@ export function RecruitmentFormDetailEdit({
 									원/월
 								</_.AbsoluteText>
 							</_.ContentBox>
-							<_.TitleBox>
+							<_.TitleBox height={90}>
 								정규직
 								<br />
 								전환 시 연봉
 							</_.TitleBox>
-							<_.ContentBox width={24}>
+							<_.ContentBox height={90} width={24}>
 								<_.CustomInput
 									width={100}
 									type="number"

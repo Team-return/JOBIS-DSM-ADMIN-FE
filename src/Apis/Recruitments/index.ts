@@ -155,7 +155,7 @@ export const useAddArea = (
 /** 모집 의뢰 수정 */
 export const useEditRecruitment = (
 	recruitmentId: string,
-	recruitmentData: EditRecruitmentRequest,
+	recruitmentData: Omit<EditRecruitmentRequest, 'start_time' | 'end_time'>,
 	options: MutationOptions
 ) => {
 	return useMutation(
