@@ -12,7 +12,7 @@ import { Stack } from '@team-return/design-system';
 interface PropsType {
 	hiringProgressArray: string[];
 	setRecruitmentFormDetailInfo: Dispatch<
-		SetStateAction<EditRecruitmentRequest>
+		SetStateAction<Omit<EditRecruitmentRequest, 'working_hours'>>
 	>;
 }
 

@@ -24,8 +24,6 @@ export interface RecruitmentFormDetailResponse {
 	required_grade: number | null;
 	working_hours: string;
 	flexible_working: boolean;
-	start_time: string;
-	end_time: string;
 	required_licenses: string[];
 	recruitment_id: number;
 	hiring_progress: string[];
@@ -39,10 +37,15 @@ export interface RecruitmentFormDetailResponse {
 	etc: string | null;
 }
 
+interface nameAndId {
+	name: string;
+	id: number;
+}
+
 export interface AreasType {
 	id: number;
-	job: string[];
-	tech: string[];
+	job: nameAndId[];
+	tech: nameAndId[];
 	hiring: number;
 	major_task: string;
 	preferential_treatment: string | null;
