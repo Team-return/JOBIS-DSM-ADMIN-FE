@@ -1,4 +1,4 @@
-import { Button, Icon, Stack, Text } from '@team-return/design-system';
+import { Button, Stack, Text } from '@team-return/design-system';
 import { RecruitmentFormDetailResponse } from '../../../../Apis/Recruitments/response';
 import { hiringProgress } from '../../../../Utils/Translation';
 import * as _ from '../../style';
