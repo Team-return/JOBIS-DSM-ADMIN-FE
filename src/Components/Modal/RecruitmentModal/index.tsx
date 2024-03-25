@@ -31,13 +31,14 @@ export function GatherModal({
 	const selectTechCode = tech.map((techItem) => techItem.code);
 
 	const { data: jobs, isLoading: jobsLoading } = useGetCode('JOB');
-	const selectJobsArray = jobs?.codes.filter((code) =>
-		areaData?.job.includes({ name: code.keyword, id: code.code })
+	const selectJobsArray = jobs?.codes.filter(
+		(code) => !!areaData?.job.filter((item) => item.id === code.code).length
 	);
 
 	const { data: techs, isLoading: techsLoading } = useGetCode('TECH');
-	const selectTechsArray = techs?.codes.filter((techItem) =>
-		areaData?.tech.includes({ name: techItem.keyword, id: techItem.code })
+	const selectTechsArray = techs?.codes.filter(
+		(techItem) =>
+			!!areaData?.tech.filter((item) => item.id === techItem.code).length
 	);
 	const selectTechsCodeArray = selectTechsArray?.map(
 		(techItem) => techItem.code
@@ -171,6 +172,7 @@ export function GatherModal({
 	const submit = () => {
 		areaData ? editArea() : addArea();
 	};
+	console.log(area.job_codes);
 
 	return (
 		<>

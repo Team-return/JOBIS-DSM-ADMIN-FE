@@ -185,9 +185,21 @@ export function RecruitmentFormTable({
 				>
 					{recruitment.application_approved_count}명
 				</_.ContentText>, // 지원자 수
-				<_.ContentText>{recruitment.start_date}</_.ContentText>, // 모집 시작 날짜
-				<_.ContentText>{recruitment.end_date}</_.ContentText>, // 모집 종료 날짜
-			];
+			].concat(
+				recruitment.start_date
+					? [
+							<_.ContentText>
+								{recruitment.start_date}
+							</_.ContentText>, // 모집 시작 날짜
+							<_.ContentText>
+								{recruitment.end_date}
+							</_.ContentText>, // 모집 종료 날짜
+					  ]
+					: [
+							<_.ContentText>상시모집</_.ContentText>,
+							<_.ContentText>상시모집</_.ContentText>,
+					  ]
+			);
 		})
 		.concat(emptyTableDataArray);
 

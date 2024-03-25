@@ -1,4 +1,4 @@
-import { Button, Stack, Text } from '@team-return/design-system';
+import { Button, Icon, Stack, Text } from '@team-return/design-system';
 import { RecruitmentFormDetailResponse } from '../../../../Apis/Recruitments/response';
 import { hiringProgress } from '../../../../Utils/Translation';
 import * as _ from '../../style';
@@ -31,9 +31,6 @@ export function RecruitmentFormDetailBasic({
 					</_.LogoWrapper>
 				</Stack>
 				<Stack gap={10}>
-					<Button size="M" onClick={() => setCanEdit(true)}>
-						수정
-					</Button>
 					<Button
 						size="M"
 						onClick={() =>
@@ -42,7 +39,10 @@ export function RecruitmentFormDetailBasic({
 							)
 						}
 					>
-						pdf 출력
+						모집의뢰서 미리보기
+					</Button>
+					<Button size="M" onClick={() => setCanEdit(true)}>
+						수정
 					</Button>
 				</Stack>
 			</_.Wrapper>

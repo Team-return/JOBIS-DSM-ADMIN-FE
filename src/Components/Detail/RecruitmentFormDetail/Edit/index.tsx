@@ -562,7 +562,7 @@ export function RecruitmentFormDetailEdit({
 											)
 										}
 									/>
-									<_.CheckLogin>상시모집</_.CheckLogin>
+									<_.CheckLogin>유연근무제</_.CheckLogin>
 								</_.CheckEmailWrapper>
 							</_.ContentBox>
 							<_.TitleBox height={90}>실습수당</_.TitleBox>

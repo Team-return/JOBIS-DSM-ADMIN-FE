@@ -1,4 +1,10 @@
-import { Button, Icon, Stack, useToastStore, Text } from '@team-return/design-system';
+import {
+	Button,
+	Icon,
+	Stack,
+	useToastStore,
+	Text,
+} from '@team-return/design-system';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { CompanyDetailResponse } from '../../../../Apis/Companies/response';
 import { useForm } from '../../../../Hooks/useForm';
@@ -46,6 +52,9 @@ export function CompanyDetailEdit({
 		take: companyDetailInfo?.take,
 		service_name: companyDetailInfo?.service_name,
 		company_profile_url: companyDetailInfo?.company_profile_url,
+		representative_phone_no: companyDetailInfo?.representative_phone_no,
+		business_area_code: companyDetailInfo?.business_area_code,
+		biz_registration_url: companyDetailInfo?.biz_registration_url,
 	});
 
 	const {
@@ -66,6 +75,7 @@ export function CompanyDetailEdit({
 		worker_number,
 		take,
 		service_name,
+		representative_phone_no,
 	} = companyDetailEditInfo;
 
 	const { mutate: editCompanyInfo } = useChangeCompanyInfo(
@@ -164,9 +174,10 @@ export function CompanyDetailEdit({
 					</Button>
 				</Stack>
 			</_.Wrapper>
+			<div>asd</div>
 			<_.Stack>
 				<_.TitleBox>기업명</_.TitleBox>
-				<_.ContentBox width={25}>
+				<_.ContentBox width={15}>
 					<_.CustomInput
 						width={100}
 						type="text"
@@ -176,7 +187,7 @@ export function CompanyDetailEdit({
 					/>
 				</_.ContentBox>
 				<_.TitleBox>사업자 번호</_.TitleBox>
-				<_.ContentBox width={25}>
+				<_.ContentBox width={15}>
 					<_.CustomInput
 						width={100}
 						type="text"
@@ -188,12 +199,22 @@ export function CompanyDetailEdit({
 					/>
 				</_.ContentBox>
 				<_.TitleBox>대표자</_.TitleBox>
-				<_.ContentBox width={20}>
+				<_.ContentBox width={15}>
 					<_.CustomInput
 						width={100}
 						type="text"
 						value={representative_name}
 						name="representative_name"
+						onChange={companyDetailEditInfohandler}
+					/>
+				</_.ContentBox>
+				<_.TitleBox>대표 전화번호</_.TitleBox>
+				<_.ContentBox width={15}>
+					<_.CustomInput
+						width={100}
+						type="text"
+						value={representative_phone_no}
+						name="representative_phone_no"
 						onChange={companyDetailEditInfohandler}
 					/>
 				</_.ContentBox>
