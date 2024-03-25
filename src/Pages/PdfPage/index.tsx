@@ -59,11 +59,6 @@ export const PDFFile = () => {
 		<>
 			{!recruitmentDetailLoading && !companyDetailLoading && (
 				<Container>
-					{/* <img
-			src={ImgImg}
-			alt=""
-			style={{ width: '595px', height: '842px' }}
-		/> */}
 					<DownloadButton>
 						<Button onClick={converToPdf} iconName="Download">
 							다운로드
@@ -129,7 +124,9 @@ export const PDFFile = () => {
 									{recruitmentDetail?.areas
 										.map(
 											(area) =>
-												`${area.job.join(', ')}(${
+												`${area.job
+													.map((item) => item.name)
+													.join(', ')}(${
 													area.hiring
 												}명)`
 										)
@@ -238,7 +235,11 @@ export const PDFFile = () => {
 									연매출액
 								</td>
 								<td colSpan={5} align="center">
-									약 {companyDetail?.take}억/원
+									약{' '}
+									{companyDetail?.take
+										.toString()
+										.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+									억/원
 								</td>
 								<td
 									colSpan={3}
@@ -275,7 +276,11 @@ export const PDFFile = () => {
 								</td>
 								<td colSpan={20}>
 									{recruitmentDetail?.areas
-										.map((area) => area.job.join(', '))
+										.map((area) =>
+											area.job
+												.map((item) => item.name)
+												.join(', ')
+										)
 										.join(' / ')}
 								</td>
 							</tr>
@@ -336,10 +341,18 @@ export const PDFFile = () => {
 									{'수당 및\n채용 시\n급여 정보'}
 								</td>
 								<td colSpan={16}>
-									{`현장 실습) 수당 ${recruitmentDetail?.train_pay} 원\n`}
+									{`현장 실습) 수당 ${recruitmentDetail?.train_pay
+										.toString()
+										.replace(
+											/\B(?=(\d{3})+(?!\d))/g,
+											','
+										)} 원\n`}
 									{`채용 전환) 연봉 ${
 										recruitmentDetail?.pay
-											? `${recruitmentDetail.pay}만원`
+											? `${recruitmentDetail.pay.replace(
+													/\B(?=(\d{3})+(?!\d))/g,
+													','
+											  )}만원`
 											: `추후협의`
 									} \n`}
 									{`※ 참고: 2024년 최저임금 2,060,740원(시급 9,860원)\n`}
@@ -359,7 +372,11 @@ export const PDFFile = () => {
 								</td>
 								<td colSpan={16}>
 									{recruitmentDetail?.areas
-										.map((area) => area.tech.join(', '))
+										.map((area) =>
+											area.tech
+												.map((item) => item.name)
+												.join(', ')
+										)
 										.join(' / ')}
 								</td>
 							</tr>
@@ -400,9 +417,7 @@ export const PDFFile = () => {
 									병역특례기업
 								</td>
 								<td colSpan={5}>
-									{recruitmentDetail?.military
-										? 'true'
-										: 'false'}
+									{recruitmentDetail?.military ? 'O' : 'X'}
 								</td>
 							</tr>
 							<tr>
@@ -413,7 +428,9 @@ export const PDFFile = () => {
 								>
 									{'산업기능요원 TO\n및 신청계획'}
 								</td>
-								<td colSpan={5}></td>
+								<td colSpan={5}>
+									{recruitmentDetail?.military ? 'O' : 'X'}
+								</td>
 							</tr>
 							<tr>
 								<td style={{ fontWeight: 700 }}>11</td>

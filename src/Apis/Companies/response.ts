@@ -54,4 +54,6 @@ export interface CompanyDetailResponse {
 	attachments: string[];
 	service_name: string;
 	business_area: string;
+	business_area_code: number;
+	biz_registration_url: string;
 }
