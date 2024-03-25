@@ -174,7 +174,6 @@ export function CompanyDetailEdit({
 					</Button>
 				</Stack>
 			</_.Wrapper>
-			<div>asd</div>
 			<_.Stack>
 				<_.TitleBox>기업명</_.TitleBox>
 				<_.ContentBox width={15}>
