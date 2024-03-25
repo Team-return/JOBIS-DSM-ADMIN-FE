@@ -155,7 +155,7 @@ export const useRecruitmentFormQueryString =
 				start: ``,
 				end: ``,
 				status: '',
-				winter_intern: null,
+				winter_intern: false,
 				page: 1,
 			},
 			recruitmentFormQueryStringHandler: (e) =>
