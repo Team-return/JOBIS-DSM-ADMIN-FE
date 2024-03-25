@@ -66,13 +66,12 @@ export function RecruitmentFormSearch({ refetchRecruitmentForm }: PropsType) {
 				<_.ContentWrapper width={12.3}>
 					<DropDown
 						width={86}
-						option={['전체', '체험형', '채용형']}
+						option={['체험형', '채용형']}
 						value={getValueByKey(
 							winterIntern,
 							recruitmentFormQueryString.winter_intern
 						)}
 						onChange={(type) =>
-							type !== '전체' &&
 							recruitmentFormQueryStringDropDown(
 								'winter_intern',
 								winterIntern[type]
