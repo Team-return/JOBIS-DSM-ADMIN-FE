@@ -53,8 +53,6 @@ export function CompanyDetailEdit({
 		service_name: companyDetailInfo?.service_name,
 		company_profile_url: companyDetailInfo?.company_profile_url,
 		representative_phone_no: companyDetailInfo?.representative_phone_no,
-		business_area_code: companyDetailInfo?.business_area_code,
-		biz_registration_url: companyDetailInfo?.biz_registration_url,
 	});
 
 	const {

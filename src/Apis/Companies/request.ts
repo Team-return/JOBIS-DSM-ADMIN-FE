@@ -33,6 +33,4 @@ export interface CompanyInfoEditType {
 	service_name: string;
 	company_profile_url: string;
 	representative_phone_no: string;
-	business_area_code: number;
-	biz_registration_url: string;
 }
