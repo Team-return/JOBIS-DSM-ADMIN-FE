@@ -63,6 +63,7 @@ export const Tbody = styled.tbody`
 	justify-content: center;
 	align-items: center;
 	border-collapse: collapse;
+	flex-direction: column;
 `;
 
 export const Tr = styled.tr`

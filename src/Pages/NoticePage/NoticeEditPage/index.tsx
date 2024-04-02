@@ -88,7 +88,7 @@ export function NoticeEditPage() {
 
 	const handleNoticeSubmit = () => {
 		// console.log(data);
-		// writeNotice();
+		writeNotice();
 		getPresignedUrl(attachments);
 	};
 

@@ -3,3 +3,7 @@ export interface NoticeWrite {
 	content: string;
 	attachments: string[];
 }
+
+export interface NoticeDelete {
+	noticeId: string;
+}

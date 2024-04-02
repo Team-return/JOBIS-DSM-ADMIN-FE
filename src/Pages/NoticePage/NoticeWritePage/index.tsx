@@ -1,12 +1,10 @@
 import { Header } from '../../../Components/Header';
 import * as _ from './style';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { Button } from '@team-return/design-system';
 import { useNoticeWriteData } from '../../../Apis/Notices';
-import axios from 'axios';
 import { usePresignedUrl } from '../../../Apis/Files';
-import { PresignedUrlRequest } from '../../../Apis/Files/request';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function NoticeWritePage() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -14,7 +12,8 @@ export function NoticeWritePage() {
 	const [title, setTitle] = useState<string>('');
 	const [content, setContent] = useState<string>('');
 	const [attachments, setAttachments] = useState<File[]>([]);
-	const [presignedUrls, setPresignedUrls] = useState<string[]>([]);
+	const [presignedUrls] = useState<string[]>([]);
+	const navigate = useNavigate();
 
 	const { mutate: writeNotice } = useNoticeWriteData({
 		title,
@@ -22,10 +21,7 @@ export function NoticeWritePage() {
 		attachments: presignedUrls,
 	});
 
-	// const fileName = jsonData.files[0].file_name;
-
 	const { mutate: getPresignedUrl } = usePresignedUrl();
-	// const { mutate } = useUpload(attachments, { onSuccess: (e) => {} });
 
 	const getTodayDate = (): string => {
 		const today = new Date();
@@ -63,8 +59,6 @@ export function NoticeWritePage() {
 		console.log('내용:', e.target.value);
 	};
 
-	// let files_: any;
-
 	const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const newAttachments = Array.from(e.target.files);
@@ -76,9 +70,9 @@ export function NoticeWritePage() {
 	};
 
 	const handleNoticeSubmit = () => {
-		// console.log(data);
-		// writeNotice();
 		getPresignedUrl(attachments);
+		writeNotice();
+		navigate('/Notice');
 	};
 
 	return (
@@ -109,6 +103,7 @@ export function NoticeWritePage() {
 									value={content}
 									onChange={handleContentChange}
 									onInput={onInputHandler}
+									as="textarea"
 								/>
 								<_.InputCount>{inputCount}자/1000</_.InputCount>
 							</_.InputWrapper>
@@ -127,11 +122,13 @@ export function NoticeWritePage() {
 							/>
 						</_.FileWrap>
 						<_.ButtonWrap>
-							<Link to={'/Notice'}>
-								<Button onClick={handleNoticeSubmit}>
-									공지 등록하기
-								</Button>
-							</Link>
+							{
+								<Link to={'/Notice'}>
+									<Button onClick={handleNoticeSubmit}>
+										공지 등록하기
+									</Button>
+								</Link>
+							}
 						</_.ButtonWrap>
 					</_.ContentWrap>
 				</_.Box>

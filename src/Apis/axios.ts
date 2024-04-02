@@ -13,6 +13,8 @@ let flag = false;
 instance.interceptors.request.use(
 	(config) => {
 		const accessToken = cookies.get('access_token');
+		console.log();
+		
 		const returnConfig = { ...config };
 		if (accessToken) {
 			returnConfig.headers!['Authorization'] = `Bearer ${accessToken}`;
@@ -28,10 +30,11 @@ instance.interceptors.response.use(
 		if (axios.isAxiosError(error) && error.response) {
 			const { config } = error;
 			const refreshToken = cookies.get('refresh_token');
+			console.log(refreshToken);
 			if (!refreshToken) {
 				cookies.remove('access_token');
 				cookies.remove('refresh_token');
-				window.location.href = '/login';
+				// window.location.href = '/login';
 				return;
 			}
 			if (

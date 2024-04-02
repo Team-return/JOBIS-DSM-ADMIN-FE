@@ -99,6 +99,7 @@ export const TextInput = styled.textarea`
     font-size: 16px;
     border: none;
     resize: none;
+    white-space: pre-line;
 `;
 
 export const FileWrap = styled.div`
