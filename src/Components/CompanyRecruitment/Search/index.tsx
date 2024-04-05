@@ -2,6 +2,8 @@ import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { useGetCode } from '../../../Apis/Codes';
 import { useCompanyRecruitmentQueryString } from '../../../Store/State';
+import { companyType } from '../../../Utils/Translation';
+import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 
 interface PropsType {
 	refetchCompanyRecruitment: () => void;
@@ -38,12 +40,16 @@ export function CompanyRecruitmentSearch({
 						onChange={(type) =>
 							companyRecruitmentQueryStringDropDown(
 								'company_type',
-								type
+								getValueByKey(companyType, type)
 							)
 						}
 						width={28}
 						option={['전체', '선도기업', '참여기업']}
-						value={companyRecruitmentQueryString.company_type}
+						value={
+							companyType[
+								companyRecruitmentQueryString.company_type
+							]
+						}
 					/>
 				</_.ContentWrapper>
 				<_.TitleText>지역</_.TitleText>
@@ -89,12 +95,20 @@ export function CompanyRecruitmentSearch({
 						onChange={(industry) =>
 							companyRecruitmentQueryStringDropDown(
 								'industry',
-								industry
+								businessCode?.codes.find(
+									(item) => item.keyword === industry
+								)?.code
 							)
 						}
 						width={90}
 						option={allKeywords}
-						value={companyRecruitmentQueryString.industry}
+						value={
+							businessCode?.codes.find(
+								(item) =>
+									item.code.toString() ===
+									companyRecruitmentQueryString.industry
+							)?.keyword  
+						}
 					/>
 				</_.ContentWrapper>
 				<_.Btn>
