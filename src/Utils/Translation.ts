@@ -1,7 +1,7 @@
 export const companyType: { [key: string]: string } = {
-	LEAD: '선도',
-	PARTICIPATING: '참여',
-	CONTRACTING: '협약',
+	LEAD: '선도기업',
+	PARTICIPATING: '참여기업',
+	CONTRACTING: '협약기업',
 	DEFAULT: '기본',
 };
 
