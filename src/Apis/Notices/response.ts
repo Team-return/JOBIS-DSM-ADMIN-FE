@@ -11,7 +11,7 @@ export interface NoticeDetailResponse {
     attachments: AttachmentResponse[];
 }
 
-type AttachmentType =
+export type AttachmentType =
     | "FILE"
     | "URL"
 

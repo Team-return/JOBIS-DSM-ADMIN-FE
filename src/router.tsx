@@ -77,7 +77,7 @@ const Router = createBrowserRouter([
 				element: <NoticeWritePage />,
 			},
 			{
-				path: 'Notice/Edit',
+				path: 'Notice/Edit/:id',
 				element: <NoticeEditPage />,
 			},
 			{

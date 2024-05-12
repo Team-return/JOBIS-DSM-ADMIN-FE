@@ -1,4 +1,4 @@
-import { NoticeWrite } from "./request";
+import { NoticeWrite, NoticeEdit } from "./request";
 import { MutationOptions, useMutation } from "react-query";
 import { instance } from "../axios";
 import { NoticeListResponse } from "./response";
@@ -6,18 +6,31 @@ import { useEffect, useState } from "react";
 import { NoticeDetailResponse } from "./response";
 
 /** 공지사항 작성 */
-export const useNoticeWriteData = (noticeData: NoticeWrite) => {
-    const formData = new FormData()
-    noticeData.attachments.forEach((attachment) => { formData.append('file', attachment) })
-    
+export const useNoticeWriteData = () => {
     return useMutation(
-        async () => {
-            const { data } = await instance.post(`${process.env.REACT_APP_BASE_URL}/notices`, {...noticeData, attachments: formData});
+        async (noticeData: NoticeWrite) => {
+            const { data } = await instance.post(`/notices`, noticeData);
             return data;
         },
         {
             onError: (error: Error) => {
                 console.error("notice write error:", error.message);
+            }
+        }
+    )
+}
+
+/** 공지사항 수정 */
+export const useNoticeEditData = (noticeId: string) => {
+    return useMutation(
+        async (noticeData: NoticeEdit) => {
+            const { data } = await instance.patch(`/notices/${noticeId}`, noticeData);
+            return data;
+        },
+        {
+            onError: (error: Error) => {
+                console.error("notice edit error: ", error);
+                
             }
         }
     )
@@ -29,6 +42,7 @@ export const useNoticeDetailData = (noticeId: string) => {
     
     useEffect(() => {
         const fetchNoticeDetail = async () => {
+            
             try {
                 const response = await instance.get(`${process.env.REACT_APP_BASE_URL}/notices/${noticeId}`);
                 const data = response.data;

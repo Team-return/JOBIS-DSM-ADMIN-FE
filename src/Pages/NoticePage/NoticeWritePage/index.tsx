@@ -1,10 +1,12 @@
 import { Header } from '../../../Components/Header';
 import * as _ from './style';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Button } from '@team-return/design-system';
 import { useNoticeWriteData } from '../../../Apis/Notices';
 import { usePresignedUrl } from '../../../Apis/Files';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { AttachmentRequest } from '../../../Apis/Notices/request';
+import { Icon } from '@team-return/design-system';
 
 export function NoticeWritePage() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -12,16 +14,37 @@ export function NoticeWritePage() {
 	const [title, setTitle] = useState<string>('');
 	const [content, setContent] = useState<string>('');
 	const [attachments, setAttachments] = useState<File[]>([]);
-	const [presignedUrls] = useState<string[]>([]);
+	const [presignedUrls, setpresignedUrls] = useState<AttachmentRequest[]>([]);
 	const navigate = useNavigate();
 
-	const { mutate: writeNotice } = useNoticeWriteData({
-		title,
-		content,
-		attachments: presignedUrls,
-	});
+	const { mutate: writeNotice } = useNoticeWriteData();
 
-	const { mutate: getPresignedUrl } = usePresignedUrl();
+	const { mutate: getPresignedUrl, data } = usePresignedUrl('EXTENSION_FILE');
+
+	useEffect(() => {
+		if (data) {
+			const { presignedUrls } = data;
+			setpresignedUrls(
+				presignedUrls.urls.map(({ file_path }) => ({
+					type: 'FILE',
+					url: file_path,
+				}))
+			);
+		}
+	}, [data]);
+
+	useEffect(() => {
+		if (presignedUrls.length !== 0) {
+			console.log('6', presignedUrls);
+
+			writeNotice({
+				title,
+				content,
+				attachments: presignedUrls,
+			});
+			navigate('/Notice');
+		}
+	}, [presignedUrls]);
 
 	const getTodayDate = (): string => {
 		const today = new Date();
@@ -51,12 +74,10 @@ export function NoticeWritePage() {
 
 	const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setTitle(e.target.value);
-		console.log('제목:', e.target.value);
 	};
 
 	const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setContent(e.target.value);
-		console.log('내용:', e.target.value);
 	};
 
 	const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,9 +91,15 @@ export function NoticeWritePage() {
 	};
 
 	const handleNoticeSubmit = () => {
-		getPresignedUrl(attachments);
-		writeNotice();
-		navigate('/Notice');
+		if (attachments.length > 0) {
+			getPresignedUrl(attachments);
+		}
+	};
+
+	const handleFileDelete = (index: number) => {
+		const newAttachments = [...attachments];
+		newAttachments.splice(index, 1);
+		setAttachments(newAttachments);
 	};
 
 	return (
@@ -110,25 +137,42 @@ export function NoticeWritePage() {
 						</_.TextWrap>
 						<_.FileWrap>
 							<_.Text>첨부파일</_.Text>
-							<_.AddFile onClick={handleAddFileClick}>
-								파일 추가하기
-							</_.AddFile>
-							<input
-								type="file"
-								style={{ display: 'none' }}
-								ref={fileInputRef}
-								onChange={handleFileChange}
-								multiple={true}
-							/>
+							<_.AddFileWrapper>
+								{attachments.map(
+									(file: File, index: number) => (
+										<_.AddFile key={index}>
+											{file.name}
+											<_.IconWrapper
+												onClick={() =>
+													handleFileDelete(index)
+												}
+											>
+												<Icon
+													icon="Trash"
+													color={'gray10'}
+												></Icon>
+											</_.IconWrapper>
+										</_.AddFile>
+									)
+								)}
+								<_.AddFile onClick={handleAddFileClick}>
+									파일 추가하기
+								</_.AddFile>
+								<input
+									type="file"
+									style={{ display: 'none' }}
+									ref={fileInputRef}
+									onChange={handleFileChange}
+									multiple={true}
+								/>
+							</_.AddFileWrapper>
 						</_.FileWrap>
 						<_.ButtonWrap>
-							{
-								<Link to={'/Notice'}>
-									<Button onClick={handleNoticeSubmit}>
-										공지 등록하기
-									</Button>
-								</Link>
-							}
+							<div>
+								<Button onClick={handleNoticeSubmit}>
+									공지 등록하기
+								</Button>
+							</div>
 						</_.ButtonWrap>
 					</_.ContentWrap>
 				</_.Box>

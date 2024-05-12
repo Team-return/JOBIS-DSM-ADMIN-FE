@@ -3,11 +3,15 @@ import { PresignedUrlResponse } from "./response";
 import { instance } from "../axios";
 import axios from "axios";
 
-export const usePresignedUrl = () => {
-    return useMutation(
-        async (attachments: File[]) => {
+export type PresignedUrlType =
+    | "LOGO_IMAGE"
+    | "EXTENSION_FILE";
+
+export const usePresignedUrl = (type: PresignedUrlType) => {
+    const res = useMutation(
+        async (attachments: File[] ) => {
             const files = attachments.map((item) => ({
-                type: 'EXTENSION_FILE',
+                type: "EXTENSION_FILE",
                 file_name: item.name,
             }));
 
@@ -16,11 +20,13 @@ export const usePresignedUrl = () => {
         }, {
             onSuccess: async ({ presignedUrls, attachments }) => {
                 
-                const uploadPromises = presignedUrls.urls.map(({pre_signed_url}, idx) => {
+                const uploadPromises = await presignedUrls.urls.map(({pre_signed_url}, idx) => {
                     (async () => await axios.put(pre_signed_url, attachments[idx]))();
                 });
                 await Promise.all(uploadPromises);
+                return;
             }
         }
     )
+    return res
 }

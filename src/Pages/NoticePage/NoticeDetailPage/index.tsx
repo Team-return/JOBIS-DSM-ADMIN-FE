@@ -5,14 +5,15 @@ import { Icon } from '@team-return/design-system';
 import { useDeleteNotice } from '../../../Apis/Notices';
 import * as _ from './style';
 import { AttachedBox } from '../../../Components/Notice/AttachedBox';
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export function NoticeDetailPage() {
-	const { id } = useParams<{ id: any }>();
-	const { noticeDetail } = useNoticeDetailData(id);
-	const items = [noticeDetail];
+	const { id } = useParams<{ id: string }>();
+	const { noticeDetail } = useNoticeDetailData(id || '');
 
 	const navigate = useNavigate();
-	const { mutate: deleteNotice } = useDeleteNotice(id, {
+	const { mutate: deleteNotice } = useDeleteNotice(id || '', {
 		onSuccess: () => {
 			navigate('/Notice');
 		},
@@ -26,6 +27,12 @@ export function NoticeDetailPage() {
 			deleteNotice();
 		}
 	};
+
+	const date = noticeDetail?.created_at.substring(0, 10);
+
+	useEffect(() => {
+		console.log(noticeDetail);
+	}, [noticeDetail]);
 
 	return (
 		<>
@@ -44,22 +51,31 @@ export function NoticeDetailPage() {
 										onClick={handleDeleteClick}
 									></Icon>
 								</_.IconBox>
-								<_.IconBox>
-									<Icon
-										icon="EditPencil"
-										color={'gray90'}
-										size={26}
-									></Icon>
-								</_.IconBox>
+								<Link
+									to={`/Notice/Edit/${id}`}
+									state={{
+										title: `${noticeDetail?.title || ''}`,
+										created_at: `${date || ''}`,
+										content: `${
+											noticeDetail?.content || ''
+										}`,
+										attachments:
+											noticeDetail?.attachments || [],
+									}}
+								>
+									<_.IconBox>
+										<Icon
+											icon="EditPencil"
+											color={'gray90'}
+											size={26}
+										></Icon>
+									</_.IconBox>
+								</Link>
 							</_.IconWrapper>
 						</_.HeaderWrapper>
-						<_.Date>
-							{noticeDetail?.created_at.substring(0, 10)}
-						</_.Date>
+						<_.Date>{date}</_.Date>
 						<_.Contents>{noticeDetail?.content}</_.Contents>
-						{items?.map((item) => (
-							<AttachedBox props={item?.attachments || []} />
-						))}
+						<AttachedBox props={noticeDetail?.attachments || []} />
 					</_.Box>
 				</_.Background>
 			</_.Wrapper>

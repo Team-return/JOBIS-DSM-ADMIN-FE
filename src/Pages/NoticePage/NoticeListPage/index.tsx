@@ -1,7 +1,7 @@
 import React from 'react';
 import * as _ from './style';
 import { Header } from '../../../Components/Header';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@team-return/design-system';
 import { useNoticeListData } from '../../../Apis/Notices';
 
