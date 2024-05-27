@@ -52,12 +52,10 @@ export function NoticeEditPage() {
 
 	const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setTitle(e.target.value);
-		console.log('제목:', e.target.value);
 	};
 
 	const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setContent(e.target.value);
-		console.log('내용:', e.target.value);
 	};
 
 	let files_: any;

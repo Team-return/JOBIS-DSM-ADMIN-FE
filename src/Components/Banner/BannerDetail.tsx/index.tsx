@@ -6,23 +6,19 @@ import { BannerNameType } from '../../../Apis/Banners/response';
 import deleteimg from '../../../Assets/SVG/delete.svg';
 interface Props {
 	onDelete: (id: number) => void;
+	isOpen: boolean;
 }
 
-export function BannerDetail({ onDelete }: Props) {
-	const [banners, setBanners] = useState<BannerListProps[]>([]);
-	const [isOpen, setIsOpen] = useState<boolean>(true);
-
-	const BannersAPI = useGetBannerList(isOpen, {
-		onSuccess: (data: any) => {
-			setBanners(data.data.banners);
-		},
-		onError: () => {},
-	});
-	console.log(BannersAPI);
+export function BannerDetail({ onDelete, isOpen }: Props) {
+	const { data } = useGetBannerList(isOpen);
 
 	useEffect(() => {
-		if (isOpen) BannersAPI.mutate();
+		// if (isOpen) BannersAPI.mutate();
 	}, [isOpen]);
+
+	useEffect(() => {
+		console.log(data);
+	}, [data]);
 
 	const BannerType = {
 		RECRUITMENT: '모집의뢰서',
@@ -36,38 +32,37 @@ export function BannerDetail({ onDelete }: Props) {
 
 	return (
 		<_.Container>
-			{banners &&
-				banners.length > 0 &&
-				banners.map((banner, index) => (
-					<_.BannerDetails key={index}>
-						<_.BannerImg src={banner.banner_url} />
-						<_.DeleteBackground
-							onClick={() => {
-								onDelete(banner.banner_id);
-							}}
-						>
-							<_.deleteImg src={deleteimg} />
-						</_.DeleteBackground>
-						<_.Wrapper>
-							<_.TextWrapper>
-								<_.Text>이동 되는 페이지</_.Text>
-								<_.TextContent>
-									{
-										BannerType[
-											banner.banner_type as keyof BannerNameType
-										]
-									}
-								</_.TextContent>
-							</_.TextWrapper>
-							<_.TextWrapper>
-								<_.Text>표시 기간</_.Text>
-								<_.TextContent>
-									{banner.start_date} ~ {banner.end_date}
-								</_.TextContent>
-							</_.TextWrapper>
-						</_.Wrapper>
-					</_.BannerDetails>
-				))}
+			{data?.banners.map((banner) => (
+				<_.BannerDetails key={banner.id}>
+					<_.BannerImg src={banner.banner_url} />
+					<_.DeleteBackground
+						onClick={() => {
+							console.log(banner.id);
+							onDelete(banner.id);
+						}}
+					>
+						<_.deleteImg src={deleteimg} />
+					</_.DeleteBackground>
+					<_.Wrapper>
+						<_.TextWrapper>
+							<_.Text>이동 되는 페이지</_.Text>
+							<_.TextContent>
+								{
+									BannerType[
+										banner.banner_type as keyof BannerNameType
+									]
+								}
+							</_.TextContent>
+						</_.TextWrapper>
+						<_.TextWrapper>
+							<_.Text>표시 기간</_.Text>
+							<_.TextContent>
+								{banner.start_date} ~ {banner.end_date}
+							</_.TextContent>
+						</_.TextWrapper>
+					</_.Wrapper>
+				</_.BannerDetails>
+			))}
 		</_.Container>
 	);
 }

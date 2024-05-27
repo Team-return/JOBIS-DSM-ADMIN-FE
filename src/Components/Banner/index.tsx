@@ -1,30 +1,30 @@
 import { Button } from '@team-return/design-system';
 import * as _ from './style';
 import { BannerDetail } from './BannerDetail.tsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDeleteBanner, useGetBannerList } from '../../Apis/Banners';
 import { Link } from 'react-router-dom';
 import { DeleteAlarm } from './DeleteAlarm';
+import { useQueryClient } from 'react-query';
 
 export function Banner() {
 	const [isOpen, setIsOpen] = useState<boolean>(true);
 	const [showDeleteAlarm, setShowDeleteAlarm] = useState(false);
 	const [id, setId] = useState<number | null>(null);
 
-	const createBannersAPI = useGetBannerList(isOpen, {
-		onSuccess: () => {},
-		onError: () => {},
-	});
+	const createBannersAPI = useGetBannerList(isOpen);
+	const queryClient = useQueryClient();
 
 	const handleBtnClick = () => {
 		setIsOpen(!isOpen);
-		createBannersAPI.mutate();
 	};
 
 	const onDelete = async () => {
+		console.log(id);
+
 		if (id) {
 			await DeleteBannersAPI.mutateAsync();
-			createBannersAPI.mutate();
+			queryClient.fetchQuery(['getBannerList']);
 			window.location.reload();
 		}
 		setShowDeleteAlarm(false);
@@ -32,11 +32,10 @@ export function Banner() {
 
 	const DeleteBannersAPI = useDeleteBanner(id!, {
 		onSuccess: () => {
-			createBannersAPI.mutate();
+			console.log(123);
 		},
 		onError: () => {},
 	});
-	console.log(DeleteBannersAPI);
 
 	return (
 		<_.Container>
@@ -47,10 +46,10 @@ export function Banner() {
 			</_.Wrapper>
 			<_.BannerWrapper>
 				<_.Wrapper>
-					{isOpen === true ? (
-						<_.Title>현재 게시되어있는 배너</_.Title>
-					) : (
+					{isOpen === false ? (
 						<_.Title>아직 게시되어있지 않은 배너</_.Title>
+					) : (
+						<_.Title>현재 게시되어있는 배너</_.Title>
 					)}
 					<_.ButtonWrapper>
 						<_.Btn
@@ -72,6 +71,7 @@ export function Banner() {
 						setId(id);
 						setShowDeleteAlarm(true);
 					}}
+					isOpen={isOpen}
 				/>
 			</_.BannerWrapper>
 			{showDeleteAlarm && (

@@ -1,9 +1,17 @@
-import { MutationOptions, useMutation, useQuery } from 'react-query';
+import {
+	MutationOptions,
+	QueryOptions,
+	UseQueryOptions,
+	useMutation,
+	useQuery,
+} from 'react-query';
 import { instance } from '../axios';
+import { BannerListProps, BannerListResponse } from './response';
 
 const router = '/banners';
 
 export const useCreateBanners = (
+	detail_id: number,
 	banner_url: string,
 	banner_type: string,
 	start_date: string,
@@ -11,6 +19,7 @@ export const useCreateBanners = (
 	options: MutationOptions
 ) => {
 	const data = {
+		detail_id,
 		banner_url,
 		banner_type,
 		start_date,
@@ -21,22 +30,19 @@ export const useCreateBanners = (
 	});
 };
 
-export const useGetBannerList = (
-	is_opened: boolean,
-	options: MutationOptions
-) => {
+export const useGetBannerList = (is_opened: boolean) => {
 	const params = {
 		is_opened,
 	};
-	return useMutation(
-		async () =>
-			instance.get(`${router}/teacher`, {
-				params: params,
-			}),
-		{
-			...options,
-		}
-	);
+	return useQuery(['getBannerList', is_opened], async () => {
+		const { data } = await instance.get<BannerListResponse>(
+			`${router}/teacher`,
+			{
+				params,
+			}
+		);
+		return data;
+	});
 };
 
 export const useDeleteBanner = (

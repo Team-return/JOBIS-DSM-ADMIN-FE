@@ -12,6 +12,13 @@ import {
 import { DateProps } from '../../Apis/Banners/request';
 import { useForm } from '../../Hooks/useForm';
 import html2canvas from 'html2canvas';
+import { usePresignedUrl } from '../../Apis/Files';
+import { useNavigate } from 'react-router-dom';
+import { useGetCompanyRecruitments } from '../../Apis/Companies';
+import { CompanyRecruitmentType } from '../../Apis/Companies/response';
+import { useGetRecruitmentForm } from '../../Apis/Recruitments/';
+import { RecruitmentFormType } from '../../Apis/Recruitments/response';
+import { useOutsideClick } from '../../Hooks/useOutsideClick';
 
 interface PropType {
 	date: DateProps;
@@ -22,11 +29,25 @@ export function CreateBanner({ date, setDate }: PropType) {
 	const { append } = useToastStore();
 	const [logoPreview, setLogoPreview] = useState<string | null>(null);
 	const [selectedPage, setSelectedPage] = useState<string | null>(null);
-
 	const [startDate, setStartDate] = useState<string | null>(null);
 	const [endDate, setEndDate] = useState<string | null>(null);
-
+	const [showSearchEx, setShowSearchEx] = useState(false);
+	const [showRecruitmentSearchEx, setShowRecruitmentSearchEx] =
+		useState(false);
+	const [similarCompanies, setSimilarCompanies] = useState<
+		CompanyRecruitmentType[]
+	>([]);
+	const [similarRecruitment, setSimilarRecruitment] = useState<
+		RecruitmentFormType[]
+	>([]);
 	const [url, setUrl] = useState<string | null>(null);
+	const navigator = useNavigate();
+	const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(
+		null
+	);
+	const ref = useOutsideClick(() => {
+		console.log('out click');
+	});
 
 	const { recruitmentFormQueryString, recruitmentFormQueryStringHandler } =
 		useRecruitmentFormQueryString();
@@ -90,37 +111,148 @@ export function CreateBanner({ date, setDate }: PropType) {
 		description: '',
 	});
 
-	const captureImage = async () => {
-		try {
-			const elementToCapture = document.getElementById('captureElement');
+	const { mutateAsync: getPresignedUrl, data } = usePresignedUrl();
 
-			if (elementToCapture) {
-				const canvas = await html2canvas(elementToCapture);
-				const dataURL: string = canvas.toDataURL('image/png');
-				console.log('Captured Image Data URL:', dataURL);
-				return dataURL;
-			} else {
-				console.error('Element to capture not found');
-				return '';
+	const [attachments, setAttachments] = useState<File>(new File([], ''));
+
+	const handleAddBanner = async () => {
+		captureImage();
+		if (attachments.name) {
+			await getPresignedUrl([attachments]);
+			setUrl(
+				`${process.env.REACT_APP_FILE_URL}` +
+					data?.presignedUrls.urls[0].file_path || ''
+			);
+			if (data !== null) {
+				const a = async () => {
+					createBannersAPI.mutate();
+					await navigator('/Banner');
+				};
 			}
-		} catch (error) {
-			console.error('Error capturing image:', error);
-			return '';
 		}
 	};
 
+	const captureImage = () => {
+		const elementToCapture = document.getElementById('captureElement');
+		if (elementToCapture) {
+			html2canvas(elementToCapture).then((canvas) => {
+				canvas.toBlob((blob) => {
+					const file = new File([blob!], 'capture.png', {
+						type: 'image/png',
+					});
+					setAttachments(file);
+				}, 'image/png');
+			});
+		}
+	};
+
+	useEffect(() => {
+		console.log(attachments);
+		if (attachments.name) {
+			getPresignedUrl([attachments]);
+		}
+	}, [attachments]);
+
+	const [companyQueryResult, pageCountResult] = useGetCompanyRecruitments(
+		companyRecruitmentQueryString
+	);
+
+	useEffect(() => {
+		companyQueryResult.refetch();
+	}, [companyRecruitmentQueryString]);
+
+	useEffect(() => {
+		if (companyQueryResult.isSuccess) {
+			const companies: CompanyRecruitmentType[] =
+				companyQueryResult.data.companies;
+			const searchQuery =
+				companyRecruitmentQueryString.company_name.toLowerCase();
+			const similarCompaniesFound: CompanyRecruitmentType[] = companies
+				.filter(
+					(company) =>
+						company.company_name
+							.toLowerCase()
+							.includes(searchQuery) &&
+						company.company_name !== searchQuery
+				)
+				.slice(0, 4);
+			setSimilarCompanies(similarCompaniesFound);
+		}
+	}, [
+		companyQueryResult.isSuccess,
+		companyQueryResult.data,
+		companyRecruitmentQueryString.company_name,
+	]);
+
+	const handleSimilarCompanySelect = (
+		selectedCompany: CompanyRecruitmentType
+	) => {
+		setSelectedCompanyId(selectedCompany.company_id);
+		companyRecruitmentQueryStringHandler({
+			target: {
+				name: 'company_name',
+				value: selectedCompany.company_name,
+			},
+		} as React.ChangeEvent<HTMLInputElement>);
+		console.log(companyRecruitmentQueryStringHandler);
+	};
+
+	const [recruitmentQueryResult] = useGetRecruitmentForm(
+		recruitmentFormQueryString
+	);
+
+	useEffect(() => {
+		recruitmentQueryResult.refetch();
+	}, [recruitmentFormQueryString]);
+
+	useEffect(() => {
+		if (recruitmentQueryResult.isSuccess) {
+			const recruitments: RecruitmentFormType[] =
+				recruitmentQueryResult.data.recruitments;
+			const searchQuery =
+				recruitmentFormQueryString.company_name.toLowerCase();
+			const similarRecruitmentsFound: RecruitmentFormType[] = recruitments
+				.filter(
+					(recruitment) =>
+						recruitment.company_name
+							.toLowerCase()
+							.includes(searchQuery) &&
+						recruitment.company_name !== searchQuery
+				)
+				.slice(0, 4);
+			setSimilarRecruitment(similarRecruitmentsFound);
+		}
+	}, [
+		recruitmentQueryResult.isSuccess,
+		recruitmentQueryResult.data,
+		recruitmentFormQueryString.company_name,
+	]);
+
+	const handleSimilarRecruitmentSelect = (
+		selectedRecruitment: RecruitmentFormType
+	) => {
+		setSelectedCompanyId(selectedRecruitment.company_id);
+		recruitmentFormQueryStringHandler({
+			target: {
+				name: 'company_name',
+				value: selectedRecruitment.company_name,
+			},
+		} as React.ChangeEvent<HTMLInputElement>);
+		console.log(recruitmentFormQueryStringHandler);
+	};
+
 	const createBannersAPI = useCreateBanners(
+		selectedCompanyId !== null ? selectedCompanyId : -1,
 		url!,
 		{
 			page_type_1: 'COMPANY',
-			page_type_2: 'RECRUITENT',
+			page_type_2: 'RECRUITMENT',
 			page_type_3: 'INTERNSHIP',
 			page_type_4: 'BOOKMARK',
 			page_type_5: 'NONE',
 		}[selectedPage!]!,
 		date.start_date,
 		date.end_date,
-
 		{
 			onSuccess: () => {
 				append({
@@ -138,7 +270,6 @@ export function CreateBanner({ date, setDate }: PropType) {
 			},
 		}
 	);
-	console.log(createBannersAPI);
 
 	return (
 		<_.Container>
@@ -151,7 +282,7 @@ export function CreateBanner({ date, setDate }: PropType) {
 			<_.Right>
 				<_.CreateWrapper>
 					<_.Title>배너 내용을 추가해주세요.</_.Title>
-					<div id="captureElement">
+					<_.CaptureWrapper id="captureElement">
 						<_.BannerImg src={templete} />
 						<_.InputWrapper
 							hasValue={{
@@ -215,14 +346,14 @@ export function CreateBanner({ date, setDate }: PropType) {
 								/>
 							</_.FileInputContainer>
 						</_.LogoUpload>
-					</div>
+					</_.CaptureWrapper>
 				</_.CreateWrapper>
 				<_.MovePage>
 					<_.Title>
 						배너를 누르면 이동 될 페이지를 선택해 주세요.
 					</_.Title>
 					<_.Table>
-						<tr>
+						<_.CompanyNameSearch>
 							<_.Td>
 								<input
 									type="radio"
@@ -242,10 +373,31 @@ export function CreateBanner({ date, setDate }: PropType) {
 									onChange={
 										companyRecruitmentQueryStringHandler
 									}
-								></_.Search>
+									onFocus={() => setShowSearchEx(true)}
+								/>
 							</_.Name>
-						</tr>
-						<tr>
+							{showSearchEx && (
+								<_.SearchEx ref={ref}>
+									{similarCompanies.map((company) => (
+										<div>
+											<_.SearchIcon src={search} />
+											<li
+												key={company.company_id}
+												onClick={() => {
+													handleSimilarCompanySelect(
+														company
+													);
+													setShowSearchEx(false);
+												}}
+											>
+												{company.company_name}
+											</li>
+										</div>
+									))}
+								</_.SearchEx>
+							)}
+						</_.CompanyNameSearch>
+						<_.RecruitmentSearch>
 							<_.Td>
 								<input
 									type="radio"
@@ -263,9 +415,34 @@ export function CreateBanner({ date, setDate }: PropType) {
 										recruitmentFormQueryString.company_name
 									}
 									onChange={recruitmentFormQueryStringHandler}
-								></_.Search>
+									onFocus={() =>
+										setShowRecruitmentSearchEx(true)
+									}
+								/>
 							</_.Name>
-						</tr>
+							{showRecruitmentSearchEx && (
+								<_.recruitmentEx ref={ref}>
+									{similarRecruitment.map((recruitment) => (
+										<div>
+											<_.SearchIcon src={search} />
+											<li
+												key={recruitment.company_id}
+												onClick={() => {
+													handleSimilarRecruitmentSelect(
+														recruitment
+													);
+													setShowRecruitmentSearchEx(
+														false
+													);
+												}}
+											>
+												{recruitment.company_name}
+											</li>
+										</div>
+									))}
+								</_.recruitmentEx>
+							)}
+						</_.RecruitmentSearch>
 						<tr>
 							<_.Td>
 								<input
@@ -321,15 +498,7 @@ export function CreateBanner({ date, setDate }: PropType) {
 							</_.Time>
 						</_.Wrapper>
 					</_.TimeWrapper>
-					<Button
-						kind="Solid"
-						onClick={() => {
-							captureImage().then((res) => {
-								console.log(res);
-								setUrl(res);
-							});
-						}}
-					>
+					<Button kind="Solid" onClick={handleAddBanner}>
 						배너 추가
 					</Button>
 				</_.ButtonWrapper>

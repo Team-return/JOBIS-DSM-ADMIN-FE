@@ -52,6 +52,11 @@ export const BannerImg = styled.img`
 	z-index: 0;
 `;
 
+export const CaptureWrapper = styled.div`
+	width: 1000px;
+	height: 320px;
+`;
+
 export const InputWrapper = styled.div<{
 	hasValue: {
 		title1: boolean;
@@ -69,13 +74,13 @@ export const InputWrapper = styled.div<{
 
 	.title1 {
 		color: white;
-		font-size: ${(props) => (props.hasValue.title1 ? '32px' : '12px')};
+		font-size: ${(props) => (props.hasValue.title1 ? '24px' : '12px')};
 		font-weight: ${(props) => (props.hasValue.title1 ? '700' : '500')};
 	}
 
 	.title2 {
 		color: white;
-		font-size: ${(props) => (props.hasValue.title2 ? '32px' : '12px')};
+		font-size: ${(props) => (props.hasValue.title1 ? '24px' : '12px')};
 		font-weight: ${(props) => (props.hasValue.title2 ? '700' : '500')};
 	}
 
@@ -154,6 +159,15 @@ export const Table = styled.table`
 	}
 `;
 
+export const CompanyNameSearch = styled.tr`
+	position: relative;
+`;
+
+export const RecruitmentSearch = styled.tr`
+	position: relative;
+	z-index: 1;
+`;
+
 export const Td = styled.td`
 	padding: 13px 9px;
 	border-right: 1px solid #e5e5e5;
@@ -171,7 +185,51 @@ export const SearchIcon = styled.img`
 `;
 
 export const Search = styled.input`
-	width: 200px;
+	width: 400px;
+`;
+
+export const SearchEx = styled.div`
+	background-color: #f7f7f7;
+	width: 967px;
+	z-index: 2;
+	position: absolute;
+	left: 32px;
+	top: 46px;
+	border-top: 1px solid #cccccc;
+	> div {
+		padding: 11.5px 9px;
+		display: flex;
+		gap: 16px;
+		border-right: 1px solid #cccccc;
+		border-bottom: 1px solid #cccccc;
+		border-left: 1px solid #cccccc;
+	}
+	> li {
+		font-size: 22px;
+		cursor: pointer;
+	}
+`;
+
+export const recruitmentEx = styled.div`
+	background-color: #f7f7f7;
+	width: 967px;
+	z-index: 2;
+	position: absolute;
+	left: 32px;
+	top: 46px;
+	border-top: 1px solid #cccccc;
+	> div {
+		padding: 11.5px 9px;
+		display: flex;
+		gap: 16px;
+		border-right: 1px solid #cccccc;
+		border-bottom: 1px solid #cccccc;
+		border-left: 1px solid #cccccc;
+	}
+	> li {
+		font-size: 22px;
+		cursor: pointer;
+	}
 `;
 
 export const TimeWrapper = styled.div`

@@ -1,5 +1,5 @@
 export interface BannerListProps {
-	banner_id: number;
+	id: number;
 	banner_url: string;
 	start_date: string;
 	end_date: string;
