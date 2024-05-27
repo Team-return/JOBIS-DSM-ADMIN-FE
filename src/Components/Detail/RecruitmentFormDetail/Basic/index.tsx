@@ -30,9 +30,21 @@ export function RecruitmentFormDetailBasic({
 						/>
 					</_.LogoWrapper>
 				</Stack>
-				<Button size="M" onClick={() => setCanEdit(true)}>
-					수정
-				</Button>
+				<Stack gap={10}>
+					<Button
+						size="M"
+						onClick={() =>
+							navigate(
+								`/pdf/${recruitmentFormDetail.recruitment_id}`
+							)
+						}
+					>
+						모집의뢰서 미리보기
+					</Button>
+					<Button size="M" onClick={() => setCanEdit(true)}>
+						수정
+					</Button>
+				</Stack>
 			</_.Wrapper>
 			<_.Stack>
 				<_.TitleBox>기업명</_.TitleBox>
@@ -41,8 +53,15 @@ export function RecruitmentFormDetailBasic({
 				</_.ContentBox>
 				<_.TitleBox>모집기간</_.TitleBox>
 				<_.ContentBox width={40}>
-					{recruitmentFormDetail?.start_date.replace(/-/g, '.')} ~{' '}
-					{recruitmentFormDetail?.end_date.replace(/-/g, '.')}
+					{recruitmentFormDetail?.start_date
+						? `${recruitmentFormDetail?.start_date.replace(
+								/-/g,
+								'.'
+						  )} ~ ${recruitmentFormDetail?.end_date.replace(
+								/-/g,
+								'.'
+						  )}`
+						: '상시모집'}
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
@@ -73,7 +92,9 @@ export function RecruitmentFormDetailBasic({
 											overflow="scroll"
 											longText={true}
 										>
-											{area.job.join(' / ')}
+											{area.job
+												.map((item) => item.name)
+												.join(' / ')}
 										</_.ContentBox>
 										<_.TitleBox height={125}>
 											사용기술
@@ -84,7 +105,9 @@ export function RecruitmentFormDetailBasic({
 											overflow="scroll"
 											longText={true}
 										>
-											{area.tech.join(' / ')}
+											{area.tech
+												.map((item) => item.name)
+												.join(' / ')}
 										</_.ContentBox>
 									</_.Stack>
 									<_.Stack>
@@ -150,12 +173,7 @@ export function RecruitmentFormDetailBasic({
 						<_.Stack>
 							<_.TitleBox>근무시간</_.TitleBox>
 							<_.ContentBox width={23}>
-								{recruitmentFormDetail?.start_time.replace(
-									/^(\d{2}:\d{2}):\d{2}$/,
-									'$1'
-								)}
-								{' ~ '}
-								{recruitmentFormDetail?.end_time.replace(
+								{recruitmentFormDetail?.working_hours.replace(
 									/^(\d{2}:\d{2}):\d{2}$/,
 									'$1'
 								)}

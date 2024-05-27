@@ -46,6 +46,7 @@ export interface CompanyDetailResponse {
 	fax: string | null;
 	email: string;
 	representative_name: string;
+	representative_phone_no: string;
 	founded_at: string;
 	worker_number: number;
 	take: number;
@@ -53,4 +54,6 @@ export interface CompanyDetailResponse {
 	attachments: string[];
 	service_name: string;
 	business_area: string;
+	business_area_code: number;
+	biz_registration_url: string;
 }

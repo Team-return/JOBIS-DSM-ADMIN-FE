@@ -1,7 +1,7 @@
 import { Button, DropDown, Input } from '@team-return/design-system';
 import * as _ from './style';
 import { useRecruitmentFormQueryString } from '../../../Store/State';
-import { winterIntern } from '../../../Utils/Translation';
+import { companyStatus, winterIntern } from '../../../Utils/Translation';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 
 interface PropsType {
@@ -66,13 +66,12 @@ export function RecruitmentFormSearch({ refetchRecruitmentForm }: PropsType) {
 				<_.ContentWrapper width={12.3}>
 					<DropDown
 						width={86}
-						option={['전체', '체험형', '채용형']}
+						option={['체험형', '채용형']}
 						value={getValueByKey(
 							winterIntern,
 							recruitmentFormQueryString.winter_intern
 						)}
 						onChange={(type) =>
-							type !== '전체' &&
 							recruitmentFormQueryStringDropDown(
 								'winter_intern',
 								winterIntern[type]
@@ -103,11 +102,16 @@ export function RecruitmentFormSearch({ refetchRecruitmentForm }: PropsType) {
 							'종료',
 							'접수요청',
 						]}
-						value={recruitmentFormQueryString.status || '전체'}
+						value={
+							getValueByKey(
+								companyStatus,
+								recruitmentFormQueryString.status
+							) || '전체'
+						}
 						onChange={(statusData) =>
 							recruitmentFormQueryStringDropDown(
 								'status',
-								statusData
+								companyStatus[statusData]
 							)
 						}
 					/>

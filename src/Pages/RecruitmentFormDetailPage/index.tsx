@@ -20,15 +20,17 @@ export function RecruitmentFormDetailPage() {
 			<_.Wrapper>
 				{canEdit ? (
 					<RecruitmentFormDetailEdit
-					recruitmentFormDetail={recruitmentFormDetailInfo!}
-					setCanEdit={setCanEdit}
-					refetchRecruitmentFormDetailInfo={refetchRecruitmentFormDetailInfo}
-				/>
+						recruitmentFormDetail={recruitmentFormDetailInfo!}
+						setCanEdit={setCanEdit}
+						refetchRecruitmentFormDetailInfo={
+							refetchRecruitmentFormDetailInfo
+						}
+					/>
 				) : (
 					<RecruitmentFormDetailBasic
-					recruitmentFormDetail={recruitmentFormDetailInfo!}
-					setCanEdit={setCanEdit}
-				/>
+						recruitmentFormDetail={recruitmentFormDetailInfo!}
+						setCanEdit={setCanEdit}
+					/>
 				)}
 			</_.Wrapper>
 		</>
