@@ -19,7 +19,7 @@ export function NoticeWritePage() {
 
 	const { mutate: writeNotice } = useNoticeWriteData();
 
-	const { mutate: getPresignedUrl, data } = usePresignedUrl('EXTENSION_FILE');
+	const { mutate: getPresignedUrl, data } = usePresignedUrl();
 
 	useEffect(() => {
 		if (data) {
@@ -35,8 +35,6 @@ export function NoticeWritePage() {
 
 	useEffect(() => {
 		if (presignedUrls.length !== 0) {
-			console.log('6', presignedUrls);
-
 			writeNotice({
 				title,
 				content,
@@ -44,7 +42,7 @@ export function NoticeWritePage() {
 			});
 			navigate('/Notice');
 		}
-	}, [presignedUrls]);
+	});
 
 	const getTodayDate = (): string => {
 		const today = new Date();

@@ -6,7 +6,6 @@ import { useDeleteNotice } from '../../../Apis/Notices';
 import * as _ from './style';
 import { AttachedBox } from '../../../Components/Notice/AttachedBox';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
 
 export function NoticeDetailPage() {
 	const { id } = useParams<{ id: string }>();
@@ -29,10 +28,6 @@ export function NoticeDetailPage() {
 	};
 
 	const date = noticeDetail?.created_at.substring(0, 10);
-
-	useEffect(() => {
-		console.log(noticeDetail);
-	}, [noticeDetail]);
 
 	return (
 		<>
@@ -68,7 +63,7 @@ export function NoticeDetailPage() {
 											icon="EditPencil"
 											color={'gray90'}
 											size={26}
-										></Icon>
+										/>
 									</_.IconBox>
 								</Link>
 							</_.IconWrapper>

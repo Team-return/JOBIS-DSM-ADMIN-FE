@@ -1,4 +1,4 @@
-import { Icon } from '@team-return/design-system';
+import { Icon, useToastStore } from '@team-return/design-system';
 import { AttachmentResponse } from '../../../Apis/Notices/response';
 import * as _ from './style';
 import axios from 'axios';
@@ -11,17 +11,17 @@ export function AttachedBox({ props }: PropsType) {
 	const file_name_regex = (url: string) => {
 		return url.replace(/(?:.*?-){5}(.*)/, '$1').replaceAll('+', ' ');
 	};
+	const { append } = useToastStore();
 
 	const downLoadFile = async (attachment: AttachmentResponse) => {
 		try {
-			const response = await axios.get(
+			const { data } = await axios.get(
 				`${process.env.REACT_APP_FILE_URL}${attachment.url}`,
 				{
 					responseType: 'blob',
 				}
 			);
-
-			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const url = window.URL.createObjectURL(new Blob([data]));
 			const a = document.createElement('a');
 			a.href = url;
 			a.download = file_name_regex(attachment.url);
@@ -29,8 +29,12 @@ export function AttachedBox({ props }: PropsType) {
 			a.click();
 			window.URL.revokeObjectURL(url);
 			document.body.removeChild(a);
-		} catch (error) {
-			console.error('파일 다운로드 에러: ', error);
+		} catch {
+			append({
+				title: '파일 다운로드에 실패했습니다.',
+				message: '',
+				type: 'RED',
+			});
 		}
 	};
 

@@ -1,16 +1,14 @@
 import { Header } from '../../../Components/Header';
 import * as _ from './style';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@team-return/design-system';
 import { usePresignedUrl } from '../../../Apis/Files';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AttachmentRequest } from '../../../Apis/Notices/request';
-import { Icon } from '@team-return/design-system';
 import { useNoticeEditData } from '../../../Apis/Notices';
 import { useForm } from '../../../Hooks/useForm';
 
 export function NoticeEditPage() {
-	const fileInputRef = useRef<HTMLInputElement>(null);
 	const location = useLocation();
 	const [inputCount, setInputCount] = useState<number>(0);
 
@@ -31,7 +29,7 @@ export function NoticeEditPage() {
 	const { id } = useParams<{ id: string }>();
 
 	const { mutate: editNotice } = useNoticeEditData(id || '');
-	const { mutate: getPresignedUrl, data } = usePresignedUrl('EXTENSION_FILE');
+	const { mutate: getPresignedUrl, data } = usePresignedUrl();
 
 	useEffect(() => {
 		if (data) {
@@ -52,25 +50,6 @@ export function NoticeEditPage() {
 		}
 	}, [presignedUrls]);
 
-	const handleAddFileClick = () => {
-		if (fileInputRef.current) {
-			fileInputRef.current.click();
-		}
-	};
-
-	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files) {
-			const newAttachments = Array.from(e.target.files);
-			getPresignedUrl(newAttachments);
-		}
-	};
-
-	const handleFileDelete = (index: number) => {
-		const newAttachments = [...noticeEditForm.editAttachments];
-		newAttachments.splice(index, 1);
-		setEditAttachments(newAttachments);
-	};
-
 	const handleNoticeSubmit = () => {
 		editNotice({
 			title: noticeEditForm.editTitle,
@@ -78,10 +57,6 @@ export function NoticeEditPage() {
 			attachments: editAttachments,
 		});
 		navigate('/Notice');
-	};
-
-	const file_name_regex = (url: string) => {
-		return url?.replace(/(?:.*?-){5}(.*)/, '$1').replaceAll('+', ' ');
 	};
 
 	return (
@@ -113,9 +88,9 @@ export function NoticeEditPage() {
 									value={noticeEditForm.editContent}
 									onChange={handleChange}
 									name="editContent"
-									onInput={(e: any) =>
-										setInputCount(e.target.value.length)
-									}
+									onInput={(
+										e: React.ChangeEvent<HTMLTextAreaElement>
+									) => setInputCount(e.target.value.length)}
 									as="textarea"
 								/>
 								<_.InputCount>{inputCount}자/1000</_.InputCount>
