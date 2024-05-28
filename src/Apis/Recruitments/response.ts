@@ -50,3 +50,7 @@ export interface AreasType {
 	major_task: string;
 	preferential_treatment: string | null;
 }
+
+export interface CntType {
+	count: number;
+}

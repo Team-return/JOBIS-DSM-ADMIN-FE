@@ -57,3 +57,7 @@ export interface CompanyDetailResponse {
 	business_area_code: number;
 	biz_registration_url: string;
 }
+
+export interface CntType {
+	count: number;
+}

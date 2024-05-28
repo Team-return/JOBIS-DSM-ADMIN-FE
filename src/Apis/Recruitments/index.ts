@@ -5,6 +5,7 @@ import {
 	RecruitmentFormQueryStringType,
 } from './request';
 import {
+	CntType,
 	RecruitmentFormDetailResponse,
 	RecruitmentFormResponse,
 } from './response';
@@ -165,4 +166,12 @@ export const useEditRecruitment = (
 			...options,
 		}
 	);
+};
+
+/**모집의뢰서 총 개수 조회 */
+export const useRecruitmentCnt = () => {
+	return useQuery(['RecruitmentCnt'], async () => {
+		const response = await instance.get<CntType>(`${router}/count`);
+		return response.data;
+	});
 };

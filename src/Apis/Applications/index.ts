@@ -101,3 +101,11 @@ export const useRejectApplication = (
 		}
 	);
 };
+
+/**지원서 총 개수 조회 */
+export const useApplicationCnt = () => {
+	return useQuery(['applicationCnt'], async () => {
+		const data = await instance.get<CntType>(`${router}/teacher/count`);
+		return data.data;
+	});
+};

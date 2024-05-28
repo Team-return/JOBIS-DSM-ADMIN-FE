@@ -7,7 +7,7 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
 import { ApplicationResponse } from '../../../Apis/Applications/response';
 import { selectStudent } from '../../../Apis/Applications/request';
@@ -15,6 +15,7 @@ import { DownloadDataPropsType } from '../../../Apis/File/request';
 import { useDownloadData } from '../../../Apis/File';
 import { useModalContext } from '../../../Utils/Modal';
 import {
+	useApplicationCnt,
 	useChangeRequestStatus,
 	useRejectApplication,
 } from '../../../Apis/Applications';
@@ -59,6 +60,7 @@ export function ApplicationViewTable({
 	const [clickedData, setClickedData] = useState<selectStudent[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 	const [downloadBoxView, setDownloadBoxView] = useState<number>(0);
+	const [applicationCnt, setApplicationCnt] = useState<number>(0);
 	const [rejectReason, setRejectReason] = useState('');
 	const { form: trainDate, handleChange: trainDateChange } = useForm({
 		start_date: '',
@@ -114,6 +116,13 @@ export function ApplicationViewTable({
 		}
 	);
 	const { isLoading: requestStatusIsLoading } = changeStatusAPI;
+	const { data: cnt } = useApplicationCnt();
+
+	useEffect(() => {
+		if (cnt) {
+			setApplicationCnt(cnt.count);
+		}
+	}, [cnt]);
 
 	/** 지원서 상태 변경할 때 확인하는 확인 모달을 여는 함수입니다. */
 	const openChangeStatusModal = (statusName: string) => {
@@ -483,9 +492,13 @@ export function ApplicationViewTable({
 
 	return (
 		<_.Container>
-			<_.BtnWrapper>
-				<Button
-					kind="Ghost"
+			<_.BtnContentWrapper>
+				<_.TitleText>
+					총 <_.CntContent>{applicationCnt}</_.CntContent>개
+				</_.TitleText>
+				<_.BtnWrapper>
+					<Button
+						kind="Ghost"
 					size="S"
 					onClick={() => openChangeStatusModal('APPROVED')}
 					disabled={requestStatusIsLoading || !clickedData.length}
@@ -530,9 +543,10 @@ export function ApplicationViewTable({
 					onClick={openChangeTrainDateModal}
 					disabled={trainDateIsLoading || !clickedData.length}
 				>
-					현장실습
-				</Button>
-			</_.BtnWrapper>
+						현장실습
+					</Button>
+				</_.BtnWrapper>
+			</_.BtnContentWrapper>
 			<_.TableWrapper>
 				<Table
 					tableData={

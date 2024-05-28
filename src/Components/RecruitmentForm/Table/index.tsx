@@ -5,7 +5,7 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RecruitmentFormResponse } from '../../../Apis/Recruitments/response';
 import { Pagination } from '../../../Utils/Pagination';
 import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
@@ -31,6 +31,7 @@ export function RecruitmentFormTable({
 	recruitmentFormIsLoading,
 }: PropsType) {
 	const { append } = useToastStore();
+	const { data: cnt } = useRecruitmentCnt();
 
 	const { recruitmentFormQueryString, setRecruitmentFormQueryString } =
 		useRecruitmentFormQueryString();
@@ -39,6 +40,7 @@ export function RecruitmentFormTable({
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
+	const [recruitmentCnt, setRecruitmentCnt] = useState<number>(0);
 
 	/** 지원서 상태를 변경하는 api를 호출합니다. */
 	const { mutate: changeStatusAPI, isLoading } = useChangeRecruitmentsStatus(
@@ -63,6 +65,12 @@ export function RecruitmentFormTable({
 			},
 		}
 	);
+
+	useEffect(() => {
+		if (cnt) {
+			setRecruitmentCnt(cnt.count);
+		}
+	}, [cnt]);
 
 	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
@@ -232,9 +240,13 @@ export function RecruitmentFormTable({
 
 	return (
 		<_.Container>
-			<_.BtnWrapper>
-				<Button
-					kind="Ghost"
+			<_.BtnContentWrapper>
+				<_.TitleText>
+					총 <_.CntContent>{recruitmentCnt}</_.CntContent>개
+				</_.TitleText>
+				<_.BtnWrapper>
+					<Button
+						kind="Ghost"
 					size="S"
 					disabled={buttonDisabled}
 					onClick={() => {
@@ -261,9 +273,10 @@ export function RecruitmentFormTable({
 						changeStatusBtnClick('DONE');
 					}}
 				>
-					모집종료
-				</Button>
-			</_.BtnWrapper>
+						모집종료
+					</Button>
+				</_.BtnWrapper>
+			</_.BtnContentWrapper>
 			<_.TableWrapper>
 				<Table
 					tableData={

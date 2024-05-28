@@ -12,6 +12,7 @@ import {
 	CompanyInfoEditType,
 } from './request';
 import {
+	CntType,
 	CompanyDetailResponse,
 	CompanyRecruitmentResponse,
 	EmployableCompaniesResponse,
@@ -162,4 +163,12 @@ export const useChangeCompanyInfo = (
 			...options,
 		}
 	);
+};
+
+/**기업 총 개수 조회 */
+export const useCompanyCnt = () => {
+	return useQuery(['CompanyCnt'], async () => {
+		const data = await instance.get<CntType>(`${router}/count`);
+		return data.data;
+	});
 };

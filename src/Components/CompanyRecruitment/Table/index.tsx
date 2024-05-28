@@ -5,11 +5,12 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
 import {
 	useChangeCompanyStatus,
 	useChangeContractCompany,
+	useCompanyCnt,
 } from '../../../Apis/Companies';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
@@ -36,9 +37,18 @@ export function CompanyRecruitmentTable({
 	const dataLength = companyRecruitment?.companies.length;
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
+	const [companyCnt, setCompanyCnt] = useState<number>(0);
 
 	const { companyRecruitmentQueryString, setCompanyRecruitmentQueryString } =
 		useCompanyRecruitmentQueryString();
+
+	const { data: cnt } = useCompanyCnt();
+
+	useEffect(() => {
+		if (cnt) {
+			setCompanyCnt(cnt.count);
+		}
+	}, [cnt]);
 
 	/** 전체 선택 & 전체 선택 해제하는 함수입니다. */
 	const checkAllBox = () => {
@@ -251,36 +261,41 @@ export function CompanyRecruitmentTable({
 
 	return (
 		<_.Container>
-			<_.BtnWrapper>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('PARTICIPATING');
-					}}
-				>
-					참여기업 등록
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('LEAD');
-					}}
-				>
-					선도기업 등록
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={changeContractAPI.mutate}
-				>
-					협약등록
-				</Button>
-			</_.BtnWrapper>
+			<_.BtnContentWrapper>
+				<_.TitleText>
+					총 <_.CntContent>{companyCnt}</_.CntContent>개
+				</_.TitleText>
+				<_.BtnWrapper>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('PARTICIPATING');
+						}}
+					>
+						참여기업 등록
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('LEAD');
+						}}
+					>
+						선도기업 등록
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={changeContractAPI.mutate}
+					>
+						협약등록
+					</Button>
+				</_.BtnWrapper>
+			</_.BtnContentWrapper>
 			<_.TableWrapper>
 				<Table
 					tableData={
