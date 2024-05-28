@@ -47,6 +47,19 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+table, th, td {
+  border: 0.7px solid black; /* 테두리 선 스타일 지정 */
+  font-size: 12px;
+  font-weight: 400;
+  vertical-align: middle;
+  white-space: pre-wrap;
+  padding: 10px 3px;
+}
+td {
+  min-height: 40px;
+  height: 40px;
+  line-height: 16px
+}
 * {
   box-sizing: border-box;
 }

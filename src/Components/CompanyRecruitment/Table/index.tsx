@@ -179,7 +179,7 @@ export function CompanyRecruitmentTable({
 				<_.ContentText
 					status={companie.company_type === 'PARTICIPATING'}
 				>
-					{companyType[companie.company_type]}기업
+					{companyType[companie.company_type]}
 				</_.ContentText>, // 기업구분
 				<_.ContentText>{companie.convention && 'Y'}</_.ContentText>, // 협약여부
 				<_.ContentText>

@@ -22,9 +22,10 @@ export interface RecruitmentFormDetailResponse {
 	company_name: string;
 	areas: AreasType[];
 	required_grade: number | null;
-	start_time: string;
-	end_time: string;
+	working_hours: string;
+	flexible_working: boolean;
 	required_licenses: string[];
+	recruitment_id: number;
 	hiring_progress: string[];
 	train_pay: number;
 	pay: string | null;
@@ -36,10 +37,15 @@ export interface RecruitmentFormDetailResponse {
 	etc: string | null;
 }
 
+interface nameAndId {
+	name: string;
+	id: number;
+}
+
 export interface AreasType {
 	id: number;
-	job: string[];
-	tech: string[];
+	job: nameAndId[];
+	tech: nameAndId[];
 	hiring: number;
 	major_task: string;
 	preferential_treatment: string | null;

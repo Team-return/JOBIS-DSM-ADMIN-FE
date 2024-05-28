@@ -7,7 +7,7 @@ import { useGetRequiredLicensesList } from '../../../Apis/OpenApi';
 interface PropsType {
 	requiredLicensesArray: string[];
 	setRecruitmentFormDetailInfo: Dispatch<
-		SetStateAction<EditRecruitmentRequest>
+		SetStateAction<Omit<EditRecruitmentRequest, 'working_hours'>>
 	>;
 }
 

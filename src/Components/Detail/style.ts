@@ -95,6 +95,38 @@ export const AbsoluteText = styled.div<{ right: number }>`
 	right: ${({ right }) => right + 'px'};
 `;
 
+export const DateBox = styled.div`
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	padding: 16px 30px 12px 30px;
+	color: #000;
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+	font-weight: 350;
+	overflow: none;
+	white-space: pre-line;
+	position: relative;
+`;
+
+export const CheckEmailWrapper = styled.div`
+	display: flex;
+	padding: 0 0 40px 30px;
+	width: 100%;
+`;
+
+export const CheckBox = styled.input`
+	width: 15px;
+	height: 15px;
+`;
+
+export const CheckLogin = styled.div`
+	font-size: 14px;
+	color: #7f7f7f;
+	margin-left: 5px;
+`;
+
 export const Textarea = styled.textarea<{
 	width?: number;
 	height?: number;
@@ -152,7 +184,7 @@ export const BackIcon = styled(Icon)`
 	rotate: 90deg;
 	width: 30px;
 	height: 30px;
-	`;
+`;
 
 export const BackWrapper = styled.div`
 	display: flex;

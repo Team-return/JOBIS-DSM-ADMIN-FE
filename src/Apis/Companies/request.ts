@@ -32,4 +32,5 @@ export interface CompanyInfoEditType {
 	take: number;
 	service_name: string;
 	company_profile_url: string;
+	representative_phone_no: string;
 }
