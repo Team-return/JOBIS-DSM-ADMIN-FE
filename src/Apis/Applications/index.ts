@@ -1,11 +1,11 @@
-import {
-	useMutation,
-	MutationOptions,
-	useQuery,
-} from 'react-query';
+import { useMutation, MutationOptions, useQuery } from 'react-query';
 import { instance } from '../axios';
 import { ApplicantInfoQueryStringType } from './request';
-import { ApplicationResponse, InternshipStudentResponse } from './response';
+import {
+	ApplicationResponse,
+	CntType,
+	InternshipStudentResponse,
+} from './response';
 
 const router = '/applications';
 
