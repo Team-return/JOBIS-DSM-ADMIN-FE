@@ -24,12 +24,14 @@ export function NoticeEditPage() {
 		noticeEditForm.editAttachments
 	);
 
-	const [presignedUrls, setPresignedUrls] = useState<AttachmentRequest[]>([]);
 	const navigate = useNavigate();
+
 	const { id } = useParams<{ id: string }>();
 
 	const { mutate: editNotice } = useNoticeEditData(id || '');
+
 	const { mutate: getPresignedUrl, data } = usePresignedUrl();
+	const [presignedUrls, setPresignedUrls] = useState<AttachmentRequest[]>([]);
 
 	useEffect(() => {
 		if (data) {
@@ -48,7 +50,7 @@ export function NoticeEditPage() {
 			const editedAttachments = [...editAttachments, ...presignedUrls];
 			setEditAttachments(editedAttachments);
 		}
-	}, [presignedUrls]);
+	}, [presignedUrls, editAttachments]);
 
 	const handleNoticeSubmit = () => {
 		editNotice({
@@ -56,6 +58,7 @@ export function NoticeEditPage() {
 			content: noticeEditForm.editContent,
 			attachments: editAttachments,
 		});
+		getPresignedUrl(attachments);
 		navigate('/Notice');
 	};
 

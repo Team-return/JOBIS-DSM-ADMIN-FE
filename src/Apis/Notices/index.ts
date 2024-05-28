@@ -2,7 +2,7 @@ import { NoticeWrite, NoticeEdit } from './request';
 import { MutationOptions, useMutation } from 'react-query';
 import { instance } from '../axios';
 import { NoticeListResponse } from './response';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NoticeDetailResponse } from './response';
 import { useToastStore } from '@team-return/design-system';
 
@@ -94,7 +94,7 @@ export const useNoticeListData = () => {
 	const [notices, setNotices] = useState<NoticeListResponse[]>([]);
 	const { append } = useToastStore();
 
-	const fetchNoticeList = () => {
+	const fetchNoticeList = useCallback(() => {
 		return instance
 			.get(`${router}`)
 			.then((response) => {
@@ -116,11 +116,11 @@ export const useNoticeListData = () => {
 					type: 'RED',
 				});
 			});
-	};
+	}, [append]);
 
 	useEffect(() => {
 		fetchNoticeList();
-	}, []);
+	}, [fetchNoticeList]);
 
 	return { notices };
 };
