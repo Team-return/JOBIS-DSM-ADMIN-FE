@@ -8,7 +8,10 @@ import * as _ from './style';
 import { useEffect, useState } from 'react';
 import { RecruitmentFormResponse } from '../../../Apis/Recruitments/response';
 import { Pagination } from '../../../Utils/Pagination';
-import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
+import {
+	useChangeRecruitmentsStatus,
+	useRecruitmentCnt,
+} from '../../../Apis/Recruitments/index';
 import { companyStatus, companyType } from '../../../Utils/Translation';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { searchInArray } from '../../../Utils/useSearchForArray';
@@ -247,32 +250,32 @@ export function RecruitmentFormTable({
 				<_.BtnWrapper>
 					<Button
 						kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('READY');
-					}}
-				>
-					접수
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('RECRUITING');
-					}}
-				>
-					모집중
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('DONE');
-					}}
-				>
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('READY');
+						}}
+					>
+						접수
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('RECRUITING');
+						}}
+					>
+						모집중
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('DONE');
+						}}
+					>
 						모집종료
 					</Button>
 				</_.BtnWrapper>
