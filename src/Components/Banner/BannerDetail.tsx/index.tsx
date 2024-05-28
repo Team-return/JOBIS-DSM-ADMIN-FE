@@ -1,7 +1,6 @@
 import * as _ from './style';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useGetBannerList } from '../../../Apis/Banners';
-import { BannerListProps } from '../../../Apis/Banners/response';
 import { BannerNameType } from '../../../Apis/Banners/response';
 import deleteimg from '../../../Assets/SVG/delete.svg';
 interface Props {

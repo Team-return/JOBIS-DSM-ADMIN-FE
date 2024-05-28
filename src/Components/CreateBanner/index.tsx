@@ -29,8 +29,8 @@ export function CreateBanner({ date, setDate }: PropType) {
 	const { append } = useToastStore();
 	const [logoPreview, setLogoPreview] = useState<string | null>(null);
 	const [selectedPage, setSelectedPage] = useState<string | null>(null);
-	const [startDate, setStartDate] = useState<string | null>(null);
-	const [endDate, setEndDate] = useState<string | null>(null);
+	const [, setStartDate] = useState<string | null>(null);
+	const [, setEndDate] = useState<string | null>(null);
 	const [showSearchEx, setShowSearchEx] = useState(false);
 	const [showRecruitmentSearchEx, setShowRecruitmentSearchEx] =
 		useState(false);
@@ -153,7 +153,7 @@ export function CreateBanner({ date, setDate }: PropType) {
 		}
 	}, [attachments]);
 
-	const [companyQueryResult, pageCountResult] = useGetCompanyRecruitments(
+	const [companyQueryResult] = useGetCompanyRecruitments(
 		companyRecruitmentQueryString
 	);
 

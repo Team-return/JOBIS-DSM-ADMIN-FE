@@ -1,12 +1,6 @@
-import {
-	MutationOptions,
-	QueryOptions,
-	UseQueryOptions,
-	useMutation,
-	useQuery,
-} from 'react-query';
+import { MutationOptions, useMutation, useQuery } from 'react-query';
 import { instance } from '../axios';
-import { BannerListProps, BannerListResponse } from './response';
+import { BannerListResponse } from './response';
 
 const router = '/banners';
 

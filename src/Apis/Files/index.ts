@@ -1,5 +1,4 @@
-import { MutateOptions, useMutation } from 'react-query';
-import { PresignedUrlRequest } from './request';
+import { useMutation } from 'react-query';
 import { PresignedUrlResponse } from './response';
 import { instance } from '../axios';
 import axios from 'axios';

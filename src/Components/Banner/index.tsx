@@ -1,8 +1,8 @@
 import { Button } from '@team-return/design-system';
 import * as _ from './style';
 import { BannerDetail } from './BannerDetail.tsx';
-import { useEffect, useState } from 'react';
-import { useDeleteBanner, useGetBannerList } from '../../Apis/Banners';
+import { useState } from 'react';
+import { useDeleteBanner } from '../../Apis/Banners';
 import { Link } from 'react-router-dom';
 import { DeleteAlarm } from './DeleteAlarm';
 import { useQueryClient } from 'react-query';
@@ -12,7 +12,6 @@ export function Banner() {
 	const [showDeleteAlarm, setShowDeleteAlarm] = useState(false);
 	const [id, setId] = useState<number | null>(null);
 
-	const createBannersAPI = useGetBannerList(isOpen);
 	const queryClient = useQueryClient();
 
 	const handleBtnClick = () => {

@@ -1,26 +1,18 @@
 import { Header } from '../../../Components/Header';
 import * as _ from './style';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { Button } from '@team-return/design-system';
-import { useNoticeWriteData } from '../../../Apis/Notices';
-import axios from 'axios';
 import { usePresignedUrl } from '../../../Apis/Files';
-import { PresignedUrlRequest } from '../../../Apis/Files/request';
 import { Link } from 'react-router-dom';
 
 export function NoticeEditPage() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [inputCount, setInputCount] = useState<number>(0);
-	const [title, setTitle] = useState<string>('');
+	const [, setTitle] = useState<string>('');
 	const [content, setContent] = useState<string>('');
 	const [attachments, setAttachments] = useState<File[]>([]);
-	const [presignedUrls, setPresignedUrls] = useState<string[]>([]);
 
-	const { mutate: writeNotice } = useNoticeWriteData({
-		title,
-		content,
-		attachments: presignedUrls,
-	});
+
 
 	const { mutate: getPresignedUrl } = usePresignedUrl();
 
