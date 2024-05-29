@@ -3,7 +3,7 @@ import React, { Dispatch, useState, SetStateAction, useEffect } from 'react';
 import templete from '../../Assets/PNG/templete.png';
 import banner from '../../Assets/PNG/banner.png';
 import search from '../../Assets/SVG/search.svg';
-import { Button, useToastStore } from '@team-return/design-system';
+import { Button } from '@team-return/design-system';
 import { useCreateBanners } from '../../Apis/Banners';
 import {
 	useCompanyRecruitmentQueryString,
@@ -26,7 +26,6 @@ interface PropType {
 }
 
 export function CreateBanner({ date, setDate }: PropType) {
-	const { append } = useToastStore();
 	const [logoPreview, setLogoPreview] = useState<string | null>(null);
 	const [selectedPage, setSelectedPage] = useState<string | null>(null);
 	const [, setStartDate] = useState<string | null>(null);
@@ -40,7 +39,6 @@ export function CreateBanner({ date, setDate }: PropType) {
 	const [similarRecruitment, setSimilarRecruitment] = useState<
 		RecruitmentFormType[]
 	>([]);
-	const [url, setUrl] = useState<string | null>(null);
 	const navigator = useNavigate();
 	const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(
 		null
@@ -70,10 +68,6 @@ export function CreateBanner({ date, setDate }: PropType) {
 			reader.readAsDataURL(selectedFile);
 		}
 	};
-
-	useEffect(() => {
-		if (url) createBannersAPI.mutate();
-	}, [url]);
 
 	const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedRadioValue = event.target.value;
@@ -111,28 +105,43 @@ export function CreateBanner({ date, setDate }: PropType) {
 		description: '',
 	});
 
-	const { mutateAsync: getPresignedUrl, data } = usePresignedUrl();
+	const createBannersAPI = useCreateBanners(
+		selectedCompanyId !== null ? selectedCompanyId : -1,
+		{
+			page_type_1: 'COMPANY',
+			page_type_2: 'RECRUITMENT',
+			page_type_3: 'INTERNSHIP',
+			page_type_4: 'BOOKMARK',
+			page_type_5: 'NONE',
+		}[selectedPage!]!,
+		date.start_date,
+		date.end_date
+	);
+
+	const { mutateAsync: getPresignedUrl } = usePresignedUrl();
 
 	const [attachments, setAttachments] = useState<File>(new File([], ''));
 
 	const handleAddBanner = async () => {
-		captureImage();
-		if (attachments.name) {
-			await getPresignedUrl([attachments]);
-			setUrl(
-				`${process.env.REACT_APP_FILE_URL}` +
-					data?.presignedUrls.urls[0].file_path || ''
-			);
-			if (data !== null) {
-				const a = async () => {
-					createBannersAPI.mutate();
-					await navigator('/Banner');
-				};
-			}
-		}
+		await captureImage();
 	};
 
-	const captureImage = () => {
+	useEffect(() => {
+		const a = async () => {
+			if (attachments.name) {
+				const response = await getPresignedUrl([attachments]);
+				await createBannersAPI.mutateAsync(
+					`${process.env.REACT_APP_FILE_URL}` +
+						response?.presignedUrls.urls[0].file_path || ''
+				);
+				navigator('/banner');
+			}
+		};
+		a();
+		// eslint-disable-next-line
+	}, [attachments]);
+
+	const captureImage = async () => {
 		const elementToCapture = document.getElementById('captureElement');
 		if (elementToCapture) {
 			html2canvas(elementToCapture).then((canvas) => {
@@ -146,12 +155,12 @@ export function CreateBanner({ date, setDate }: PropType) {
 		}
 	};
 
-	useEffect(() => {
-		console.log(attachments);
-		if (attachments.name) {
-			getPresignedUrl([attachments]);
-		}
-	}, [attachments]);
+	// useEffect(() => {
+	// 	console.log(attachments);
+	// 	if (attachments.name) {
+	// 		getPresignedUrl([attachments]);
+	// 	}
+	// }, [attachments]);
 
 	const [companyQueryResult] = useGetCompanyRecruitments(
 		companyRecruitmentQueryString
@@ -159,6 +168,7 @@ export function CreateBanner({ date, setDate }: PropType) {
 
 	useEffect(() => {
 		companyQueryResult.refetch();
+		// eslint-disable-next-line
 	}, [companyRecruitmentQueryString]);
 
 	useEffect(() => {
@@ -203,6 +213,7 @@ export function CreateBanner({ date, setDate }: PropType) {
 
 	useEffect(() => {
 		recruitmentQueryResult.refetch();
+		// eslint-disable-next-line
 	}, [recruitmentFormQueryString]);
 
 	useEffect(() => {
@@ -240,36 +251,6 @@ export function CreateBanner({ date, setDate }: PropType) {
 		} as React.ChangeEvent<HTMLInputElement>);
 		console.log(recruitmentFormQueryStringHandler);
 	};
-
-	const createBannersAPI = useCreateBanners(
-		selectedCompanyId !== null ? selectedCompanyId : -1,
-		url!,
-		{
-			page_type_1: 'COMPANY',
-			page_type_2: 'RECRUITMENT',
-			page_type_3: 'INTERNSHIP',
-			page_type_4: 'BOOKMARK',
-			page_type_5: 'NONE',
-		}[selectedPage!]!,
-		date.start_date,
-		date.end_date,
-		{
-			onSuccess: () => {
-				append({
-					title: '성공적으로 추가되었습니다.',
-					message: '',
-					type: 'GREEN',
-				});
-			},
-			onError: () => {
-				append({
-					title: '추가에 실패했습니다.',
-					message: '',
-					type: 'RED',
-				});
-			},
-		}
-	);
 
 	return (
 		<_.Container>

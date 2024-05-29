@@ -1,27 +1,44 @@
 import { MutationOptions, useMutation, useQuery } from 'react-query';
 import { instance } from '../axios';
 import { BannerListResponse } from './response';
+import { useToastStore } from '@team-return/design-system';
 
 const router = '/banners';
 
 export const useCreateBanners = (
 	detail_id: number,
-	banner_url: string,
 	banner_type: string,
 	start_date: string,
-	end_date: string,
-	options: MutationOptions
+	end_date: string
 ) => {
 	const data = {
 		detail_id,
-		banner_url,
 		banner_type,
 		start_date,
 		end_date,
 	};
-	return useMutation(async () => instance.post(`${router}`, data), {
-		...options,
-	});
+	const { append } = useToastStore();
+
+	return useMutation(
+		async (banner_url: string) =>
+			instance.post(`${router}`, { ...data, banner_url }),
+		{
+			onSuccess: () => {
+				append({
+					title: '성공적으로 추가되었습니다.',
+					message: '',
+					type: 'GREEN',
+				});
+			},
+			onError: () => {
+				append({
+					title: '추가에 실패했습니다.',
+					message: '',
+					type: 'RED',
+				});
+			},
+		}
+	);
 };
 
 export const useGetBannerList = (is_opened: boolean) => {

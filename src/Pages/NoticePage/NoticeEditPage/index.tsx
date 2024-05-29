@@ -50,8 +50,6 @@ export function NoticeEditPage() {
 		setContent(e.target.value);
 	};
 
-	let files_: any;
-
 	const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const newAttachments = Array.from(e.target.files);
@@ -59,11 +57,6 @@ export function NoticeEditPage() {
 				...prevAttachments,
 				...newAttachments,
 			]);
-
-			files_ = attachments.map((item) => ({
-				type: 'EXTENSION_FILE',
-				file_name: item.name,
-			}));
 
 			// const presignedUrls = await Promise.all(promises);
 

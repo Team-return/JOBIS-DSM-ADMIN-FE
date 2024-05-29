@@ -46,6 +46,7 @@ export const usePresignedUrl = () => {
 				attachments: File[];
 			}) => {
 				const uploadPromises = presignedUrls.urls.map(
+					// eslint-disable-next-line
 					({ pre_signed_url }, idx) => {
 						(async () =>
 							await axios.put(
