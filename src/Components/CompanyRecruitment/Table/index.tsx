@@ -10,7 +10,7 @@ import { Pagination } from '../../../Utils/Pagination';
 import {
 	useChangeCompanyStatus,
 	useChangeContractCompany,
-	useCompanyCnt,
+	useCompanyCount,
 } from '../../../Apis/Companies';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
@@ -37,18 +37,18 @@ export function CompanyRecruitmentTable({
 	const dataLength = companyRecruitment?.companies.length;
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
-	const [companyCnt, setCompanyCnt] = useState<number>(0);
+	const [companyCount, setCompanyCount] = useState<number>(0);
 
 	const { companyRecruitmentQueryString, setCompanyRecruitmentQueryString } =
 		useCompanyRecruitmentQueryString();
 
-	const { data: cnt } = useCompanyCnt();
+	const { data: CompanyCountData } = useCompanyCount();
 
 	useEffect(() => {
-		if (cnt) {
-			setCompanyCnt(cnt.count);
+		if (CompanyCountData) {
+			setCompanyCount(CompanyCountData.count);
 		}
-	}, [cnt]);
+	}, [CompanyCountData]);
 
 	/** 전체 선택 & 전체 선택 해제하는 함수입니다. */
 	const checkAllBox = () => {
@@ -262,10 +262,13 @@ export function CompanyRecruitmentTable({
 	return (
 		<_.Container>
 			<_.BtnContentWrapper>
-				<_.TitleText>
-					총 <_.CntContent>{companyCnt}</_.CntContent>개
-				</_.TitleText>
+				<_.CountTitle>
+					총 <_.CountContent>{companyCount}</_.CountContent>개
+				</_.CountTitle>
 				<_.BtnWrapper>
+					<Button size="S" onClick={() => {}}>
+						엑셀 출력
+					</Button>
 					<Button
 						kind="Ghost"
 						size="S"

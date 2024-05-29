@@ -15,7 +15,7 @@ import { DownloadDataPropsType } from '../../../Apis/File/request';
 import { useDownloadData } from '../../../Apis/File';
 import { useModalContext } from '../../../Utils/Modal';
 import {
-	useApplicationCnt,
+	useApplicationCount,
 	useChangeRequestStatus,
 	useRejectApplication,
 } from '../../../Apis/Applications';
@@ -60,7 +60,7 @@ export function ApplicationViewTable({
 	const [clickedData, setClickedData] = useState<selectStudent[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 	const [downloadBoxView, setDownloadBoxView] = useState<number>(0);
-	const [applicationCnt, setApplicationCnt] = useState<number>(0);
+	const [applicationCount, setApplicationCount] = useState<number>(0);
 	const [rejectReason, setRejectReason] = useState('');
 	const { form: trainDate, handleChange: trainDateChange } = useForm({
 		start_date: '',
@@ -116,13 +116,13 @@ export function ApplicationViewTable({
 		}
 	);
 	const { isLoading: requestStatusIsLoading } = changeStatusAPI;
-	const { data: cnt } = useApplicationCnt();
+	const { data: applicationCountData } = useApplicationCount();
 
 	useEffect(() => {
-		if (cnt) {
-			setApplicationCnt(cnt.count);
+		if (applicationCountData) {
+			setApplicationCount(applicationCountData.count);
 		}
-	}, [cnt]);
+	}, [applicationCountData]);
 
 	/** 지원서 상태 변경할 때 확인하는 확인 모달을 여는 함수입니다. */
 	const openChangeStatusModal = (statusName: string) => {
@@ -493,56 +493,60 @@ export function ApplicationViewTable({
 	return (
 		<_.Container>
 			<_.BtnContentWrapper>
-				<_.TitleText>
-					총 <_.CntContent>{applicationCnt}</_.CntContent>개
-				</_.TitleText>
+				<_.CountTitle>
+					총 <_.CountContent>{applicationCount}</_.CountContent>개
+				</_.CountTitle>
 				<_.BtnWrapper>
 					<Button
 						kind="Ghost"
-					size="S"
-					onClick={() => openChangeStatusModal('APPROVED')}
-					disabled={requestStatusIsLoading || !clickedData.length}
-				>
-					승인
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					onClick={openRejectApplicationModal}
-					disabled={RejectApplicationIsLoading || !clickedData.length}
-				>
-					반려
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					onClick={() => openChangeStatusModal('SEND')}
-					disabled={RejectApplicationIsLoading || !clickedData.length}
-				>
-					전송
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					onClick={() => openChangeStatusModal('PASS')}
-					disabled={requestStatusIsLoading || !clickedData.length}
-				>
-					합격
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					onClick={() => openChangeStatusModal('FAILED')}
-					disabled={requestStatusIsLoading || !clickedData.length}
-				>
-					불합격
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					onClick={openChangeTrainDateModal}
-					disabled={trainDateIsLoading || !clickedData.length}
-				>
+						size="S"
+						onClick={() => openChangeStatusModal('APPROVED')}
+						disabled={requestStatusIsLoading || !clickedData.length}
+					>
+						승인
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						onClick={openRejectApplicationModal}
+						disabled={
+							RejectApplicationIsLoading || !clickedData.length
+						}
+					>
+						반려
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						onClick={() => openChangeStatusModal('SEND')}
+						disabled={
+							RejectApplicationIsLoading || !clickedData.length
+						}
+					>
+						전송
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						onClick={() => openChangeStatusModal('PASS')}
+						disabled={requestStatusIsLoading || !clickedData.length}
+					>
+						합격
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						onClick={() => openChangeStatusModal('FAILED')}
+						disabled={requestStatusIsLoading || !clickedData.length}
+					>
+						불합격
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						onClick={openChangeTrainDateModal}
+						disabled={trainDateIsLoading || !clickedData.length}
+					>
 						현장실습
 					</Button>
 				</_.BtnWrapper>

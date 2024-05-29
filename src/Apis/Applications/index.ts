@@ -3,7 +3,7 @@ import { instance } from '../axios';
 import { ApplicantInfoQueryStringType } from './request';
 import {
 	ApplicationResponse,
-	CntType,
+	applicationCountType,
 	InternshipStudentResponse,
 } from './response';
 
@@ -103,9 +103,11 @@ export const useRejectApplication = (
 };
 
 /**지원서 총 개수 조회 */
-export const useApplicationCnt = () => {
-	return useQuery(['applicationCnt'], async () => {
-		const data = await instance.get<CntType>(`${router}/teacher/count`);
+export const useApplicationCount = () => {
+	return useQuery(['applicationCount'], async () => {
+		const data = await instance.get<applicationCountType>(
+			`${router}/teacher/count`
+		);
 		return data.data;
 	});
 };

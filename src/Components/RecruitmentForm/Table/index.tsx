@@ -10,7 +10,7 @@ import { RecruitmentFormResponse } from '../../../Apis/Recruitments/response';
 import { Pagination } from '../../../Utils/Pagination';
 import {
 	useChangeRecruitmentsStatus,
-	useRecruitmentCnt,
+	useRecruitmentCount,
 } from '../../../Apis/Recruitments/index';
 import { companyStatus, companyType } from '../../../Utils/Translation';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
@@ -34,7 +34,7 @@ export function RecruitmentFormTable({
 	recruitmentFormIsLoading,
 }: PropsType) {
 	const { append } = useToastStore();
-	const { data: cnt } = useRecruitmentCnt();
+	const { data: RecruitmentCountData } = useRecruitmentCount();
 
 	const { recruitmentFormQueryString, setRecruitmentFormQueryString } =
 		useRecruitmentFormQueryString();
@@ -43,7 +43,7 @@ export function RecruitmentFormTable({
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
-	const [recruitmentCnt, setRecruitmentCnt] = useState<number>(0);
+	const [recruitmentCount, setRecruitmentCount] = useState<number>(0);
 
 	/** 지원서 상태를 변경하는 api를 호출합니다. */
 	const { mutate: changeStatusAPI, isLoading } = useChangeRecruitmentsStatus(
@@ -70,10 +70,10 @@ export function RecruitmentFormTable({
 	);
 
 	useEffect(() => {
-		if (cnt) {
-			setRecruitmentCnt(cnt.count);
+		if (RecruitmentCountData) {
+			setRecruitmentCount(RecruitmentCountData.count);
 		}
-	}, [cnt]);
+	}, [RecruitmentCountData]);
 
 	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
@@ -244,9 +244,9 @@ export function RecruitmentFormTable({
 	return (
 		<_.Container>
 			<_.BtnContentWrapper>
-				<_.TitleText>
-					총 <_.CntContent>{recruitmentCnt}</_.CntContent>개
-				</_.TitleText>
+				<_.CountTitle>
+					총 <_.CountContent>{recruitmentCount}</_.CountContent>개
+				</_.CountTitle>
 				<_.BtnWrapper>
 					<Button
 						kind="Ghost"

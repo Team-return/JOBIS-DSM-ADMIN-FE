@@ -58,6 +58,6 @@ export interface CompanyDetailResponse {
 	biz_registration_url: string;
 }
 
-export interface CntType {
+export interface CompanyCountType {
 	count: number;
 }

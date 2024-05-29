@@ -27,6 +27,6 @@ export interface InternshipStudentType {
 	student_gcn: string;
 }
 
-export interface CntType {
+export interface applicationCountType {
 	count: number;
 }

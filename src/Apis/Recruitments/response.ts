@@ -51,6 +51,6 @@ export interface AreasType {
 	preferential_treatment: string | null;
 }
 
-export interface CntType {
+export interface RecruitmentCountType {
 	count: number;
 }

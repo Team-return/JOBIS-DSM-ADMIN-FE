@@ -52,12 +52,12 @@ export const ContentText = styled.div<{ status?: string; click?: number }>`
 	word-break: keep-all;
 `;
 
-export const CntContent = styled.p`
+export const CountContent = styled.p`
 	color: #135c9d;
 	margin-left: 4px;
 `;
 
-export const CntTitle = styled.p`
+export const CountTitle = styled.p`
 	font-weight: 600;
 	font-size: 24px;
 	display: flex;
