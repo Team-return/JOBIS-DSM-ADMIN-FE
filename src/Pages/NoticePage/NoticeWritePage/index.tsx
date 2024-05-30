@@ -64,8 +64,6 @@ export function NoticeWritePage() {
 	};
 
 	const handleNoticeSubmit = () => {
-		// console.log(data);
-		// writeNotice();
 		getPresignedUrl(attachments);
 	};
 

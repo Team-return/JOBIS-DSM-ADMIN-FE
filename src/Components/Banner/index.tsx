@@ -19,8 +19,6 @@ export function Banner() {
 	};
 
 	const onDelete = async () => {
-		console.log(id);
-
 		if (id) {
 			await DeleteBannersAPI.mutateAsync();
 			queryClient.fetchQuery(['getBannerList']);
@@ -30,9 +28,7 @@ export function Banner() {
 	};
 
 	const DeleteBannersAPI = useDeleteBanner(id!, {
-		onSuccess: () => {
-			console.log(123);
-		},
+		onSuccess: () => {},
 		onError: () => {},
 	});
 

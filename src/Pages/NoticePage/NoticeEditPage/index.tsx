@@ -57,21 +57,10 @@ export function NoticeEditPage() {
 				...prevAttachments,
 				...newAttachments,
 			]);
-
-			// const presignedUrls = await Promise.all(promises);
-
-			// // setPresignedUrls((prevPresignedUrls) => [
-			// // 	...prevPresignedUrls,
-			// // 	...presignedUrls,
-			// // ]);
-
-			// console.log('첨부파일: ', attachments, newAttachments);
 		}
 	};
 
 	const handleNoticeSubmit = () => {
-		// console.log(data);
-		// writeNotice();
 		getPresignedUrl(attachments);
 	};
 

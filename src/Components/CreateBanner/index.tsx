@@ -18,7 +18,6 @@ import { useGetCompanyRecruitments } from '../../Apis/Companies';
 import { CompanyRecruitmentType } from '../../Apis/Companies/response';
 import { useGetRecruitmentForm } from '../../Apis/Recruitments/';
 import { RecruitmentFormType } from '../../Apis/Recruitments/response';
-import { useOutsideClick } from '../../Hooks/useOutsideClick';
 
 interface PropType {
 	date: DateProps;
@@ -43,9 +42,6 @@ export function CreateBanner({ date, setDate }: PropType) {
 	const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(
 		null
 	);
-	const ref = useOutsideClick(() => {
-		console.log('out click');
-	});
 
 	const { recruitmentFormQueryString, recruitmentFormQueryStringHandler } =
 		useRecruitmentFormQueryString();
@@ -155,13 +151,6 @@ export function CreateBanner({ date, setDate }: PropType) {
 		}
 	};
 
-	// useEffect(() => {
-	// 	console.log(attachments);
-	// 	if (attachments.name) {
-	// 		getPresignedUrl([attachments]);
-	// 	}
-	// }, [attachments]);
-
 	const [companyQueryResult] = useGetCompanyRecruitments(
 		companyRecruitmentQueryString
 	);
@@ -204,7 +193,6 @@ export function CreateBanner({ date, setDate }: PropType) {
 				value: selectedCompany.company_name,
 			},
 		} as React.ChangeEvent<HTMLInputElement>);
-		console.log(companyRecruitmentQueryStringHandler);
 	};
 
 	const [recruitmentQueryResult] = useGetRecruitmentForm(
@@ -249,7 +237,6 @@ export function CreateBanner({ date, setDate }: PropType) {
 				value: selectedRecruitment.company_name,
 			},
 		} as React.ChangeEvent<HTMLInputElement>);
-		console.log(recruitmentFormQueryStringHandler);
 	};
 
 	return (
@@ -358,7 +345,7 @@ export function CreateBanner({ date, setDate }: PropType) {
 								/>
 							</_.Name>
 							{showSearchEx && (
-								<_.SearchEx ref={ref}>
+								<_.SearchEx>
 									{similarCompanies.map((company) => (
 										<div>
 											<_.SearchIcon src={search} />
@@ -402,7 +389,7 @@ export function CreateBanner({ date, setDate }: PropType) {
 								/>
 							</_.Name>
 							{showRecruitmentSearchEx && (
-								<_.recruitmentEx ref={ref}>
+								<_.recruitmentEx>
 									{similarRecruitment.map((recruitment) => (
 										<div>
 											<_.SearchIcon src={search} />

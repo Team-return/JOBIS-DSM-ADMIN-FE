@@ -3,26 +3,6 @@ import { PresignedUrlResponse } from './response';
 import { instance } from '../axios';
 import axios from 'axios';
 
-// export const usePresignedUrl = () => {
-//     return useMutation(
-//         async (attachments: File[]) => {
-//             const files = attachments.map((item) => ({
-// 				type: 'EXTENSION_FILE',
-// 				file_name: item.name,
-//             }));
-
-//             const data = await instance.post(`${process.env.REACT_APP_BASE_URL}/files/pre-signed`, {files});
-
-//             return data;
-//         }, {
-//             onSuccess: ({data}) => {
-//                 console.log(data);
-//             }
-//         }
-//     )
-// }
-// propsData: PresignedUrlRequest/
-
 export const usePresignedUrl = () => {
 	return useMutation(
 		async (attachments: File[]) => {
