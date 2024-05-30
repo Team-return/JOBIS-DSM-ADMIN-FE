@@ -27,6 +27,7 @@ export const Table = styled.table`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	border: none;
 `;
 
 export const Thead = styled.thead`
@@ -44,18 +45,21 @@ export const HeaderNumber = styled.th`
 	width: 192px;
 	font-size: 16px;
 	padding: 2px 4px 2px 4px;
+	border: none;
 `;
 
 export const HeaderTitle = styled.th`
 	width: 755px;
 	font-size: 16px;
 	padding: 2px 4px 2px 4px;
+	border: none;
 `;
 
 export const HeaderDate = styled.th`
 	width: 192px;
 	font-size: 16px;
 	padding: 2px 4px 2px 4px;
+	border: none;
 `;
 
 export const Tbody = styled.tbody`
@@ -63,6 +67,7 @@ export const Tbody = styled.tbody`
 	justify-content: center;
 	align-items: center;
 	border-collapse: collapse;
+	flex-direction: column;
 `;
 
 export const Tr = styled.tr`

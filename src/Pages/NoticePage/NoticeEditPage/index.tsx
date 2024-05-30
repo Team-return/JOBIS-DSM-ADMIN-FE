@@ -1,95 +1,65 @@
 import { Header } from '../../../Components/Header';
 import * as _ from './style';
-import { ChangeEvent, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@team-return/design-system';
-// import { useNoticeWriteData } from '../../../Apis/Notices';
-// import axios from 'axios';
 import { usePresignedUrl } from '../../../Apis/Files';
-// import { PresignedUrlRequest } from '../../../Apis/Files/request';
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { AttachmentRequest } from '../../../Apis/Notices/request';
+import { useNoticeEditData } from '../../../Apis/Notices';
+import { useForm } from '../../../Hooks/useForm';
 
 export function NoticeEditPage() {
-	const fileInputRef = useRef<HTMLInputElement>(null);
+	const location = useLocation();
 	const [inputCount, setInputCount] = useState<number>(0);
-	const [, setTitle] = useState<string>('');
-	const [content, setContent] = useState<string>('');
-	const [attachments, setAttachments] = useState<File[]>([]);
-	// const [presignedUrls, setPresignedUrls] = useState<string[]>([]);
 
-	// const { mutate: writeNotice } = useNoticeWriteData({
-	// 	title,
-	// 	content,
-	// 	attachments: presignedUrls,
-	// });
+	const { title, content, created_at, attachments } = location.state || {};
+	const { form: noticeEditForm, handleChange } = useForm({
+		editTitle: title || '',
+		editContent: content || '',
+		editCreated_at: created_at || '',
+		editAttachments: attachments || [],
+	});
 
-	const { mutate: getPresignedUrl } = usePresignedUrl();
+	const [editAttachments, setEditAttachments] = useState<any>(
+		noticeEditForm.editAttachments
+	);
 
-	const getTodayDate = (): string => {
-		const today = new Date();
-		const year = today.getFullYear();
-		let month = (today.getMonth() + 1).toString();
-		let day = today.getDate().toString();
+	const navigate = useNavigate();
 
-		if (month.length === 1) {
-			month = '0' + month;
+	const { id } = useParams<{ id: string }>();
+
+	const { mutate: editNotice } = useNoticeEditData(id || '');
+
+	const { mutate: getPresignedUrl, data } = usePresignedUrl();
+	const [presignedUrls, setPresignedUrls] = useState<AttachmentRequest[]>([]);
+
+	useEffect(() => {
+		if (data) {
+			const { presignedUrls } = data;
+			setPresignedUrls(
+				presignedUrls.urls.map(({ file_path }) => ({
+					type: 'FILE',
+					url: file_path,
+				}))
+			);
 		}
-		if (day.length === 1) {
-			day = '0' + day;
+	}, [data]);
+
+	useEffect(() => {
+		if (presignedUrls.length !== 0) {
+			const editedAttachments = [...editAttachments, ...presignedUrls];
+			setEditAttachments(editedAttachments);
 		}
-
-		return `${year}-${month}-${day}`;
-	};
-
-	const handleAddFileClick = () => {
-		if (fileInputRef.current) {
-			fileInputRef.current.click();
-		}
-	};
-
-	const onInputHandler = (e: any) => {
-		setInputCount(e.target.value.length);
-	};
-
-	const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setTitle(e.target.value);
-		console.log('제목:', e.target.value);
-	};
-
-	const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-		setContent(e.target.value);
-		console.log('내용:', e.target.value);
-	};
-
-	// let files_: any;
-
-	const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files) {
-			const newAttachments = Array.from(e.target.files);
-			setAttachments((prevAttachments) => [
-				...prevAttachments,
-				...newAttachments,
-			]);
-
-			// files_ = attachments.map((item) => ({
-			// 	type: 'EXTENSION_FILE',
-			// 	file_name: item.name,
-			// }));
-
-			// const presignedUrls = await Promise.all(promises);
-
-			// // setPresignedUrls((prevPresignedUrls) => [
-			// // 	...prevPresignedUrls,
-			// // 	...presignedUrls,
-			// // ]);
-
-			// console.log('첨부파일: ', attachments, newAttachments);
-		}
-	};
+	}, [presignedUrls, editAttachments]);
 
 	const handleNoticeSubmit = () => {
-		// console.log(data);
-		// writeNotice();
+		editNotice({
+			title: noticeEditForm.editTitle,
+			content: noticeEditForm.editContent,
+			attachments: editAttachments,
+		});
 		getPresignedUrl(attachments);
+		navigate('/Notice');
 	};
 
 	return (
@@ -97,17 +67,19 @@ export function NoticeEditPage() {
 			<Header />
 			<_.Wrapper>
 				<_.Box>
-					<_.Title>공지 작성하기</_.Title>
+					<_.Title>공지 수정하기</_.Title>
 					<_.ContentWrap>
 						<_.WriteDateWrap>
 							<_.Text>작성일</_.Text>
-							<_.Text>{getTodayDate()}</_.Text>
+							<_.Text>{noticeEditForm.editCreated_at}</_.Text>
 						</_.WriteDateWrap>
 						<_.TitleWrap>
 							<_.Text>제목</_.Text>
 							<_.Input
-								onChange={handleTitleChange}
 								placeholder="공지 제목을 입력하세요"
+								value={noticeEditForm.editTitle}
+								name="editTitle"
+								onChange={handleChange}
 							/>
 						</_.TitleWrap>
 						<_.TextWrap>
@@ -116,32 +88,57 @@ export function NoticeEditPage() {
 								<_.TextInput
 									placeholder="공지 내용을 입력하세요"
 									maxLength={999}
-									value={content}
-									onChange={handleContentChange}
-									onInput={onInputHandler}
+									value={noticeEditForm.editContent}
+									onChange={handleChange}
+									name="editContent"
+									onInput={(
+										e: React.ChangeEvent<HTMLTextAreaElement>
+									) => setInputCount(e.target.value.length)}
+									as="textarea"
 								/>
 								<_.InputCount>{inputCount}자/1000</_.InputCount>
 							</_.InputWrapper>
 						</_.TextWrap>
-						<_.FileWrap>
+						{/* <_.FileWrap>
 							<_.Text>첨부파일</_.Text>
-							<_.AddFile onClick={handleAddFileClick}>
-								파일 추가하기
-							</_.AddFile>
-							<input
-								type="file"
-								style={{ display: 'none' }}
-								ref={fileInputRef}
-								onChange={handleFileChange}
-								multiple={true}
-							/>
-						</_.FileWrap>
+							<_.AddFileWrapper>
+								{editAttachments.map(
+									(file: any, index: number) => (
+										<_.AddFile key={index}>
+											{file.url
+												? file_name_regex(file.url)
+												: file_name_regex(file.name)}
+											<_.IconWrapper
+												onClick={() =>
+													handleFileDelete(index)
+												}
+											>
+												<Icon
+													icon="Trash"
+													color={'gray10'}
+												></Icon>
+											</_.IconWrapper>
+										</_.AddFile>
+									)
+								)}
+								<_.AddFile onClick={handleAddFileClick}>
+									파일 추가하기
+								</_.AddFile>
+								<input
+									type="file"
+									style={{ display: 'none' }}
+									ref={fileInputRef}
+									onChange={handleFileChange}
+									multiple={true}
+								/>
+							</_.AddFileWrapper>
+						</_.FileWrap> */}
 						<_.ButtonWrap>
-							<Link to={'/Notice'}>
+							<div>
 								<Button onClick={handleNoticeSubmit}>
-									공지 등록하기
+									공지 수정하기
 								</Button>
-							</Link>
+							</div>
 						</_.ButtonWrap>
 					</_.ContentWrap>
 				</_.Box>

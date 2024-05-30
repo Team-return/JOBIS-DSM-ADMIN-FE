@@ -1,8 +1,6 @@
 export interface PresignedUrlResponse {
-    urls: [
-        {
+    urls: {
             file_path: string,
-            pre_signed_url: string
-        }
-    ]
+            pre_signed_url: string,
+    }[]
 }

@@ -10,6 +10,7 @@ import { StudentManagementPage } from './Pages/StudentManagementPage';
 import { CompanyDetailPage } from './Pages/CompanyDetailPage';
 import { RecruitmentFormDetailPage } from './Pages/RecruitmentFormDetailPage';
 import { NoticeListPage } from './Pages/NoticePage/NoticeListPage';
+import { NoticeDetailPage } from './Pages/NoticePage/NoticeDetailPage';
 import { NoticeWritePage } from './Pages/NoticePage/NoticeWritePage';
 import { NoticeEditPage } from './Pages/NoticePage/NoticeEditPage';
 import { BannerPage } from './Pages/BannerPage';
@@ -77,8 +78,12 @@ const Router = createBrowserRouter([
 				element: <NoticeWritePage />,
 			},
 			{
-				path: 'Notice/Edit',
+				path: 'Notice/Edit/:id',
 				element: <NoticeEditPage />,
+			},
+			{
+				path: 'Notice/Detail/:id',
+				element: <NoticeDetailPage />,
 			},
 			{
 				path: 'CreateBanner',

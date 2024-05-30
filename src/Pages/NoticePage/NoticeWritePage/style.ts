@@ -19,21 +19,22 @@ export const InputCount = styled.div`
 `;
 
 export const Box = styled.div`
-    width: 980px;
-    height: 850px;
-    border: 1px solid #E5E5E5;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
+    width: 1298px;
+	height: 971px;
+	background-color: white;
+	border: 1px solid #E5E5E5;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow: scroll;
 `;
 
 export const Title = styled.div`
-    font-weight: 600;
-    font-size: 23px;
+    font-weight: 500;
+    font-size: 24px;
     line-height: 36px;
     margin-left: 24px;
+    margin-top: 24px;
     align-self: flex-start;
     margin-bottom: 25px;
 `;
@@ -55,8 +56,8 @@ export const WriteDateWrap = styled.div`
 `;
 
 export const Text = styled.div`
-    font-size: 23px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 500;
 `;
 
 export const TitleWrap = styled.div`
@@ -67,8 +68,8 @@ export const TitleWrap = styled.div`
 `;
 
 export const Input = styled.input`
-    width: 545px;
-    height: 43px;
+    width: 575px;
+    height: 46px;
     border: 1px solid #999999;
     padding-left: 10px;
     font-size: 16px;
@@ -82,7 +83,7 @@ export const TextWrap = styled.div`
 `;
 
 export const InputWrapper = styled.div`
-    width: 545px;
+    width: 575px;
     height: 400px;
     border: 1px solid #999999;
     border-radius: 4px;
@@ -99,28 +100,47 @@ export const TextInput = styled.textarea`
     font-size: 16px;
     border: none;
     resize: none;
+    white-space: pre-line;
 `;
 
 export const FileWrap = styled.div`
     display: flex;
     flex-direction: row;
     gap: 37px;
-    align-items: center;
+    /* align-items: center; */
 `;
 
 export const AddFile = styled.div`
-    width: 550px;
-    height: 43px;
+    width: 575px;
+    height: 46px;
     background-color: #FAFAFA;
     cursor: pointer;
     font-size: 16px;
     align-items: center;
     display: flex;
-    padding-left: 16px;
+    padding: 16px;
     font-weight: 400;
+    justify-content: space-between;
 `;
 
 export const ButtonWrap = styled.div`
     margin-top: 68px;
     margin-left: auto;
+`;
+
+export const AddFileWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+`;
+
+export const IconWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+	align-items: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	background-color: #135C9D;
+	cursor: pointer;
 `;
