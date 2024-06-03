@@ -50,7 +50,3 @@ export interface AreasType {
 	major_task: string;
 	preferential_treatment: string | null;
 }
-
-export interface RecruitmentCountType {
-	count: number;
-}

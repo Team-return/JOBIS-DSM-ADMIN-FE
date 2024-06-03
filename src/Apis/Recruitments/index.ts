@@ -5,7 +5,6 @@ import {
 	RecruitmentFormQueryStringType,
 } from './request';
 import {
-	RecruitmentCountType,
 	RecruitmentFormDetailResponse,
 	RecruitmentFormResponse,
 } from './response';
@@ -171,9 +170,7 @@ export const useEditRecruitment = (
 /**모집의뢰서 총 개수 조회 */
 export const useRecruitmentCount = () => {
 	return useQuery(['RecruitmentCount'], async () => {
-		const response = await instance.get<RecruitmentCountType>(
-			`${router}/count`
-		);
-		return response.data;
+		const { data } = await instance.get(`${router}/count`);
+		return data;
 	});
 };

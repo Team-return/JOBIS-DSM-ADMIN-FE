@@ -26,7 +26,3 @@ export interface InternshipStudentType {
 	student_name: string;
 	student_gcn: string;
 }
-
-export interface applicationCountType {
-	count: number;
-}
