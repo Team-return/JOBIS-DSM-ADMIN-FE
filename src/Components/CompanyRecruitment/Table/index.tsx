@@ -55,7 +55,7 @@ export function CompanyRecruitmentTable({
 			setCompanyCount(CompanyCountData.count);
 		}
 	}, [CompanyCountData]);
-  
+
 	const { mutate: downloadExcel } = useDownloadData(downloadUrl);
 
 	/** 전체 선택 & 전체 선택 해제하는 함수입니다. */
@@ -281,44 +281,45 @@ export function CompanyRecruitmentTable({
 				<_.CountTitle>
 					총 <_.CountContent>{companyCount}</_.CountContent>개
 				</_.CountTitle>
-			<_.BtnWrapper>
-				<Button
-					size="S"
-					onClick={() => {
-						fileDownloadAPI();
-					}}
-				>
-					엑셀 출력
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('PARTICIPATING');
-					}}
-				>
-					참여기업 등록
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('LEAD');
-					}}
-				>
-					선도기업 등록
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={changeContractAPI.mutate}
-				>
-					협약등록
-				</Button>
-			</_.BtnWrapper>
+				<_.BtnWrapper>
+					<Button
+						size="S"
+						onClick={() => {
+							fileDownloadAPI();
+						}}
+					>
+						엑셀 출력
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('PARTICIPATING');
+						}}
+					>
+						참여기업 등록
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('LEAD');
+						}}
+					>
+						선도기업 등록
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={changeContractAPI.mutate}
+					>
+						협약등록
+					</Button>
+				</_.BtnWrapper>
+			</_.BtnContentWrapper>
 			<_.TableWrapper>
 				<Table
 					tableData={

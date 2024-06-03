@@ -50,7 +50,7 @@ export function RecruitmentFormTable({
 		fileUrl: '',
 		fileName: '',
 	});
-  
+
 	/** 지원서 상태를 변경하는 api를 호출합니다. */
 	const { mutate: changeStatusAPI, isLoading } = useChangeRecruitmentsStatus(
 		changeStatus,
@@ -263,41 +263,42 @@ export function RecruitmentFormTable({
 				<_.CountTitle>
 					총 <_.CountContent>{recruitmentCount}</_.CountContent>개
 				</_.CountTitle>
-			<_.BtnWrapper>
-				<Button size="S" onClick={() => fileDownloadAPI()}>
-					엑셀출력
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('READY');
-					}}
-				>
-					접수
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('RECRUITING');
-					}}
-				>
-					모집중
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('DONE');
-					}}
-				>
-					모집종료
-				</Button>
-			</_.BtnWrapper>
+				<_.BtnWrapper>
+					<Button size="S" onClick={() => fileDownloadAPI()}>
+						엑셀출력
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('READY');
+						}}
+					>
+						접수
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('RECRUITING');
+						}}
+					>
+						모집중
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('DONE');
+						}}
+					>
+						모집종료
+					</Button>
+				</_.BtnWrapper>
+			</_.BtnContentWrapper>
 			<_.TableWrapper>
 				<Table
 					tableData={
