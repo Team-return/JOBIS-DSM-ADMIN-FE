@@ -17,6 +17,8 @@ import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { searchInArray } from '../../../Utils/useSearchForArray';
 import { Link } from 'react-router-dom';
 import { useRecruitmentFormQueryString } from '../../../Store/State';
+import { useDownloadData } from '../../../Apis/File';
+import { DownloadDataPropsType } from '../../../Apis/File/request';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
@@ -44,7 +46,11 @@ export function RecruitmentFormTable({
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 	const [recruitmentCount, setRecruitmentCount] = useState<number>(0);
-
+	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
+		fileUrl: '',
+		fileName: '',
+	});
+  
 	/** 지원서 상태를 변경하는 api를 호출합니다. */
 	const { mutate: changeStatusAPI, isLoading } = useChangeRecruitmentsStatus(
 		changeStatus,
@@ -236,6 +242,16 @@ export function RecruitmentFormTable({
 		<_.TitleText>모집종료일</_.TitleText>,
 	];
 
+	const { mutate: downloadExcel } = useDownloadData(downloadUrl);
+
+	const fileDownloadAPI = () => {
+		setDownloadUrl({
+			fileUrl: '/recruitments/file',
+			fileName: '모집의뢰서리스트.xlsx',
+		});
+		setTimeout(downloadExcel);
+	};
+
 	/** 테이블의 width입니다. */
 	const tableWidth: number[] = [3, 7, 18, 30, 6, 6, 6, 6, 10, 10];
 
@@ -247,39 +263,41 @@ export function RecruitmentFormTable({
 				<_.CountTitle>
 					총 <_.CountContent>{recruitmentCount}</_.CountContent>개
 				</_.CountTitle>
-				<_.BtnWrapper>
-					<Button
-						kind="Ghost"
-						size="S"
-						disabled={buttonDisabled}
-						onClick={() => {
-							changeStatusBtnClick('READY');
-						}}
-					>
-						접수
-					</Button>
-					<Button
-						kind="Ghost"
-						size="S"
-						disabled={buttonDisabled}
-						onClick={() => {
-							changeStatusBtnClick('RECRUITING');
-						}}
-					>
-						모집중
-					</Button>
-					<Button
-						kind="Ghost"
-						size="S"
-						disabled={buttonDisabled}
-						onClick={() => {
-							changeStatusBtnClick('DONE');
-						}}
-					>
-						모집종료
-					</Button>
-				</_.BtnWrapper>
-			</_.BtnContentWrapper>
+			<_.BtnWrapper>
+				<Button size="S" onClick={() => fileDownloadAPI()}>
+					엑셀출력
+				</Button>
+				<Button
+					kind="Ghost"
+					size="S"
+					disabled={buttonDisabled}
+					onClick={() => {
+						changeStatusBtnClick('READY');
+					}}
+				>
+					접수
+				</Button>
+				<Button
+					kind="Ghost"
+					size="S"
+					disabled={buttonDisabled}
+					onClick={() => {
+						changeStatusBtnClick('RECRUITING');
+					}}
+				>
+					모집중
+				</Button>
+				<Button
+					kind="Ghost"
+					size="S"
+					disabled={buttonDisabled}
+					onClick={() => {
+						changeStatusBtnClick('DONE');
+					}}
+				>
+					모집종료
+				</Button>
+			</_.BtnWrapper>
 			<_.TableWrapper>
 				<Table
 					tableData={

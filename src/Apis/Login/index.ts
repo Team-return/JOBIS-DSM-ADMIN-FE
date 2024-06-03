@@ -30,7 +30,9 @@ export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 					});
 				} else {
 					if (checkBoxValue) {
-						setCookies('account_id', loginData.account_id);
+						setCookies('account_id', loginData.account_id, {
+							path: '/'
+						});
 					} else {
 						removeCookies('account_id');
 					}
@@ -40,9 +42,11 @@ export const Login = (loginData: LoginDataType, checkBoxValue: boolean) => {
 					);
 					setCookies('refresh_token', res.data.refresh_token, {
 						expires: refreshExpired,
+						path: '/'
 					});
 					setCookies('access_token', res.data.access_token, {
 						expires: accessExpired,
+						path: '/'
 					});
 					navigator('/RecruitmentRequest');
 				}

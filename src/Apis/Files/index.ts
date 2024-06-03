@@ -1,31 +1,10 @@
 import { useMutation } from 'react-query';
-// import { PresignedUrlRequest } from "./request"
 import { PresignedUrlResponse } from './response';
 import { instance } from '../axios';
 import axios from 'axios';
 
-// export const usePresignedUrl = () => {
-//     return useMutation(
-//         async (attachments: File[]) => {
-//             const files = attachments.map((item) => ({
-// 				type: 'EXTENSION_FILE',
-// 				file_name: item.name,
-//             }));
-
-//             const data = await instance.post(`${process.env.REACT_APP_BASE_URL}/files/pre-signed`, {files});
-
-//             return data;
-//         }, {
-//             onSuccess: ({data}) => {
-//                 console.log(data);
-//             }
-//         }
-//     )
-// }
-// propsData: PresignedUrlRequest/
-
 export const usePresignedUrl = () => {
-	return useMutation(
+	const res = useMutation(
 		async (attachments: File[]) => {
 			const files = attachments.map((item) => ({
 				type: 'EXTENSION_FILE',
@@ -41,29 +20,15 @@ export const usePresignedUrl = () => {
 		},
 		{
 			onSuccess: async ({ presignedUrls, attachments }) => {
-				const uploadPromises = presignedUrls.urls.map(
-					({ pre_signed_url }, idx) => {
-						return (async () =>
-							await axios.put(
-								pre_signed_url,
-								attachments[idx]
-							))();
-					}
+				const uploadPromises = await Promise.all(
+					presignedUrls.urls.map(({ pre_signed_url }, idx) => {
+						return axios.put(pre_signed_url, attachments[idx]);
+					})
 				);
 				await Promise.all(uploadPromises);
+				return;
 			},
 		}
 	);
+	return res;
 };
-
-// const readFileAsBinaryString = (file: File): Promise<string> => {
-//     return new Promise((resolve, reject) => {
-//         const reader = new FileReader();
-//         reader.onload = () => {
-//             const result = reader.result as string;
-//             resolve(result);
-//         };
-//         reader.onerror = reject;
-//         reader.readAsBinaryString(file);
-//     });
-// }

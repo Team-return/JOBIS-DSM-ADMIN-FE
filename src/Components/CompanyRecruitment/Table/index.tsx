@@ -17,6 +17,8 @@ import { companyType } from '../../../Utils/Translation';
 import { searchInArray } from '../../../Utils/useSearchForArray';
 import { Link } from 'react-router-dom';
 import { useCompanyRecruitmentQueryString } from '../../../Store/State';
+import { DownloadDataPropsType } from '../../../Apis/File/request';
+import { useDownloadData } from '../../../Apis/File';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
@@ -38,6 +40,10 @@ export function CompanyRecruitmentTable({
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 	const [companyCount, setCompanyCount] = useState<number>(0);
+	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
+		fileUrl: '',
+		fileName: '',
+	});
 
 	const { companyRecruitmentQueryString, setCompanyRecruitmentQueryString } =
 		useCompanyRecruitmentQueryString();
@@ -49,6 +55,8 @@ export function CompanyRecruitmentTable({
 			setCompanyCount(CompanyCountData.count);
 		}
 	}, [CompanyCountData]);
+  
+	const { mutate: downloadExcel } = useDownloadData(downloadUrl);
 
 	/** 전체 선택 & 전체 선택 해제하는 함수입니다. */
 	const checkAllBox = () => {
@@ -107,6 +115,14 @@ export function CompanyRecruitmentTable({
 			});
 		},
 	});
+
+	const fileDownloadAPI = () => {
+		setDownloadUrl({
+			fileUrl: '/companies/file',
+			fileName: '모집기업리스트.xlsx',
+		});
+		setTimeout(downloadExcel);
+	};
 
 	/** 변경 버튼을 클릭했을 때 실행할 함수입니다. */
 	const changeStatusBtnClick = (statusName: string) => {
@@ -265,40 +281,44 @@ export function CompanyRecruitmentTable({
 				<_.CountTitle>
 					총 <_.CountContent>{companyCount}</_.CountContent>개
 				</_.CountTitle>
-				<_.BtnWrapper>
-					<Button size="S" onClick={() => {}}>
-						엑셀 출력
-					</Button>
-					<Button
-						kind="Ghost"
-						size="S"
-						disabled={buttonDisabled}
-						onClick={() => {
-							changeStatusBtnClick('PARTICIPATING');
-						}}
-					>
-						참여기업 등록
-					</Button>
-					<Button
-						kind="Ghost"
-						size="S"
-						disabled={buttonDisabled}
-						onClick={() => {
-							changeStatusBtnClick('LEAD');
-						}}
-					>
-						선도기업 등록
-					</Button>
-					<Button
-						kind="Ghost"
-						size="S"
-						disabled={buttonDisabled}
-						onClick={changeContractAPI.mutate}
-					>
-						협약등록
-					</Button>
-				</_.BtnWrapper>
-			</_.BtnContentWrapper>
+			<_.BtnWrapper>
+				<Button
+					size="S"
+					onClick={() => {
+						fileDownloadAPI();
+					}}
+				>
+					엑셀 출력
+				</Button>
+				<Button
+					kind="Ghost"
+					size="S"
+					disabled={buttonDisabled}
+					onClick={() => {
+						changeStatusBtnClick('PARTICIPATING');
+					}}
+				>
+					참여기업 등록
+				</Button>
+				<Button
+					kind="Ghost"
+					size="S"
+					disabled={buttonDisabled}
+					onClick={() => {
+						changeStatusBtnClick('LEAD');
+					}}
+				>
+					선도기업 등록
+				</Button>
+				<Button
+					kind="Ghost"
+					size="S"
+					disabled={buttonDisabled}
+					onClick={changeContractAPI.mutate}
+				>
+					협약등록
+				</Button>
+			</_.BtnWrapper>
 			<_.TableWrapper>
 				<Table
 					tableData={
