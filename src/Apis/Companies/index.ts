@@ -163,3 +163,11 @@ export const useChangeCompanyInfo = (
 		}
 	);
 };
+
+/**기업 총 개수 조회 */
+export const useCompanyCount = () => {
+	return useQuery(['CompanyCount'], async () => {
+		const { data } = await instance.get(`${router}/count`);
+		return data;
+	});
+};

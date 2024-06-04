@@ -13,13 +13,18 @@ export const Container = styled.div`
 
 export const BtnWrapper = styled.div`
 	display: flex;
-	justify-content: flex-end;
-	width: 100%;
 	gap: 15px;
 	margin-bottom: 10px;
 `;
 
 export const TableWrapper = styled.div`
+	width: 100%;
+`;
+
+export const BtnContentWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	width: 100%;
 `;
 
@@ -94,4 +99,15 @@ export const MiddleText = styled.div`
 	font-weight: 700;
 	margin: 30px 0 0 25px;
 	color: black;
+`;
+
+export const CountContent = styled.p`
+	color: #135c9d;
+	margin-left: 4px;
+`;
+
+export const CountTitle = styled.p`
+	font-weight: 600;
+	font-size: 24px;
+	display: flex;
 `;

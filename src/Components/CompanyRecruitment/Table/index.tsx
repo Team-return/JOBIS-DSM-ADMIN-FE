@@ -5,11 +5,12 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pagination } from '../../../Utils/Pagination';
 import {
 	useChangeCompanyStatus,
 	useChangeContractCompany,
+	useCompanyCount,
 } from '../../../Apis/Companies';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
@@ -38,6 +39,7 @@ export function CompanyRecruitmentTable({
 	const dataLength = companyRecruitment?.companies.length;
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
+	const [companyCount, setCompanyCount] = useState<number>(0);
 	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
 		fileUrl: '',
 		fileName: '',
@@ -45,6 +47,14 @@ export function CompanyRecruitmentTable({
 
 	const { companyRecruitmentQueryString, setCompanyRecruitmentQueryString } =
 		useCompanyRecruitmentQueryString();
+
+	const { data: CompanyCountData } = useCompanyCount();
+
+	useEffect(() => {
+		if (CompanyCountData) {
+			setCompanyCount(CompanyCountData.count);
+		}
+	}, [CompanyCountData]);
 
 	const { mutate: downloadExcel } = useDownloadData(downloadUrl);
 
@@ -267,44 +277,49 @@ export function CompanyRecruitmentTable({
 
 	return (
 		<_.Container>
-			<_.BtnWrapper>
-				<Button
-					size="S"
-					onClick={() => {
-						fileDownloadAPI();
-					}}
-				>
-					엑셀 출력
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('PARTICIPATING');
-					}}
-				>
-					참여기업 등록
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('LEAD');
-					}}
-				>
-					선도기업 등록
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={changeContractAPI.mutate}
-				>
-					협약등록
-				</Button>
-			</_.BtnWrapper>
+			<_.BtnContentWrapper>
+				<_.CountTitle>
+					총 <_.CountContent>{companyCount}</_.CountContent>개
+				</_.CountTitle>
+				<_.BtnWrapper>
+					<Button
+						size="S"
+						onClick={() => {
+							fileDownloadAPI();
+						}}
+					>
+						엑셀 출력
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('PARTICIPATING');
+						}}
+					>
+						참여기업 등록
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('LEAD');
+						}}
+					>
+						선도기업 등록
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={changeContractAPI.mutate}
+					>
+						협약등록
+					</Button>
+				</_.BtnWrapper>
+			</_.BtnContentWrapper>
 			<_.TableWrapper>
 				<Table
 					tableData={

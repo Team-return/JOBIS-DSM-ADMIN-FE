@@ -5,10 +5,13 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RecruitmentFormResponse } from '../../../Apis/Recruitments/response';
 import { Pagination } from '../../../Utils/Pagination';
-import { useChangeRecruitmentsStatus } from '../../../Apis/Recruitments/index';
+import {
+	useChangeRecruitmentsStatus,
+	useRecruitmentCount,
+} from '../../../Apis/Recruitments/index';
 import { companyStatus, companyType } from '../../../Utils/Translation';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { searchInArray } from '../../../Utils/useSearchForArray';
@@ -33,6 +36,7 @@ export function RecruitmentFormTable({
 	recruitmentFormIsLoading,
 }: PropsType) {
 	const { append } = useToastStore();
+	const { data: RecruitmentCountData } = useRecruitmentCount();
 
 	const { recruitmentFormQueryString, setRecruitmentFormQueryString } =
 		useRecruitmentFormQueryString();
@@ -41,6 +45,7 @@ export function RecruitmentFormTable({
 	const dataLength = recruitmentForm?.recruitments.length;
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
+	const [recruitmentCount, setRecruitmentCount] = useState<number>(0);
 	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
 		fileUrl: '',
 		fileName: '',
@@ -69,6 +74,12 @@ export function RecruitmentFormTable({
 			},
 		}
 	);
+
+	useEffect(() => {
+		if (RecruitmentCountData) {
+			setRecruitmentCount(RecruitmentCountData.count);
+		}
+	}, [RecruitmentCountData]);
 
 	/** 전체 선택 & 전체 선택 해제를 하는 함수입니다. */
 	const checkAllBox = () => {
@@ -248,41 +259,46 @@ export function RecruitmentFormTable({
 
 	return (
 		<_.Container>
-			<_.BtnWrapper>
-				<Button size="S" onClick={() => fileDownloadAPI()}>
-					엑셀출력
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('READY');
-					}}
-				>
-					접수
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('RECRUITING');
-					}}
-				>
-					모집중
-				</Button>
-				<Button
-					kind="Ghost"
-					size="S"
-					disabled={buttonDisabled}
-					onClick={() => {
-						changeStatusBtnClick('DONE');
-					}}
-				>
-					모집종료
-				</Button>
-			</_.BtnWrapper>
+			<_.BtnContentWrapper>
+				<_.CountTitle>
+					총 <_.CountContent>{recruitmentCount}</_.CountContent>개
+				</_.CountTitle>
+				<_.BtnWrapper>
+					<Button size="S" onClick={() => fileDownloadAPI()}>
+						엑셀출력
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('READY');
+						}}
+					>
+						접수
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('RECRUITING');
+						}}
+					>
+						모집중
+					</Button>
+					<Button
+						kind="Ghost"
+						size="S"
+						disabled={buttonDisabled}
+						onClick={() => {
+							changeStatusBtnClick('DONE');
+						}}
+					>
+						모집종료
+					</Button>
+				</_.BtnWrapper>
+			</_.BtnContentWrapper>
 			<_.TableWrapper>
 				<Table
 					tableData={
