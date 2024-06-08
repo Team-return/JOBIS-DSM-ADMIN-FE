@@ -3,7 +3,32 @@ import styled from 'styled-components';
 export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
+	gap: 36px;
+`;
+
+export const BannerDetails = styled.div`
+	display: flex;
+	flex-direction: column;
+	position: relative;
 	gap: 20px;
+`;
+
+export const DeleteBackground = styled.div`
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	width: 36px;
+	height: 36px;
+	border-radius: 50px;
+	background: var(--primary-30, #0f4c82);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+export const deleteImg = styled.img`
+	width: 32px;
+	height: 32px;
 `;
 
 export const Wrapper = styled.div`
