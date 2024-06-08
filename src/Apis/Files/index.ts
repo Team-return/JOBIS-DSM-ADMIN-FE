@@ -3,11 +3,13 @@ import { PresignedUrlResponse } from './response';
 import { instance } from '../axios';
 import axios from 'axios';
 
+const EXTENSION_FILE = 'EXTENSION_FILE';
+
 export const usePresignedUrl = () => {
 	return useMutation(
 		async (attachments: File[]) => {
 			const files = attachments.map((item) => ({
-				type: 'EXTENSION_FILE',
+				type: EXTENSION_FILE,
 				file_name: item.name,
 			}));
 

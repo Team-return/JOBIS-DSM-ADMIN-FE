@@ -165,7 +165,6 @@ export const CompanyNameSearch = styled.tr`
 
 export const RecruitmentSearch = styled.tr`
 	position: relative;
-	z-index: 1;
 `;
 
 export const Td = styled.td`

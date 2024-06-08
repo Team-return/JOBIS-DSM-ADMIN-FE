@@ -22,13 +22,14 @@ export function Banner() {
 		if (id) {
 			await DeleteBannersAPI.mutateAsync();
 			queryClient.fetchQuery(['getBannerList']);
-			window.location.reload();
 		}
 		setShowDeleteAlarm(false);
 	};
 
 	const DeleteBannersAPI = useDeleteBanner(id!, {
-		onSuccess: () => {},
+		onSuccess: () => {
+			window.location.reload();
+		},
 		onError: () => {},
 	});
 
