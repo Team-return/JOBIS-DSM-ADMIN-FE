@@ -1,8 +1,4 @@
-import {
-	useMutation,
-	MutationOptions,
-	useQuery,
-} from 'react-query';
+import { useMutation, MutationOptions, useQuery } from 'react-query';
 import { instance } from '../axios';
 import { ApplicantInfoQueryStringType } from './request';
 import { ApplicationResponse, InternshipStudentResponse } from './response';
@@ -100,4 +96,12 @@ export const useRejectApplication = (
 			...options,
 		}
 	);
+};
+
+/**지원서 총 개수 조회 */
+export const useApplicationCount = () => {
+	return useQuery(['applicationCount'], async () => {
+		const { data } = await instance.get(`${router}/count`);
+		return data;
+	});
 };

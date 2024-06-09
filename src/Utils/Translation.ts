@@ -49,3 +49,11 @@ export const winterIntern: { [key: string]: boolean | null } = {
 	체험형: true,
 	채용형: false,
 };
+
+export const BannerType = {
+	RECRUITMENT: '모집의뢰서',
+	BOOKMARK: '북마크',
+	NONE: '페이지 이동 안함',
+	INTERNSHIP: '체험형 현장실습 페이지',
+	COMPANY: '기업 상세 페이지',
+};

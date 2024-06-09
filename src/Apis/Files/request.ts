@@ -1,6 +1,8 @@
 export interface PresignedUrlRequest {
-    files: {
-        type: string
-        file_name: string
-    }[]
+	files: FileInfoType[];
+}
+
+export interface FileInfoType {
+	type: string;
+	file_name: string;
 }
