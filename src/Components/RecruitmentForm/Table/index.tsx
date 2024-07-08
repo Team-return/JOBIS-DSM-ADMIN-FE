@@ -11,14 +11,13 @@ import { Pagination } from '../../../Utils/Pagination';
 import {
 	useChangeRecruitmentsStatus,
 	useRecruitmentCount,
+	useRecruitmentExcel,
 } from '../../../Apis/Recruitments/index';
 import { companyStatus, companyType } from '../../../Utils/Translation';
 import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import { searchInArray } from '../../../Utils/useSearchForArray';
 import { Link } from 'react-router-dom';
 import { useRecruitmentFormQueryString } from '../../../Store/State';
-import { useDownloadData } from '../../../Apis/File';
-import { DownloadDataPropsType } from '../../../Apis/File/request';
 
 interface PropsType {
 	recruitmentForm: RecruitmentFormResponse;
@@ -37,6 +36,15 @@ export function RecruitmentFormTable({
 }: PropsType) {
 	const { append } = useToastStore();
 	const { data: RecruitmentCountData } = useRecruitmentCount();
+	const { mutate: useRecruitmentExcelMutate } = useRecruitmentExcel({
+		onError: () => {
+			append({
+				title: '엑셀 다운로드에 실패하였습니다',
+				message: '',
+				type: 'RED',
+			});
+		},
+	});
 
 	const { recruitmentFormQueryString, setRecruitmentFormQueryString } =
 		useRecruitmentFormQueryString();
@@ -46,10 +54,6 @@ export function RecruitmentFormTable({
 	const [clickedData, setClickedData] = useState<string[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 	const [recruitmentCount, setRecruitmentCount] = useState<number>(0);
-	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
-		fileUrl: '',
-		fileName: '',
-	});
 
 	/** 지원서 상태를 변경하는 api를 호출합니다. */
 	const { mutate: changeStatusAPI, isLoading } = useChangeRecruitmentsStatus(
@@ -242,16 +246,6 @@ export function RecruitmentFormTable({
 		<_.TitleText>모집종료일</_.TitleText>,
 	];
 
-	const { mutate: downloadExcel } = useDownloadData(downloadUrl);
-
-	const fileDownloadAPI = () => {
-		setDownloadUrl({
-			fileUrl: '/recruitments/file',
-			fileName: '모집의뢰서리스트.xlsx',
-		});
-		setTimeout(downloadExcel);
-	};
-
 	/** 테이블의 width입니다. */
 	const tableWidth: number[] = [3, 7, 18, 30, 6, 6, 6, 6, 10, 10];
 
@@ -264,7 +258,7 @@ export function RecruitmentFormTable({
 					총 <_.CountContent>{recruitmentCount}</_.CountContent>개
 				</_.CountTitle>
 				<_.BtnWrapper>
-					<Button size="S" onClick={() => fileDownloadAPI()}>
+					<Button size="S" onClick={useRecruitmentExcelMutate}>
 						엑셀출력
 					</Button>
 					<Button

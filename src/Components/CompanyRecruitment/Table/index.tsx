@@ -11,14 +11,13 @@ import {
 	useChangeCompanyStatus,
 	useChangeContractCompany,
 	useCompanyCount,
+	useCompanyExcel,
 } from '../../../Apis/Companies';
 import { CompanyRecruitmentResponse } from '../../../Apis/Companies/response';
 import { companyType } from '../../../Utils/Translation';
 import { searchInArray } from '../../../Utils/useSearchForArray';
 import { Link } from 'react-router-dom';
 import { useCompanyRecruitmentQueryString } from '../../../Store/State';
-import { DownloadDataPropsType } from '../../../Apis/File/request';
-import { useDownloadData } from '../../../Apis/File';
 
 interface PropsType {
 	companyRecruitment: CompanyRecruitmentResponse;
@@ -40,23 +39,26 @@ export function CompanyRecruitmentTable({
 	const [clickedData, setClickedData] = useState<number[]>([]);
 	const [changeStatus, setChangeStatus] = useState<string>('');
 	const [companyCount, setCompanyCount] = useState<number>(0);
-	const [downloadUrl, setDownloadUrl] = useState<DownloadDataPropsType>({
-		fileUrl: '',
-		fileName: '',
-	});
 
 	const { companyRecruitmentQueryString, setCompanyRecruitmentQueryString } =
 		useCompanyRecruitmentQueryString();
 
 	const { data: CompanyCountData } = useCompanyCount();
+	const { mutate: useCompanyExcelMutate } = useCompanyExcel({
+		onError: () => {
+			append({
+				title: '엑셀 다운로드에 실패하였습니다',
+				message: '',
+				type: 'RED',
+			});
+		},
+	});
 
 	useEffect(() => {
 		if (CompanyCountData) {
 			setCompanyCount(CompanyCountData.count);
 		}
 	}, [CompanyCountData]);
-
-	const { mutate: downloadExcel } = useDownloadData(downloadUrl);
 
 	/** 전체 선택 & 전체 선택 해제하는 함수입니다. */
 	const checkAllBox = () => {
@@ -115,14 +117,6 @@ export function CompanyRecruitmentTable({
 			});
 		},
 	});
-
-	const fileDownloadAPI = () => {
-		setDownloadUrl({
-			fileUrl: '/companies/file',
-			fileName: '모집기업리스트.xlsx',
-		});
-		setTimeout(downloadExcel);
-	};
 
 	/** 변경 버튼을 클릭했을 때 실행할 함수입니다. */
 	const changeStatusBtnClick = (statusName: string) => {
@@ -282,12 +276,7 @@ export function CompanyRecruitmentTable({
 					총 <_.CountContent>{companyCount}</_.CountContent>개
 				</_.CountTitle>
 				<_.BtnWrapper>
-					<Button
-						size="S"
-						onClick={() => {
-							fileDownloadAPI();
-						}}
-					>
+					<Button size="S" onClick={useCompanyExcelMutate}>
 						엑셀 출력
 					</Button>
 					<Button

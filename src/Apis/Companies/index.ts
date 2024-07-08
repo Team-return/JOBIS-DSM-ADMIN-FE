@@ -171,3 +171,18 @@ export const useCompanyCount = () => {
 		return data;
 	});
 };
+
+export const useCompanyExcel = (options: MutationOptions) => {
+	return useMutation(async () => {
+		const { data } = await instance.get(`${router}/file`, {
+			responseType: 'blob',
+		});
+		const url = window.URL.createObjectURL(new Blob([data]));
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', '모집기업의뢰서.xlsx');
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}, options);
+};
