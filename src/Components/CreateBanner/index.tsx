@@ -130,6 +130,7 @@ export function CreateBanner({ date, setDate }: PropType) {
 					`${process.env.REACT_APP_FILE_URL}` +
 						response?.presignedUrls.urls[0].file_path || ''
 				);
+				console.log(getPresignedUrl);
 				navigator('/banner');
 			}
 		};
@@ -293,27 +294,25 @@ export function CreateBanner({ date, setDate }: PropType) {
 								onChange={handleChange}
 							></_.Input>
 						</_.InputWrapper>
-						<_.LogoUpload>
-							<_.FileInputContainer>
-								{logoPreview ? (
-									<img
-										src={logoPreview}
-										alt="로고 미리보기"
-										style={{
-											width: '100%',
-											height: '100%',
-											borderRadius: '12px',
-										}}
-									/>
-								) : (
-									<>로고를 업로드 해주세요.</>
-								)}
-								<_.FileInput
-									type="file"
-									onChange={handleFileChange}
+						<_.FileInputContainer>
+							{logoPreview ? (
+								<img
+									src={logoPreview}
+									alt="로고 미리보기"
+									style={{
+										width: '100%',
+										height: '100%',
+										borderRadius: '12px',
+									}}
 								/>
-							</_.FileInputContainer>
-						</_.LogoUpload>
+							) : (
+								<>로고를 업로드 해주세요.</>
+							)}
+							<_.FileInput
+								type="file"
+								onChange={handleFileChange}
+							/>
+						</_.FileInputContainer>
 					</_.CaptureWrapper>
 				</_.CreateWrapper>
 				<_.MovePage>

@@ -40,7 +40,7 @@ export const CreateWrapper = styled.div`
 	flex-direction: column;
 	gap: 28px;
 	width: 1080px;
-	height: 460px;
+	height: 570px;
 	background-color: white;
 	border-radius: 4px;
 	padding: 28px 0px 0px 40px;
@@ -48,13 +48,12 @@ export const CreateWrapper = styled.div`
 
 export const BannerImg = styled.img`
 	width: 1000px;
-	height: 320px;
-	z-index: 0;
+	height: 450px;
 `;
 
 export const CaptureWrapper = styled.div`
 	width: 1000px;
-	height: 320px;
+	height: 450px;
 `;
 
 export const InputWrapper = styled.div<{
@@ -66,7 +65,7 @@ export const InputWrapper = styled.div<{
 	};
 }>`
 	position: absolute;
-	top: 35%;
+	top: 40%;
 	left: 90px;
 	display: flex;
 	flex-direction: column;
@@ -116,7 +115,7 @@ export const LogoUpload = styled.div``;
 
 export const FileInputContainer = styled.div`
 	position: absolute;
-	top: 35%;
+	top: 40%;
 	left: 400px;
 	display: flex;
 	justify-content: center;

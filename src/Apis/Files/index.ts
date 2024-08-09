@@ -7,34 +7,32 @@ const EXTENSION_FILE = 'EXTENSION_FILE';
 
 export const usePresignedUrl = () => {
 	return useMutation(
-		async (attachments: File[]) => {
-			const files = attachments.map((item) => ({
+		async (files: File[]) => {
+			const body = files.map((item) => ({
 				type: EXTENSION_FILE,
 				file_name: item.name,
 			}));
 
 			const { data: presignedUrls } =
 				await instance.post<PresignedUrlResponse>(`/files/pre-signed`, {
-					files,
+					files: body,
 				});
-			return { presignedUrls, attachments };
+			return { presignedUrls, files };
 		},
 		{
 			onSuccess: async ({
 				presignedUrls,
-				attachments,
+				files,
 			}: {
 				presignedUrls: PresignedUrlResponse;
-				attachments: File[];
+				files: File[];
 			}) => {
 				const uploadPromises = presignedUrls.urls.map(
 					// eslint-disable-next-line
 					({ pre_signed_url }, idx) => {
 						(async () =>
-							await axios.put(
-								pre_signed_url,
-								attachments[idx]
-							))();
+							await axios.put(pre_signed_url, files[idx]))();
+						console.log(pre_signed_url);
 					}
 				);
 				await Promise.all(uploadPromises);
