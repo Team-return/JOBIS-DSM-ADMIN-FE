@@ -3,6 +3,7 @@ import {
 	useMutation,
 	useQueries,
 	useQuery,
+	useQueryClient,
 } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { instance } from '../axios';
