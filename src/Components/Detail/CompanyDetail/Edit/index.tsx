@@ -5,7 +5,7 @@ import {
 	useToastStore,
 	Text,
 } from '@team-return/design-system';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { CompanyDetailResponse } from '../../../../Apis/Companies/response';
 import { useForm } from '../../../../Hooks/useForm';
 import * as _ from '../../style';
