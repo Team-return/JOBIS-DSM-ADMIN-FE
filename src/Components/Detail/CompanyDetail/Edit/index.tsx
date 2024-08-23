@@ -34,7 +34,6 @@ export function CompanyDetailEdit({
 		`${process.env.REACT_APP_FILE_URL}${companyDetailInfo?.company_profile_url}` ||
 			null
 	);
-	console.log(companyDetailInfo?.company_profile_url);
 
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -116,7 +115,6 @@ export function CompanyDetailEdit({
 	const handleFileUploadAndEdit = async () => {
 		if (selectedFile) {
 			const response = await getPresignedUrl([selectedFile]);
-			console.log(response);
 			if (response?.presignedUrls?.urls?.[0]?.file_path) {
 				const uploadedUrl = `${process.env.REACT_APP_FILE_URL}${response.presignedUrls.urls[0].file_path}`;
 				setImageUrl(uploadedUrl);
@@ -131,16 +129,6 @@ export function CompanyDetailEdit({
 			}
 		}
 	};
-
-	// useEffect(() => {
-	// 	if (
-	// 		companyDetailEditInfo.company_profile_url !==
-	// 		companyDetailInfo.company_profile_url
-	// 	) {
-	// 		editCompanyInfo();
-	// 	}
-	// 	// eslint-disable-next-line
-	// }, [companyDetailEditInfo.company_profile_url]);
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files.length > 0) {
