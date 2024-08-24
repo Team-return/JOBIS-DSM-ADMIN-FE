@@ -189,12 +189,10 @@ export function RecruitmentFormDetailBasic({
 							<_.TitleBox>정규직전환시</_.TitleBox>
 							<_.ContentBox width={24}>
 								{recruitmentFormDetail?.pay
-									? `${recruitmentFormDetail?.pay
-											.toString()
-											.replace(
-												/\B(?=(\d{3})+(?!\d))/g,
-												','
-											)}만원/연`
+									? `${recruitmentFormDetail?.pay.replace(
+											/\B(?=(\d{3})+(?!\d))/g,
+											','
+									  )}만원/연`
 									: '-'}
 							</_.ContentBox>
 						</_.Stack>
