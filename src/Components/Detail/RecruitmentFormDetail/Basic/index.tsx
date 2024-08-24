@@ -9,11 +9,13 @@ interface PropsType {
 	recruitmentFormDetail: RecruitmentFormDetailResponse;
 	setCanEdit: Dispatch<SetStateAction<boolean>>;
 }
+
 export function RecruitmentFormDetailBasic({
 	recruitmentFormDetail,
 	setCanEdit,
 }: PropsType) {
 	const navigate = useNavigate();
+
 	return (
 		<_.Container>
 			<_.Wrapper>
@@ -46,6 +48,7 @@ export function RecruitmentFormDetailBasic({
 					</Button>
 				</Stack>
 			</_.Wrapper>
+
 			<_.Stack>
 				<_.TitleBox>기업명</_.TitleBox>
 				<_.ContentBox width={40}>
@@ -64,82 +67,80 @@ export function RecruitmentFormDetailBasic({
 						: '상시모집'}
 				</_.ContentBox>
 			</_.Stack>
+
 			<_.Stack>
 				<_.TitleBox height={recruitmentFormDetail?.areas.length * 325}>
 					모집분야
 				</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
-					{recruitmentFormDetail?.areas.map((area, i) => {
-						return (
-							<_.Stack key={area.id}>
-								<_.TitleBox height={325} width={5}>
-									{i + 1}
-								</_.TitleBox>
-								<_.Stack flexDirection="column" width={95}>
-									<_.Stack>
-										<_.TitleBox height={125}>
-											채용인원
-										</_.TitleBox>
-										<_.ContentBox height={125} width={15}>
-											{area.hiring}명
-										</_.ContentBox>
-										<_.TitleBox height={125}>
-											분야
-										</_.TitleBox>
-										<_.ContentBox
-											height={125}
-											width={15}
-											overflow="scroll"
-											longText={true}
-										>
-											{area.job
-												.map((item) => item.name)
-												.join(' / ')}
-										</_.ContentBox>
-										<_.TitleBox height={125}>
-											사용기술
-										</_.TitleBox>
-										<_.ContentBox
-											height={125}
-											width={40}
-											overflow="scroll"
-											longText={true}
-										>
-											{area.tech
-												.map((item) => item.name)
-												.join(' / ')}
-										</_.ContentBox>
-									</_.Stack>
-									<_.Stack>
-										<_.TitleBox height={200}>
-											주요업무
-										</_.TitleBox>
-										<_.ContentBox
-											height={200}
-											width={40}
-											longText={true}
-											overflow="scroll"
-										>
-											{area.major_task}
-										</_.ContentBox>
-										<_.TitleBox height={200}>
-											우대사항
-										</_.TitleBox>
-										<_.ContentBox
-											height={200}
-											width={40}
-											longText={true}
-											overflow="scroll"
-										>
-											{area.preferential_treatment || '-'}
-										</_.ContentBox>
-									</_.Stack>
+					{recruitmentFormDetail?.areas.map((area, i) => (
+						<_.Stack key={area.id}>
+							<_.TitleBox height={325} width={5}>
+								{i + 1}
+							</_.TitleBox>
+							<_.Stack flexDirection="column" width={95}>
+								<_.Stack>
+									<_.TitleBox height={125}>
+										채용인원
+									</_.TitleBox>
+									<_.ContentBox height={125} width={15}>
+										{area.hiring}명
+									</_.ContentBox>
+									<_.TitleBox height={125}>분야</_.TitleBox>
+									<_.ContentBox
+										height={125}
+										width={15}
+										overflow="scroll"
+										longText={true}
+									>
+										{area.job
+											.map((item) => item.name)
+											.join(' / ')}
+									</_.ContentBox>
+									<_.TitleBox height={125}>
+										사용기술
+									</_.TitleBox>
+									<_.ContentBox
+										height={125}
+										width={40}
+										overflow="scroll"
+										longText={true}
+									>
+										{area.tech
+											.map((item) => item.name)
+											.join(' / ')}
+									</_.ContentBox>
+								</_.Stack>
+								<_.Stack>
+									<_.TitleBox height={200}>
+										주요업무
+									</_.TitleBox>
+									<_.ContentBox
+										height={200}
+										width={40}
+										longText={true}
+										overflow="scroll"
+									>
+										{area.major_task}
+									</_.ContentBox>
+									<_.TitleBox height={200}>
+										우대사항
+									</_.TitleBox>
+									<_.ContentBox
+										height={200}
+										width={40}
+										longText={true}
+										overflow="scroll"
+									>
+										{area.preferential_treatment || '-'}
+									</_.ContentBox>
 								</_.Stack>
 							</_.Stack>
-						);
-					})}
+						</_.Stack>
+					))}
 				</_.Stack>
 			</_.Stack>
+
 			<_.Stack>
 				<_.TitleBox>자격요건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
@@ -158,14 +159,14 @@ export function RecruitmentFormDetailBasic({
 							<_.TitleBox>성적</_.TitleBox>
 							<_.ContentBox width={20}>
 								{recruitmentFormDetail?.required_grade
-									? recruitmentFormDetail?.required_grade +
-									  '%'
+									? `${recruitmentFormDetail?.required_grade}%`
 									: '-'}
 							</_.ContentBox>
 						</_.Stack>
 					</_.Stack>
 				</_.Stack>
 			</_.Stack>
+
 			<_.Stack>
 				<_.TitleBox height={275}>근무조건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
@@ -188,7 +189,7 @@ export function RecruitmentFormDetailBasic({
 							<_.TitleBox>정규직전환시</_.TitleBox>
 							<_.ContentBox width={24}>
 								{recruitmentFormDetail?.pay
-									? `${recruitmentFormDetail?.pay?.replace(
+									? `${recruitmentFormDetail?.pay.replace(
 											/\B(?=(\d{3})+(?!\d))/g,
 											','
 									  )}만원/연`
@@ -208,6 +209,7 @@ export function RecruitmentFormDetailBasic({
 					</_.Stack>
 				</_.Stack>
 			</_.Stack>
+
 			<_.Stack>
 				<_.TitleBox height={350}>채용절차</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
@@ -215,18 +217,18 @@ export function RecruitmentFormDetailBasic({
 						<_.Stack>
 							<_.TitleBox>채용절차</_.TitleBox>
 							<_.ContentBox width={60}>
-								{recruitmentFormDetail?.hiring_progress.map(
-									(progress, i) => {
-										if (
-											recruitmentFormDetail
-												?.hiring_progress.length ===
-											i + 1
-										) {
-											return `${hiringProgress[progress]}`;
-										}
-										return `${hiringProgress[progress]} → `;
-									}
-								)}
+								{recruitmentFormDetail?.hiring_progress
+									.map(
+										(progress, i) =>
+											`${hiringProgress[progress]}${
+												recruitmentFormDetail
+													.hiring_progress.length !==
+												i + 1
+													? ' → '
+													: ''
+											}`
+									)
+									.join('')}
 							</_.ContentBox>
 							<_.TitleBox>
 								병역특례

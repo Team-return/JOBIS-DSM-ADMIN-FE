@@ -15,7 +15,6 @@ export function CompanyDetailBasic({
 	setCanEdit,
 }: PropsType) {
 	const navigate = useNavigate();
-
 	const nameArray = decodeURI(companyDetailInfo?.biz_registration_url).split(
 		'/'
 	);
@@ -23,7 +22,6 @@ export function CompanyDetailBasic({
 		fileName: nameArray[nameArray.length - 1].substring(37),
 		fileUrl: companyDetailInfo?.biz_registration_url,
 	});
-
 	return (
 		<_.Container>
 			<_.Wrapper>
@@ -36,7 +34,15 @@ export function CompanyDetailBasic({
 					</_.BackWrapper>
 					<_.LogoWrapper>
 						<_.CompanyLogo
-							src={`${process.env.REACT_APP_FILE_URL}${companyDetailInfo?.company_profile_url}`}
+							src={
+								!!companyDetailInfo &&
+								`${
+									process.env.REACT_APP_FILE_URL
+								}${companyDetailInfo?.company_profile_url.replace(
+									/\s+/g,
+									''
+								)}`
+							}
 						/>
 					</_.LogoWrapper>
 				</Stack>
