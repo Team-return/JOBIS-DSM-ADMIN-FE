@@ -11,8 +11,9 @@ import { useForm } from '../../../../Hooks/useForm';
 import * as _ from '../../style';
 import { CompanyInfoEditType } from '../../../../Apis/Companies/request';
 import { useChangeCompanyInfo } from '../../../../Apis/Companies';
-import { useFileUpload } from '../../../../Apis/File';
 import { useNavigate } from 'react-router-dom';
+import { usePresignedUrl } from '../../../../Apis/Files';
+import { useQueryClient } from 'react-query';
 
 interface PropsType {
 	companyDetailInfo: CompanyDetailResponse;
@@ -28,7 +29,14 @@ export function CompanyDetailEdit({
 	const navigate = useNavigate();
 	const { append } = useToastStore();
 	const fileInput = useRef<HTMLInputElement>(null);
-	const [file, setFile] = useState<File | null>(null);
+
+	const [imageUrl, setImageUrl] = useState<string | null>(
+		`${process.env.REACT_APP_FILE_URL}${companyDetailInfo?.company_profile_url}` ||
+			null
+	);
+
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
 	const {
 		form: companyDetailEditInfo,
 		setForm: setCompanyDetailEditInfo,
@@ -76,6 +84,7 @@ export function CompanyDetailEdit({
 		representative_phone_no,
 	} = companyDetailEditInfo;
 
+	const queryClient = useQueryClient();
 	const { mutate: editCompanyInfo } = useChangeCompanyInfo(
 		companyDetailEditInfo,
 		{
@@ -87,6 +96,9 @@ export function CompanyDetailEdit({
 				});
 				refetchCompanyDetailInfo();
 				setCanEdit(false);
+				queryClient.invalidateQueries({
+					queryKey: ['editCompanyInfo'],
+				});
 			},
 			onError: () => {
 				append({
@@ -98,26 +110,38 @@ export function CompanyDetailEdit({
 		}
 	);
 
-	const { mutate: fileUploader } = useFileUpload(file!, {
-		onSuccess: (res: any) => {
-			setCompanyDetailEditInfo((companyDetailEditInfo) => ({
-				...companyDetailEditInfo,
-				company_profile_url: res.data?.urls[0],
-			}));
-			setTimeout(editCompanyInfo);
-		},
-		onError: () => {
-			append({
-				title: '파일 업로드에 실패하였습니다.',
-				message: '',
-				type: 'RED',
-			});
-		},
-	});
+	const { mutateAsync: getPresignedUrl } = usePresignedUrl();
+
+	const handleFileUploadAndEdit = async () => {
+		if (selectedFile) {
+			const response = await getPresignedUrl([selectedFile]);
+			if (response?.presignedUrls?.urls?.[0]?.file_path) {
+				const uploadedUrl = `${process.env.REACT_APP_FILE_URL}${response.presignedUrls.urls[0].file_path}`;
+				setImageUrl(uploadedUrl);
+				setCompanyDetailEditInfo((companyDetailEditInfo) => ({
+					...companyDetailEditInfo,
+					company_profile_url:
+						response.presignedUrls.urls[0].file_path,
+				}));
+				setTimeout(() => {
+					editCompanyInfo();
+				}, 500);
+			}
+		}
+	};
+
+	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files && event.target.files.length > 0) {
+			const file = event.target.files[0];
+			setSelectedFile(file);
+			const fileUrl = URL.createObjectURL(file);
+			setImageUrl(fileUrl);
+		}
+	};
 
 	const submitEditCompanyInfo = () => {
-		if (file) {
-			fileUploader();
+		if (selectedFile) {
+			handleFileUploadAndEdit();
 		} else {
 			editCompanyInfo();
 		}
@@ -134,13 +158,7 @@ export function CompanyDetailEdit({
 						</Text>
 					</_.BackWrapper>
 					<_.LogoWrapper>
-						<_.CompanyLogo
-							src={
-								file
-									? URL.createObjectURL(file)
-									: `${process.env.REACT_APP_FILE_URL}${companyDetailInfo?.company_profile_url}`
-							}
-						/>
+						<_.CompanyLogo src={imageUrl || ''} />
 					</_.LogoWrapper>
 					<_.LogoEditImg
 						onClick={() => {
@@ -154,9 +172,7 @@ export function CompanyDetailEdit({
 						hidden
 						ref={fileInput}
 						accept="image/jpg, image/png"
-						onChange={(e) => {
-							setFile(e.target.files ? e.target.files[0] : null);
-						}}
+						onChange={handleFileChange}
 					/>
 				</_.LogoEditWrapper>
 				<Stack gap={20}>
