@@ -404,10 +404,16 @@ export function CompanyDetailEdit({
 					<_.CustomInput
 						placeholder="팩스번호"
 						width={100}
-						type="number"
+						type="text"
 						value={fax ? fax : ''}
 						name="fax"
-						onChange={companyDetailEditInfohandler}
+						onChange={(event) => {
+							const value = event.target.value;
+							if (/^\d*$/.test(value)) {
+								companyDetailEditInfohandler(event);
+							}
+						}}
+						pattern="[0-9]*"
 					/>
 				</_.ContentBox>
 			</_.Stack>
