@@ -404,10 +404,23 @@ export function CompanyDetailEdit({
 					<_.CustomInput
 						placeholder="팩스번호"
 						width={100}
-						type="number"
-						value={fax ? fax : ''}
+						type="text"
+						value={
+							fax?.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') ||
+							fax ||
+							''
+						}
 						name="fax"
-						onChange={companyDetailEditInfohandler}
+						onChange={(e) => {
+							const onlyNumbers = e.target.value.replace(
+								/[^0-9]/g,
+								''
+							);
+							setCompanyDetailEditInfo((prev) => ({
+								...prev,
+								fax: onlyNumbers,
+							}));
+						}}
 					/>
 				</_.ContentBox>
 			</_.Stack>
