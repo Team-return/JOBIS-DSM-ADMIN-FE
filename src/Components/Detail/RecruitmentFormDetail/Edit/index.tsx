@@ -446,6 +446,16 @@ export function RecruitmentFormDetailEdit({
 									style={{ paddingRight: '50px' }}
 									value={required_grade!}
 									name="required_grade"
+									onInput={(e) => {
+										const value = Number(
+											e.currentTarget.value
+										);
+										if (value < 0) {
+											e.currentTarget.value = '0';
+										} else if (value > 100) {
+											e.currentTarget.value = '100';
+										}
+									}}
 									onChange={recruitmentFormDetailInfohandler}
 								/>
 								<_.AbsoluteText right={50}>%</_.AbsoluteText>
