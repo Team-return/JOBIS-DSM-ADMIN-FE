@@ -248,7 +248,7 @@ export function RecruitmentFormTable({
 		<_.Container>
 			<_.BtnContentWrapper>
 				<_.CountTitle>
-					총<_.CountContent>{recreuitmentFromCount}</_.CountContent>개
+					총 <_.CountContent>{recreuitmentFromCount}</_.CountContent>개
 				</_.CountTitle>
 				<_.BtnWrapper>
 					<Button size="S" onClick={useRecruitmentExcelMutate}>
