@@ -79,6 +79,21 @@ export const useGetRecruitmentForm = (
 			},
 			enabled: false,
 		},
+		{
+			queryKey: ['getRecruitmentCount', searchRecruitmentFormQueryString],
+			queryFn: async () => {
+				const { winter_intern } = searchRecruitmentFormQueryString;
+				const winterIntern =
+					winter_intern !== null
+						? `&winter_intern=${winter_intern}`
+						: '';
+				const { data } = await instance.get<{ count: number }>(
+					`${router}/count?${winterIntern}`
+				);
+				return data;
+			},
+			enabled: false,
+		},
 	]);
 };
 
@@ -166,15 +181,6 @@ export const useEditRecruitment = (
 		}
 	);
 };
-
-/**모집의뢰서 총 개수 조회 */
-export const useRecruitmentCount = () => {
-	return useQuery(['RecruitmentCount'], async () => {
-		const { data } = await instance.get(`${router}/count`);
-		return data;
-	});
-};
-
 
 export const useRecruitmentExcel = (options: MutationOptions) => {
 	return useMutation(async () => {
