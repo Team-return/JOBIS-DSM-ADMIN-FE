@@ -5,7 +5,7 @@ import {
 	useToastStore,
 } from '@team-return/design-system';
 import * as _ from './style';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RecruitmentFormResponse } from '../../../Apis/Recruitments/response';
 import { Pagination } from '../../../Utils/Pagination';
 import {
