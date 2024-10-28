@@ -15,6 +15,7 @@ export function RecruitmentFormPage() {
 	const recruitmentFormData = recruitmentFormQueries[0];
 	const recruitmentFormPage =
 		recruitmentFormQueries[1].data?.total_page_count!;
+	const recreuitmentFromCount = recruitmentFormQueries[2].data?.count!;
 	const isLoading = recruitmentFormQueries.some((result) => result.isLoading);
 	const allRefetchRecruitmentForm = useCallback(() => {
 		recruitmentFormQueries.forEach((result) => result.refetch());
@@ -42,6 +43,7 @@ export function RecruitmentFormPage() {
 					allSelectFormId={allSelectFormId}
 					recruitmentForm={recruitmentFormData.data!}
 					recruitmentFormPageNum={recruitmentFormPage}
+					recreuitmentFromCount={recreuitmentFromCount}
 					refetchRecruitmentForm={recruitmentFormData.refetch}
 					recruitmentFormIsLoading={isLoading}
 				/>
