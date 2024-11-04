@@ -13,6 +13,7 @@ export interface ApplicantInfoQueryStringType {
 	student_name: string;
 	recruitment_id: string;
 	year: string;
+	winter_intern: boolean;
 }
 
 export interface TrainDate {
