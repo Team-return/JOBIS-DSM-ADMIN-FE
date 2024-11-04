@@ -48,8 +48,11 @@ export function ApplicationViewTable({
 	allSelectFormIdAndName,
 	applicationIsLoading,
 }: PropsType) {
-	const { applicationViewQueryString, setApplicationViewQueryString } =
-		useApplicationViewQueryString();
+	const {
+		applicationViewQueryString,
+		setApplicationViewQueryString,
+		applicationViewQueryStringDropDown,
+	} = useApplicationViewQueryString();
 
 	const { append } = useToastStore();
 	const dataLength = application?.applications.slice(
@@ -490,12 +493,52 @@ export function ApplicationViewTable({
 	/** 테이블 width를 설정한 값입니다. */
 	const tableWidth: number[] = [4, 9, 7, 8, 15, 45, 12];
 
+	useEffect(() => {
+		console.log(applicationViewQueryString.winter_intern);
+	}, [applicationViewQueryString]);
+
 	return (
 		<_.Container>
 			<_.BtnContentWrapper>
-				<_.CountTitle>
-					총 <_.CountContent>{applicationCount}</_.CountContent>개
-				</_.CountTitle>
+				<_.FilterAndBtnWrapper>
+					<_.CountTitle>
+						총 <_.CountContent>{applicationCount}</_.CountContent>개
+					</_.CountTitle>
+					<_.FilterWrapper>
+						<Button
+							kind={
+								applicationViewQueryString.winter_intern
+									? 'Gray'
+									: 'Solid'
+							}
+							onClick={() => {
+								applicationViewQueryStringDropDown(
+									'winter_intern',
+									false
+								);
+								refetchApplication();
+							}}
+						>
+							채용형
+						</Button>
+						<Button
+							kind={
+								applicationViewQueryString.winter_intern
+									? 'Solid'
+									: 'Gray'
+							}
+							onClick={() => {
+								applicationViewQueryStringDropDown(
+									'winter_intern',
+									true
+								);
+								refetchApplication();
+							}}
+						>
+							체험형
+						</Button>
+					</_.FilterWrapper>
+				</_.FilterAndBtnWrapper>
 				<_.BtnWrapper>
 					<Button
 						kind="Ghost"

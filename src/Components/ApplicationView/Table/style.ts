@@ -11,6 +11,18 @@ export const Container = styled.div`
 	align-items: center;
 `;
 
+export const FilterAndBtnWrapper = styled.div`
+	display: flex;
+	align-items: end;
+	gap: 20px;
+	margin-bottom: 10px;
+`;
+
+export const FilterWrapper = styled.div`
+	display: flex;
+	gap: 20px;
+`;
+
 export const BtnWrapper = styled.div`
 	display: flex;
 	gap: 15px;
