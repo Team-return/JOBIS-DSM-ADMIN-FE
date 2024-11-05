@@ -13,6 +13,15 @@ export const Container = styled.div`
 	position: relative;
 `;
 
+export const TitleWrapper = styled.div`
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 36px;
+	font-weight: 700;
+`;
+
 export const Stack = styled.div<{ flexDirection?: string; width?: number }>`
 	width: 100%;
 	display: flex;

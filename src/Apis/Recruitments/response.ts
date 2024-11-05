@@ -34,7 +34,9 @@ export interface RecruitmentFormDetailResponse {
 	submit_document: string;
 	start_date: string;
 	end_date: string;
+	additional_qualifications: string | null;
 	etc: string | null;
+	winter_intern: boolean;
 }
 
 interface nameAndId {
