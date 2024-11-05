@@ -26,11 +26,17 @@ export function RecruitmentFormDetailBasic({
 							뒤로가기
 						</Text>
 					</_.BackWrapper>
-					<_.LogoWrapper>
+					{/* <_.LogoWrapper>
 						<_.CompanyLogo
 							src={`${process.env.REACT_APP_FILE_URL}${recruitmentFormDetail?.company_profile_url}`}
 						/>
-					</_.LogoWrapper>
+					</_.LogoWrapper> */}
+					<_.TitleWrapper>
+						{recruitmentFormDetail &&
+						recruitmentFormDetail.winter_intern
+							? '체험형'
+							: '채용형'}
+					</_.TitleWrapper>
 				</Stack>
 				<Stack gap={10}>
 					<Button
@@ -142,7 +148,7 @@ export function RecruitmentFormDetailBasic({
 			</_.Stack>
 
 			<_.Stack>
-				<_.TitleBox>자격요건</_.TitleBox>
+				<_.TitleBox height={275}>자격요건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
@@ -160,6 +166,19 @@ export function RecruitmentFormDetailBasic({
 							<_.ContentBox width={20}>
 								{recruitmentFormDetail?.required_grade
 									? `${recruitmentFormDetail?.required_grade}%`
+									: '-'}
+							</_.ContentBox>
+						</_.Stack>
+						<_.Stack>
+							<_.TitleBox height={200}>기타 자격 요건</_.TitleBox>
+							<_.ContentBox
+								width={90}
+								height={200}
+								longText={true}
+								overflow="scroll"
+							>
+								{recruitmentFormDetail?.additional_qualifications
+									? recruitmentFormDetail.additional_qualifications
 									: '-'}
 							</_.ContentBox>
 						</_.Stack>
