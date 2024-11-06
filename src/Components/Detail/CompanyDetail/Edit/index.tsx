@@ -405,21 +405,13 @@ export function CompanyDetailEdit({
 						placeholder="팩스번호"
 						width={100}
 						type="text"
-						value={
-							fax?.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') ||
-							fax ||
-							''
-						}
+						value={fax ? fax : ''}
 						name="fax"
-						onChange={(e) => {
-							const onlyNumbers = e.target.value.replace(
-								/[^0-9]/g,
-								''
-							);
-							setCompanyDetailEditInfo((prev) => ({
-								...prev,
-								fax: onlyNumbers,
-							}));
+						onChange={(event) => {
+							const value = event.target.value;
+							if (/^\d*$/.test(value)) {
+								companyDetailEditInfohandler(event);
+							}
 						}}
 					/>
 				</_.ContentBox>
