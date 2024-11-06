@@ -65,17 +65,9 @@ export function CompanyDetailEdit({
 
 	const {
 		company_introduce,
-		main_zip_code,
 		main_address,
-		main_address_detail,
-		sub_zip_code,
-		sub_address,
-		sub_address_detail,
 		manager_name,
 		manager_phone_no,
-		sub_manager_name,
-		sub_manager_phone_no,
-		fax,
 		email,
 		representative_name,
 		worker_number,
