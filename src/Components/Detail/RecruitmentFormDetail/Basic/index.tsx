@@ -154,19 +154,13 @@ export function RecruitmentFormDetailBasic({
 						<_.Stack>
 							<_.TitleBox>국가자격증</_.TitleBox>
 							<_.ContentBox
-								width={60}
+								width={90}
 								longText={true}
 								overflow="scroll"
 							>
 								{recruitmentFormDetail?.required_licenses.join(
 									', '
 								) || '-'}
-							</_.ContentBox>
-							<_.TitleBox>성적</_.TitleBox>
-							<_.ContentBox width={20}>
-								{recruitmentFormDetail?.required_grade
-									? `${recruitmentFormDetail?.required_grade}%`
-									: '-'}
 							</_.ContentBox>
 						</_.Stack>
 						<_.Stack>
@@ -185,7 +179,6 @@ export function RecruitmentFormDetailBasic({
 					</_.Stack>
 				</_.Stack>
 			</_.Stack>
-
 			<_.Stack>
 				<_.TitleBox height={275}>근무조건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
@@ -199,21 +192,44 @@ export function RecruitmentFormDetailBasic({
 								)}
 							</_.ContentBox>
 							<_.TitleBox>실습수당</_.TitleBox>
-							<_.ContentBox width={23}>
-								{recruitmentFormDetail?.train_pay
-									.toString()
-									.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-								원/월
-							</_.ContentBox>
-							<_.TitleBox>정규직전환시</_.TitleBox>
-							<_.ContentBox width={24}>
-								{recruitmentFormDetail?.pay
-									? `${recruitmentFormDetail?.pay.replace(
-											/\B(?=(\d{3})+(?!\d))/g,
-											','
-									  )}만원/연`
-									: '-'}
-							</_.ContentBox>
+							{recruitmentFormDetail?.winter_intern ? (
+								<>
+									<_.ContentBox width={57}>
+										{recruitmentFormDetail?.train_pay
+											.toString()
+											.replace(
+												/\B(?=(\d{3})+(?!\d))/g,
+												','
+											)}
+										원/월
+									</_.ContentBox>
+								</>
+							) : (
+								<>
+									<_.ContentBox width={23}>
+										{recruitmentFormDetail?.train_pay
+											.toString()
+											.replace(
+												/\B(?=(\d{3})+(?!\d))/g,
+												','
+											)}
+										원/월
+									</_.ContentBox>
+								</>
+							)}
+							{!recruitmentFormDetail?.winter_intern && (
+								<>
+									<_.TitleBox>정규직전환시</_.TitleBox>
+									<_.ContentBox width={24}>
+										{recruitmentFormDetail?.pay
+											? `${recruitmentFormDetail?.pay.replace(
+													/\B(?=(\d{3})+(?!\d))/g,
+													','
+											  )}만원/연`
+											: '-'}
+									</_.ContentBox>
+								</>
+							)}
 						</_.Stack>
 						<_.Stack>
 							<_.TitleBox height={200}>복리후생</_.TitleBox>
@@ -235,28 +251,57 @@ export function RecruitmentFormDetailBasic({
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
 							<_.TitleBox>채용절차</_.TitleBox>
-							<_.ContentBox width={60}>
-								{recruitmentFormDetail?.hiring_progress
-									.map(
-										(progress, i) =>
-											`${hiringProgress[progress]}${
-												recruitmentFormDetail
-													.hiring_progress.length !==
-												i + 1
-													? ' → '
-													: ''
-											}`
-									)
-									.join('')}
-							</_.ContentBox>
-							<_.TitleBox>
-								병역특례
-								<br />
-								신청계획
-							</_.TitleBox>
-							<_.ContentBox width={20}>
-								{recruitmentFormDetail?.military ? 'O' : 'X'}
-							</_.ContentBox>
+							{recruitmentFormDetail?.winter_intern ? (
+								<_.ContentBox width={90}>
+									{recruitmentFormDetail?.hiring_progress
+										.map(
+											(progress, i) =>
+												`${hiringProgress[progress]}${
+													recruitmentFormDetail
+														.hiring_progress
+														.length !==
+													i + 1
+														? ' → '
+														: ''
+												}`
+										)
+										.join('')}
+								</_.ContentBox>
+							) : (
+								<>
+									<_.ContentBox width={60}>
+										{recruitmentFormDetail?.hiring_progress
+											.map(
+												(progress, i) =>
+													`${
+														hiringProgress[progress]
+													}${
+														recruitmentFormDetail
+															.hiring_progress
+															.length !==
+														i + 1
+															? ' → '
+															: ''
+													}`
+											)
+											.join('')}
+									</_.ContentBox>
+								</>
+							)}
+							{!recruitmentFormDetail?.winter_intern && (
+								<>
+									<_.TitleBox>
+										병역특례
+										<br />
+										신청계획
+									</_.TitleBox>
+									<_.ContentBox width={20}>
+										{recruitmentFormDetail?.military
+											? 'O'
+											: 'X'}
+									</_.ContentBox>
+								</>
+							)}
 						</_.Stack>
 						<_.Stack>
 							<_.TitleBox>제출서류</_.TitleBox>

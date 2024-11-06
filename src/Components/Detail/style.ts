@@ -201,3 +201,18 @@ export const BackWrapper = styled.div`
 	margin: 0 0 20px 0;
 	cursor: pointer;
 `;
+
+export const Headquarter = styled.div`
+	display: flex;
+	gap: 6.5px;
+	justify-self: end;
+
+	> img {
+		width: 19px;
+		height: 19px;
+	}
+
+	> p {
+		color: #2ecc71;
+	}
+`;
