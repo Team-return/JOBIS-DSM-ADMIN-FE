@@ -79,7 +79,7 @@ export function CompanyDetailBasic({
 				</_.ContentBox>
 				<_.TitleBox>대표 전화번호</_.TitleBox>
 				<_.ContentBox width={15}>
-					{companyDetailInfo?.representative_phone_no.replace(
+					{(companyDetailInfo?.representative_phone_no || '').replace(
 						/(\d{3})(\d{4})(\d{4})/,
 						'$1-$2-$3'
 					)}
