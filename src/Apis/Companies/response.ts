@@ -56,4 +56,5 @@ export interface CompanyDetailResponse {
 	business_area: string;
 	business_area_code: number;
 	biz_registration_url: string;
+	headquarter: boolean;
 }

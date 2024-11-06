@@ -65,17 +65,9 @@ export function CompanyDetailEdit({
 
 	const {
 		company_introduce,
-		main_zip_code,
 		main_address,
-		main_address_detail,
-		sub_zip_code,
-		sub_address,
-		sub_address_detail,
 		manager_name,
 		manager_phone_no,
-		sub_manager_name,
-		sub_manager_phone_no,
-		fax,
 		email,
 		representative_name,
 		worker_number,
@@ -270,8 +262,8 @@ export function CompanyDetailEdit({
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox>본사주소</_.TitleBox>
-				<_.ContentBox width={25}>
+				<_.TitleBox>주소</_.TitleBox>
+				<_.ContentBox width={90}>
 					<_.CustomInput
 						placeholder="본사주소"
 						width={100}
@@ -281,66 +273,9 @@ export function CompanyDetailEdit({
 						onChange={companyDetailEditInfohandler}
 					/>
 				</_.ContentBox>
-				<_.TitleBox>본사 상세주소</_.TitleBox>
-				<_.ContentBox width={25}>
-					<_.CustomInput
-						placeholder="본사 상세주소"
-						width={100}
-						type="text"
-						value={main_address_detail}
-						name="main_address_detail"
-						onChange={companyDetailEditInfohandler}
-					/>
-				</_.ContentBox>
-				<_.TitleBox>본사 우편번호</_.TitleBox>
-				<_.ContentBox width={20}>
-					<_.CustomInput
-						placeholder="본사 우편번호"
-						width={100}
-						type="number"
-						value={main_zip_code}
-						name="main_zip_code"
-						onChange={companyDetailEditInfohandler}
-					/>
-				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox>지점주소</_.TitleBox>
-				<_.ContentBox width={25}>
-					<_.CustomInput
-						placeholder="지점주소"
-						width={100}
-						type="text"
-						value={sub_address ? sub_address : ''}
-						name="sub_address"
-						onChange={companyDetailEditInfohandler}
-					/>
-				</_.ContentBox>
-				<_.TitleBox>지점 상세주소</_.TitleBox>
-				<_.ContentBox width={25}>
-					<_.CustomInput
-						placeholder="지점 상세주소"
-						width={100}
-						type="text"
-						value={sub_address_detail ? sub_address_detail : ''}
-						name="sub_address_detail"
-						onChange={companyDetailEditInfohandler}
-					/>
-				</_.ContentBox>
-				<_.TitleBox>지점 우편번호</_.TitleBox>
-				<_.ContentBox width={20}>
-					<_.CustomInput
-						placeholder="지점 우편번호"
-						width={100}
-						type="number"
-						value={sub_zip_code ? sub_zip_code : ''}
-						name="sub_zip_code"
-						onChange={companyDetailEditInfohandler}
-					/>
-				</_.ContentBox>
-			</_.Stack>
-			<_.Stack>
-				<_.TitleBox>담당자1</_.TitleBox>
+				<_.TitleBox>담당자</_.TitleBox>
 				<_.ContentBox width={15}>
 					<_.CustomInput
 						placeholder="담당자1"
@@ -351,7 +286,7 @@ export function CompanyDetailEdit({
 						onChange={companyDetailEditInfohandler}
 					/>
 				</_.ContentBox>
-				<_.TitleBox>전화번호1</_.TitleBox>
+				<_.TitleBox>전화번호</_.TitleBox>
 				<_.ContentBox width={15}>
 					<_.CustomInput
 						placeholder="전화번호1"
@@ -363,31 +298,6 @@ export function CompanyDetailEdit({
 						onChange={companyDetailEditInfohandler}
 					/>
 				</_.ContentBox>
-				<_.TitleBox>담당자2</_.TitleBox>
-				<_.ContentBox width={15}>
-					<_.CustomInput
-						placeholder="담당자2"
-						width={100}
-						type="text"
-						value={sub_manager_name ? sub_manager_name : ''}
-						name="sub_manager_name"
-						onChange={companyDetailEditInfohandler}
-					/>
-				</_.ContentBox>
-				<_.TitleBox>전화번호2</_.TitleBox>
-				<_.ContentBox width={15}>
-					<_.CustomInput
-						placeholder="전화번호2"
-						width={100}
-						type="number"
-						maxLength={11}
-						value={sub_manager_phone_no ? sub_manager_phone_no : ''}
-						name="sub_manager_phone_no"
-						onChange={companyDetailEditInfohandler}
-					/>
-				</_.ContentBox>
-			</_.Stack>
-			<_.Stack>
 				<_.TitleBox>이메일</_.TitleBox>
 				<_.ContentBox width={40}>
 					<_.CustomInput
@@ -399,41 +309,16 @@ export function CompanyDetailEdit({
 						onChange={companyDetailEditInfohandler}
 					/>
 				</_.ContentBox>
-				<_.TitleBox>팩스번호</_.TitleBox>
-				<_.ContentBox width={40}>
-					<_.CustomInput
-						placeholder="팩스번호"
-						width={100}
-						type="text"
-						value={fax ? fax : ''}
-						name="fax"
-						onChange={(event) => {
-							const value = event.target.value;
-							if (/^\d*$/.test(value)) {
-								companyDetailEditInfohandler(event);
-							}
-						}}
-					/>
-				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox>앱/웹 서비스명</_.TitleBox>
-				<_.ContentBox width={60}>
+				<_.TitleBox>대표 서비스명</_.TitleBox>
+				<_.ContentBox width={90}>
 					<_.CustomInput
 						width={100}
 						type="text"
 						value={service_name}
 						name="service_name"
 						onChange={companyDetailEditInfohandler}
-					/>
-				</_.ContentBox>
-				<_.TitleBox>사업분야</_.TitleBox>
-				<_.ContentBox width={20}>
-					<_.CustomInput
-						width={100}
-						type="text"
-						value={companyDetailInfo?.business_area}
-						disabled={true}
 					/>
 				</_.ContentBox>
 			</_.Stack>
