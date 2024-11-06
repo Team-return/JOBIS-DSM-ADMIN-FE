@@ -33,4 +33,5 @@ export interface CompanyInfoEditType {
 	service_name: string;
 	company_profile_url: string;
 	representative_phone_no: string;
+	headquarter: boolean;
 }
