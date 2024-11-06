@@ -26,6 +26,9 @@ export function CompanyDetailEdit({
 	setCanEdit,
 	refetchCompanyDetailInfo,
 }: PropsType) {
+	const [headquarter, setHeadquarter] = useState(
+		companyDetailInfo?.headquarter
+	);
 	const navigate = useNavigate();
 	const { append } = useToastStore();
 	const fileInput = useRef<HTMLInputElement>(null);
@@ -61,6 +64,7 @@ export function CompanyDetailEdit({
 		service_name: companyDetailInfo?.service_name,
 		company_profile_url: companyDetailInfo?.company_profile_url,
 		representative_phone_no: companyDetailInfo?.representative_phone_no,
+		headquarter: companyDetailInfo?.headquarter,
 	});
 
 	const {
@@ -131,7 +135,19 @@ export function CompanyDetailEdit({
 		}
 	};
 
+	const handleHeadquarterChange = () => {
+		setHeadquarter((prev) => !prev);
+		setCompanyDetailEditInfo((prev) => ({
+			...prev,
+			headquarter: !headquarter,
+		}));
+	};
+
 	const submitEditCompanyInfo = () => {
+		setCompanyDetailEditInfo((prev) => ({
+			...prev,
+			headquarter,
+		}));
 		if (selectedFile) {
 			handleFileUploadAndEdit();
 		} else {
@@ -272,6 +288,14 @@ export function CompanyDetailEdit({
 						name="main_address"
 						onChange={companyDetailEditInfohandler}
 					/>
+					<_.CheckEmailWrapper>
+						<_.CheckBox
+							type="checkbox"
+							checked={headquarter}
+							onChange={handleHeadquarterChange}
+						/>
+						<_.CheckLogin>본사와 동일 합니다.</_.CheckLogin>
+					</_.CheckEmailWrapper>
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
