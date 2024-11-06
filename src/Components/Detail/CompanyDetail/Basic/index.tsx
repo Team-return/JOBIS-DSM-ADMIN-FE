@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CompanyDetailResponse } from '../../../../Apis/Companies/response';
 import * as _ from '../../style';
 import { useDownloadData } from '../../../../Apis/File';
+import check from '../../../../Assets/SVG/check.svg';
 
 interface PropsType {
 	companyDetailInfo: CompanyDetailResponse;
@@ -101,8 +102,20 @@ export function CompanyDetailBasic({
 			</_.Stack>
 			<_.Stack>
 				<_.TitleBox>주소</_.TitleBox>
-				<_.ContentBox width={90}>
+				<_.ContentBox
+					width={90}
+					style={{
+						display: 'flex',
+						justifyContent: 'space-between',
+					}}
+				>
 					{`(${companyDetailInfo?.main_zip_code}) ${companyDetailInfo?.main_address} ${companyDetailInfo?.main_address_detail}`}
+					{companyDetailInfo?.headquarter && (
+						<_.Headquarter>
+							<img src={check} alt="체크" />
+							<p>본사와 동일합니다.</p>
+						</_.Headquarter>
+					)}
 				</_.ContentBox>
 			</_.Stack>
 			<_.Stack>
