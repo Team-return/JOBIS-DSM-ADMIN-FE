@@ -17,13 +17,15 @@ export interface EditRecruitmentRequest {
 	train_pay: number;
 	pay: string | null;
 	benefits: string | null;
-	military: boolean;
+	military_support: boolean;
 	hiring_progress: string[];
 	submit_document: string;
 	start_date: string | null;
 	end_date: string | null;
 	etc: string | null;
 	flexible_working: boolean;
+	hire_convertible: boolean;
+	integration_plan: boolean;
 }
 
 export interface EditAreasType {

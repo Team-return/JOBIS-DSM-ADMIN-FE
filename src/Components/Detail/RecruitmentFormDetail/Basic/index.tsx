@@ -296,7 +296,7 @@ export function RecruitmentFormDetailBasic({
 										신청계획
 									</_.TitleBox>
 									<_.ContentBox width={20}>
-										{recruitmentFormDetail?.military
+										{recruitmentFormDetail?.military_support
 											? 'O'
 											: 'X'}
 									</_.ContentBox>
@@ -322,6 +322,31 @@ export function RecruitmentFormDetailBasic({
 					</_.Stack>
 				</_.Stack>
 			</_.Stack>
+			{recruitmentFormDetail?.winter_intern ? (
+				<_.Stack>
+					<_.TitleBox height={70} width={21.2}>
+						현장실습 연계 계획
+					</_.TitleBox>
+					<_.ContentBox height={70} width={90}>
+						{recruitmentFormDetail?.integration_plan === true
+							? '있음'
+							: recruitmentFormDetail?.integration_plan === false
+							? '없음'
+							: '-'}
+					</_.ContentBox>
+				</_.Stack>
+			) : (
+				<_.Stack>
+					<_.TitleBox height={70}>채용 전환</_.TitleBox>
+					<_.ContentBox height={70} width={90}>
+						{recruitmentFormDetail?.hire_convertible === true
+							? '가능'
+							: recruitmentFormDetail?.hire_convertible === false
+							? '불가능'
+							: '-'}
+					</_.ContentBox>
+				</_.Stack>
+			)}
 		</_.Container>
 	);
 }
