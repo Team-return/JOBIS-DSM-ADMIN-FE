@@ -417,7 +417,9 @@ export const PDFFile = () => {
 									병역특례기업
 								</td>
 								<td colSpan={5}>
-									{recruitmentDetail?.military ? 'O' : 'X'}
+									{recruitmentDetail?.military_support
+										? 'O'
+										: 'X'}
 								</td>
 							</tr>
 							<tr>
@@ -429,7 +431,9 @@ export const PDFFile = () => {
 									{'산업기능요원 TO\n및 신청계획'}
 								</td>
 								<td colSpan={5}>
-									{recruitmentDetail?.military ? 'O' : 'X'}
+									{recruitmentDetail?.military_support
+										? 'O'
+										: 'X'}
 								</td>
 							</tr>
 							<tr>
