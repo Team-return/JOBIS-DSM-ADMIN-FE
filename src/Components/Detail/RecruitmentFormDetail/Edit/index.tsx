@@ -70,6 +70,8 @@ export function RecruitmentFormDetailEdit({
 		flexible_working: recruitmentFormDetail?.flexible_working,
 		hire_convertible: recruitmentFormDetail?.hire_convertible,
 		integration_plan: recruitmentFormDetail?.integration_plan,
+		additional_qualifications:
+			recruitmentFormDetail?.additional_qualifications,
 	});
 
 	const {
@@ -80,6 +82,7 @@ export function RecruitmentFormDetailEdit({
 		train_pay,
 		pay,
 		benefits,
+		additional_qualifications,
 		military_support,
 		hiring_progress,
 		submit_document,
@@ -416,7 +419,7 @@ export function RecruitmentFormDetailEdit({
 				</_.Stack>
 			</_.Stack>
 			<_.Stack>
-				<_.TitleBox>자격요건</_.TitleBox>
+				<_.TitleBox height={275}>자격요건</_.TitleBox>
 				<_.Stack flexDirection="column" width={90}>
 					<_.Stack width={143}>
 						<_.TitleBox>국가자격증</_.TitleBox>
@@ -434,6 +437,20 @@ export function RecruitmentFormDetailEdit({
 						>
 							<Icon icon="EditPencil" size={30} color="gray70" />
 						</_.TitleBox>
+					</_.Stack>
+					<_.Stack>
+						<_.TitleBox height={200} width={15}>
+							기타 자격 요건
+						</_.TitleBox>
+						<_.ContentBox height={200} width={90} longText={true}>
+							<_.Textarea
+								height={135}
+								name="additional_qualifications"
+								placeholder="기타 자격 요건"
+								value={additional_qualifications!}
+								onChange={recruitmentFormDetailInfohandler}
+							/>
+						</_.ContentBox>
 					</_.Stack>
 				</_.Stack>
 			</_.Stack>
