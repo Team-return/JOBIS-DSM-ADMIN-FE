@@ -30,13 +30,14 @@ export interface RecruitmentFormDetailResponse {
 	train_pay: number;
 	pay: string | null;
 	benefits: string | null;
-	military: true;
+	military_support: true;
 	submit_document: string;
 	start_date: string;
 	end_date: string;
 	additional_qualifications: string | null;
 	etc: string | null;
 	winter_intern: boolean;
+	hire_convertible: boolean;
 }
 
 interface nameAndId {
