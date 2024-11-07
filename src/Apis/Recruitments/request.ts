@@ -26,6 +26,7 @@ export interface EditRecruitmentRequest {
 	flexible_working: boolean;
 	hire_convertible: boolean;
 	integration_plan: boolean;
+	additional_qualifications: string | null;
 }
 
 export interface EditAreasType {
