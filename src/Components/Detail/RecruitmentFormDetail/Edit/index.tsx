@@ -442,7 +442,9 @@ export function RecruitmentFormDetailEdit({
 				<_.Stack flexDirection="column" width={90}>
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
-							<_.TitleBox height={90}>근무시간</_.TitleBox>
+							<_.TitleBox height={90} width={10.7}>
+								근무시간
+							</_.TitleBox>
 							<_.ContentBox
 								width={23}
 								height={90}
@@ -549,39 +551,66 @@ export function RecruitmentFormDetailEdit({
 								</_.CheckEmailWrapper>
 							</_.ContentBox>
 							<_.TitleBox height={90}>실습수당</_.TitleBox>
-							<_.ContentBox height={90} width={23}>
-								<_.CustomInput
-									width={100}
-									type="number"
-									placeholder="실습수당"
-									style={{ paddingRight: '70px' }}
-									value={train_pay}
-									name="train_pay"
-									onChange={recruitmentFormDetailInfohandler}
-								/>
-								<_.AbsoluteText right={42}>
-									원/월
-								</_.AbsoluteText>
-							</_.ContentBox>
-							<_.TitleBox height={90}>
-								정규직
-								<br />
-								전환 시 연봉
-							</_.TitleBox>
-							<_.ContentBox height={90} width={24}>
-								<_.CustomInput
-									width={100}
-									type="number"
-									placeholder="정규직 전환 시 연봉"
-									style={{ paddingRight: '70px' }}
-									value={pay!}
-									name="pay"
-									onChange={recruitmentFormDetailInfohandler}
-								/>
-								<_.AbsoluteText right={42}>
-									만원/연
-								</_.AbsoluteText>
-							</_.ContentBox>
+							{recruitmentFormDetail?.winter_intern ? (
+								<_.ContentBox height={90} width={63}>
+									<_.CustomInput
+										width={100}
+										type="number"
+										placeholder="실습수당"
+										style={{ paddingRight: '70px' }}
+										value={train_pay}
+										name="train_pay"
+										onChange={
+											recruitmentFormDetailInfohandler
+										}
+									/>
+									<_.AbsoluteText right={42}>
+										원/월
+									</_.AbsoluteText>
+								</_.ContentBox>
+							) : (
+								<_.ContentBox height={90} width={23}>
+									<_.CustomInput
+										width={100}
+										type="number"
+										placeholder="실습수당"
+										style={{ paddingRight: '70px' }}
+										value={train_pay}
+										name="train_pay"
+										onChange={
+											recruitmentFormDetailInfohandler
+										}
+									/>
+									<_.AbsoluteText right={42}>
+										원/월
+									</_.AbsoluteText>
+								</_.ContentBox>
+							)}
+							{!recruitmentFormDetail?.winter_intern && (
+								<>
+									<_.TitleBox height={90}>
+										정규직
+										<br />
+										전환 시 연봉
+									</_.TitleBox>
+									<_.ContentBox height={90} width={24}>
+										<_.CustomInput
+											width={100}
+											type="number"
+											placeholder="정규직 전환 시 연봉"
+											style={{ paddingRight: '70px' }}
+											value={pay!}
+											name="pay"
+											onChange={
+												recruitmentFormDetailInfohandler
+											}
+										/>
+										<_.AbsoluteText right={42}>
+											만원/연
+										</_.AbsoluteText>
+									</_.ContentBox>
+								</>
+							)}
 						</_.Stack>
 						<_.Stack>
 							<_.TitleBox height={200}>복리후생</_.TitleBox>
@@ -608,20 +637,37 @@ export function RecruitmentFormDetailEdit({
 					<_.Stack flexDirection="column" width={100}>
 						<_.Stack>
 							<_.TitleBox>채용절차</_.TitleBox>
-							<_.ContentBox width={54}>
-								{recruitmentFormDetailInfo.hiring_progress.map(
-									(progress, i) => {
-										if (
-											recruitmentFormDetailInfo
-												.hiring_progress.length ===
-											i + 1
-										) {
-											return `${hiringProgress[progress]}`;
+							{recruitmentFormDetail?.winter_intern ? (
+								<_.ContentBox width={84}>
+									{recruitmentFormDetailInfo.hiring_progress.map(
+										(progress, i) => {
+											if (
+												recruitmentFormDetailInfo
+													.hiring_progress.length ===
+												i + 1
+											) {
+												return `${hiringProgress[progress]}`;
+											}
+											return `${hiringProgress[progress]} → `;
 										}
-										return `${hiringProgress[progress]} → `;
-									}
-								)}
-							</_.ContentBox>
+									)}
+								</_.ContentBox>
+							) : (
+								<_.ContentBox width={54}>
+									{recruitmentFormDetailInfo.hiring_progress.map(
+										(progress, i) => {
+											if (
+												recruitmentFormDetailInfo
+													.hiring_progress.length ===
+												i + 1
+											) {
+												return `${hiringProgress[progress]}`;
+											}
+											return `${hiringProgress[progress]} → `;
+										}
+									)}
+								</_.ContentBox>
+							)}
 							<_.TitleBox
 								width={6}
 								style={{ cursor: 'pointer' }}
@@ -633,49 +679,61 @@ export function RecruitmentFormDetailEdit({
 									color="gray70"
 								/>
 							</_.TitleBox>
-							<_.TitleBox>
-								병역특례
-								<br />
-								신청계획
-							</_.TitleBox>
-							<_.ContentBox width={20}>
-								<Stack direction="column">
-									<Stack gap={5}>
-										<RadioButton
-											name="military_support"
-											onClick={() => {
-												setRecruitmentFormDetailInfo(
-													(
-														recruitmentFormDetailInfo
-													) => ({
-														...recruitmentFormDetailInfo,
-														military_support: true,
-													})
-												);
-											}}
-											checked={military_support === true}
-										/>
-										있음
-									</Stack>
-									<Stack gap={5}>
-										<RadioButton
-											name="military_support"
-											onClick={() => {
-												setRecruitmentFormDetailInfo(
-													(
-														recruitmentFormDetailInfo
-													) => ({
-														...recruitmentFormDetailInfo,
-														military_support: false,
-													})
-												);
-											}}
-											checked={military_support === false}
-										/>
-										없음
-									</Stack>
-								</Stack>
-							</_.ContentBox>
+							{!recruitmentFormDetail?.winter_intern && (
+								<>
+									<_.TitleBox>
+										병역특례
+										<br />
+										신청계획
+									</_.TitleBox>
+									<_.ContentBox width={20}>
+										<Stack direction="column">
+											<Stack gap={5}>
+												<RadioButton
+													name="military_support"
+													onClick={() => {
+														setRecruitmentFormDetailInfo(
+															(
+																recruitmentFormDetailInfo
+															) => ({
+																...recruitmentFormDetailInfo,
+																military_support:
+																	true,
+															})
+														);
+													}}
+													checked={
+														military_support ===
+														true
+													}
+												/>
+												있음
+											</Stack>
+											<Stack gap={5}>
+												<RadioButton
+													name="military_support"
+													onClick={() => {
+														setRecruitmentFormDetailInfo(
+															(
+																recruitmentFormDetailInfo
+															) => ({
+																...recruitmentFormDetailInfo,
+																military_support:
+																	false,
+															})
+														);
+													}}
+													checked={
+														military_support ===
+														false
+													}
+												/>
+												없음
+											</Stack>
+										</Stack>
+									</_.ContentBox>
+								</>
+							)}
 						</_.Stack>
 						<_.Stack>
 							<_.TitleBox>제출서류</_.TitleBox>
