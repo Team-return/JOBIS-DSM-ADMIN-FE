@@ -38,6 +38,7 @@ export interface RecruitmentFormDetailResponse {
 	etc: string | null;
 	winter_intern: boolean;
 	hire_convertible: boolean;
+	integration_plan: boolean;
 }
 
 interface nameAndId {

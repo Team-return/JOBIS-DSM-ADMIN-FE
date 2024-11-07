@@ -69,6 +69,7 @@ export function RecruitmentFormDetailEdit({
 		etc: recruitmentFormDetail?.etc,
 		flexible_working: recruitmentFormDetail?.flexible_working,
 		hire_convertible: recruitmentFormDetail?.hire_convertible,
+		integration_plan: recruitmentFormDetail?.integration_plan,
 	});
 
 	const {
@@ -84,6 +85,7 @@ export function RecruitmentFormDetailEdit({
 		submit_document,
 		etc,
 		flexible_working,
+		integration_plan,
 	} = recruitmentFormDetailInfo;
 
 	const [areaId, setAreaId] = useState<number>(0);
@@ -708,43 +710,83 @@ export function RecruitmentFormDetailEdit({
 					</_.Stack>
 				</_.Stack>
 			</_.Stack>
-			<_.Stack>
-				<_.TitleBox>채용 전환</_.TitleBox>
-				<_.ContentBox width={20}>
-					<Stack direction="column">
-						<Stack gap={5}>
-							<RadioButton
-								name="hire_convertible"
-								onClick={() => {
-									setRecruitmentFormDetailInfo(
-										(recruitmentFormDetailInfo) => ({
-											...recruitmentFormDetailInfo,
-											hire_convertible: true,
-										})
-									);
-								}}
-								checked={hire_convertible === true}
-							/>
-							가능
+			{recruitmentFormDetail.winter_intern ? (
+				<_.Stack>
+					<_.TitleBox width={21.2}>현장실습 연계 계획</_.TitleBox>
+					<_.ContentBox width={90}>
+						<Stack direction="column">
+							<Stack gap={5}>
+								<RadioButton
+									name="integration_plan"
+									onClick={() => {
+										setRecruitmentFormDetailInfo(
+											(recruitmentFormDetailInfo) => ({
+												...recruitmentFormDetailInfo,
+												integration_plan: true,
+											})
+										);
+									}}
+									checked={integration_plan === true}
+								/>
+								있음
+							</Stack>
+							<Stack gap={5}>
+								<RadioButton
+									name="integration_plan"
+									onClick={() => {
+										setRecruitmentFormDetailInfo(
+											(recruitmentFormDetailInfo) => ({
+												...recruitmentFormDetailInfo,
+												integration_plan: false,
+											})
+										);
+									}}
+									checked={integration_plan === false}
+								/>
+								없음
+							</Stack>
 						</Stack>
-						<Stack gap={5}>
-							<RadioButton
-								name="hire_convertible"
-								onClick={() => {
-									setRecruitmentFormDetailInfo(
-										(recruitmentFormDetailInfo) => ({
-											...recruitmentFormDetailInfo,
-											hire_convertible: false,
-										})
-									);
-								}}
-								checked={hire_convertible === false}
-							/>
-							불가능
+					</_.ContentBox>
+				</_.Stack>
+			) : (
+				<_.Stack>
+					<_.TitleBox>채용 전환</_.TitleBox>
+					<_.ContentBox width={20}>
+						<Stack direction="column">
+							<Stack gap={5}>
+								<RadioButton
+									name="hire_convertible"
+									onClick={() => {
+										setRecruitmentFormDetailInfo(
+											(recruitmentFormDetailInfo) => ({
+												...recruitmentFormDetailInfo,
+												hire_convertible: true,
+											})
+										);
+									}}
+									checked={hire_convertible === true}
+								/>
+								가능
+							</Stack>
+							<Stack gap={5}>
+								<RadioButton
+									name="hire_convertible"
+									onClick={() => {
+										setRecruitmentFormDetailInfo(
+											(recruitmentFormDetailInfo) => ({
+												...recruitmentFormDetailInfo,
+												hire_convertible: false,
+											})
+										);
+									}}
+									checked={hire_convertible === false}
+								/>
+								불가능
+							</Stack>
 						</Stack>
-					</Stack>
-				</_.ContentBox>
-			</_.Stack>
+					</_.ContentBox>
+				</_.Stack>
+			)}
 		</_.Container>
 	);
 }

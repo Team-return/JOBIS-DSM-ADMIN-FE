@@ -25,6 +25,7 @@ export interface EditRecruitmentRequest {
 	etc: string | null;
 	flexible_working: boolean;
 	hire_convertible: boolean;
+	integration_plan: boolean;
 }
 
 export interface EditAreasType {
