@@ -18,7 +18,6 @@ export function NoticeWritePage() {
 	const navigate = useNavigate();
 
 	const { mutate: writeNotice } = useNoticeWriteData();
-
 	const { mutate: getPresignedUrl, data } = usePresignedUrl();
 
 	useEffect(() => {
@@ -91,6 +90,13 @@ export function NoticeWritePage() {
 	const handleNoticeSubmit = () => {
 		if (attachments.length > 0) {
 			getPresignedUrl(attachments);
+		} else {
+			writeNotice({
+				title,
+				content,
+				attachments: [{url: '', type: 'FILE'}],
+			});
+			navigate('/Notice')
 		}
 	};
 
@@ -136,7 +142,7 @@ export function NoticeWritePage() {
 						<_.FileWrap>
 							<_.Text>첨부파일</_.Text>
 							<_.AddFileWrapper>
-								{attachments.map(
+								{attachments?.map(
 									(file: File, index: number) => (
 										<_.AddFile key={index}>
 											{file.name}
