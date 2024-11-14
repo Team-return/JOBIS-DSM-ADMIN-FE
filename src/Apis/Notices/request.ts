@@ -3,7 +3,7 @@ import { AttachmentType } from "./response";
 export interface NoticeWrite {
 	title: string;
 	content: string;
-	attachments: AttachmentRequest[];
+	attachments?: AttachmentRequest[];
 }
 
 export interface NoticeEdit {

@@ -120,6 +120,7 @@ export const useNoticeListData = () => {
 
 	useEffect(() => {
 		fetchNoticeList();
+		
 	}, [fetchNoticeList]);
 
 	return { notices };

@@ -8,7 +8,7 @@ export interface NoticeDetailResponse {
     title: string;
     content: string;
     created_at: string;
-    attachments: AttachmentResponse[];
+    attachments?: AttachmentResponse[];
 }
 
 export type AttachmentType =
