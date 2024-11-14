@@ -15,7 +15,7 @@ export function ApplicationPopup() {
 		student_name: '',
 		recruitment_id: id ? id : '',
 		year: date.getFullYear().toString(),
-		winter_intern: false,
+		winter_intern: true,
 	});
 
 	const {

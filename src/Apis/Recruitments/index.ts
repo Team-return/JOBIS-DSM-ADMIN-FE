@@ -82,13 +82,22 @@ export const useGetRecruitmentForm = (
 		{
 			queryKey: ['getRecruitmentCount', searchRecruitmentFormQueryString],
 			queryFn: async () => {
-				const { winter_intern } = searchRecruitmentFormQueryString;
+				const {
+					year,
+					company_name,
+					start,
+					end,
+					status,
+					winter_intern,
+				} = searchRecruitmentFormQueryString;
 				const winterIntern =
 					winter_intern !== null
 						? `&winter_intern=${winter_intern}`
 						: '';
 				const { data } = await instance.get<{ count: number }>(
-					`${router}/count?${winterIntern}`
+					`${router}/count?year=${year}${winterIntern}&company_name=${company_name}&start=${start}&end=${end}&status=${
+						status === '전체' || status === undefined ? '' : status
+					}`
 				);
 				return data;
 			},
