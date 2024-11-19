@@ -144,16 +144,17 @@ export function RecruitmentFormTable({
 			};
 
 			/** 팝업창을 띄워줄 함수입니다.. */
+
 			const openApplicationCountPage = (requested: boolean) => {
 				if (requested) {
 					window.open(
-						`/RecruitmentRequestPopup?id=${recruitment.id}`,
+						`/RecruitmentRequestPopup?id=${recruitment.id}&winterIntern=${recruitmentFormQueryString.winter_intern}`,
 						'_blank',
 						'resizable=no,width=570,height=830,left=50,top=50'
 					);
 				} else {
 					window.open(
-						`ApplicationPopup?id=${recruitment.id}`,
+						`ApplicationPopup?id=${recruitment.id}&winterIntern=${recruitmentFormQueryString.winter_intern}`,
 						'_blank',
 						'resizable=no,width=570,height=830,left=50,top=50'
 					);

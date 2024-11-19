@@ -493,10 +493,6 @@ export function ApplicationViewTable({
 	/** 테이블 width를 설정한 값입니다. */
 	const tableWidth: number[] = [4, 9, 7, 8, 15, 45, 12];
 
-	useEffect(() => {
-		console.log(applicationViewQueryString.winter_intern);
-	}, [applicationViewQueryString]);
-
 	return (
 		<_.Container>
 			<_.BtnContentWrapper>
