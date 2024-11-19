@@ -10,14 +10,16 @@ import { useGetApplicantInfo } from '../../../Apis/Applications';
 export function RecruitmentRequestPopup() {
 	const date = new Date();
 	const id = new URLSearchParams(window.location.search).get('id');
+	const winterIntern = new URLSearchParams(window.location.search).get(
+		'winterIntern'
+	);
 	const [applicationQueryString] = useState<ApplicantInfoQueryStringType>({
 		application_status: 'REQUESTED',
 		student_name: '',
 		recruitment_id: id ? id : '',
 		year: date.getFullYear().toString(),
-		winter_intern: false,
+		winter_intern: winterIntern === 'false' ? false : true,
 	});
-
 	const {
 		data: applicationData,
 		isLoading,
