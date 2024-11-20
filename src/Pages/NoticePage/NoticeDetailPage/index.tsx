@@ -70,7 +70,10 @@ export function NoticeDetailPage() {
 						</_.HeaderWrapper>
 						<_.Date>{date}</_.Date>
 						<_.Contents>{noticeDetail?.content}</_.Contents>
-						<AttachedBox props={noticeDetail?.attachments || []} />
+						{noticeDetail?.attachments &&
+							noticeDetail.attachments.length > 0 && (
+								<AttachedBox props={noticeDetail.attachments} />
+							)}
 					</_.Box>
 				</_.Background>
 			</_.Wrapper>
