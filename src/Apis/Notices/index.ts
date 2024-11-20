@@ -66,11 +66,14 @@ export const useNoticeDetailData = (noticeId: string) => {
 					title: data.title,
 					content: data.content,
 					created_at: new Date(data.created_at).toISOString(),
-					attachments: data.attachments.map((attachment: any) => ({
-						url: attachment.url,
-						type: attachment.type,
-					})),
+					attachments: data.attachments
+						? data.attachments.map((attachment: any) => ({
+								url: attachment.url,
+								type: attachment.type,
+						  }))
+						: [],
 				};
+
 				setNoticeDetail(fetchedNoticeDetail);
 			})
 			.catch(() => {
@@ -120,7 +123,6 @@ export const useNoticeListData = () => {
 
 	useEffect(() => {
 		fetchNoticeList();
-		
 	}, [fetchNoticeList]);
 
 	return { notices };

@@ -4,7 +4,7 @@ import * as _ from './style';
 import axios from 'axios';
 
 interface PropsType {
-	props: AttachmentResponse[];
+	props: AttachmentResponse[] | null | undefined;
 }
 
 export function AttachedBox({ props }: PropsType) {
@@ -43,7 +43,7 @@ export function AttachedBox({ props }: PropsType) {
 			<_.AttachedWrapper>
 				<_.AttachmentTitle>첨부자료</_.AttachmentTitle>
 				<_.Attachments>
-					{props.map((attachment, index) => (
+					{props?.map((attachment, index) => (
 						<_.Attachment key={index}>
 							<div>{file_name_regex(attachment.url)}</div>
 							<Icon
