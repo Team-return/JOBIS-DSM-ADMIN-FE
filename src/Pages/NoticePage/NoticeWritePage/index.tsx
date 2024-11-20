@@ -94,9 +94,9 @@ export function NoticeWritePage() {
 			writeNotice({
 				title,
 				content,
-				attachments: [{url: '', type: 'FILE'}],
+				attachments: [{} as AttachmentRequest],
 			});
-			navigate('/Notice')
+			navigate('/Notice');
 		}
 	};
 
