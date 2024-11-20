@@ -13,14 +13,12 @@ export const useGetApplicantInfo = (
 		queryKey: ['getApplicantInfo', applicationQueryString],
 		queryFn: async () => {
 			const {
-				page,
 				application_status,
 				student_name,
 				recruitment_id,
 				year,
 				winter_intern,
 			} = applicationQueryString;
-			const pageNum = page ? `&page=${page}` : '';
 			const studentName = student_name
 				? `&student_name=${student_name}`
 				: '';
@@ -28,10 +26,10 @@ export const useGetApplicantInfo = (
 				? `&recruitment_id=${recruitment_id}`
 				: '';
 			const queryString =
-				application_status || student_name || recruitment_id || page
+				application_status || student_name || recruitment_id
 					? `&application_status=${
 							application_status ? application_status : ''
-					  }${companyId}${studentName}${pageNum}`
+					  }${companyId}${studentName}`
 					: '';
 			const { data } = await instance.get<ApplicationResponse>(
 				`${router}?year=${year}${queryString}&winter_intern=${winter_intern}`
