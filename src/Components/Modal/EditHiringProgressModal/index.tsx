@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, ReactNode } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { EditRecruitmentRequest } from '../../../Apis/Recruitments/request';
 import { useModalContext } from '../../../Utils/Modal';
 import { hiringProgress } from '../../../Utils/Translation';
@@ -11,6 +11,7 @@ import {
 	Draggable,
 	Droppable,
 	DroppableProvided,
+	DraggableProvided,
 } from '@hello-pangea/dnd';
 import { Stack } from '@team-return/design-system';
 
@@ -93,7 +94,7 @@ export function EditHiringProgressModal({
 											draggableId={`item-${index}`}
 											index={index}
 										>
-											{(provided) => (
+											{(provided: DraggableProvided) => (
 												<_.DndItemWrapper
 													ref={provided.innerRef}
 													{...provided.draggableProps}
