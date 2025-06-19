@@ -6,13 +6,7 @@ import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import selectIcon from '../../../Assets/SVG/selectIcon.svg';
 import dndIcon from '../../../Assets/SVG/dndIcon.svg';
 import * as _ from './style';
-import {
-	DragDropContext,
-	Draggable,
-	Droppable,
-	DroppableProvided,
-	DraggableProvided,
-} from '@hello-pangea/dnd';
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { Stack } from '@team-return/design-system';
 
 interface PropsType {
@@ -83,7 +77,7 @@ export function EditHiringProgressModal({
 				<_.DndWrapper>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="droppable">
-							{(provided: DroppableProvided): React.ReactNode => (
+							{(provided) => (
 								<div
 									{...provided.droppableProps}
 									ref={provided.innerRef}
@@ -94,9 +88,7 @@ export function EditHiringProgressModal({
 											draggableId={`item-${index}`}
 											index={index}
 										>
-											{(
-												provided: DraggableProvided
-											): React.ReactNode => (
+											{(provided) => (
 												<_.DndItemWrapper
 													ref={provided.innerRef}
 													{...provided.draggableProps}
