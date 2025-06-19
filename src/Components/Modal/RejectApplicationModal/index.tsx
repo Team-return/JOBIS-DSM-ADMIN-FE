@@ -27,7 +27,9 @@ export function RejectApplicationModal({
 				반려상태로 변경하려면 먼저 반려사유를 입력해야합니다.
 			</_.ModalContentText>
 			<_.RejectReasonTextarea
-				onChange={(e) => setRejectReason(e.target.value)}
+				onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+					setRejectReason(e.target.value)
+				}
 			/>
 		</>
 	);

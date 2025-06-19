@@ -487,7 +487,9 @@ export function RecruitmentFormDetailEdit({
 										}
 										name="start_time"
 										maxLength={5}
-										onChange={(e) => {
+										onChange={(
+											e: React.ChangeEvent<HTMLInputElement>
+										) => {
 											// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 											flexible_working
 												? setWorking(e.target.value)
@@ -529,7 +531,9 @@ export function RecruitmentFormDetailEdit({
 													'$1'
 												)}
 												name="end_time"
-												onChange={(e) =>
+												onChange={(
+													e: React.ChangeEvent<HTMLInputElement>
+												) =>
 													setRecruitmentFormDetailInfo(
 														(prev) => ({
 															...prev,

@@ -1,8 +1,6 @@
 import {
 	Button,
 	CheckBox,
-	Icon,
-	Stack,
 	Table,
 	useToastStore,
 } from '@team-return/design-system';
@@ -28,10 +26,10 @@ import { ChangeStatusModal } from '../../Modal/ChangeStatusModal';
 import { RejectApplicationModal } from '../../Modal/RejectApplicationModal';
 import { ChangeTrainDateModal } from '../../Modal/ChangeTrainDateModal';
 import { useDidMountEffect } from '../../../Hooks/useDidMountEffect';
-import OutsideClickHandler from 'react-outside-click-handler';
 import { useChangeStudentFieldTrain } from '../../../Apis/Acceptances';
 import { searchInArray } from '../../../Utils/useSearchForArray';
 import { useApplicationViewQueryString } from '../../../Store/State';
+import { DownloadBox } from './DownloadBox';
 
 interface PropsType {
 	application: ApplicationResponse;
@@ -301,29 +299,6 @@ export function ApplicationViewTable({
 				}
 			};
 
-			/** 다운로드 박스를 껐다키는 함수입니다. */
-			const changeDownloadBoxView = () => {
-				setDownloadBoxView(
-					application.application_id === downloadBoxView
-						? 0
-						: application.application_id
-				);
-			};
-
-			/** 다운로드 박스를 끄는 함수입니다. */
-			const changeDownloadBoxDown = () => {
-				if (application.application_id === downloadBoxView) {
-					setDownloadBoxView(0);
-				}
-			};
-
-			const urlApplication = application.attachments.filter(
-				(urls) => urls.type === 'URL'
-			);
-			const fileApplication = application.attachments.filter(
-				(urls) => urls.type === 'FILE'
-			);
-
 			return [
 				<CheckBox
 					checked={selectFormId.includes(application.application_id)}
@@ -341,132 +316,12 @@ export function ApplicationViewTable({
 				<_.ContentText>{application.student_gcn}</_.ContentText>, // 학법
 				<_.ContentText>{application.student_name}</_.ContentText>, // 이름
 				<_.ContentText>{application.company_name}</_.ContentText>, // 기업
-				<_.OpenBoxWrapper>
-					{application.attachments.length !== 0 ? (
-						<_.UnfoldImgWrapper
-							onClick={
-								downloadBoxView !== application.application_id
-									? changeDownloadBoxView
-									: () => {}
-							}
-						>
-							<div>
-								{downloadBoxView === application.application_id
-									? '닫기'
-									: '펼쳐보기'}
-							</div>
-							<Icon
-								icon="Chevron"
-								color="gray60"
-								direction={
-									downloadBoxView ===
-									application.application_id
-										? 'top'
-										: 'bottom'
-								}
-							></Icon>
-						</_.UnfoldImgWrapper>
-					) : (
-						<_.NotingFileText>첨부파일 없음</_.NotingFileText>
-					)}
-					<OutsideClickHandler
-						onOutsideClick={() => {
-							setTimeout(changeDownloadBoxDown);
-						}}
-					>
-						{downloadBoxView === application.application_id && (
-							<_.DownLoadWrapper>
-								{urlApplication.length !== 0 && (
-									<_.MiddleText>URL</_.MiddleText>
-								)}
-								{urlApplication.map((urls, i) => {
-									return (
-										<_.FileDownloadWrapper key={i}>
-											<Stack>
-												<_.CountNum>{i + 1}</_.CountNum>
-												<div
-													style={{
-														width: '300px',
-														overflow: 'hidden',
-														whiteSpace: 'nowrap',
-														textOverflow:
-															'ellipsis',
-														wordBreak: 'break-all',
-													}}
-												>
-													{urls.url}
-												</div>
-											</Stack>
-											<Button
-												size="S"
-												onClick={() => {
-													window.open(
-														urls.url,
-														'_blank',
-														'noopener, noreferrer'
-													);
-												}}
-											>
-												링크 이동
-											</Button>
-										</_.FileDownloadWrapper>
-									);
-								})}
-								{fileApplication.length !== 0 && (
-									<_.MiddleText
-										style={{ margin: '20px 0 10px 25px' }}
-									>
-										첨부파일
-									</_.MiddleText>
-								)}
-								{fileApplication.map((urls, i) => {
-									const nameArray = decodeURI(urls.url).split(
-										'/'
-									);
-									return (
-										<_.FileDownloadWrapper key={i}>
-											<Stack>
-												<_.CountNum>{i + 1}</_.CountNum>
-												<div
-													style={{
-														width: '300px',
-														overflow: 'hidden',
-														whiteSpace: 'nowrap',
-														textOverflow:
-															'ellipsis',
-														wordBreak: 'break-all',
-													}}
-												>
-													{nameArray[
-														nameArray.length - 1
-													].substring(37)}
-												</div>
-											</Stack>
-											<Button
-												size="S"
-												onClick={() =>
-													fileDownloadAPI(
-														urls.url,
-														nameArray[
-															nameArray.length - 1
-														]
-													)
-												}
-											>
-												<Icon
-													icon="FileEarmarkArrowDown"
-													size={16}
-													color="gray10"
-												/>
-												다운
-											</Button>
-										</_.FileDownloadWrapper>
-									);
-								})}
-							</_.DownLoadWrapper>
-						)}
-					</OutsideClickHandler>
-				</_.OpenBoxWrapper>,
+				<DownloadBox
+					application={application}
+					downloadBoxView={downloadBoxView}
+					setDownloadBoxView={setDownloadBoxView}
+					fileDownloadAPI={fileDownloadAPI}
+				/>,
 				<_.ContentText>{application.created_at}</_.ContentText>,
 			];
 		})
@@ -492,7 +347,6 @@ export function ApplicationViewTable({
 	];
 	/** 테이블 width를 설정한 값입니다. */
 	const tableWidth: number[] = [4, 9, 7, 8, 15, 45, 12];
-
 	return (
 		<_.Container>
 			<_.BtnContentWrapper>
