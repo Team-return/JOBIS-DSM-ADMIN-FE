@@ -6,7 +6,13 @@ import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import selectIcon from '../../../Assets/SVG/selectIcon.svg';
 import dndIcon from '../../../Assets/SVG/dndIcon.svg';
 import * as _ from './style';
-import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
+import {
+	DragDropContext,
+	Draggable,
+	Droppable,
+	DroppableProvided,
+	DroppableStateSnapshot,
+} from '@hello-pangea/dnd';
 import { Stack } from '@team-return/design-system';
 
 interface PropsType {
@@ -77,7 +83,7 @@ export function EditHiringProgressModal({
 				<_.DndWrapper>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="droppable">
-							{(provided) => {
+							{(provided: DroppableProvided) => {
 								return (
 									<div
 										ref={provided.innerRef}
