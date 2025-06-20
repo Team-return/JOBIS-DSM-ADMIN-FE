@@ -11,8 +11,14 @@ import {
 	Draggable,
 	Droppable,
 	DroppableProvided,
-	DroppableStateSnapshot,
-} from '@hello-pangea/dnd';
+} from 'react-beautiful-dnd';
+// import {
+// 	DragDropContext,
+// 	Draggable,
+// 	Droppable,
+// 	DroppableProvided,
+// 	DroppableStateSnapshot,
+// } from '@hello-pangea/dnd';
 import { Stack } from '@team-return/design-system';
 
 interface PropsType {
@@ -83,8 +89,7 @@ export function EditHiringProgressModal({
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="droppable">
 							{(
-								provided: DroppableProvided,
-								snapshot: DroppableStateSnapshot
+								provided: DroppableProvided
 							): React.ReactElement => (
 								<div
 									ref={provided.innerRef}
