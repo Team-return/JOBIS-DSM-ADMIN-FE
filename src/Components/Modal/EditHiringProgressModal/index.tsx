@@ -77,36 +77,49 @@ export function EditHiringProgressModal({
 				<_.DndWrapper>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="droppable">
-							{(provided): JSX.Element => (
-								<div
-									{...provided.droppableProps}
-									ref={provided.innerRef}
-								>
-									{hiringProgressArray.map((item, index) => (
-										<Draggable
-											key={`item${index}`}
-											draggableId={`item-${index}`}
-											index={index}
-										>
-											{(provided): JSX.Element => (
-												<_.DndItemWrapper
-													ref={provided.innerRef}
-													{...provided.draggableProps}
-													{...provided.dragHandleProps}
+							{(provided) =>
+								(
+									<div
+										{...provided.droppableProps}
+										ref={provided.innerRef}
+									>
+										{hiringProgressArray.map(
+											(item, index) => (
+												<Draggable
+													key={`item${index}`}
+													draggableId={`item-${index}`}
+													index={index}
 												>
-													<img src={dndIcon} alt="" />
-													<_.DndText>
-														{`${index + 1}. ${
-															hiringProgress[item]
-														}`}
-													</_.DndText>
-												</_.DndItemWrapper>
-											)}
-										</Draggable>
-									))}
-									{provided.placeholder}
-								</div>
-							)}
+													{(provided) => (
+														<_.DndItemWrapper
+															ref={
+																provided.innerRef
+															}
+															{...provided.draggableProps}
+															{...provided.dragHandleProps}
+														>
+															<img
+																src={dndIcon}
+																alt=""
+															/>
+															<_.DndText>
+																{`${
+																	index + 1
+																}. ${
+																	hiringProgress[
+																		item
+																	]
+																}`}
+															</_.DndText>
+														</_.DndItemWrapper>
+													)}
+												</Draggable>
+											)
+										)}
+										{provided.placeholder}
+									</div>
+								) as unknown as React.ReactNode
+							}
 						</Droppable>
 					</DragDropContext>
 				</_.DndWrapper>
