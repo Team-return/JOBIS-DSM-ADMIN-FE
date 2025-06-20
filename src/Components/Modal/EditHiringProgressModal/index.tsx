@@ -77,7 +77,7 @@ export function EditHiringProgressModal({
 				<_.DndWrapper>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="droppable">
-							{(provided) => (
+							{(provided): JSX.Element => (
 								<div
 									{...provided.droppableProps}
 									ref={provided.innerRef}
@@ -88,7 +88,7 @@ export function EditHiringProgressModal({
 											draggableId={`item-${index}`}
 											index={index}
 										>
-											{(provided) => (
+											{(provided): JSX.Element => (
 												<_.DndItemWrapper
 													ref={provided.innerRef}
 													{...provided.draggableProps}
