@@ -85,7 +85,7 @@ export function EditHiringProgressModal({
 							{(
 								provided: DroppableProvided,
 								snapshot: DroppableStateSnapshot
-							) => (
+							): React.ReactElement => (
 								<div
 									ref={provided.innerRef}
 									{...provided.droppableProps}
