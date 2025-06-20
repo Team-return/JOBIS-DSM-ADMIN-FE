@@ -58,7 +58,6 @@ export function EditHiringProgressModal({
 		const result = [...list];
 		const [removed] = result.splice(startIndex, 1);
 		result.splice(endIndex, 0, removed);
-
 		return result;
 	};
 
@@ -83,80 +82,59 @@ export function EditHiringProgressModal({
 				<_.DndWrapper>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="droppable">
-							{(provided: DroppableProvided) => {
-								return (
-									<div
-										ref={provided.innerRef}
-										{...provided.droppableProps}
-									>
-										{hiringProgressArray.map(
-											(item, index) => (
-												<Draggable
-													key={`item${index}`}
-													draggableId={`item-${index}`}
-													index={index}
+							{(
+								provided: DroppableProvided,
+								snapshot: DroppableStateSnapshot
+							) => (
+								<div
+									ref={provided.innerRef}
+									{...provided.droppableProps}
+								>
+									{hiringProgressArray.map((item, index) => (
+										<Draggable
+											key={`item${index}`}
+											draggableId={`item-${index}`}
+											index={index}
+										>
+											{(provided) => (
+												<_.DndItemWrapper
+													ref={provided.innerRef}
+													{...provided.draggableProps}
+													{...provided.dragHandleProps}
 												>
-													{(provided) => {
-														return (
-															<_.DndItemWrapper
-																ref={
-																	provided.innerRef
-																}
-																{...provided.draggableProps}
-																{...provided.dragHandleProps}
-															>
-																<img
-																	src={
-																		dndIcon
-																	}
-																	alt=""
-																/>
-																<_.DndText>
-																	{`${
-																		index +
-																		1
-																	}. ${
-																		hiringProgress[
-																			item
-																		]
-																	}`}
-																</_.DndText>
-															</_.DndItemWrapper>
-														);
-													}}
-												</Draggable>
-											)
-										)}
-										{provided.placeholder}
-									</div>
-								);
-							}}
+													<img src={dndIcon} alt="" />
+													<_.DndText>{`${
+														index + 1
+													}. ${
+														hiringProgress[item]
+													}`}</_.DndText>
+												</_.DndItemWrapper>
+											)}
+										</Draggable>
+									))}
+									{provided.placeholder}
+								</div>
+							)}
 						</Droppable>
 					</DragDropContext>
 				</_.DndWrapper>
 			</Stack>
 			<_.ProgressWrapper>
 				<_.ProgressListWrapper>
-					{progressList.map((progress, i) => {
-						return (
-							<_.Card
-								key={i}
-								onClick={() => {
-									clickHiringProgress(progress);
-								}}
-								isSelect={hiringProgressArray.includes(
-									getValueByKey(hiringProgress, progress)
-								)}
-							>
-								{progress}
-								{hiringProgressArray.includes(
-									getValueByKey(hiringProgress, progress)
-								) && (
-									<_.SelectIconImg src={selectIcon} alt="" />
-								)}
-							</_.Card>
-						);
-					})}
+					{progressList.map((progress, i) => (
+						<_.Card
+							key={i}
+							onClick={() => clickHiringProgress(progress)}
+							isSelect={hiringProgressArray.includes(
+								getValueByKey(hiringProgress, progress)
+							)}
+						>
+							{progress}
+							{hiringProgressArray.includes(
+								getValueByKey(hiringProgress, progress)
+							) && <_.SelectIconImg src={selectIcon} alt="" />}
+						</_.Card>
+					))}
 				</_.ProgressListWrapper>
 				<_.SuccessBtn onClick={closeModal}>확인</_.SuccessBtn>
 			</_.ProgressWrapper>
