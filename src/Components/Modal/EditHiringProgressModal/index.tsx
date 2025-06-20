@@ -12,13 +12,7 @@ import {
 	Droppable,
 	DroppableProvided,
 } from 'react-beautiful-dnd';
-// import {
-// 	DragDropContext,
-// 	Draggable,
-// 	Droppable,
-// 	DroppableProvided,
-// 	DroppableStateSnapshot,
-// } from '@hello-pangea/dnd';
+
 import { Stack } from '@team-return/design-system';
 
 interface PropsType {
