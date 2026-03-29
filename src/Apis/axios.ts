@@ -1,6 +1,11 @@
-import axios, { AxiosError } from 'axios';
+import axios, {
+	AxiosError,
+	AxiosHeaders,
+	InternalAxiosRequestConfig,
+} from 'axios';
 import { Cookies } from 'react-cookie';
 import { reIssueToken } from './Auth';
+import { AuthorizationRefreshResponse } from './Auth/response';
 
 export const instance = axios.create({
 	baseURL: process.env.REACT_APP_BASE_URL,
@@ -8,7 +13,49 @@ export const instance = axios.create({
 });
 
 const cookies = new Cookies();
-let flag = false;
+const LOGIN_PATH = '/login';
+const COOKIE_OPTIONS = { path: '/' };
+
+interface RetryableAxiosRequestConfig extends InternalAxiosRequestConfig {
+	_retry?: boolean;
+}
+
+let refreshPromise: Promise<AuthorizationRefreshResponse> | null = null;
+
+const clearAuthCookies = () => {
+	cookies.remove('access_token', COOKIE_OPTIONS);
+	cookies.remove('refresh_token', COOKIE_OPTIONS);
+};
+
+const setAuthCookies = (tokenResponse: AuthorizationRefreshResponse) => {
+	const accessExpired = new Date(tokenResponse.access_token_expired_at);
+	const refreshExpired = new Date(tokenResponse.refresh_token_expired_at);
+
+	cookies.set('access_token', tokenResponse.access_token, {
+		expires: accessExpired,
+		...COOKIE_OPTIONS,
+	});
+	cookies.set('refresh_token', tokenResponse.refresh_token, {
+		expires: refreshExpired,
+		...COOKIE_OPTIONS,
+	});
+};
+
+const redirectToLogin = () => {
+	if (window.location.pathname !== LOGIN_PATH) {
+		window.location.replace(LOGIN_PATH);
+	}
+};
+
+const refreshAccessToken = async (refreshToken: string) => {
+	if (!refreshPromise) {
+		refreshPromise = reIssueToken(refreshToken).finally(() => {
+			refreshPromise = null;
+		});
+	}
+
+	return refreshPromise;
+};
 
 instance.interceptors.request.use(
 	(config) => {
@@ -24,58 +71,44 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
 	(response) => response,
-	async (error: AxiosError<AxiosError>) => {
-		if (axios.isAxiosError(error) && error.response) {
-			const { config } = error;
-			const refreshToken = cookies.get('refresh_token');
-			if (!refreshToken) {
-				cookies.remove('access_token');
-				cookies.remove('refresh_token');
-				window.location.href = '/login';
-				return;
-			}
-			if (
-				error.response.data.message === 'Invalid Token' ||
-				error.response.data.message === 'Token Expired' ||
-				error.response.data.message ===
-					'Request failed with status code 403' ||
-				!cookies.get('access_token')
-			) {
-				if (!flag) {
-					cookies.remove('access_token');
-					flag = true;
-					reIssueToken(refreshToken)
-						.then((res) => {
-							flag = false;
-							cookies.remove('refresh_token');
-							const accessExpired = new Date(
-								res.access_token_expired_at
-							);
-							const refreshExpired = new Date(
-								res.refresh_token_expired_at
-							);
-							cookies.set('access_token', res.access_token, {
-								expires: accessExpired,
-							});
-							cookies.set('refresh_token', res.refresh_token, {
-								expires: refreshExpired,
-							});
-							if (config!.headers) {
-								config!.headers[
-									'Authorization'
-								] = `Bearer ${res.access_token}`;
-							}
-							return axios(config!);
-						})
-						.catch(() => {
-							flag = false;
-							cookies.remove('access_token');
-							cookies.remove('refresh_token');
-							window.location.href = '/login';
-						});
-				}
-			}
+	async (error: AxiosError) => {
+		if (!axios.isAxiosError(error)) {
+			return Promise.reject(error);
 		}
-		return Promise.reject(error);
+
+		const originalRequest = error.config as
+			| RetryableAxiosRequestConfig
+			| undefined;
+		const status = error.response?.status;
+
+		if (!originalRequest || !status || ![401, 403].includes(status)) {
+			return Promise.reject(error);
+		}
+
+		const refreshToken = cookies.get('refresh_token');
+
+		if (!refreshToken || originalRequest._retry) {
+			clearAuthCookies();
+			redirectToLogin();
+			return Promise.reject(error);
+		}
+
+		originalRequest._retry = true;
+
+		try {
+			const tokenResponse = await refreshAccessToken(refreshToken);
+			setAuthCookies(tokenResponse);
+			originalRequest.headers = new AxiosHeaders(originalRequest.headers);
+			originalRequest.headers.set(
+				'Authorization',
+				`Bearer ${tokenResponse.access_token}`
+			);
+
+			return instance(originalRequest);
+		} catch (refreshError) {
+			clearAuthCookies();
+			redirectToLogin();
+			return Promise.reject(refreshError);
+		}
 	}
 );
