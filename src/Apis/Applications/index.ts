@@ -95,7 +95,10 @@ export const useRejectApplication = (
 ) => {
 	return useMutation(
 		async () =>
-			instance.patch(`${router}/rejection/${id}`, { reason: reason }),
+			instance.patch(`${router}/rejection/${id}`, {
+				reason: reason,
+				rejection_attachments: [],
+			}),
 		{
 			...options,
 		}

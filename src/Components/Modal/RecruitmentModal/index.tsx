@@ -5,7 +5,7 @@ import { useModalContext } from '../../../Utils/Modal';
 import { EditAreasType } from '../../../Apis/Recruitments/request';
 import { AreasType } from '../../../Apis/Recruitments/response';
 import { Icon, Stack, theme, useToastStore } from '@team-return/design-system';
-import OutsideClickHandler from 'react-outside-click-handler';
+import { useOnClickOutside } from 'usehooks-ts';
 import { useAddArea, useEditArea } from '../../../Apis/Recruitments';
 import { useInput } from '../../../Hooks/useInput';
 import { useGetCode } from '../../../Apis/Codes';
@@ -23,6 +23,11 @@ export function GatherModal({
 	areaData,
 	recruitmentId,
 }: PropsType) {
+	const inputRef = useRef(null);
+
+	useOnClickOutside(inputRef, () => {
+		setInputFocus(false);
+	});
 	const { append } = useToastStore();
 	const { form: searchString, handleChange: searchStringHandler } =
 		useInput<string>('');
@@ -243,11 +248,7 @@ export function GatherModal({
 								필요한 기술 스택을 추가하세요.
 							</_.ContentsText>
 						</div>
-						<OutsideClickHandler
-							onOutsideClick={() => {
-								setInputFocus(false);
-							}}
-						>
+						<div ref={inputRef}>
 							<_.Input
 								value={searchString}
 								placeholder="기술 이름 검색"
@@ -315,7 +316,7 @@ export function GatherModal({
 									)}
 								</_.SearchTechWrapper>
 							)}
-						</OutsideClickHandler>
+						</div>
 					</Stack>
 					<_.CardWrapper>
 						{tech.map((res, i) => {
@@ -351,7 +352,9 @@ export function GatherModal({
 							placeholder="채용 인원 수"
 							min={0}
 							value={area.hiring}
-							onChange={(e) => {
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => {
 								setArea({ ...area, hiring: +e.target.value });
 							}}
 						/>
@@ -371,7 +374,9 @@ export function GatherModal({
 							value={area.major_task}
 							placeholder="해당 직무에서 하는 일"
 							onInput={handleText1RefResizeHeight}
-							onChange={(e) =>
+							onChange={(
+								e: React.ChangeEvent<HTMLTextAreaElement>
+							) =>
 								setArea({ ...area, major_task: e.target.value })
 							}
 						/>
@@ -388,7 +393,9 @@ export function GatherModal({
 							value={area.preferential_treatment}
 							placeholder="우대사항"
 							onInput={handleText2RefResizeHeight}
-							onChange={(e) =>
+							onChange={(
+								e: React.ChangeEvent<HTMLTextAreaElement>
+							) =>
 								setArea({
 									...area,
 									preferential_treatment: e.target.value,

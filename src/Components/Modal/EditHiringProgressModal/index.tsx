@@ -6,7 +6,13 @@ import { getValueByKey } from '../../../Utils/useGetPropertyKey';
 import selectIcon from '../../../Assets/SVG/selectIcon.svg';
 import dndIcon from '../../../Assets/SVG/dndIcon.svg';
 import * as _ from './style';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import {
+	DragDropContext,
+	Draggable,
+	Droppable,
+	DroppableProvided,
+} from 'react-beautiful-dnd';
+
 import { Stack } from '@team-return/design-system';
 
 interface PropsType {
@@ -52,7 +58,6 @@ export function EditHiringProgressModal({
 		const result = [...list];
 		const [removed] = result.splice(startIndex, 1);
 		result.splice(endIndex, 0, removed);
-
 		return result;
 	};
 
@@ -77,10 +82,12 @@ export function EditHiringProgressModal({
 				<_.DndWrapper>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="droppable">
-							{(provided) => (
+							{(
+								provided: DroppableProvided
+							): React.ReactElement => (
 								<div
-									{...provided.droppableProps}
 									ref={provided.innerRef}
+									{...provided.droppableProps}
 								>
 									{hiringProgressArray.map((item, index) => (
 										<Draggable
@@ -95,11 +102,11 @@ export function EditHiringProgressModal({
 													{...provided.dragHandleProps}
 												>
 													<img src={dndIcon} alt="" />
-													<_.DndText>
-														{`${index + 1}. ${
-															hiringProgress[item]
-														}`}
-													</_.DndText>
+													<_.DndText>{`${
+														index + 1
+													}. ${
+														hiringProgress[item]
+													}`}</_.DndText>
 												</_.DndItemWrapper>
 											)}
 										</Draggable>
@@ -113,26 +120,20 @@ export function EditHiringProgressModal({
 			</Stack>
 			<_.ProgressWrapper>
 				<_.ProgressListWrapper>
-					{progressList.map((progress, i) => {
-						return (
-							<_.Card
-								key={i}
-								onClick={() => {
-									clickHiringProgress(progress);
-								}}
-								isSelect={hiringProgressArray.includes(
-									getValueByKey(hiringProgress, progress)
-								)}
-							>
-								{progress}
-								{hiringProgressArray.includes(
-									getValueByKey(hiringProgress, progress)
-								) && (
-									<_.SelectIconImg src={selectIcon} alt="" />
-								)}
-							</_.Card>
-						);
-					})}
+					{progressList.map((progress, i) => (
+						<_.Card
+							key={i}
+							onClick={() => clickHiringProgress(progress)}
+							isSelect={hiringProgressArray.includes(
+								getValueByKey(hiringProgress, progress)
+							)}
+						>
+							{progress}
+							{hiringProgressArray.includes(
+								getValueByKey(hiringProgress, progress)
+							) && <_.SelectIconImg src={selectIcon} alt="" />}
+						</_.Card>
+					))}
 				</_.ProgressListWrapper>
 				<_.SuccessBtn onClick={closeModal}>확인</_.SuccessBtn>
 			</_.ProgressWrapper>
