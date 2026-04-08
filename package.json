@@ -51,7 +51,7 @@
 		"@testing-library/user-event": "^13.5.0",
 		"@types/file-saver": "^2.0.5",
 		"@types/jest": "^27.5.2",
-		"@types/node": "^16.11.64",
+		"@types/node": "^16.18.126",
 		"@types/react": "^18.0.21",
 		"@types/react-beautiful-dnd": "^13.1.4",
 		"@types/react-date-range": "^1.4.4",
