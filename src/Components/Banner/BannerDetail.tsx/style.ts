@@ -36,10 +36,13 @@ export const Wrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
-
-export const BannerImg = styled.img`
+export const BannerImg = styled.div<{ src: string }>`
 	width: 1000px;
 	height: 300px;
+	background-image: url(${(props) => props.src});
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
 `;
 
 export const TextWrapper = styled.div`
